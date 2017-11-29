@@ -1,6 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import ua.softserve.rv_028.issuecitymonitor.model.enums.IssueCategory;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
 import java.util.HashSet;

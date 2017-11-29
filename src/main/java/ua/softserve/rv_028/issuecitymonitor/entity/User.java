@@ -1,8 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.NaturalId;
-import ua.softserve.rv_028.issuecitymonitor.model.enums.Role;
-import ua.softserve.rv_028.issuecitymonitor.model.enums.UserStatus;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
 import java.util.HashSet;

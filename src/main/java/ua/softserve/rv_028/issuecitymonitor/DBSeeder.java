@@ -1,25 +1,43 @@
 package ua.softserve.rv_028.issuecitymonitor;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import ua.softserve.rv_028.issuecitymonitor.config.DataSourceConfig;
-import ua.softserve.rv_028.issuecitymonitor.model.*;
-import ua.softserve.rv_028.issuecitymonitor.model.enums.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import ua.softserve.rv_028.issuecitymonitor.entity.*;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.Date;
 import java.util.Random;
 
+@Component
 public class DBSeeder {
 
-    public static final Random r = new Random();
+    private SessionFactory sessionFactory;
 
-    public static void main(String[] args){
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext();
-        context.register(DataSourceConfig.class);
-        context.refresh();
-        SessionFactory sessionFactory = (SessionFactory) context.getBean("sessionFactory");
+    private static final Logger logger = LogManager.getLogger(DBSeeder.class.getName());
+
+    @Autowired
+    public DBSeeder(EntityManagerFactory factory){
+
+        if(factory.unwrap(SessionFactory.class) == null){
+            throw new NullPointerException("factory is not a hibernate factory");
+        }
+        sessionFactory = factory.unwrap(SessionFactory.class);
+        try {
+            logger.info("Seeding database...");
+            fillDatabase();
+            logger.info("Seeding finished");
+        } catch (RuntimeException e) {
+            logger.error("Seeding has been done already. Skipping...");
+        }
+    }
+
+    private void fillDatabase() throws RuntimeException {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         for(int i=0; i < 10 ; i++){
@@ -113,12 +131,14 @@ public class DBSeeder {
             }
         }
         transaction.commit();
-        sessionFactory.close();
     }
-    private static String randomDate(){
+
+    private static final Random r = new Random();
+
+    private String randomDate(){
         return new Date(r.nextLong()).toString();
     }
-    private static <T extends Enum<?>> T randomEnum(Class<T> classname){
+    private <T extends Enum<?>> T randomEnum(Class<T> classname){
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
     }

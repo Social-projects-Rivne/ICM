@@ -1,6 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import ua.softserve.rv_028.issuecitymonitor.model.enums.ChangeRecordStatus;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
 import javax.persistence.*;
 
