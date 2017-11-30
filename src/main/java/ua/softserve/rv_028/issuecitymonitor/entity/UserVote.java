@@ -30,10 +30,6 @@ public class UserVote {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -48,26 +44,6 @@ public class UserVote {
 
     public void setPetition(Petition petition) {
         this.petition = petition;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserVote)) return false;
-
-        UserVote userVote = (UserVote) o;
-
-        if (id != userVote.id) return false;
-        if (user != null ? !user.equals(userVote.user) : userVote.user != null) return false;
-        return petition != null ? petition.equals(userVote.petition) : userVote.petition == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (petition != null ? petition.hashCode() : 0);
-        return result;
     }
 
     @Override

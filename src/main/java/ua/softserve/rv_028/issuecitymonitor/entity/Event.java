@@ -67,10 +67,6 @@ public class Event{
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -141,42 +137,6 @@ public class Event{
 
     public Set<EventChangeRecord> getChangeRecords() {
         return changeRecords;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Event)) return false;
-
-        Event event = (Event) o;
-
-        if (id != event.id) return false;
-        if (Double.compare(event.latitude, latitude) != 0) return false;
-        if (Double.compare(event.longitude, longitude) != 0) return false;
-        if (user != null ? !user.equals(event.user) : event.user != null) return false;
-        if (title != null ? !title.equals(event.title) : event.title != null) return false;
-        if (description != null ? !description.equals(event.description) : event.description != null) return false;
-        if (initialDate != null ? !initialDate.equals(event.initialDate) : event.initialDate != null) return false;
-        if (endDate != null ? !endDate.equals(event.endDate) : event.endDate != null) return false;
-        return category == event.category;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (initialDate != null ? initialDate.hashCode() : 0);
-        temp = Double.doubleToLongBits(latitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(longitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (endDate != null ? endDate.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        return result;
     }
 
     @Override

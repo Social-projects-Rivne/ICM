@@ -34,10 +34,6 @@ public class PetitionAttachment {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public Petition getPetition() {
         return petition;
     }
@@ -60,28 +56,6 @@ public class PetitionAttachment {
 
     public void setAttachmentUrl(String attachmentUrl) {
         this.attachmentUrl = attachmentUrl;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PetitionAttachment)) return false;
-
-        PetitionAttachment that = (PetitionAttachment) o;
-
-        if (id != that.id) return false;
-        if (petition != null ? !petition.equals(that.petition) : that.petition != null) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        return attachmentUrl != null ? attachmentUrl.equals(that.attachmentUrl) : that.attachmentUrl == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (petition != null ? petition.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (attachmentUrl != null ? attachmentUrl.hashCode() : 0);
-        return result;
     }
 
     @Override

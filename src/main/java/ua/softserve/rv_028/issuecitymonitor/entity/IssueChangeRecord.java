@@ -41,10 +41,6 @@ public class IssueChangeRecord {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public Issue getIssue() {
         return issue;
     }
@@ -75,30 +71,6 @@ public class IssueChangeRecord {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof IssueChangeRecord)) return false;
-
-        IssueChangeRecord that = (IssueChangeRecord) o;
-
-        if (id != that.id) return false;
-        if (issue != null ? !issue.equals(that.issue) : that.issue != null) return false;
-        if (changeRecordStatus != that.changeRecordStatus) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        return message != null ? message.equals(that.message) : that.message == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (issue != null ? issue.hashCode() : 0);
-        result = 31 * result + (changeRecordStatus != null ? changeRecordStatus.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        return result;
     }
 
     @Override

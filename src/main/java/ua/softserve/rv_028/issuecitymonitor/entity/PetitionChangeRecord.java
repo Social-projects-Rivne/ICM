@@ -41,10 +41,6 @@ public class PetitionChangeRecord {
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public Petition getPetition() {
         return petition;
     }
@@ -75,30 +71,6 @@ public class PetitionChangeRecord {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PetitionChangeRecord)) return false;
-
-        PetitionChangeRecord that = (PetitionChangeRecord) o;
-
-        if (id != that.id) return false;
-        if (petition != null ? !petition.equals(that.petition) : that.petition != null) return false;
-        if (changeRecordStatus != that.changeRecordStatus) return false;
-        if (user != null ? !user.equals(that.user) : that.user != null) return false;
-        return message != null ? message.equals(that.message) : that.message == null;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (petition != null ? petition.hashCode() : 0);
-        result = 31 * result + (changeRecordStatus != null ? changeRecordStatus.hashCode() : 0);
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (message != null ? message.hashCode() : 0);
-        return result;
     }
 
     @Override

@@ -52,10 +52,6 @@ public class Petition{
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -102,34 +98,6 @@ public class Petition{
 
     public Set<PetitionChangeRecord> getChangeRecords() {
         return changeRecords;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Petition)) return false;
-
-        Petition petition = (Petition) o;
-
-        if (id != petition.id) return false;
-        if (user != null ? !user.equals(petition.user) : petition.user != null) return false;
-        if (title != null ? !title.equals(petition.title) : petition.title != null) return false;
-        if (description != null ? !description.equals(petition.description) : petition.description != null)
-            return false;
-        if (initialDate != null ? !initialDate.equals(petition.initialDate) : petition.initialDate != null)
-            return false;
-        return category == petition.category;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (initialDate != null ? initialDate.hashCode() : 0);
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        return result;
     }
 
     @Override

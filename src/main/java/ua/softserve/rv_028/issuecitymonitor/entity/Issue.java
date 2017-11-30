@@ -63,10 +63,6 @@ public class Issue{
         return id;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
     public User getUser() {
         return user;
     }
@@ -129,40 +125,6 @@ public class Issue{
 
     public Set<IssueChangeRecord> getChangeRecords() {
         return changeRecords;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Issue)) return false;
-
-        Issue issue = (Issue) o;
-
-        if (id != issue.id) return false;
-        if (Double.compare(issue.latitude, latitude) != 0) return false;
-        if (Double.compare(issue.longitude, longitude) != 0) return false;
-        if (user != null ? !user.equals(issue.user) : issue.user != null) return false;
-        if (title != null ? !title.equals(issue.title) : issue.title != null) return false;
-        if (description != null ? !description.equals(issue.description) : issue.description != null) return false;
-        if (initialDate != null ? !initialDate.equals(issue.initialDate) : issue.initialDate != null) return false;
-        return category == issue.category;
-    }
-
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (user != null ? user.hashCode() : 0);
-        result = 31 * result + (title != null ? title.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (initialDate != null ? initialDate.hashCode() : 0);
-        temp = Double.doubleToLongBits(latitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(longitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (category != null ? category.hashCode() : 0);
-        return result;
     }
 
     @Override
