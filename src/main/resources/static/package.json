@@ -34,6 +34,7 @@
     "webpack-dev-server": "^2.9.5"
   },
   "dependencies": {
+    "axios": "^0.17.1",
     "bootstrap": "4.0.0-beta.2",
     "chart.js": "2.7.1",
     "font-awesome": "4.7.0",
@@ -51,10 +52,7 @@
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
     "start": "webpack-dev-server --progress --colors --inline --env.dev",
-
     "clean": "rimraf ./build",
-
-
     "build": "webpack -d"
   },
   "engines": {
