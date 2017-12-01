@@ -20,8 +20,8 @@ export default {
     },
 
     {
-      name: 'Petition',
-      url: '/petition',
+      name: 'Petitions',
+      url: '/petitions',
       icon: 'icon-list',
       badge: {
         variant: 'info',
