@@ -18,9 +18,9 @@
 *.tar.gz
 *.rar
 *.iml
-.idea
-.mvn
-target
+.idea/
+.mvn/
+target/
 mvnw
 mvnw.cmd
 

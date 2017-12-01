@@ -1,0 +1,6 @@
+{
+  "name": "Issues",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./Issues.js"
+}
