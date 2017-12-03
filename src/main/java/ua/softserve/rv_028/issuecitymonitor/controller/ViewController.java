@@ -46,4 +46,9 @@ public class ViewController {
         return "index.html";
     }
 
+    @RequestMapping(value = "login", method = RequestMethod.GET)
+    public String login(){
+        return "index.html";
+    }
+
 }
