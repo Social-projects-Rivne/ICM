@@ -28,13 +28,13 @@ public class Security extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/").authenticated()
-                .antMatchers("/dashboard").authenticated()
-                .antMatchers("/issues").authenticated()
-                .antMatchers("/petitions").authenticated()
-                .antMatchers("/events").authenticated()
-                .antMatchers("/users").authenticated()
-                .antMatchers("/settings").authenticated()
+                .antMatchers("/")           .permitAll()
+                .antMatchers("/dashboard")  .permitAll()
+                .antMatchers("/issues")     .permitAll()
+                .antMatchers("/petitions")  .permitAll()
+                .antMatchers("/events")     .permitAll()
+                .antMatchers("/users")      .permitAll()
+                .antMatchers("/settings")   .permitAll()
                 .anyRequest().permitAll()
 
                 .and().csrf().disable().formLogin()
