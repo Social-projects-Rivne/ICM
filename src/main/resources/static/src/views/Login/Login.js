@@ -48,7 +48,7 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="container" style={this.marginTop()}>
+            <div className="container login-page-center" >
                 <form className="form-horizontal" role="form" method="POST" action="/login">
                     <div className="row">
                         <div className="col-md-3"/>
@@ -63,7 +63,7 @@ class Login extends Component {
                             <div className="form-group">
                                 <label className="sr-only" htmlFor="email">E-Mail Address</label>
                                 <div className="input-group mb-2 mr-sm-2 mb-sm-0">
-                                    <div className="input-group-addon" style={this.divStyle()}><i className="fa fa-at"/></div>
+                                    <div className="input-group-addon"><i className="fa fa-at"/></div>
                                     <input type="text" name="email" className="form-control" id="email"
                                            value={this.state.value} onChange={this.handleChange}
                                            placeholder="you@example.com" required autoFocus/>
@@ -85,7 +85,7 @@ class Login extends Component {
                             <div className="form-group has-error">
                                 <label className="sr-only" htmlFor="password">Password</label>
                                 <div className="input-group mb-2 mr-sm-2 mb-sm-0">
-                                    <div className="input-group-addon" style={this.divStyle()}><i className="fa fa-key"/></div>
+                                    <div className="input-group-addon"><i className="fa fa-key"/></div>
                                     <input type="password" name="password" className="form-control" id="password"
                                            value={this.state.value} onChange={this.handleChange}
                                            placeholder="Password" required/>
@@ -107,7 +107,7 @@ class Login extends Component {
                         </div>
                     </div>
 
-                    <div className="row" style={this.divStyle1()}>
+                    <div className="row">
                         <div className="col-md-3"/>
                         <div className="col-md-6">
                             <button type="submit" className="btn btn-success"><i className="fa fa-sign-in"/> Login </button>
@@ -118,18 +118,6 @@ class Login extends Component {
             </div>
         )
     }
-
-
-    marginTop () {
-        return {marginTop : '10%'}
-    }
-    divStyle () {
-        return {width: '2.6rem'};
-    };
-
-    divStyle1 (){
-        return {paddingTop: '1rem'};
-    };
 
     emailHasError(){
         if (!this.state.emailValid && this.state.email !== "")

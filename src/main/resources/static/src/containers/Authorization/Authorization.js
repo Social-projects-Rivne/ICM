@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
-import {Container} from 'reactstrap';
-
 import Login from "../../views/Login/Login";
 
 class Authorization extends Component{
