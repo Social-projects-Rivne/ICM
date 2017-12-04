@@ -1,72 +1,43 @@
-package ua.softserve.rv_028.issuecitymonitor.entity;
+package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
-@Entity
-@Table(name = "events")
-@SQLDelete(sql = "UPDATE events SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
-public class Event {
+public class EventDto {
 
-    @Id
-    @GeneratedValue
-    @Column(name = "id", unique = true)
+    private static final SimpleDateFormat DB_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
+    private static final SimpleDateFormat JSON_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+
     private long id;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
+    @JsonIdentityReference(alwaysAsId=true)
     private User user;
-
-    @Column(name = "title")
     private String title;
-
-    @Column(name = "description")
     private String description;
-
-    @Column(name = "initial_date")
     private String initialDate;
-
-    @Column(name = "latitude")
     private double latitude;
-
-    @Column(name = "longitude")
     private double longitude;
-
-    @Column(name = "end_date")
     private String endDate;
-
-    @Column(name = "category")
-    @Enumerated(EnumType.ORDINAL)
     private EventCategory category;
 
-    @Column(name = "deleted")
-    private int isDeleted = 0;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
-    private Set<EventAttachment> attachments = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
-    private Set<EventChangeRecord> changeRecords = new HashSet<>();
-
-    public Event() {
-    }
-
-    public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
-                 String endDate, EventCategory category) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.endDate = endDate;
-        this.category = category;
+    public EventDto(Event entity) {
+        this.id = entity.getId();
+        this.user = entity.getUser();
+        this.title = entity.getTitle();
+        this.description = entity.getDescription();
+        this.initialDate = formatDate(entity.getInitialDate());
+        this.latitude = entity.getLatitude();
+        this.longitude = entity.getLongitude();
+        this.endDate = entity.getEndDate();
+        this.category = entity.getCategory();
     }
 
     public long getId() {
@@ -137,26 +108,18 @@ public class Event {
         this.category = category;
     }
 
-    public int getIsDeleted() {
-        return isDeleted;
-    }
-
-    @PreRemove
-    public void delete() {
-        this.isDeleted = 1;
-    }
-
-    public Set<EventAttachment> getAttachments() {
-        return attachments;
-    }
-
-    public Set<EventChangeRecord> getChangeRecords() {
-        return changeRecords;
+    private static String formatDate(String date){
+        try {
+            return JSON_FORMAT.format(DB_FORMAT.parse(date));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override
     public String toString() {
-        return "Event{" +
+        return "EventDto{" +
                 "id=" + id +
                 ", user=" + user.getId() +
                 ", title='" + title + '\'' +

@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
@@ -8,6 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
+@SQLDelete(sql = "UPDATE issues SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted <> '1'")
 public class Issue{
 
     @Id
@@ -37,6 +41,9 @@ public class Issue{
     @Column(name = "category")
     @Enumerated(EnumType.ORDINAL)
     private IssueCategory category;
+
+    @Column(name = "deleted")
+    private int isDeleted = 0;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class)
     private Set<IssueAttachment> attachments = new HashSet<>();
@@ -125,6 +132,15 @@ public class Issue{
 
     public Set<IssueChangeRecord> getChangeRecords() {
         return changeRecords;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = 1;
     }
 
     @Override

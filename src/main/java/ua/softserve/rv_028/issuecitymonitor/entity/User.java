@@ -1,6 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted <> '1'")
 public class User {
 
 	@Id
@@ -52,6 +56,9 @@ public class User {
 
 	@Column(name = "avatar_url")
 	private String avatarUrl;
+
+	@Column(name = "deleted")
+	private int isDeleted = 0;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
@@ -184,6 +191,15 @@ public class User {
 		return petitions;
 	}
 
+	public int getIsDeleted() {
+		return isDeleted;
+	}
+
+	@PreRemove
+	public void delete() {
+		this.isDeleted = 1;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -199,7 +215,6 @@ public class User {
 				", userStatus=" + userStatus +
 				", deleteDate='" + deleteDate + '\'' +
 				", avatarUrl='" + avatarUrl + '\'' +
-				", issues=" + issues +
 				'}';
 	}
 }

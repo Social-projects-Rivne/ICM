@@ -1,9 +1,14 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "issue_attachment")
+@Table(name = "issue_attachments")
+@SQLDelete(sql = "UPDATE issue_attachments SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted <> '1'")
 public class IssueAttachment {
 
     @Id
@@ -21,6 +26,9 @@ public class IssueAttachment {
 
     @Column(name = "attachment_url")
     private String attachmentUrl;
+
+    @Column(name = "deleted")
+    private int isDeleted = 0;
 
     public IssueAttachment() {}
 
@@ -56,6 +64,15 @@ public class IssueAttachment {
 
     public void setAttachmentUrl(String attachmentUrl) {
         this.attachmentUrl = attachmentUrl;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = 1;
     }
 
     @Override

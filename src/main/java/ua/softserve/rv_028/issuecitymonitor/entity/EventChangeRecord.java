@@ -1,11 +1,15 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "event_change_records")
+@SQLDelete(sql = "UPDATE event_change_records SET deleted = '1' WHERE id = ?")
+@Where(clause = "deleted <> '1'")
 public class EventChangeRecord {
 
     @Id
@@ -27,6 +31,9 @@ public class EventChangeRecord {
 
     @Column(name = "message")
     private String message;
+
+    @Column(name = "deleted")
+    private int isDeleted = 0;
 
     public EventChangeRecord() {}
 
@@ -71,6 +78,15 @@ public class EventChangeRecord {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = 1;
     }
 
     @Override
