@@ -16,7 +16,7 @@ class HeaderDropdown extends Component {
 
         this.toggle = this.toggle.bind(this);
         this.state = {
-            dropdownOpen: false
+            dropdownOpen: false,
         };
     }
 
@@ -26,28 +26,18 @@ class HeaderDropdown extends Component {
         });
     }
 
-    name() {
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', '/api/admin_name', false);
-        xhr.send();
-        return xhr.responseText;
-        /*axios.get('/api/admin_name')
+    componentDidMount(){
+        axios.get('/api/admin_name')
             .then(function (response) {
-                console.log(response);
-                return response
-            })
-            .catch(function (response) {
-                console.log(response);
-                return "no name"
-            })*/
+                document.getElementById('admin-logo').alt = response.data
+            });
     }
 
     dropAccnt() {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
-                    <img src={'img/avatars/6.jpg'} className="img-avatar" alt={this.name()}/>
+                    <img src={'/build/img/avatars/1.jpg'} id='admin-logo' className="img-avatar" />
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
