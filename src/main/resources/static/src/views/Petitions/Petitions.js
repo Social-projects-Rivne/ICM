@@ -11,6 +11,7 @@ import {
     PaginationItem,
     PaginationLink
 } from 'reactstrap';
+import {Link} from "react-router-dom";
 
 
 class Tables extends Component {
@@ -43,6 +44,7 @@ class Tables extends Component {
                           <td>Member</td>
                           <td>
                             <Badge color="success">Active</Badge>
+                              <Link to={"/petitions-edit"}>Edit</Link>
                           </td>
                         </tr>
                         </tbody>

@@ -8,7 +8,9 @@ import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
 import Events from "../../views/Events/";
+
 import Petitions from "../../views/Petitions/";
+import PetitionsEdit from "../../views/PetitionsEdit/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
 
@@ -26,6 +28,7 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/events" name="Events" component={Events}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
+                <Route path="/petitions-edit" name="PetitionsEdit" component={PetitionsEdit}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
               </Switch>
