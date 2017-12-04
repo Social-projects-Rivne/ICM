@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -16,37 +17,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ViewController {
 
-    @RequestMapping(value = "dashboard", method = RequestMethod.GET)
+    @GetMapping(value = {"dashboard", "issues", "petitions", "events", "users", "settings"})
     public String dashboard(){
         return "index.html";
     }
 
-    @RequestMapping(value = "issues", method = RequestMethod.GET)
-    public String issues(){
-        return "index.html";
-    }
-
-    @RequestMapping(value = "petitions", method = RequestMethod.GET)
-    public String petitions(){
-        return "index.html";
-    }
-
-    @RequestMapping(value = "events", method = RequestMethod.GET)
-    public String events(){
-        return "index.html";
-    }
-
-    @RequestMapping(value = "users", method = RequestMethod.GET)
-    public String users(){
-        return "index.html";
-    }
-
-    @RequestMapping(value = "settings", method = RequestMethod.GET)
-    public String settings(){
-        return "index.html";
-    }
-
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+    @GetMapping(value = "login")
     public String login(){
         return "index.html";
     }
