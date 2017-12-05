@@ -23,6 +23,7 @@ public class IssueService {
     public IssueDto addIssue(IssueDto dto){
         Issue issue = new Issue();
 
+        issue.setUser(dto.getUser());
         issue.setTitle(dto.getTitle());
         issue.setDescription(dto.getDescription());
         issue.setLongitude(dto.getLongitude());
@@ -38,6 +39,7 @@ public class IssueService {
     public IssueDto editIssue(IssueDto dto, Long id){
         Issue issue = issueDao.findOne(id);
 
+        issue.setUser(dto.getUser());
         issue.setTitle(dto.getTitle());
         issue.setDescription(dto.getDescription());
         issue.setLongitude(dto.getLongitude());

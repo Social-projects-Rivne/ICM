@@ -31,13 +31,13 @@ public class IssueController {
         return new ResponseEntity<Object>(service.addIssue(dto), HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping("{/id}")
     public ResponseEntity<?> editIssue(IssueDto dto, Long id){
         LOG.info("edit issue");
         return new ResponseEntity<Object>(service.editIssue(dto, id), HttpStatus.OK);
     }
 
-    @DeleteMapping
+    @DeleteMapping("{/id}")
     public ResponseEntity<?> deleteIssue(Long id){
         LOG.info("delete issue");
         service.deleteIssue(id);
