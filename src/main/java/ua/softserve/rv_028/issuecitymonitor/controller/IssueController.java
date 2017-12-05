@@ -1,35 +1,47 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import java.util.List;
+import java.util.logging.Logger;
 
 @RestController
 @RequestMapping("api/issues")
 public class IssueController {
 
+    private static final Logger LOG = Logger.getLogger(IssueController.class.getName());
+
     @Autowired
     private IssueService service;
 
-    @GetMapping("/test")
-    public IssueDto testGet(){
-        return new IssueDto();
-    }
-
     @GetMapping
-    public List<IssueDto> getAll(){
-        return service.findAll();
+    public ResponseEntity<?> getAll(){
+        LOG.info("show list issues");
+        return new ResponseEntity<Object>(service.findAll(), HttpStatus.OK);
     }
 
     @PostMapping
-    public IssueDto addIssue(IssueDto dto){
-        return service.addIssue(dto);
+    public ResponseEntity<?> addIssue(IssueDto dto){
+        LOG.info("add new issue");
+        return new ResponseEntity<Object>(service.addIssue(dto), HttpStatus.OK);
+    }
+
+    @PutMapping
+    public ResponseEntity<?> editIssue(IssueDto dto, Long id){
+        LOG.info("edit issue");
+        return new ResponseEntity<Object>(service.editIssue(dto, id), HttpStatus.OK);
+    }
+
+    @DeleteMapping
+    public ResponseEntity<?> deleteIssue(Long id){
+        LOG.info("delete issue");
+        service.deleteIssue(id);
+        return new ResponseEntity<Object>(HttpStatus.OK);
     }
 
 }
