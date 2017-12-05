@@ -6,7 +6,7 @@ import nav from './_nav';
 import SidebarFooter from './../SidebarFooter';
 import SidebarForm from './../SidebarForm';
 import SidebarHeader from './../SidebarHeader';
-import SidebarMinimizer from './../SidebarMinimizer';
+
 
 class Sidebar extends Component {
 
@@ -125,7 +125,6 @@ class Sidebar extends Component {
           </Nav>
         </nav>
         <SidebarFooter/>
-        <SidebarMinimizer/>
       </div>
     )
   }
