@@ -1,7 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.dao;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.repository.CrudRepository;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 
-public interface EventDao extends JpaRepository<Event, Long>{
+import java.util.List;
+
+public interface EventDao extends CrudRepository<Event, Long> {
+    List<Event> findAllByOrderByIdAsc();
 }

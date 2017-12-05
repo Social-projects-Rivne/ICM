@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "issue_attachments")
-@SQLDelete(sql = "UPDATE issue_attachments SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
+@SQLDelete(sql = "UPDATE issue_attachments SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class IssueAttachment {
 
     @Id
@@ -28,7 +28,7 @@ public class IssueAttachment {
     private String attachmentUrl;
 
     @Column(name = "deleted")
-    private int isDeleted = 0;
+    private boolean isDeleted = false;
 
     public IssueAttachment() {}
 
@@ -36,6 +36,10 @@ public class IssueAttachment {
         this.issue = issue;
         this.user = user;
         this.attachmentUrl = attachmentUrl;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -66,21 +70,21 @@ public class IssueAttachment {
         this.attachmentUrl = attachmentUrl;
     }
 
-    public int getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
     @PreRemove
     public void delete() {
-        this.isDeleted = 1;
+        this.isDeleted = true;
     }
 
     @Override
     public String toString() {
         return "IssueAttachment{" +
                 "id=" + id +
-                ", issue=" + issue +
-                ", user=" + user +
+                ", issue=" + issue.getId() +
+                ", user=" + user.getId() +
                 ", attachmentUrl='" + attachmentUrl + '\'' +
                 '}';
     }

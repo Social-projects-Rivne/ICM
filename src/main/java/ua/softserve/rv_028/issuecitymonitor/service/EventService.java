@@ -1,7 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 
 import java.util.List;

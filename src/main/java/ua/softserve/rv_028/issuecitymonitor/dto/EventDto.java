@@ -1,25 +1,17 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
+
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DB_FORMAT;
+import static ua.softserve.rv_028.issuecitymonitor.Constants.JSON_FORMAT;
 
 public class EventDto {
 
-    private static final SimpleDateFormat DB_FORMAT = new SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy");
-    private static final SimpleDateFormat JSON_FORMAT = new SimpleDateFormat("MM/dd/yyyy HH:mm");
-
     private long id;
-
-    @JsonIdentityInfo(generator=ObjectIdGenerators.PropertyGenerator.class, property="id")
-    @JsonIdentityReference(alwaysAsId=true)
-    private User user;
+    private UserDto userDto;
     private String title;
     private String description;
     private String initialDate;
@@ -28,28 +20,47 @@ public class EventDto {
     private String endDate;
     private EventCategory category;
 
+    public EventDto() {}
+
     public EventDto(Event entity) {
         this.id = entity.getId();
-        this.user = entity.getUser();
+        this.userDto = new UserDto(entity.getUser());
         this.title = entity.getTitle();
         this.description = entity.getDescription();
-        this.initialDate = formatDate(entity.getInitialDate());
+        this.initialDate = entity.getInitialDate();
         this.latitude = entity.getLatitude();
         this.longitude = entity.getLongitude();
         this.endDate = entity.getEndDate();
         this.category = entity.getCategory();
     }
 
+    public EventDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude,
+                    double longitude, String endDate, EventCategory category) {
+        this.id = id;
+        this.userDto = userDto;
+        this.title = title;
+        this.description = description;
+        this.initialDate = initialDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.endDate = endDate;
+        this.category = category;
+    }
+
     public long getId() {
         return id;
     }
 
-    public User getUser() {
-        return user;
+    public void setId(long id) {
+        this.id = id;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     public String getTitle() {
@@ -121,7 +132,7 @@ public class EventDto {
     public String toString() {
         return "EventDto{" +
                 "id=" + id +
-                ", user=" + user.getId() +
+                ", userDto=" + userDto +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

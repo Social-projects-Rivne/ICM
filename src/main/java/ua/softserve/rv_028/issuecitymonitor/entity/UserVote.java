@@ -7,8 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "user_votes")
-@SQLDelete(sql = "UPDATE user_votes SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
+@SQLDelete(sql = "UPDATE user_votes SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class UserVote {
 
     @Id
@@ -25,13 +25,17 @@ public class UserVote {
     private Petition petition;
 
     @Column(name = "deleted")
-    private int isDeleted = 0;
+    private boolean isDeleted = false;
 
     public UserVote() {}
 
     public UserVote(User user, Petition petition) {
         this.user = user;
         this.petition = petition;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -54,21 +58,21 @@ public class UserVote {
         this.petition = petition;
     }
 
-    public int getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
     @PreRemove
     public void delete() {
-        this.isDeleted = 1;
+        this.isDeleted = true;
     }
 
     @Override
     public String toString() {
         return "UserVote{" +
                 "id=" + id +
-                ", user=" + user +
-                ", petition=" + petition +
+                ", user=" + user.getId() +
+                ", petition=" + petition.getId() +
                 '}';
     }
 }

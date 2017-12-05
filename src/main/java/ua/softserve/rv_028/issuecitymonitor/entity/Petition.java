@@ -10,8 +10,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "petitions")
-@SQLDelete(sql = "UPDATE petitions SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
+@SQLDelete(sql = "UPDATE petitions SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class Petition{
 
     @Id
@@ -36,7 +36,7 @@ public class Petition{
     private PetitionCategory category;
 
     @Column(name = "deleted")
-    private int isDeleted = 0;
+    private boolean isDeleted = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionAttachment.class)
     private Set<PetitionAttachment> attachments = new HashSet<>();
@@ -53,6 +53,10 @@ public class Petition{
         this.description = description;
         this.initialDate = initialDate;
         this.category = category;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -107,20 +111,20 @@ public class Petition{
         return changeRecords;
     }
 
-    public int getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
     @PreRemove
     public void delete() {
-        this.isDeleted = 1;
+        this.isDeleted = true;
     }
 
     @Override
     public String toString() {
         return "Petition{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

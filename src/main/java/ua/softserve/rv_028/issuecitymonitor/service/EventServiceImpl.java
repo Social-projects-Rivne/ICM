@@ -5,13 +5,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
+import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -20,15 +21,18 @@ public class EventServiceImpl implements EventService {
 
     private final EventDao eventDao;
 
+    private final UserDao userDao;
+
     @Autowired
-    public EventServiceImpl(EventDao eventDao){
+    public EventServiceImpl(EventDao eventDao, UserDao userDao){
         this.eventDao = eventDao;
+        this.userDao = userDao;
     }
 
     @Override
     public EventDto add(EventDto eventDto) {
         Event event = new Event();
-        event.setUser(eventDto.getUser());
+        event.setUser(new User(eventDto.getUserDto()));
         event.setTitle(eventDto.getTitle());
         event.setDescription(eventDto.getDescription());
         event.setLongitude(eventDto.getLongitude());
@@ -53,8 +57,11 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> findAll() {
         LOGGER.debug("Finding all events");
-        List<EventDto> eventDtos = eventDao.findAll().stream().map(EventDto::new).collect(Collectors.toList());
-        LOGGER.debug("Found all events" + eventDtos.toString());
+        List<EventDto> eventDtos = new ArrayList<>();
+        for(Event e : eventDao.findAllByOrderByIdAsc()){
+            eventDtos.add(new EventDto(e));
+        }
+        LOGGER.debug("Found all events");
         return eventDtos;
     }
 
@@ -68,22 +75,22 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto update(EventDto eventDto) throws EventNotFoundException{
-        Event event = findOne(eventDto.getId());
-        event.setUser(eventDto.getUser());
+        Event event = eventDao.findOne(eventDto.getId());
+        event.setUser(userDao.findOne(eventDto.getUserDto().getId()));
         event.setTitle(eventDto.getTitle());
         event.setDescription(eventDto.getDescription());
-        event.setInitialDate(eventDto.getInitialDate());
-        event.setLatitude(eventDto.getLatitude());
         event.setLongitude(eventDto.getLongitude());
+        event.setLatitude(eventDto.getLatitude());
+        event.setInitialDate(eventDto.getInitialDate());
         event.setEndDate(eventDto.getEndDate());
         event.setCategory(eventDto.getCategory());
         LOGGER.debug("Updating " + event.toString());
-        event = eventDao.save(event);
+        eventDao.save(event);
         LOGGER.debug("Updated " + event.toString());
-        return eventDto;
+        return new EventDto(event);
     }
 
-    private Event findOne(Long id) throws EventNotFoundException{
+    private Event findOne(long id) throws EventNotFoundException{
         Event event = eventDao.findOne(id);
         if(event == null)
             throw new EventNotFoundException("Event not found");

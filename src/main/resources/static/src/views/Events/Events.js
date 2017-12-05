@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Button, ButtonGroup, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
 import swal from 'sweetalert';
+import {Link} from "react-router-dom";
 
 class Events extends Component {
     constructor(props) {
@@ -31,13 +32,13 @@ class Events extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
+                            <CardHeader>Event list</CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>
                                         <tr>
                                             <th>#</th>
                                             <th>Title</th>
-                                            <th>Description</th>
                                             <th>Initial Date</th>
                                             <th>End Date</th>
                                             <th>Category</th>
@@ -88,15 +89,12 @@ class Event extends Component {
             .then(function(willDelete) {
                 if (willDelete) {
                     axios.delete("/api/events/"+_this.state.event.id)
-                        .then(function() {
+                        .then(function(response) {
                             _this.setState({
                                 mounted: false
                             });
-                            swal("Event record deleted", {
-                                icon: "success",
-                            });
-                        })
-                        .catch(function (error) {
+                            swal({title: "Event record deleted", icon: "success"});
+                        }).catch(function (error) {
                             swal({title: "Something went wrong!", text: error, icon: "error"});
                         });
                 }
@@ -104,7 +102,6 @@ class Event extends Component {
     }
 
     handleEdit(){
-
     }
 
     render() {
@@ -112,20 +109,17 @@ class Event extends Component {
                 <tr>
                     <td>{this.state.event.id}</td>
                     <td>{this.state.event.title}</td>
-                    <td>{this.state.event.description}</td>
                     <td>{this.state.event.initialDate}</td>
                     <td>{this.state.event.endDate}</td>
                     <td>{this.state.event.category}</td>
-                    <td>{this.state.event.user}</td>
+                    <td>{this.state.event.userDto.id}</td>
                     <td>
-                        <ButtonGroup>
-                            <Button color="info" size="sm" onClick={this.handleEdit}>Edit</Button>{" "}
-                            <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
-                        </ButtonGroup>
+                        <Link to={"/events/"+this.state.event.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
+                        <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                     </td>
                 </tr>
             );
-        return (this.state.mounted === true ? row : "")
+        return (this.state.mounted === true ? row : null)
     }
 }
 

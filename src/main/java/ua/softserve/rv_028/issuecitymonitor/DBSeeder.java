@@ -19,7 +19,7 @@ public class DBSeeder {
 
     private SessionFactory sessionFactory;
 
-    private static final Logger logger = LogManager.getLogger(DBSeeder.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
 
     @Autowired
     public DBSeeder(EntityManagerFactory factory){
@@ -29,11 +29,11 @@ public class DBSeeder {
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
         try {
-            logger.info("Seeding database...");
+            LOGGER.info("Seeding database...");
             fillDatabase();
-            logger.info("Seeding finished");
+            LOGGER.info("Seeding finished");
         } catch (RuntimeException e) {
-            logger.error("Seeding has been done already. Skipping...");
+            LOGGER.error("Seeding has been done already. Skipping...");
         }
     }
 
@@ -47,7 +47,7 @@ public class DBSeeder {
             user.setEmail("tom"+i+"@mail.rv.ua");
             user.setPhone("+380997755331");
             user.setPassword(i+""+i+""+i);
-            user.setRole(randomEnum(Role.class));
+            user.setUserRole(randomEnum(UserRole.class));
             user.setRegistrationDate(randomDate());
             user.setAvatarUrl("http://url.com"+i);
             user.setUserAgreement(r.nextBoolean());

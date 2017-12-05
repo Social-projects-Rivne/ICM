@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "event_change_records")
-@SQLDelete(sql = "UPDATE event_change_records SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
+@SQLDelete(sql = "UPDATE event_change_records SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class EventChangeRecord {
 
     @Id
@@ -33,7 +33,7 @@ public class EventChangeRecord {
     private String message;
 
     @Column(name = "deleted")
-    private int isDeleted = 0;
+    private boolean isDeleted = false;
 
     public EventChangeRecord() {}
 
@@ -42,6 +42,10 @@ public class EventChangeRecord {
         this.changeRecordStatus = changeRecordStatus;
         this.user = user;
         this.message = message;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -80,22 +84,22 @@ public class EventChangeRecord {
         this.message = message;
     }
 
-    public int getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
     @PreRemove
     public void delete() {
-        this.isDeleted = 1;
+        this.isDeleted = true;
     }
 
     @Override
     public String toString() {
         return "EventChangeRecord{" +
                 "id=" + id +
-                ", event=" + event +
+                ", event=" + event.getId() +
                 ", changeRecordStatus=" + changeRecordStatus +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", message='" + message + '\'' +
                 '}';
     }

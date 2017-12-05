@@ -44,7 +44,7 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    private ResponseEntity<?> update(@PathVariable long id, @RequestBody EventDto eventDto){
+    public ResponseEntity<?> update(@PathVariable long id, @RequestBody EventDto eventDto){
         LOGGER.debug("PUT request for event with id "+id);
         try {
             EventDto result = eventService.update(eventDto);
@@ -57,7 +57,7 @@ public class EventController {
     }
 
     @DeleteMapping("/{id}")
-    private ResponseEntity<?> delete(@PathVariable long id){
+    public ResponseEntity<?> delete(@PathVariable long id){
         LOGGER.debug("DELETE request for event with id "+id);
         try {
             eventService.deleteById(id);

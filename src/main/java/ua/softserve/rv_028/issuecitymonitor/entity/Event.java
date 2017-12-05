@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
@@ -10,13 +11,14 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
-@SQLDelete(sql = "UPDATE events SET deleted = '1' WHERE id = ?")
-@Where(clause = "deleted <> '1'")
+@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class Event {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
+    @OrderBy
     private long id;
 
     @ManyToOne
@@ -46,7 +48,7 @@ public class Event {
     private EventCategory category;
 
     @Column(name = "deleted")
-    private int isDeleted = 0;
+    private boolean isDeleted = false;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
     private Set<EventAttachment> attachments = new HashSet<>();
@@ -54,7 +56,17 @@ public class Event {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
-    public Event() {
+    public Event() {}
+
+    public Event(EventDto eventDto) {
+        this.user = new User(eventDto.getUserDto());
+        this.title = eventDto.getTitle();
+        this.description = eventDto.getDescription();
+        this.initialDate = eventDto.getInitialDate();
+        this.latitude = eventDto.getLatitude();
+        this.longitude = eventDto.getLongitude();
+        this.endDate = eventDto.getEndDate();
+        this.category = eventDto.getCategory();
     }
 
     public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
@@ -67,6 +79,10 @@ public class Event {
         this.longitude = longitude;
         this.endDate = endDate;
         this.category = category;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -137,13 +153,13 @@ public class Event {
         this.category = category;
     }
 
-    public int getIsDeleted() {
+    public boolean getIsDeleted() {
         return isDeleted;
     }
 
     @PreRemove
     public void delete() {
-        this.isDeleted = 1;
+        this.isDeleted = true;
     }
 
     public Set<EventAttachment> getAttachments() {
