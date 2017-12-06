@@ -4,7 +4,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.Set;
 public class UserDto {
 
     private long id;
-    private Role role;
+    private UserRole role;
     private String registrationDate;
     private String firstName;
     private String lastName;
@@ -32,7 +32,7 @@ public class UserDto {
 
     public UserDto(User entity){
         this.id = entity.getId();
-        this.role = entity.getRole();
+        this.role = entity.getUserRole();
         this.registrationDate = entity.getRegistrationDate();
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
@@ -57,11 +57,11 @@ public class UserDto {
         this.id = id;
     }
 
-    public Role getRole() {
+    public UserRole getUserRole() {
         return role;
     }
 
-    public void setRole(Role role) {
+    public void setUserRole(UserRole role) {
         this.role = role;
     }
 
@@ -168,4 +168,6 @@ public class UserDto {
     public void setPetitions(Set<Petition> petitions) {
         this.petitions = petitions;
     }
+
+
 }

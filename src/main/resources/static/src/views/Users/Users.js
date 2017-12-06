@@ -8,6 +8,7 @@ class User extends Component {
         super(props);
         this.state = {
             userList: this.load(),
+            users : "Init users!"
         };
         this.load = this.load.bind(this);
     }
@@ -20,27 +21,11 @@ class User extends Component {
                     console.log(response);
                 });
     }
-    renderUserList () {
-        if (this.state.users) {
-            return (
-                <ul>
-                    {this.state.users.map(
-                        (user, i) => <tr key={i}>
-                            <td>{user.id}</td>
 
-
-                            </tr>)}
-                </ul>
-            )
-        }
-
-        return <p>Loading tasks...</p>
-    }
     render() {
         return (
             <div className="animated fadeIn">
-                {this.renderUserList()}
-
+                {this.state.users}
             </div>
         )
     }

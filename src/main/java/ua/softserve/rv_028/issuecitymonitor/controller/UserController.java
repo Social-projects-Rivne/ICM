@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import java.util.List;
@@ -29,7 +28,7 @@ public class UserController {
         return service.findAll();
     }
 
-    @PostMapping("/add/{id}")
+    @PostMapping
     public UserDto addUser(UserDto dto){
         return service.addUser(dto);
     }

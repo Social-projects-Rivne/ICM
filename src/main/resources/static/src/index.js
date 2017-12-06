@@ -14,13 +14,11 @@ import '../scss/core/_dropdown-menu-right.scss'
 
 // Containers
 import Full from './containers/Full/'
-import Users from "./views/Users/Users";
 
 ReactDOM.render((
   <BrowserRouter>
     <Switch>
       <Route path="/" name="Home" component={Full}/>
-        <Route path="/users" name="Users" component={Users}/>
     </Switch>
   </BrowserRouter>
 ), document.getElementById('root'));
