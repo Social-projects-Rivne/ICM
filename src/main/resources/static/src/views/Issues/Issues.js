@@ -7,10 +7,8 @@ class Issues extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            issueList: this.load(),
-            issues : []
+            issues : this.load()
         };
-        this.load = this.load.bind(this);
     }
 
     load(event){
