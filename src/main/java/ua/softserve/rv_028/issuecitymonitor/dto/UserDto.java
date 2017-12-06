@@ -24,9 +24,9 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-    private Set<Issue> issues = new HashSet<>();
+    /*private Set<Issue> issues = new HashSet<>();
     private Set<Event> events = new HashSet<>();
-    private Set<Petition> petitions = new HashSet<>();
+    private Set<Petition> petitions = new HashSet<>();*/
 
     public UserDto(){}
 
@@ -43,9 +43,9 @@ public class UserDto {
         this.userStatus = entity.getUserStatus();
         this.deleteDate = entity.getDeleteDate();
         this.avatarUrl = entity.getAvatarUrl();
-        this.issues = entity.getIssues();
+       /* this.issues = entity.getIssues();
         this.events = entity.getEvents();
-        this.petitions = entity.getPetitions();
+        this.petitions = entity.getPetitions();*/
     }
 
 
@@ -144,7 +144,7 @@ public class UserDto {
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
     }
-
+    /*
     public Set<Issue> getIssues() {
         return issues;
     }
@@ -169,5 +169,5 @@ public class UserDto {
         this.petitions = petitions;
     }
 
-
+    */
 }
