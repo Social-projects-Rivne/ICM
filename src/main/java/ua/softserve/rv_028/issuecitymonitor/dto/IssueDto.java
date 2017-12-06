@@ -3,7 +3,6 @@ package ua.softserve.rv_028.issuecitymonitor.dto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.IssueAttachment;
 import ua.softserve.rv_028.issuecitymonitor.entity.IssueChangeRecord;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import java.util.HashSet;
@@ -12,7 +11,7 @@ import java.util.Set;
 public class IssueDto {
 
     private Long id;
-    private User user;
+    private UserDto userDto;
     private String title;
     private String description;
     private String initialDate;
@@ -22,27 +21,14 @@ public class IssueDto {
     private Set<IssueAttachment> attachments = new HashSet<>();
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
-    public IssueDto(){}
-
     public IssueDto(Issue entity) {
-        this.user = entity.getUser();
+        this.userDto = new UserDto(entity.getUser());
         this.title = entity.getTitle();
         this.description = entity.getDescription();
         this.initialDate = entity.getInitialDate();
         this.latitude = entity.getLatitude();
         this.longitude = entity.getLongitude();
         this.category = entity.getCategory();
-    }
-
-    public IssueDto(User user, String title, String description, String initialDate, double latitude,
-                    double longitude, IssueCategory category) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.category = category;
     }
 
     public Long getId() {
@@ -53,12 +39,12 @@ public class IssueDto {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public UserDto getUserDto() {
+        return userDto;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     public String getTitle() {

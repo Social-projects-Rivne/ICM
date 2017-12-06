@@ -1,7 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
@@ -52,7 +50,7 @@ public class Issue{
     }
 
     public Issue(IssueDto issueDto) {
-        this.user = issueDto.getUser();
+        this.user = new User(issueDto.getUserDto());
         this.title = issueDto.getTitle();
         this.description = issueDto.getDescription();
         this.initialDate = issueDto.getInitialDate();

@@ -1,6 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity.enums;
 
-public enum Role{
+public enum UserRole {
     ADMIN,
     MODERATOR,
     USER

@@ -1,4 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.dao;
 
-public interface UserDao {
+import org.springframework.data.repository.CrudRepository;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
+
+public interface UserDao extends CrudRepository<User, Long> {
 }

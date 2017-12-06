@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
-import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -16,8 +15,12 @@ public class IssueController {
 
     private static final Logger LOG = Logger.getLogger(IssueController.class.getName());
 
-    @Autowired
     private IssueService service;
+
+    @Autowired
+    public IssueController(IssueService service) {
+        this.service = service;
+    }
 
     @GetMapping
     public ResponseEntity<?> getAll(){

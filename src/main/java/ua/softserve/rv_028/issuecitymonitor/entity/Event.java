@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "events")
+@Table(name = "issues")
 public class Event{
 
     @Id
@@ -141,7 +141,7 @@ public class Event{
 
     @Override
     public String toString() {
-        return "Event{" +
+        return "Issue{" +
                 "id=" + id +
                 ", user=" + user +
                 ", title='" + title + '\'' +

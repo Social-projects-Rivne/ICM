@@ -47,7 +47,7 @@ public class DBSeeder {
             user.setEmail("tom"+i+"@mail.rv.ua");
             user.setPhone("+380997755331");
             user.setPassword(i+""+i+""+i);
-            user.setRole(randomEnum(Role.class));
+            user.setUserRole(randomEnum(UserRole.class));
             user.setRegistrationDate(randomDate());
             user.setAvatarUrl("http://url.com"+i);
             user.setUserAgreement(r.nextBoolean());

@@ -1,7 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.NaturalId;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
@@ -17,9 +18,9 @@ public class User {
 	@Column(name = "id", unique = true)
 	private long id;
 
-	@Column(name = "role")
+	@Column(name = "userRole")
 	@Enumerated(EnumType.ORDINAL)
-	private Role role;
+	private UserRole userRole;
 
 	@Column(name = "reg_date")
 	private String registrationDate;
@@ -63,11 +64,25 @@ public class User {
 	private Set<Petition> petitions = new HashSet<>();
 	
 	public User() {}
+
+	public User(UserDto userDto) {
+		this.userRole = userDto.getUserRole();
+		this.registrationDate = userDto.getRegistrationDate();
+		this.firstName = userDto.getFirstName();
+		this.lastName = userDto.getLastName();
+		this.password = userDto.getPassword();
+		this.email = userDto.getEmail();
+		this.phone = userDto.getPhone();
+		this.userAgreement = userDto.isUserAgreement();
+		this.userStatus = userDto.getUserStatus();
+		this.deleteDate = userDto.getDeleteDate();
+		this.avatarUrl = userDto.getAvatarUrl();
+	}
 	
 	public User(String registrationDate, String firstName, String lastName, String password, String email,
-				String phone, boolean userAgreement, UserStatus userStatus, Role role, String deleteDate,
-				String avatarUrl) {
-		this.role = role;
+                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
+                String avatarUrl) {
+		this.userRole = userRole;
 		this.registrationDate = registrationDate;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -84,12 +99,12 @@ public class User {
 		return id;
 	}
 
-	public Role getRole() {
-		return role;
+	public UserRole getUserRole() {
+		return userRole;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setUserRole(UserRole userRole) {
+		this.userRole = userRole;
 	}
 
 	public String getRegistrationDate() {
@@ -188,7 +203,7 @@ public class User {
 	public String toString() {
 		return "User{" +
 				"id=" + id +
-				", role=" + role +
+				", userRole=" + userRole +
 				", registrationDate='" + registrationDate + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +

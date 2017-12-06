@@ -4,26 +4,34 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ua.softserve.rv_028.issuecitymonitor.controller.IssueController;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
+import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 @Component
 public class IssueService {
 
     private static final Logger LOG = Logger.getLogger(IssueController.class.getName());
 
-    @Autowired
     private IssueDao issueDao;
+
+    private UserDao userDao;
+
+    @Autowired
+    public IssueService(IssueDao issueDao, UserDao userDao) {
+        this.issueDao = issueDao;
+        this.userDao = userDao;
+    }
 
     public IssueDto addIssue(IssueDto dto){
         Issue issue = new Issue();
 
-        issue.setUser(dto.getUser());
+        issue.setUser(new User(dto.getUserDto()));
         issue.setTitle(dto.getTitle());
         issue.setDescription(dto.getDescription());
         issue.setLongitude(dto.getLongitude());
@@ -39,7 +47,7 @@ public class IssueService {
     public IssueDto editIssue(IssueDto dto, Long id){
         Issue issue = issueDao.findOne(id);
 
-        issue.setUser(dto.getUser());
+        issue.setUser(userDao.findOne(dto.getUserDto().getId()));
         issue.setTitle(dto.getTitle());
         issue.setDescription(dto.getDescription());
         issue.setLongitude(dto.getLongitude());
@@ -68,6 +76,5 @@ public class IssueService {
         LOG.info("show all issues");
         return issueDto;
     }
-
 
 }
