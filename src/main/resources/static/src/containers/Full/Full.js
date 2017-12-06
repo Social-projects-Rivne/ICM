@@ -32,7 +32,7 @@ class Full extends Component {
               </Switch>
             </Container>
           </main>
-          <Aside />
+          {/*<Aside />*/}
         </div>
         <Footer />
       </div>
