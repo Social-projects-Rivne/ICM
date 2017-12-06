@@ -5,6 +5,7 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +21,12 @@ public class UserService {
     }
 
     public List<UserDto> findAll(){
-        List<User> all = userDao.findAll();
-        return all.stream().map(UserDto::new).collect(Collectors.toList());
+        List<UserDto> all = new ArrayList<>();
+        for (User users : userDao.findAll()) {
+            all.add( new UserDto(users));
+        }
+
+        return all;
+
     }
 }

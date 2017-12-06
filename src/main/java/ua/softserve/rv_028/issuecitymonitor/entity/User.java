@@ -13,8 +13,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class User {
 
 	@Id
@@ -70,7 +68,9 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
 	private Set<Petition> petitions = new HashSet<>();
 	
-	public User() {}
+	public User() {
+		super();
+	}
 
 	public User(UserDto userDto) {
 		this.userRole = userDto.getUserRole();

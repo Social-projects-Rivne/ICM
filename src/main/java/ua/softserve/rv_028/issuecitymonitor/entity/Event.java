@@ -2,11 +2,11 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
-import java.util.HashSet;
+
 import java.util.Set;
 
 @Entity
@@ -50,36 +50,6 @@ public class Event {
     @Column(name = "deleted")
     private boolean isDeleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
-    private Set<EventAttachment> attachments = new HashSet<>();
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
-    private Set<EventChangeRecord> changeRecords = new HashSet<>();
-
-    public Event() {}
-
-    public Event(EventDto eventDto) {
-        this.user = new User(eventDto.getUserDto());
-        this.title = eventDto.getTitle();
-        this.description = eventDto.getDescription();
-        this.initialDate = eventDto.getInitialDate();
-        this.latitude = eventDto.getLatitude();
-        this.longitude = eventDto.getLongitude();
-        this.endDate = eventDto.getEndDate();
-        this.category = eventDto.getCategory();
-    }
-
-    public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
-                 String endDate, EventCategory category) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.endDate = endDate;
-        this.category = category;
-    }
 
     public void setId(long id) {
         this.id = id;
@@ -162,13 +132,7 @@ public class Event {
         this.isDeleted = true;
     }
 
-    public Set<EventAttachment> getAttachments() {
-        return attachments;
-    }
 
-    public Set<EventChangeRecord> getChangeRecords() {
-        return changeRecords;
-    }
 
     @Override
     public String toString() {
