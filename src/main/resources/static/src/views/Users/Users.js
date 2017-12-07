@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+
 import {Link} from "react-router-dom";
 import qs from 'qs';
 
@@ -10,7 +11,7 @@ class User extends Component {
         super(props);
         this.state = {
             userList: this.load(),
-            users : "Init users!"
+            users : []
         };
         this.load = this.load.bind(this);
     }
@@ -23,6 +24,8 @@ class User extends Component {
                     console.log(response);
                 });
     }
+
+
 
     render() {
         return (
@@ -69,3 +72,5 @@ class User extends Component {
 }
 
 export default User;
+
+
