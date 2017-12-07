@@ -65,18 +65,18 @@ public class User {
 	
 	public User() {}
 
-	public User(UserDto userDto) {
-		this.userRole = userDto.getUserRole();
-		this.registrationDate = userDto.getRegistrationDate();
-		this.firstName = userDto.getFirstName();
-		this.lastName = userDto.getLastName();
-		this.password = userDto.getPassword();
-		this.email = userDto.getEmail();
-		this.phone = userDto.getPhone();
-		this.userAgreement = userDto.isUserAgreement();
-		this.userStatus = userDto.getUserStatus();
-		this.deleteDate = userDto.getDeleteDate();
-		this.avatarUrl = userDto.getAvatarUrl();
+	public User(UserDto dto) {
+		this.userRole = dto.getUserRole();
+		this.registrationDate = dto.getRegistrationDate();
+		this.firstName = dto.getFirstName();
+		this.lastName = dto.getLastName();
+		this.password = dto.getPassword();
+		this.email = dto.getEmail();
+		this.phone = dto.getPhone();
+		this.userAgreement = dto.isUserAgreement();
+		this.userStatus = dto.getUserStatus();
+		this.deleteDate = dto.getDeleteDate();
+		this.avatarUrl = dto.getAvatarUrl();
 	}
 	
 	public User(String registrationDate, String firstName, String lastName, String password, String email,
@@ -93,6 +93,10 @@ public class User {
 		this.userStatus = userStatus;
 		this.deleteDate = deleteDate;
 		this.avatarUrl = avatarUrl;
+	}
+
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public long getId() {

@@ -1,7 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.controller.IssueController;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-@Component
+@Service
 public class IssueService {
 
     private static final Logger LOG = Logger.getLogger(IssueController.class.getName());
@@ -70,7 +70,8 @@ public class IssueService {
     public List<IssueDto> findAll(){
 
         List<IssueDto> issueDto = new ArrayList<>();
-        for(Issue issue : issueDao.findAll()){
+
+        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
             issueDto.add(new IssueDto(issue));
         }
         LOG.info("show all issues");

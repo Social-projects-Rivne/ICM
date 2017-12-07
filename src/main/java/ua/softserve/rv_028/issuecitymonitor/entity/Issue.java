@@ -14,6 +14,7 @@ public class Issue{
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
+    @OrderBy
     private long id;
 
     @ManyToOne
@@ -49,16 +50,6 @@ public class Issue{
         super();
     }
 
-    public Issue(IssueDto issueDto) {
-        this.user = new User(issueDto.getUserDto());
-        this.title = issueDto.getTitle();
-        this.description = issueDto.getDescription();
-        this.initialDate = issueDto.getInitialDate();
-        this.latitude = issueDto.getLatitude();
-        this.longitude = issueDto.getLongitude();
-        this.category = issueDto.getCategory();
-    }
-
     public Issue(User user, String title, String description, String initialDate, double latitude, double longitude,
                  IssueCategory category) {
         this.user = user;
@@ -68,6 +59,20 @@ public class Issue{
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
+    }
+
+    public Issue(IssueDto dto) {
+        this.user = new User(dto.getUserDto());
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.initialDate = dto.getInitialDate();
+        this.latitude = dto.getLatitude();
+        this.longitude = dto.getLongitude();
+        this.category = dto.getCategory();
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -142,7 +147,7 @@ public class Issue{
     public String toString() {
         return "Issue{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

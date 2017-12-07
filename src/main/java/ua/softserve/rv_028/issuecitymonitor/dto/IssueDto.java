@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class IssueDto {
 
-    private Long id;
+    private long id;
     private UserDto userDto;
     private String title;
     private String description;
@@ -22,6 +22,7 @@ public class IssueDto {
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public IssueDto(Issue entity) {
+        this.id = entity.getId();
         this.userDto = new UserDto(entity.getUser());
         this.title = entity.getTitle();
         this.description = entity.getDescription();
@@ -31,11 +32,26 @@ public class IssueDto {
         this.category = entity.getCategory();
     }
 
-    public Long getId() {
+    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude, double longitude, IssueCategory category, Set<IssueAttachment> attachments, Set<IssueChangeRecord> changeRecords) {
+        this.id = id;
+        this.userDto = userDto;
+        this.title = title;
+        this.description = description;
+        this.initialDate = initialDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.category = category;
+        this.attachments = attachments;
+        this.changeRecords = changeRecords;
+    }
+
+    public IssueDto() {}
+
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -109,5 +125,21 @@ public class IssueDto {
 
     public void setChangeRecords(Set<IssueChangeRecord> changeRecords) {
         this.changeRecords = changeRecords;
+    }
+
+    @Override
+    public String toString() {
+        return "IssueDto{" +
+                "id=" + id +
+                ", userDto=" + userDto +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", initialDate='" + initialDate + '\'' +
+                ", latitude=" + latitude +
+                ", longitude=" + longitude +
+                ", category=" + category +
+                ", attachments=" + attachments +
+                ", changeRecords=" + changeRecords +
+                '}';
     }
 }

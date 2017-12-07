@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
@@ -7,8 +9,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "issues")
-public class Event{
+@Table(name = "events")
+public class Event {
 
     @Id
     @GeneratedValue
@@ -41,6 +43,9 @@ public class Event{
     @Enumerated(EnumType.ORDINAL)
     private EventCategory category;
 
+    @Column(name = "deleted")
+    private int isDeleted = 0;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
     private Set<EventAttachment> attachments = new HashSet<>();
 
@@ -48,7 +53,6 @@ public class Event{
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event() {
-        super();
     }
 
     public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
@@ -131,6 +135,15 @@ public class Event{
         this.category = category;
     }
 
+    public int getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = 1;
+    }
+
     public Set<EventAttachment> getAttachments() {
         return attachments;
     }
@@ -141,9 +154,9 @@ public class Event{
 
     @Override
     public String toString() {
-        return "Issue{" +
+        return "Event{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

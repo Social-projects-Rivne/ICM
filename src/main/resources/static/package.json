@@ -47,7 +47,8 @@
     "reactstrap": "5.0.0-alpha.4",
     "requirejs": "^2.3.5",
     "rest": "^2.0.0",
-    "simple-line-icons": "2.4.1"
+    "simple-line-icons": "2.4.1",
+    "sweetalert": "^2.0.8"
   },
   "scripts": {
     "dev": "webpack -d --progress --watch --profile --json > compilation-stats.json --env.dev",
