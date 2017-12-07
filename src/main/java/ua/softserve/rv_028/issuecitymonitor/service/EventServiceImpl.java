@@ -8,11 +8,13 @@ import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
 public class EventServiceImpl implements EventService {
@@ -57,13 +59,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto update(EventDto eventDto) throws EventNotFoundException{
-        Event event = eventDao.findOne(eventDto.getId());
-        event.setUser(userDao.findOne(eventDto.getUserDto().getId()));
+    public EventDto update(EventDto eventDto) throws EventNotFoundException, ParseException {
+        DATE_FORMAT.parse(eventDto.getInitialDate());
+        DATE_FORMAT.parse(eventDto.getEndDate());
+
+        Event event = findOne(eventDto.getId());
         event.setTitle(eventDto.getTitle());
         event.setDescription(eventDto.getDescription());
-        event.setLongitude(eventDto.getLongitude());
-        event.setLatitude(eventDto.getLatitude());
         event.setInitialDate(eventDto.getInitialDate());
         event.setEndDate(eventDto.getEndDate());
         event.setCategory(eventDto.getCategory());

@@ -3,11 +3,6 @@ package ua.softserve.rv_028.issuecitymonitor.dto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
-import java.text.ParseException;
-
-import static ua.softserve.rv_028.issuecitymonitor.Constants.DB_FORMAT;
-import static ua.softserve.rv_028.issuecitymonitor.Constants.JSON_FORMAT;
-
 public class EventDto {
 
     private long id;
@@ -117,15 +112,6 @@ public class EventDto {
 
     public void setCategory(EventCategory category) {
         this.category = category;
-    }
-
-    private static String formatDate(String date){
-        try {
-            return JSON_FORMAT.format(DB_FORMAT.parse(date));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     @Override

@@ -14,6 +14,8 @@ import javax.persistence.EntityManagerFactory;
 import java.util.Date;
 import java.util.Random;
 
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
+
 @Component
 public class DBSeeder {
 
@@ -137,8 +139,9 @@ public class DBSeeder {
     private static final Random r = new Random();
 
     private String randomDate(){
-        return new Date(r.nextLong()).toString();
+        return DATE_FORMAT.format(new Date(r.nextLong()));
     }
+
     private <T extends Enum<?>> T randomEnum(Class<T> classname){
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];

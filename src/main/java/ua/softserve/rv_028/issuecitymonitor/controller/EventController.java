@@ -11,6 +11,8 @@ import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 
+import java.text.ParseException;
+
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -55,6 +57,10 @@ public class EventController {
             LOGGER.error("PUT request failed for event with id "+id);
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (ParseException e) {
+            LOGGER.error("PUT request failed for event with id "+id+" due to incorrect date format");
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
