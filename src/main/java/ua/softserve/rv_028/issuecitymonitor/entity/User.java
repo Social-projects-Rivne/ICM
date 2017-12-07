@@ -18,7 +18,7 @@ public class User {
 	@Column(name = "id", unique = true)
 	private long id;
 
-	@Column(name = "userRole")
+	@Column(name = "role")
 	@Enumerated(EnumType.ORDINAL)
 	private UserRole userRole;
 

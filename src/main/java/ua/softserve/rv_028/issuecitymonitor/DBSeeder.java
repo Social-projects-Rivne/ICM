@@ -60,6 +60,7 @@ public class DBSeeder {
                 event.setCategory(randomEnum(EventCategory.class));
                 event.setDescription("description" +a+""+ i);
                 event.setInitialDate(randomDate());
+                event.setEndDate(randomDate());
                 event.setUser(user);
                 event.setLatitude(r.nextDouble());
                 event.setLongitude(r.nextDouble());

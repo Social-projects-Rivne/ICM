@@ -19,11 +19,11 @@ class Issues extends Component {
             .then(function(response) {
                 _this.setState({
                     issues: response.data
-                })
+                });
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
-            })
+            });
     }
 
     render() {
@@ -32,7 +32,7 @@ class Issues extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Event list</CardHeader>
+                            <CardHeader>Issue list</CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>
@@ -40,7 +40,6 @@ class Issues extends Component {
                                         <th>#</th>
                                         <th>Title</th>
                                         <th>Initial Date</th>
-                                        <th>End Date</th>
                                         <th>Category</th>
                                         <th>User ID</th>
                                         <th>Actions</th>
@@ -49,7 +48,7 @@ class Issues extends Component {
                                     <tbody>
                                     {this.state.issues.map(function(issue, i) {
                                         return (
-                                            <Issue key={i} event={issue}/>
+                                            <Issue key={i} issue={issue}/>
                                         );
                                     })}
                                     </tbody>
@@ -110,7 +109,6 @@ class Issue extends Component {
                 <td>{this.state.issue.id}</td>
                 <td>{this.state.issue.title}</td>
                 <td>{this.state.issue.initialDate}</td>
-                <td>{this.state.issue.endDate}</td>
                 <td>{this.state.issue.category}</td>
                 <td>{this.state.issue.userDto.id}</td>
                 <td>
