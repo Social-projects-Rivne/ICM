@@ -30,7 +30,7 @@ public class EventController {
         return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<?> getOne(@PathVariable long id){
         LOGGER.debug("GET request for event with id "+id);
         try {
@@ -39,6 +39,7 @@ public class EventController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("GET request failed for event with id "+id);
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -52,6 +53,7 @@ public class EventController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("PUT request failed for event with id "+id);
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -65,6 +67,7 @@ public class EventController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("DELETE request failed for event with id "+id);
+            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

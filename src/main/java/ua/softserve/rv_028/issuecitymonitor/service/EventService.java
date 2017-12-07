@@ -6,7 +6,7 @@ import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 import java.util.List;
 
 public interface EventService {
-    EventDto add(EventDto eventDto);
+//    EventDto add(EventDto eventDto);
     void deleteById(long id) throws EventNotFoundException;
     List<EventDto> findAll();
     EventDto findById(long id) throws EventNotFoundException;

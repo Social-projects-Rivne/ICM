@@ -16,9 +16,9 @@ import '../scss/core/_dropdown-menu-right.scss'
 import Full from './containers/Full/'
 
 ReactDOM.render((
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" name="Home" component={Full}/>
-    </Switch>
-  </BrowserRouter>
+    <BrowserRouter>
+        <Switch>
+            <Route path="/" name="Home" component={Full}/>
+        </Switch>
+    </BrowserRouter>
 ), document.getElementById('root'));

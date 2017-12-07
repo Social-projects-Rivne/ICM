@@ -10,9 +10,11 @@ import {Link} from "react-router-dom";
 class EventEdit extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             event: ""
         };
+
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -28,20 +30,20 @@ class EventEdit extends Component {
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
-
     }
 
     handleChange(e) {
         const name = e.target.name;
         const value = e.target.value;
-        this.setState(function(prevState) {
+        this.setState(function(prev) {
             return {
                 event: {
-                    ...prevState.event,
+                    ...prev.event,
                     [name]: value
                 }
-            };
-        });
+            }
+
+        })
     }
 
     handleSave(){
@@ -51,7 +53,6 @@ class EventEdit extends Component {
             }).catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
-
     }
 
     render() {
@@ -72,7 +73,8 @@ class EventEdit extends Component {
                                             <Label>Title</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input value={this.state.value} onChange={this.handleChange} type="text" name="title"
+                                            <Input value={this.state.event.title} onChange={this.handleChange}
+                                                   type="text" name="title"
                                                    placeholder="Title"/>
                                         </Col>
                                     </FormGroup>
@@ -82,7 +84,8 @@ class EventEdit extends Component {
                                             <Label>Description</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input value={this.state.value} onChange={this.handleChange} type="textarea" name="description" rows="9"
+                                            <Input value={this.state.event.description} onChange={this.handleChange}
+                                                   type="textarea" name="description" rows="9"
                                                    placeholder="Description"/>
                                         </Col>
                                     </FormGroup>

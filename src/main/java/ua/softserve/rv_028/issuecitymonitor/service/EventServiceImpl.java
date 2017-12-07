@@ -30,23 +30,6 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto add(EventDto eventDto) {
-        Event event = new Event();
-        event.setUser(new User(eventDto.getUserDto()));
-        event.setTitle(eventDto.getTitle());
-        event.setDescription(eventDto.getDescription());
-        event.setLongitude(eventDto.getLongitude());
-        event.setLatitude(eventDto.getLatitude());
-        event.setInitialDate(eventDto.getInitialDate());
-        event.setEndDate(eventDto.getEndDate());
-        event.setCategory(eventDto.getCategory());
-        LOGGER.debug("Adding " + event.toString());
-        event = eventDao.save(event);
-        LOGGER.debug("Added " + event.toString());
-        return new EventDto(event);
-    }
-
-    @Override
     public void deleteById(long id) throws EventNotFoundException{
         Event event = findOne(id);
         LOGGER.debug("Deleting " + event.toString());
@@ -67,7 +50,7 @@ public class EventServiceImpl implements EventService {
 
     @Override
     public EventDto findById(long id) throws EventNotFoundException{
-        LOGGER.debug("Finding event by " + id + " id");
+        LOGGER.debug("Finding event by id " + id);
         Event event = findOne(id);
         LOGGER.debug("Found " + event.toString());
         return new EventDto(event);
