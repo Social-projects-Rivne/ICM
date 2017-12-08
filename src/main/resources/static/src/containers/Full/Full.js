@@ -12,6 +12,7 @@ import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
 import EventEdit from "../../views/Events/EventEdit";
+import Login from "../../views/Login/Login";
 
 class Full extends Component {
   render() {
@@ -30,6 +31,7 @@ class Full extends Component {
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
+                <Route path="/login" name="Login" component={Login}/>
               </Switch>
             </Container>
           </main>

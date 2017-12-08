@@ -23,7 +23,7 @@ public class UserDetailService implements UserDetailsService {
 
         User user = userDao.findByEmail(s);
         HashSet<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(user.getRole().name()));
+        roles.add(new SimpleGrantedAuthority(user.getUserRole().name()));
         return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
     }
 }
