@@ -2,15 +2,11 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.Objects;
 
 public class AuthenticatedUser extends User{
@@ -23,7 +19,7 @@ public class AuthenticatedUser extends User{
 
     AuthenticatedUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
         super(user.getEmail(), user.getPassword(), true, true, true,
-                isNotLocked(user.getUserStatus()), checkRole(user.getRole()));
+                isNotLocked(user.getUserStatus()), Role.collectionForRole(user.getRole()));
 
         checkRoleIsNull(user.getRole());
         checkStatusIsNull(user.getUserStatus());
@@ -50,21 +46,6 @@ public class AuthenticatedUser extends User{
 
     private static boolean isNotLocked(UserStatus status) {
         return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
-    }
-
-    private static Collection<? extends GrantedAuthority> checkRole(Role role) {
-        HashSet<GrantedAuthority> roles = new HashSet<>();
-        if (role == Role.USER) {
-            roles.add(new SimpleGrantedAuthority(Role.USER.name()));
-        } else if (role == Role.MODERATOR){
-            roles.add(new SimpleGrantedAuthority(Role.USER.name()));
-            roles.add(new SimpleGrantedAuthority(Role.MODERATOR.name()));
-        } else if (role == Role.ADMIN){
-            roles.add(new SimpleGrantedAuthority(Role.USER.name()));
-            roles.add(new SimpleGrantedAuthority(Role.MODERATOR.name()));
-            roles.add(new SimpleGrantedAuthority(Role.ADMIN.name()));
-        }
-        return roles;
     }
 
     public String getEmail() {
