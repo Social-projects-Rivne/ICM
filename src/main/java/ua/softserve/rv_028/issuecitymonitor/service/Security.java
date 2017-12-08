@@ -8,11 +8,33 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ *
+ * The Security class implements user authentication of the system.
+ * The user with his role has the opportunity to use only available links.
+ * All urls are contained in String[] urls.
+ *
+ * A class with behavior when a user successfully logged into the system is implemented in :
+ * {@link AuthenticationSuccessHandlerImpl}
+ *
+ * A class {@link UserDetailService} is implemented by the interface UserDetailService from Spring Security.
+ *
+ * @version     1.0 07 Dec 2017
+ * @author      gefasim
+ *
+ */
+
 @Configuration
 @EnableWebSecurity
 public class Security extends WebSecurityConfigurerAdapter{
 
     private final UserDetailService userDetailsService;
+
+    private final static AuthenticationSuccessHandlerImpl authHandler = new AuthenticationSuccessHandlerImpl();
+
+    /** All possible urls must be here*/
+    private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
+            "/settings"};
 
     @Autowired
     public Security(UserDetailService userDetailsService) {
@@ -28,18 +50,12 @@ public class Security extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/")           .permitAll()
-                .antMatchers("/dashboard")  .permitAll()
-                .antMatchers("/issues")     .permitAll()
-                .antMatchers("/petitions")  .permitAll()
-                .antMatchers("/events")     .permitAll()
-                .antMatchers("/users")      .permitAll()
-                .antMatchers("/settings")   .permitAll()
+                .antMatchers(urls).permitAll()
                 .anyRequest().permitAll()
 
                 .and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .defaultSuccessUrl("/")
+                .successHandler(authHandler)
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .permitAll()
