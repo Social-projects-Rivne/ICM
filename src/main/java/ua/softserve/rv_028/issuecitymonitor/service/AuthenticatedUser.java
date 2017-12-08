@@ -3,27 +3,45 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Objects;
 
-public class AuthenticatedUser extends User {
+public class AuthenticatedUser extends User{
 
     private String email;
     private String password;
     private Role role;
     private UserStatus status;
 
-    AuthenticatedUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
+    public AuthenticatedUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
         super(user.getEmail(), user.getPassword(), true, true, true,
                 isNotLocked(user.getUserStatus()), checkRole(user.getRole()));
+
+        checkRoleIsNull(user.getRole());
+        checkStatusIsNull(user.getUserStatus());
+
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.role = user.getRole();
         this.status = user.getUserStatus();
+    }
+
+    private void checkStatusIsNull(UserStatus status) {
+        if (status == null){
+            throw new IllegalArgumentException("Cannot pass null User Status to constructor");
+        }
+    }
+
+    private void checkRoleIsNull(Role role) {
+        if (role == null) {
+            throw new IllegalArgumentException("Cannot pass null User Role to constructor");
+        }
     }
 
     private static boolean isNotLocked(UserStatus status) {
@@ -78,5 +96,17 @@ public class AuthenticatedUser extends User {
         this.status = status;
     }
 
+    boolean equals(ua.softserve.rv_028.issuecitymonitor.entity.User user){
+        return (Objects.equals(user.getEmail(), email)) && (Objects.equals(user.getPassword(), password))
+                && (user.getRole() == role) && (user.getUserStatus() == status);
+    }
 
+    public AuthenticatedUser setUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
+
+        email = user.getEmail();
+        password = user.getPassword();
+        role = user.getRole();
+        status = user.getUserStatus();
+        return this;
+    }
 }
