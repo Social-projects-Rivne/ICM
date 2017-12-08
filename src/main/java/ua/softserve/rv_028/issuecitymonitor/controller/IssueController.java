@@ -37,7 +37,7 @@ public class IssueController {
     }
 
     @PutMapping("/{id}")
-    public IssueDto editIssue(@RequestBody IssueDto dto, @PathVariable Long id){
+    public IssueDto editIssue(IssueDto dto, Long id){
         LOG.info("edit issue");
         return service.editIssue(dto, id);
     }

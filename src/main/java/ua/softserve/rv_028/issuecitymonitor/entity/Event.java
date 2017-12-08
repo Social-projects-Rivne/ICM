@@ -8,7 +8,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
-public class Event {
+public class Event{
 
     @Id
     @GeneratedValue
@@ -41,16 +41,14 @@ public class Event {
     @Enumerated(EnumType.ORDINAL)
     private EventCategory category;
 
-    @Column(name = "deleted")
-    private int isDeleted = 0;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = EventAttachment.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
     private Set<EventAttachment> attachments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = EventChangeRecord.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event() {
+        super();
     }
 
     public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
@@ -133,15 +131,6 @@ public class Event {
         this.category = category;
     }
 
-    public int getIsDeleted() {
-        return isDeleted;
-    }
-
-    @PreRemove
-    public void delete() {
-        this.isDeleted = 1;
-    }
-
     public Set<EventAttachment> getAttachments() {
         return attachments;
     }
@@ -154,7 +143,7 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", user=" + user.getId() +
+                ", user=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

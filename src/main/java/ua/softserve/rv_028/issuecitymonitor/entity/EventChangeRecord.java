@@ -77,7 +77,7 @@ public class EventChangeRecord {
     public String toString() {
         return "EventChangeRecord{" +
                 "id=" + id +
-                ", issue=" + event +
+                ", event=" + event +
                 ", changeRecordStatus=" + changeRecordStatus +
                 ", user=" + user +
                 ", message='" + message + '\'' +

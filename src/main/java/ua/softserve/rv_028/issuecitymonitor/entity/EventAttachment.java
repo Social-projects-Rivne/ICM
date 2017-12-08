@@ -62,7 +62,7 @@ public class EventAttachment {
     public String toString() {
         return "EventAttachment{" +
                 "id=" + id +
-                ", issue=" + event +
+                ", event=" + event +
                 ", user=" + user +
                 ", attachmentUrl='" + attachmentUrl + '\'' +
                 '}';
