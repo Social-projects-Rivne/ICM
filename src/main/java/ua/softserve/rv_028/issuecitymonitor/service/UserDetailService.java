@@ -15,15 +15,17 @@ import java.util.HashSet;
 @Service
 public class UserDetailService implements UserDetailsService {
 
+    private final UserDao userDao;
+
     @Autowired
-    UserDao userDao;
+    public UserDetailService(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-
         User user = userDao.findByEmail(s);
-        HashSet<GrantedAuthority> roles = new HashSet<>();
-        roles.add(new SimpleGrantedAuthority(user.getRole().name()));
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), roles);
+
+        return new AuthenticatedUser(user);
     }
 }
