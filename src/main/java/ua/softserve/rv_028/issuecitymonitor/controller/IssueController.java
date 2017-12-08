@@ -5,8 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.exception.IssueNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -23,28 +25,32 @@ public class IssueController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
+    public List<IssueDto> getAll(){
         LOG.info("show list issues");
-        return new ResponseEntity<Object>(service.findAll(), HttpStatus.OK);
+        return service.findAll();
     }
 
     @PostMapping
-    public ResponseEntity<?> addIssue(IssueDto dto){
+    public IssueDto addIssue(IssueDto dto){
         LOG.info("add new issue");
-        return new ResponseEntity<Object>(service.addIssue(dto), HttpStatus.OK);
+        return service.addIssue(dto);
     }
 
-    @PutMapping("{/id}")
-    public ResponseEntity<?> editIssue(IssueDto dto, Long id){
+    @PutMapping("/{id}")
+    public IssueDto editIssue(@RequestBody IssueDto dto, @PathVariable Long id){
         LOG.info("edit issue");
-        return new ResponseEntity<Object>(service.editIssue(dto, id), HttpStatus.OK);
+        return service.editIssue(dto, id);
     }
 
-    @DeleteMapping("{/id}")
-    public ResponseEntity<?> deleteIssue(Long id){
-        LOG.info("delete issue");
-        service.deleteIssue(id);
-        return new ResponseEntity<Object>(HttpStatus.OK);
+    @DeleteMapping("/{id}")
+    public void deleteIssue(@PathVariable Long id) throws IssueNotFoundException{
+        try {
+            LOG.info("delete issue");
+            service.deleteIssue(id);
+        }catch (IssueNotFoundException e){
+            LOG.info("issue not found");
+            e.printStackTrace();
+        }
     }
 
 }

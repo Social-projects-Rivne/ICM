@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
@@ -9,6 +11,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
+@SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class Issue{
 
     @Id
@@ -40,6 +44,9 @@ public class Issue{
     @Enumerated(EnumType.ORDINAL)
     private IssueCategory category;
 
+    @Column(name = "deleted")
+    private boolean isDeleted = false;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class)
     private Set<IssueAttachment> attachments = new HashSet<>();
 
@@ -47,7 +54,6 @@ public class Issue{
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public Issue() {
-        super();
     }
 
     public Issue(User user, String title, String description, String initialDate, double latitude, double longitude,
@@ -133,6 +139,15 @@ public class Issue{
 
     public void setCategory(IssueCategory category) {
         this.category = category;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
     }
 
     public Set<IssueAttachment> getAttachments() {

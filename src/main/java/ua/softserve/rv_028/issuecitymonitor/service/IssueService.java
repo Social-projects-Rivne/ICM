@@ -8,7 +8,9 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.exception.IssueNotFoundException;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -60,18 +62,19 @@ public class IssueService {
         return new IssueDto(issue);
     }
 
-    public void deleteIssue(long id) {
+    public void deleteIssue(long id) throws IssueNotFoundException{
         Issue issue = issueDao.findOne(id);
-
-        issueDao.delete(issue);
-        LOG.info("delete " + issue.toString());
+        if(issue != null){
+            issueDao.delete(issue);
+            LOG.info("delete " + issue.toString());
+        } else {throw new IssueNotFoundException("Issue not found");}
     }
 
     public List<IssueDto> findAll(){
 
         List<IssueDto> issueDto = new ArrayList<>();
 
-        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
+        for(Issue issue : issueDao.findAll()){
             issueDto.add(new IssueDto(issue));
         }
         LOG.info("show all issues");

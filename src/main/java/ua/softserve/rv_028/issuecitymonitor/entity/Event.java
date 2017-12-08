@@ -1,7 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
@@ -46,10 +44,10 @@ public class Event {
     @Column(name = "deleted")
     private int isDeleted = 0;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = EventAttachment.class)
     private Set<EventAttachment> attachments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = EventChangeRecord.class)
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event() {

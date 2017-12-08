@@ -26,7 +26,7 @@ class Full extends Component {
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/events" name="Events" component={Events}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
-                <Route path="/issues" name="Issues" component={Issues}/>
+                <Route exact path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
               </Switch>
             </Container>

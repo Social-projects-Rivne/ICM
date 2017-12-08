@@ -32,7 +32,7 @@ export default {
     {
       name: 'Events',
       url: '/events',
-      icon: 'icon-event',
+      icon: 'icon-issue',
       badge: {
         variant: 'info',
         text: 'NEW'
