@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import {
   NavbarToggler,
   NavbarBrand,
 } from 'reactstrap';
+import HeaderDropdown from './HeaderDropdown';
 
 class Header extends Component {
 

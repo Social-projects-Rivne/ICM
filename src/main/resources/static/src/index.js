@@ -9,11 +9,14 @@ import 'font-awesome/css/font-awesome.min.css';
 import 'simple-line-icons/css/simple-line-icons.css';
 // Import Main styles for this application
 import '../scss/style.scss'
+import '../scss/_custom.scss'
 // Temp fix for reactstrap
 import '../scss/core/_dropdown-menu-right.scss'
 
 // Containers
 import Full from './containers/Full/'
+import Authorization from "./containers/Authorization/Authorization";
+
 
 ReactDOM.render((
     <BrowserRouter>
