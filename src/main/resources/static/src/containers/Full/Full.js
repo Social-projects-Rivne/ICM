@@ -4,7 +4,6 @@ import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Breadcrumb from '../../components/Breadcrumb/';
-import Aside from '../../components/Aside/';
 import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
@@ -12,6 +11,7 @@ import Events from "../../views/Events/";
 import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
+import EventEdit from "../../views/Events/EventEdit";
 
 class Full extends Component {
   render() {
@@ -25,14 +25,14 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route path="/events" name="Events" component={Events}/>
+                <Route exact path="/events" name="Events" component={Events}/>
+                <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
               </Switch>
             </Container>
           </main>
-          {/*<Aside />*/}
         </div>
         <Footer />
       </div>

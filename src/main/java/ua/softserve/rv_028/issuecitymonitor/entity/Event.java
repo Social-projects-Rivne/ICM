@@ -1,18 +1,24 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
-import java.util.HashSet;
+
 import java.util.Set;
 
 @Entity
 @Table(name = "events")
-public class Event{
+@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
+public class Event {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
+    @OrderBy
     private long id;
 
     @ManyToOne
@@ -41,26 +47,12 @@ public class Event{
     @Enumerated(EnumType.ORDINAL)
     private EventCategory category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
-    private Set<EventAttachment> attachments = new HashSet<>();
+    @Column(name = "deleted")
+    private boolean isDeleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
-    private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
-    public Event() {
-        super();
-    }
-
-    public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
-                 String endDate, EventCategory category) {
-        this.user = user;
-        this.title = title;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.endDate = endDate;
-        this.category = category;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -131,19 +123,22 @@ public class Event{
         this.category = category;
     }
 
-    public Set<EventAttachment> getAttachments() {
-        return attachments;
+    public boolean getIsDeleted() {
+        return isDeleted;
     }
 
-    public Set<EventChangeRecord> getChangeRecords() {
-        return changeRecords;
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
     }
+
+
 
     @Override
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

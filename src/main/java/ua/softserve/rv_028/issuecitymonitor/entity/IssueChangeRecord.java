@@ -1,11 +1,15 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "issue_change_records")
+@SQLDelete(sql = "UPDATE issue_change_records SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class IssueChangeRecord {
 
     @Id
@@ -28,6 +32,9 @@ public class IssueChangeRecord {
     @Column(name = "message")
     private String message;
 
+    @Column(name = "deleted")
+    private boolean isDeleted = false;
+
     public IssueChangeRecord() {}
 
     public IssueChangeRecord(Issue issue, ChangeRecordStatus changeRecordStatus, User user, String message) {
@@ -35,6 +42,10 @@ public class IssueChangeRecord {
         this.changeRecordStatus = changeRecordStatus;
         this.user = user;
         this.message = message;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -73,13 +84,22 @@ public class IssueChangeRecord {
         this.message = message;
     }
 
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
+    }
+
     @Override
     public String toString() {
         return "IssueChangeRecord{" +
                 "id=" + id +
-                ", issue=" + issue +
+                ", issue=" + issue.getId() +
                 ", changeRecordStatus=" + changeRecordStatus +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", message='" + message + '\'' +
                 '}';
     }
