@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
+    private static long count;
 
     private long id;
     private UserRole role;
@@ -59,6 +60,9 @@ public class UserDto {
     }
 
     public UserRole getUserRole() {
+        if(role == UserRole.ADMIN) {
+            count++;
+        }
         return role;
     }
 
@@ -144,6 +148,14 @@ public class UserDto {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
+    }
+
+    public static long getCount() {
+        return count;
+    }
+
+    public static void setCount(long k) {
+        count = k;
     }
     /*
     public Set<Issue> getIssues() {

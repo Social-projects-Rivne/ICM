@@ -24,9 +24,14 @@ public class UserController {
         this.service = service;
     }
 
-    @GetMapping("/test")
-    public UserDto testGet(){
-        return new UserDto();
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable long id ){
+        try{
+            service.deleteById(id);
+            return new ResponseEntity<>( HttpStatus.OK);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
     }
 
     @GetMapping
@@ -36,7 +41,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/user/{id}")
+    @PostMapping("/{id}")
     public ResponseEntity<?> updateForUser(@PathVariable(value = "id") long id, @RequestBody UserDto userDto){
         try {
             UserDto updateUser = service.updateUser(userDto);

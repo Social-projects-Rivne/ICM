@@ -13,7 +13,6 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User {
-	//private long count = 0;
 
 	@Id
 	@GeneratedValue
@@ -117,11 +116,6 @@ public class User {
 	}
 
 	public void setUserRole(UserRole userRole) {
-//		if (userRole == UserRole.ADMIN){
-//			count += 1;
-//
-//		}
-
 		this.userRole = userRole;
 	}
 
@@ -244,12 +238,4 @@ public class User {
 				'}';
 	}
 
-
-//	public long getCount() {
-//		return count;
-//	}
-//
-//	public void setCount(long count) {
-//		this.count = count;
-//	}
 }

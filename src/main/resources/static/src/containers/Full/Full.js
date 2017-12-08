@@ -11,7 +11,6 @@ import Events from "../../views/Events/";
 import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
-import EventEdit from "../../views/Events/EventEdit";
 
 class Full extends Component {
   render() {
@@ -26,7 +25,6 @@ class Full extends Component {
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route exact path="/events" name="Events" component={Events}/>
-                <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>

@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-//        user.setUserAgreement(dto.setUserAgreement());
+        user.setUserAgreement(dto.isUserAgreement());
         user.setUserStatus(dto.getUserStatus());
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
@@ -44,16 +44,16 @@ public class UserServiceImpl implements UserService{
         return new UserDto(user);
     }
 
-//    @Override
-//    public void deleteById(long id) throws UserNotFoundException {
-//        User user = findOne(id);
-//        if(user.getCount() != 0 && user.getUserRole() == UserRole.ADMIN){
-//            userDao.delete(user);
-//            user.setCount(user.getCount() - 1);
-//        }
-//        LOGGER.info("User is deleted");
-//
-//    }
+    @Override
+    public void deleteById(long id) throws UserNotFoundException {
+        User user = findOne(id);
+        if(user.getUserRole() != UserRole.ADMIN && UserDto.getCount() >= 1){
+            userDao.delete(user);
+            UserDto.setCount(UserDto.getCount() -1);
+        }
+        LOGGER.info("User is deleted");
+
+    }
 
 
 
@@ -94,7 +94,7 @@ public class UserServiceImpl implements UserService{
         user.setPassword(dto.getPassword());
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-//        user.setUserAgreement(dto.setUserAgreement());
+        user.setUserAgreement(dto.isUserAgreement());
         user.setUserStatus(dto.getUserStatus());
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
