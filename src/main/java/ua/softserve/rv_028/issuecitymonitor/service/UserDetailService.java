@@ -12,6 +12,13 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.util.HashSet;
 
+/**
+ * This class is implemented by the interface {@link UserDetailService} from Spring Security.
+ * The method from UserDetailService interface return UserDetail.
+ *
+ * @version     1.0 07 Dec 2017
+ * @author      gefasim
+ */
 @Service
 public class UserDetailService implements UserDetailsService {
 
@@ -22,6 +29,13 @@ public class UserDetailService implements UserDetailsService {
         this.userDao = userDao;
     }
 
+    /**
+     * This method return UserDetails model for AuthenticationManagerBuilder in Security class
+     *
+     * @param email of table {@link User}
+     * @return UserDetails
+     * @throws UsernameNotFoundException for if any model field is incorrect
+     */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userDao.findByEmail(email);
