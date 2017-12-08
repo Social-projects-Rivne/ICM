@@ -1,9 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.Role;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
@@ -18,8 +19,9 @@ public class AuthenticatedUser extends User{
     private String password;
     private Role role;
     private UserStatus status;
+    private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticatedUser.class.getName());
 
-    public AuthenticatedUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
+    AuthenticatedUser(@NotNull ua.softserve.rv_028.issuecitymonitor.entity.User user){
         super(user.getEmail(), user.getPassword(), true, true, true,
                 isNotLocked(user.getUserStatus()), checkRole(user.getRole()));
 
@@ -34,12 +36,14 @@ public class AuthenticatedUser extends User{
 
     private void checkStatusIsNull(UserStatus status) {
         if (status == null){
+            LOGGER.error("Constructor got a null UserStatus enum");
             throw new IllegalArgumentException("Cannot pass null User Status to constructor");
         }
     }
 
     private void checkRoleIsNull(Role role) {
         if (role == null) {
+            LOGGER.error("Constructor got a null Role enum");
             throw new IllegalArgumentException("Cannot pass null User Role to constructor");
         }
     }
