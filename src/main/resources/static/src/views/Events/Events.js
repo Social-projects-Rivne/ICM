@@ -74,7 +74,6 @@ class Event extends Component {
         };
 
         this.handleDelete = this.handleDelete.bind(this);
-        this.handleEdit = this.handleEdit.bind(this);
     }
 
     handleDelete(){
@@ -99,9 +98,6 @@ class Event extends Component {
                         });
                 }
             });
-    }
-
-    handleEdit(){
     }
 
     render() {

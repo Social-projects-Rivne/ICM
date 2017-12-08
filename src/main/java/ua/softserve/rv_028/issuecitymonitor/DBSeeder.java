@@ -50,7 +50,7 @@ public class DBSeeder {
             user.setPhone("+380997755331");
             user.setPassword(i+""+i+""+i);
             user.setUserRole(randomEnum(UserRole.class));
-            user.setRegistrationDate(randomDate());
+            user.setRegistrationDate(date());
             user.setAvatarUrl("http://url.com"+i);
             user.setUserAgreement(r.nextBoolean());
             user.setUserStatus(randomEnum(UserStatus.class));
@@ -61,8 +61,8 @@ public class DBSeeder {
                 event.setTitle("Title" +a+""+i);
                 event.setCategory(randomEnum(EventCategory.class));
                 event.setDescription("description" +a+""+ i);
-                event.setInitialDate(randomDate());
-                event.setEndDate(randomDate());
+                event.setInitialDate(date());
+                event.setEndDate(date());
                 event.setUser(user);
                 event.setLatitude(r.nextDouble());
                 event.setLongitude(r.nextDouble());
@@ -71,7 +71,7 @@ public class DBSeeder {
                 Petition petition = new Petition();
                 petition.setCategory(randomEnum(PetitionCategory.class));
                 petition.setDescription("descript" +a+""+ i);
-                petition.setInitialDate(randomDate());
+                petition.setInitialDate(date());
                 petition.setTitle("Title" +a+""+ i);
                 petition.setUser(user);
                 session.save(petition);
@@ -79,7 +79,7 @@ public class DBSeeder {
                 Issue issue = new Issue();
                 issue.setCategory(randomEnum(IssueCategory.class));
                 issue.setDescription("desc" +a+""+ i);
-                issue.setInitialDate(randomDate());
+                issue.setInitialDate(date());
                 issue.setLatitude(r.nextDouble());
                 issue.setLongitude(r.nextDouble());
                 issue.setTitle("title" +a+""+ i);
@@ -138,8 +138,8 @@ public class DBSeeder {
 
     private static final Random r = new Random();
 
-    private String randomDate(){
-        return DATE_FORMAT.format(new Date(r.nextLong()));
+    private String date(){
+        return DATE_FORMAT.format(new Date());
     }
 
     private <T extends Enum<?>> T randomEnum(Class<T> classname){

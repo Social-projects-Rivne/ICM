@@ -2,11 +2,9 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
@@ -41,7 +39,6 @@ public class EventController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("GET request failed for event with id "+id);
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
@@ -55,11 +52,9 @@ public class EventController {
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("PUT request failed for event with id "+id);
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (ParseException e) {
             LOGGER.error("PUT request failed for event with id "+id+" due to incorrect date format");
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
@@ -73,7 +68,6 @@ public class EventController {
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (EventNotFoundException e) {
             LOGGER.error("DELETE request failed for event with id "+id);
-            e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
