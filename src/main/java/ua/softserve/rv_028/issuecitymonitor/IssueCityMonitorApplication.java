@@ -11,7 +11,7 @@ import java.util.Arrays;
 public class IssueCityMonitorApplication {
 
 	public static void main(String[] args) {
-		System.out.println(Arrays.toString(SpringApplication.run(IssueCityMonitorApplication.class, args).getBeanDefinitionNames()));
+		SpringApplication.run(IssueCityMonitorApplication.class, args);
 	}
 
 }

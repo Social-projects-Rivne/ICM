@@ -8,7 +8,6 @@ import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -32,7 +31,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public void deleteById(long id) throws EventNotFoundException{
+    public void deleteById(long id) {
         Event event = findOne(id);
         LOGGER.debug("Deleting " + event.toString());
         eventDao.delete(event);
@@ -51,7 +50,7 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto findById(long id) throws EventNotFoundException{
+    public EventDto findById(long id) {
         LOGGER.debug("Finding event by id " + id);
         Event event = findOne(id);
         LOGGER.debug("Found " + event.toString());
@@ -59,9 +58,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
-    public EventDto update(EventDto eventDto) throws EventNotFoundException, ParseException {
-        DATE_FORMAT.parse(eventDto.getInitialDate());
-        DATE_FORMAT.parse(eventDto.getEndDate());
+    public EventDto update(EventDto eventDto) {
+        try {
+            DATE_FORMAT.parse(eventDto.getInitialDate());
+            DATE_FORMAT.parse(eventDto.getEndDate());
+        } catch (ParseException e) {
+            throw new IllegalStateException("incorrect date");
+        }
 
         Event event = findOne(eventDto.getId());
         event.setTitle(eventDto.getTitle());
@@ -75,10 +78,11 @@ public class EventServiceImpl implements EventService {
         return new EventDto(event);
     }
 
-    private Event findOne(long id) throws EventNotFoundException{
+    private Event findOne(long id){
         Event event = eventDao.findOne(id);
-        if(event == null)
-            throw new EventNotFoundException("Event not found");
+        if(event == null){
+            throw new IllegalStateException("event id not found:" + id);
+        }
         return event;
     }
 }

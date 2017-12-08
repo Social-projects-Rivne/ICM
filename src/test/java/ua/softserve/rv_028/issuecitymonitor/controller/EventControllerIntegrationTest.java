@@ -1,20 +1,16 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
-import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -28,41 +24,59 @@ public class EventControllerIntegrationTest {
     private EventDao eventDao;
 
     @Autowired
-    private UserDao userDao;
-
-    @Autowired
     private TestRestTemplate testRestTemplate;
 
     private Event event;
-    private User user;
 
     @Before
     public void setup(){
-        User u = new User();
-        u.setFirstName("testFirstName");
-        u.setFirstName("testLastName");
-        user = userDao.save(u);
-
-        Event e = new Event();
-        e.setTitle("testTitle");
-        e.setUser(user);
-        e.setDescription("testDescription");
-        event = eventDao.save(e);
+        event = eventDao.findAllByOrderByIdAsc().get(1);
     }
 
     @Test
-    public void testGetEventSuccessfully() throws Exception{
+    public void testGetEventSuccessfully(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/"+event.getId(), EventDto.class);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         EventDto responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
-        assertEquals("testTitle", responseObject.getTitle());
-        assertEquals("testDescription", responseObject.getDescription());
+        assertEquals(event.getTitle(), responseObject.getTitle());
+        assertEquals(event.getDescription(), responseObject.getDescription());
     }
 
     @Test
-    public void testGetEventNotFound() throws Exception{
+    public void testUpdateEventSuccessfully(){
+        String updatedTitle = "testUpdateTitle";
+        String updatedDescription = "testUpdateDescription";
+        EventDto eventDto = new EventDto(event);
+        eventDto.setTitle(updatedTitle);
+        eventDto.setDescription(updatedDescription);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<EventDto> httpEntity = new HttpEntity<>(eventDto,httpHeaders);
+        ResponseEntity<EventDto> responseEntity = testRestTemplate.exchange("/api/events/"+eventDto.getId(),
+                HttpMethod.PUT, httpEntity, EventDto.class);
+
+        System.out.println(httpEntity.toString());
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        EventDto responseObject = responseEntity.getBody();
+        assertNotNull(responseObject);
+        assertEquals(updatedTitle, responseObject.getTitle());
+        assertEquals(updatedDescription, responseObject.getDescription());
+    }
+
+    @Test
+    public void testDeleteEventSuccessfully(){
+        long prevCount = eventDao.count();
+        testRestTemplate.delete("/api/events/"+event.getId());
+        assertEquals(prevCount-1, eventDao.count());
+    }
+
+    @Test
+    public void testEventNotFound(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/-1", EventDto.class);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);

@@ -2,14 +2,11 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 
-import java.text.ParseException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/events")
@@ -25,50 +22,31 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
+    public List<EventDto> getAll(){
         LOGGER.debug("GET request for all users");
-        return new ResponseEntity<>(eventService.findAll(), HttpStatus.OK);
+        return eventService.findAll();
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<?> getOne(@PathVariable long id){
-        LOGGER.debug("GET request for event with id "+id);
-        try {
-            EventDto result = eventService.findById(id);
-            LOGGER.debug("GET request successful for event with id "+id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (EventNotFoundException e) {
-            LOGGER.error("GET request failed for event with id "+id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public EventDto getOne(@PathVariable long id){
+        LOGGER.debug("GET request");
+        EventDto result = eventService.findById(id);
+        LOGGER.debug("GET request successful");
+        return result;
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(@PathVariable long id, @RequestBody EventDto eventDto){
-        LOGGER.debug("PUT request for event with id "+id);
-        try {
-            EventDto result = eventService.update(eventDto);
-            LOGGER.debug("PUT request successful for event with id "+id);
-            return new ResponseEntity<>(result, HttpStatus.OK);
-        } catch (EventNotFoundException e) {
-            LOGGER.error("PUT request failed for event with id "+id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (ParseException e) {
-            LOGGER.error("PUT request failed for event with id "+id+" due to incorrect date format");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
+    public EventDto update(@PathVariable long id, @RequestBody EventDto eventDto){
+        LOGGER.debug("PUT request");
+        EventDto result = eventService.update(eventDto);
+        LOGGER.debug("PUT request successful");
+        return result;
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable long id){
-        LOGGER.debug("DELETE request for event with id "+id);
-        try {
-            eventService.deleteById(id);
-            LOGGER.debug("DELETE request successful for event with id "+id);
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (EventNotFoundException e) {
-            LOGGER.error("DELETE request failed for event with id "+id);
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+    public void delete(@PathVariable long id){
+        LOGGER.debug("DELETE request");
+        eventService.deleteById(id);
+        LOGGER.debug("DELETE request successful");
     }
 }

@@ -1,35 +1,23 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+import org.mockito.runners.MockitoJUnitRunner;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.exception.EventNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 
-import static org.hamcrest.core.StringContains.containsString;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyInt;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+@RunWith(MockitoJUnitRunner.class)
 public class EventControllerUnitTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
-
-    private MockMvc mockMvc;
+    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("event not found");
 
     @InjectMocks
     private EventController eventController;
@@ -37,76 +25,75 @@ public class EventControllerUnitTest {
     @Mock
     private EventService eventService;
 
-    @Before
-    public void setup(){
-        MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(eventController).build();
+    @Test
+    public void testGetEventSuccessfully(){
+        EventDto event = new EventDto();
+        event.setTitle(TEST_TITLE);
+        event.setDescription(TEST_DESCRIPTION);
+
+        when(eventService.findById(1)).thenReturn(event);
+
+        EventDto dto = eventController.getOne(1);
+
+        assertEquals(TEST_TITLE,dto.getTitle());
+        assertEquals(TEST_DESCRIPTION,dto.getDescription());
     }
 
     @Test
-    public void testGetEventSuccessfully() throws Exception{
+    public void testGetEventNotFound() {
+        when(eventService.findById(-1)).thenThrow(EXCEPTION_NOT_FOUND);
+
+        try {
+            eventController.getOne(-1);
+            fail("expected exception was not thrown");
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
+        }
+    }
+
+    @Test
+    public void testUpdateEventSuccessfully(){
         EventDto eventDto = new EventDto();
-
-        String expectedValue = new ObjectMapper().writeValueAsString(eventDto);
-
-        when(eventService.findById(anyInt())).thenReturn(eventDto);
-
-        mockMvc.perform(get("/api/events/1"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(expectedValue));
-    }
-
-    @Test
-    public void testGetEventNotFound() throws Exception {
-        when(eventService.findById(anyInt())).thenThrow(new EventNotFoundException("event not found"));
-
-        mockMvc.perform(get("api/events/1"))
-                .andExpect(status().isNotFound());
-    }
-
-    @Test
-    public void testUpdateEventSuccessfully() throws Exception{
-        EventDto eventDto = new EventDto();
+        eventDto.setId(1);
         eventDto.setTitle(TEST_TITLE);
         eventDto.setDescription(TEST_DESCRIPTION);
+        when(eventService.update(eventDto)).thenReturn(eventDto);
 
-        String jsonObject = new ObjectMapper().writeValueAsString(eventDto);
-        assertThat(jsonObject, containsString(TEST_TITLE));
-        assertThat(jsonObject, containsString(TEST_DESCRIPTION));
+        EventDto success = eventController.update(eventDto.getId(),eventDto);
 
-        when(eventService.update(any(EventDto.class))).thenReturn(eventDto);
-
-        mockMvc.perform(put("/api/events/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonObject))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(content().json(jsonObject));
+        assertEquals(TEST_TITLE,success.getTitle());
+        assertEquals(TEST_DESCRIPTION,success.getDescription());
     }
 
     @Test
-    public void testUpdateEventNotFound() throws Exception{
-        String jsonObject = new ObjectMapper().writeValueAsString(new EventDto());
+    public void testUpdateEventNotFound(){
+        EventDto eventDto = new EventDto();
+        eventDto.setId(1);
+        when(eventService.update(eventDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
-        when(eventService.update(any(EventDto.class))).thenThrow(new EventNotFoundException("event not found"));
-
-        mockMvc.perform(put("/api/events/1").contentType(MediaType.APPLICATION_JSON_UTF8).content(jsonObject))
-                .andExpect(status().isNotFound());
+        try {
+            eventController.update(2,eventDto);
+            fail("expected exception was not thrown");
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
+        }
     }
 
     @Test
-    public void testDeleteEventSuccessfully() throws Exception{
+    public void testDeleteEventSuccessfully(){
         doNothing().when(eventService).deleteById(1); //This is obvious
-
-        mockMvc.perform(delete("/api/events/1"))
-            .andExpect(status().isOk());
+        eventController.delete(1);
     }
 
     @Test
-    public void testDeleteEventNotFound() throws Exception {
-        doThrow(new EventNotFoundException("event not found")).when(eventService).deleteById(1);
+    public void testDeleteEventNotFound(){
+        doThrow(EXCEPTION_NOT_FOUND).when(eventService).deleteById(1);
 
-        mockMvc.perform(delete("/api/events/1"))
-                .andExpect(status().isNotFound());
+        try {
+            eventController.delete(1);
+            fail("expected exception was not thrown");
+        } catch (IllegalStateException e) {
+            assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
+        }
     }
-
 }
