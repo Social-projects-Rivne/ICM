@@ -34,6 +34,7 @@ ReactDOM.render((
       <Route        path="/settings"    name="Settings"     component={Full}/>
 
       <Route path="/login"      name="Login"        component={Authorization}/>
+      <Route path="/registration"      name="SignUp"        component={Authorization}/>
 
     </Switch>
   </BrowserRouter>
