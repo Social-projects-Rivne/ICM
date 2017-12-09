@@ -15,4 +15,8 @@ public class RegistrationService {
         User user = userDao.findByEmail(email);
         return user != null && user.getEmail().equals(email);
     }
+
+    public void userRegistration(User user){
+        userDao.save(user);
+    }
 }
