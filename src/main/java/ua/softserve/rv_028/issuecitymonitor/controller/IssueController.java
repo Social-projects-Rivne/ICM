@@ -1,12 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.exception.IssueNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import java.util.List;
@@ -27,31 +23,31 @@ public class IssueController {
 
     @GetMapping
     public List<IssueDto> getAll(){
-        LOG.info("show list issues");
+
         return service.findAll();
     }
 
+    @GetMapping("/{id}")
+    public IssueDto getOne(@PathVariable long id){
+
+        return service.findById(id);
+    }
+
     @PostMapping
-    public IssueDto addIssue(IssueDto dto){
-        LOG.info("add new issue");
+    public IssueDto addIssue(@RequestBody IssueDto dto){
+
         return service.addIssue(dto);
     }
 
     @PutMapping("/{id}")
-    public IssueDto editIssue(@RequestBody IssueDto dto, @PathVariable Long id){
-        LOG.info("edit issue");
-        return service.editIssue(dto, id);
+    public IssueDto editIssue(@RequestBody IssueDto dto){
+
+        return service.editIssue(dto);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteIssue(@PathVariable Long id) throws IssueNotFoundException {
-        try {
-            LOG.info("delete issue");
-            service.deleteIssue(id);
-        } catch (IssueNotFoundException e) {
-            LOG.info("issue not found");
-            e.printStackTrace();
-        }
-    }
+    public void deleteIssue(@PathVariable long id) {
 
+            service.deleteIssue(id);
+    }
 }

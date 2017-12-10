@@ -1,12 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.IssueAttachment;
-import ua.softserve.rv_028.issuecitymonitor.entity.IssueChangeRecord;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class IssueDto {
 
@@ -18,8 +13,6 @@ public class IssueDto {
     private double latitude;
     private double longitude;
     private IssueCategory category;
-    private Set<IssueAttachment> attachments = new HashSet<>();
-    private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public IssueDto(Issue entity) {
         this.id = entity.getId();
@@ -32,7 +25,8 @@ public class IssueDto {
         this.category = entity.getCategory();
     }
 
-    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude, double longitude, IssueCategory category, Set<IssueAttachment> attachments, Set<IssueChangeRecord> changeRecords) {
+    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate,
+                    double latitude, double longitude, IssueCategory category) {
         this.id = id;
         this.userDto = userDto;
         this.title = title;
@@ -41,8 +35,6 @@ public class IssueDto {
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
-        this.attachments = attachments;
-        this.changeRecords = changeRecords;
     }
 
     public IssueDto() {}
@@ -111,22 +103,6 @@ public class IssueDto {
         this.category = category;
     }
 
-    public Set<IssueAttachment> getAttachments() {
-        return attachments;
-    }
-
-    public void setAttachments(Set<IssueAttachment> attachments) {
-        this.attachments = attachments;
-    }
-
-    public Set<IssueChangeRecord> getChangeRecords() {
-        return changeRecords;
-    }
-
-    public void setChangeRecords(Set<IssueChangeRecord> changeRecords) {
-        this.changeRecords = changeRecords;
-    }
-
     @Override
     public String toString() {
         return "IssueDto{" +
@@ -138,8 +114,6 @@ public class IssueDto {
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
                 ", category=" + category +
-                ", attachments=" + attachments +
-                ", changeRecords=" + changeRecords +
                 '}';
     }
 }

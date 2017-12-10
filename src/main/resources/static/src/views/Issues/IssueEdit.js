@@ -70,7 +70,7 @@ class IssueEdit extends Component {
     }
 
     handleSave(){
-        axios.put("/api/issues/" + this.props.match.params.id, this.state.issue)
+        axios.put("/api/issues/" + this.props.match.params.id, this.state.issues)
             .then(function (response) {
                 swal({title: "Issue record saved", icon: "success"})
             }).catch(function (error) {
@@ -86,7 +86,7 @@ class IssueEdit extends Component {
                         <Card>
                             <Form className="form-horizontal">
                                 <CardHeader>
-                                    <strong>Issue #{this.state.issue.id} edit form</strong>
+                                    <strong>Issue {this.state.issue.id} edit form</strong>
                                 </CardHeader>
                                 <CardBody>
 
@@ -121,11 +121,11 @@ class IssueEdit extends Component {
                                                 <Input value={this.state.issue.initialDate} type="text"
                                                        name="initialDate" placeholder="DD/MM/YYYY hh:mm"
                                                        onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.initialDate ?
+                                                <InputGroupAddon className={this.state.issue.initialDate ?
                                                     "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
                                             </InputGroup>
                                         </Col>
-                                    </FormGroup>
+                                        </FormGroup>
 
                                     <FormGroup row>
                                         <Col md="2">
@@ -141,7 +141,6 @@ class IssueEdit extends Component {
                                             </Input>
                                         </Col>
                                     </FormGroup>
-
                                 </CardBody>
                                 <CardFooter className="text-right">
                                     {(this.state.initialDate) ?
@@ -153,7 +152,6 @@ class IssueEdit extends Component {
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>
                                 </CardFooter>
-
                             </Form>
                         </Card>
                     </Col>
