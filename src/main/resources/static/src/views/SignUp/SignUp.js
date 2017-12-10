@@ -16,7 +16,7 @@ export default class SignUp extends React.Component {
             confirmPassValid : false,
             firstName : "",
             lastName : "",
-            isVisible : false
+            btnColor : "secondary"
         };
 
         this.sendUserToServer = this.sendUserToServer.bind(this);
@@ -29,7 +29,7 @@ export default class SignUp extends React.Component {
             lastName : this.state.lastName,
             email : this.state.email,
             password : this.state.password
-        }
+        };
 
         axios.post('/api/registration', user)
             .then(function (response) {
@@ -65,7 +65,7 @@ export default class SignUp extends React.Component {
                 passwordValid = value.length >= 3;
                 break;
             case 'confirmPass':
-                confirmPassValid = (value === this.state.password)
+                confirmPassValid = (value === this.state.password);
                 break;
             default:
                 break;
@@ -75,6 +75,12 @@ export default class SignUp extends React.Component {
             passwordValid: passwordValid,
             confirmPassValid: confirmPassValid
         }, this.validateForm);
+
+        if(emailValid && passwordValid && confirmPassValid && this.checkFirstName() && this.checkLastName()){
+            this.setState({btnColor : "success"});
+        } else {
+            this.setState({btnColor : "secondary"});
+        }
     }
 
     findExistEmail(){
@@ -119,7 +125,7 @@ export default class SignUp extends React.Component {
                         <Label for="exampleEmail" sm={2}>Email</Label>
                         <Col sm={10}>
                             <Input type="email" name="email" id="exampleEmail" style={this.borderRadius()}
-                                   placeholder="tom@example.rv.ua" value={this.state.value} onChange={this.handleChange}
+                                   value={this.state.value} onChange={this.handleChange}
                                    valid={this.checkEmail()}/>
                             <FormFeedback style={this.visible(this.state.emailValid ^ this.state.email !== "")}>Email is incorrect. </FormFeedback>
                             <FormFeedback style={this.visible(this.state.emailIsUsed)}>Oh noes! that name is already registered</FormFeedback>
@@ -148,7 +154,15 @@ export default class SignUp extends React.Component {
                                    style={this.borderRadius()}/>
                         </Col>
                     </FormGroup>
-                    <Button onClick={this.sendUserToServer}>Change</Button>
+                    <FormGroup row>
+                        <Col sm={4}>
+                            <Button color={this.state.btnColor} onClick={this.sendUserToServer}>Sign UP</Button>
+                        </Col>
+                        <Label for="login">or:</Label>
+                        <Col sm={6}>
+                            <Button href="/login" id="login">Log In</Button>
+                        </Col>
+                    </FormGroup>
                 </Form>
             </div>
         )
