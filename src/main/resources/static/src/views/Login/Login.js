@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {Button} from "reactstrap";
 
 class Login extends Component {
     constructor(props) {
@@ -109,9 +110,11 @@ class Login extends Component {
 
                     <div className="row">
                         <div className="col-md-3"/>
-                        <div className="col-md-6">
+                        <div className="col-md-2">
                             <button type="submit" className="btn btn-success"><i className="fa fa-sign-in"/> Login </button>
                         </div>
+
+                        <Button href="/registration" color="primary"> Sign Up </Button>
                     </div>
                 </form>
 
