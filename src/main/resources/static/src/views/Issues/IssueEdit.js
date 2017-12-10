@@ -70,7 +70,7 @@ class IssueEdit extends Component {
     }
 
     handleSave(){
-        axios.put("/api/issues/" + this.props.match.params.id, this.state.issues)
+        axios.put("/api/issues/" + this.props.match.params.id, this.state.issue)
             .then(function (response) {
                 swal({title: "Issue record saved", icon: "success"})
             }).catch(function (error) {
@@ -143,11 +143,9 @@ class IssueEdit extends Component {
                                     </FormGroup>
                                 </CardBody>
                                 <CardFooter className="text-right">
-                                    {(this.state.initialDate) ?
+
                                         <Button color="success" onClick={this.handleSave}>
-                                            <i className="fa fa-dot-circle-o"/> Save</Button> :
-                                        <Button disabled color="success" onClick={this.handleSave}>
-                                            <i className="fa fa-dot-circle-o"/> Save</Button>}
+                                            <i className="fa fa-dot-circle-o"/> Save</Button>
                                     <Link to="/issues"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>

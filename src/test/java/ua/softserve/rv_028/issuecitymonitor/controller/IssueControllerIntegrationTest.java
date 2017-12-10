@@ -28,10 +28,10 @@ public class IssueControllerIntegrationTest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
-/*    @Before
+    @Before
     public void setup(){
-        issue = issueService.findOne(1);
-    }*/
+        issue = issueDao.findAllByOrderByIdAsc().get(1);
+    }
 
     @Test
     public void testGetIssue(){

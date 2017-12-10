@@ -28,7 +28,7 @@ public class IssueService {
 
         List<IssueDto> issueDto = new ArrayList<>();
 
-        for(Issue issue : issueDao.findAll()){
+        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
             issueDto.add(new IssueDto(issue));
         }
         LOG.info("Show all issues");

@@ -52,6 +52,20 @@ public class IssueControllerUnitTest {
     }
 
     @Test
+    public void testAddIssue(){
+        IssueDto issueDto = new IssueDto();
+        issueDto.setId(1);
+        issueDto.setTitle(TEST_TITLE);
+        issueDto.setDescription(TEST_DESCRIPTION);
+        when(issueService.addIssue(issueDto)).thenReturn(issueDto);
+
+        IssueDto success = issueController.addIssue(issueDto);
+
+        assertEquals(TEST_TITLE,success.getTitle());
+        assertEquals(TEST_DESCRIPTION,success.getDescription());
+    }
+
+    @Test
     public void testEditIssue(){
         IssueDto issueDto = new IssueDto();
         issueDto.setId(1);
