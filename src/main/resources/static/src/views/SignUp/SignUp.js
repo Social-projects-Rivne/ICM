@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Col, Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
+import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
 import axios from 'axios';
 
 export default class SignUp extends React.Component {
@@ -67,7 +67,7 @@ export default class SignUp extends React.Component {
 
         switch(fieldName) {
             case 'email':
-                emailValid = (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/).test(value);
+                emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value);
                 if (emailValid) {
                     this.findExistEmail()
                 }
@@ -180,7 +180,7 @@ export default class SignUp extends React.Component {
                             </Alert>
 
                             <Alert color="danger" className="alert-form" style={SignUp.visible(this.state.registrationIsNotSuccessful)}>
-                                Registration imposible
+                                Registration error
                             </Alert>
                         </Col>
                     </FormGroup>
@@ -194,20 +194,16 @@ export default class SignUp extends React.Component {
         if (this.state.firstName === "") {
             return null;
         }
-        if (this.state.firstName.trim().length > 1) {
-            return true;
-        }
-        return false;
+        return this.state.firstName.trim().length > 1;
+
     }
 
     checkLastName(){
         if (this.state.lastName === "") {
             return null;
         }
-        if (this.state.lastName.trim().length > 1) {
-            return true;
-        }
-        return false;
+        return this.state.lastName.trim().length > 1;
+
     }
 
 
@@ -215,31 +211,23 @@ export default class SignUp extends React.Component {
         if (this.state.email === '') {
             return null;
         }
-        if (this.state.emailValid && !this.state.emailIsUsed) {
-            return true;
-        }
-
-        return false;
+        return this.state.emailValid && !this.state.emailIsUsed;
     }
 
     checkPassword(){
         if (this.state.password === '') {
             return null;
         }
-        if (this.state.passwordValid) {
-            return true;
-        }
-        return false;
+        return this.state.passwordValid;
+
     }
 
     checkConfirmPassword(){
         if (this.state.confirmPass === '') {
             return null;
         }
-        if (this.state.confirmPassValid) {
-            return true;
-        }
-        return false;
+        return this.state.confirmPassValid;
+
     }
 
 

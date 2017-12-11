@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { InputGroup, InputGroupAddon, Col, Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
+import {Alert, InputGroup, InputGroupAddon, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
 
 
 class Login extends Component {
@@ -88,6 +88,10 @@ class Login extends Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Button type="submit" color="success" size="lg" block>Log In</Button>
+
+                            <Alert color="danger" className="alert-form" style={this.incorrectUserEmailPass()}>
+                                Incorrect email or password
+                            </Alert>
                         </Col>
                     </FormGroup>
 
@@ -115,7 +119,7 @@ class Login extends Component {
         if (this.props.history.location.search !== ""){
             console.log(this.props);
             console.log(this.props.history.location.search);
-            return {display:'inline'}
+            return {display:'block'}
         } else
             return {display:'none'}
     }
