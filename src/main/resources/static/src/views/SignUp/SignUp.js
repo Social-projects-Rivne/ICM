@@ -88,7 +88,7 @@ export default class SignUp extends React.Component {
         params.append("email", this.state.email);
 
         const _this = this;
-        axios.post('/api/checkEmail', params)
+        axios.post('/api/checkEmail ', params)
             .then(function (response) {
                 _this.setState({emailIsUsed : response.data});
                 console.log(response.data);
@@ -97,73 +97,78 @@ export default class SignUp extends React.Component {
 
     render(){
         return(
-            <div className="container login-page-center col-6">
-                <Form>
-                    <h2>ICM Registration form</h2>
+            <div className="container login-page-center col-3">
+                <Form  className="registration-form">
+                    <h3 className="text-center">Sign Up</h3>
                     <hr/>
-                    <FormGroup row>
-                        <Label for="firstName" sm={2}>First Name</Label>
-                        <Col sm={10}>
+                    <FormGroup>
+                        <Col sm={12}>
                             <Input type="text" name="firstName" id="firstName"
+                                   size="lg"
+                                   className="border-radius"
+                                   placeholder="First Name"
                                    onChange={this.handleChange}
-                                   valid={this.checkFirstName()}
-                                   style={this.borderRadius()}/>
+                                   valid={this.checkFirstName()}/>
                         </Col>
                     </FormGroup>
 
-                    <FormGroup row>
-                        <Label for="lastName" sm={2}>Last Name</Label>
-                        <Col sm={10}>
+                    <FormGroup>
+                        <Col sm={12}>
                             <Input type="text" name="lastName" id="lastName"
+                                   size="lg"
+                                   className="border-radius"
+                                   placeholder="Last Name"
                                    onChange={this.handleChange}
-                                   valid={this.checkLastName()}
-                                   style={this.borderRadius()}/>
+                                   valid={this.checkLastName()}/>
                         </Col>
                     </FormGroup>
 
-                    <FormGroup row>
-                        <Label for="exampleEmail" sm={2}>Email</Label>
-                        <Col sm={10}>
-                            <Input type="email" name="email" id="exampleEmail" style={this.borderRadius()}
-                                   value={this.state.value} onChange={this.handleChange}
+                    <FormGroup>
+                        <Col sm={12}>
+                            <Input type="email" name="email" id="exampleEmail"
+                                   size="lg"
+                                   className="border-radius"
+                                   placeholder="E-Mail"
+                                   onChange={this.handleChange}
+                                   value={this.state.value}
                                    valid={this.checkEmail()}/>
-                            <FormFeedback style={this.visible(this.state.emailValid ^ this.state.email !== "")}>Email is incorrect. </FormFeedback>
-                            <FormFeedback style={this.visible(this.state.emailIsUsed)}>Oh noes! that name is already registered</FormFeedback>
+
+                            <FormFeedback style={SignUp.visible(this.state.emailValid ^ this.state.email !== "")}>Email is incorrect. </FormFeedback>
+                            <FormFeedback style={SignUp.visible(this.state.emailIsUsed)}>Oh noes! that name is already registered</FormFeedback>
                         </Col>
                     </FormGroup>
 
-                    <FormGroup row>
-                        <Label for="password" sm={2}>Password</Label>
-                        <Col sm={10}>
+                    <FormGroup>
+                        <Col sm={12}>
                             <Input type="password" name="password" id="password"
+                                   size="lg"
+                                   className="border-radius"
+                                   placeholder="Password"
+                                   onChange={this.handleChange}
                                    value={this.state.password}
-                                   onChange={this.handleChange}
-                                   valid={this.checkPassword()}
-                                   style={this.borderRadius()}/>
+                                   valid={this.checkPassword()}/>
                         </Col>
                     </FormGroup>
 
-                    <FormGroup row>
-                        <Label for="confirmPass" sm={2}>Repeat password</Label>
-                        <Col sm={10}>
+                    <FormGroup>
+                        <Col sm={12}>
                             <Input type="password" name="confirmPass" id="confirmPass"
-                                   value={this.state.confirmPass}
+                                   size="lg"
+                                   className="border-radius"
+                                   placeholder="Confirm Password"
                                    onChange={this.handleChange}
-                                   valid={this.checkConfirmPassword()}
-
-                                   style={this.borderRadius()}/>
+                                   value={this.state.confirmPass}
+                                   valid={this.checkConfirmPassword()}/>
                         </Col>
                     </FormGroup>
-                    <FormGroup row>
-                        <Col sm={4}>
-                            <Button color={this.state.btnColor} onClick={this.sendUserToServer}>Sign UP</Button>
-                        </Col>
-                        <Label for="login">or:</Label>
-                        <Col sm={6}>
-                            <Button href="/login" id="login">Log In</Button>
+                    <FormGroup>
+                        <Col sm={12}>
+                            <Button color={this.state.btnColor} size="lg" block>Sign Up</Button>
                         </Col>
                     </FormGroup>
                 </Form>
+                <p className="below-form">Already have an account? <a href="/login">Log in</a></p>
+
             </div>
         )
     }
@@ -221,16 +226,11 @@ export default class SignUp extends React.Component {
     }
 
 
-    visible(isTrue){
+    static visible(isTrue){
         if (isTrue) {
             return {display : 'inline'};
         } else {
             return {display : 'none'};
         }
-    }
-
-
-    borderRadius(){
-        return {borderRadius: '5px'};
     }
 }
