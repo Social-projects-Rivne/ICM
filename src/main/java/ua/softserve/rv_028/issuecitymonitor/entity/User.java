@@ -8,6 +8,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -104,7 +105,10 @@ public class User{
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-	}
+        this.userRole = UserRole.USER;
+        this.userStatus = UserStatus.UNCONFIRMED;
+        this.registrationDate = new Date().toString();
+    }
 
 	public void setId(long id) {
 		this.id = id;

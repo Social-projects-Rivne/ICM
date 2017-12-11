@@ -92,7 +92,7 @@ class Login extends Component {
                     </FormGroup>
 
                 </Form>
-                <p className="below-form">Don't have an account? <a href="/registration">Sign up</a></p>
+                <p className="below-form">Don`t have an account? <a href="/registration">Sign up</a></p>
             </div>
         )
     }
