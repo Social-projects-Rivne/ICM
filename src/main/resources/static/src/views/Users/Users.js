@@ -106,7 +106,7 @@ class User extends Component {
                              });
                              swal({title: "Issue record deleted", icon: "success"});
                          }).catch(function (error) {
-                         swal({title: "Something went wrong!", text: error, icon: "error"});
+                         swal({title: "Something went wrong!", text: "User has role Admin!", icon: "error"});
                      });
                  }
              });

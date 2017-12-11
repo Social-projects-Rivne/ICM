@@ -9,6 +9,7 @@ import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Entity
 @Table(name = "users")
