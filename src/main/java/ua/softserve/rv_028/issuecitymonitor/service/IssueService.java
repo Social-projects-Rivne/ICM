@@ -1,8 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ua.softserve.rv_028.issuecitymonitor.controller.IssueController;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
@@ -10,12 +11,12 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
 
 @Service
 public class IssueService {
 
-    private static final Logger LOG = Logger.getLogger(IssueController.class.getName());
+    private static final Logger LOG = LogManager.getLogger(IssueService.class.getName());
 
     private IssueDao issueDao;
 
