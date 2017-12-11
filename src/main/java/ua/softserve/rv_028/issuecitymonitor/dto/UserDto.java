@@ -34,6 +34,25 @@ public class UserDto {
         this.avatarUrl = entity.getAvatarUrl();
     }
 
+    public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
+                   String password, String email, String phone, boolean userAgreement, UserStatus userStatus,
+                   String deleteDate, String avatarUrl) {
+        this.id = id;
+        this.userRole = userRole;
+        this.registrationDate = registrationDate;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.userAgreement = userAgreement;
+        this.userStatus = userStatus;
+        this.deleteDate = deleteDate;
+        this.avatarUrl = avatarUrl;
+    }
+
+    public UserDto(){}
+
     public long getId() {
         return id;
     }

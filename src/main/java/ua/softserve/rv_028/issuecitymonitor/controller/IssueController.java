@@ -41,7 +41,7 @@ public class IssueController {
 
     @PutMapping("/{id}")
     public IssueDto editIssue(@RequestBody IssueDto dto){
-
+        LOG.info("PUT request for edit issue");
         return service.editIssue(dto);
     }
 
