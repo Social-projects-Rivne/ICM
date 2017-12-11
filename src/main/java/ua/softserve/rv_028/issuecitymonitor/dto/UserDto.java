@@ -164,8 +164,8 @@ public class UserDto {
         return isDeleted;
     }
 
-    public void setDeleted(boolean deleted) {
-        isDeleted = deleted;
+    public void setDeleted() {
+        isDeleted = true;
     }
     /*
     public Set<Issue> getIssues() {

@@ -48,8 +48,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public void deleteById(long id) throws UserNotFoundException {
         User user = findOne(id);
-        if(user.getUserRole() != UserRole.ADMIN && UserDto.getCount() >= 1){
-            userDao.delete(user);
+        if(UserRole.ADMIN != user.getUserRole()){
+            user.delete();
             UserDto.setCount(UserDto.getCount() -1);
         }
         LOGGER.info("User is deleted");
