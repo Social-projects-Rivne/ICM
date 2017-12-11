@@ -17,12 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ViewController {
 
-    @GetMapping(value = {"dashboard", "issues", "petitions", "events", "users", "settings"})
+    @GetMapping(value = {"/dashboard", "/issues", "/petitions", "/events", "/users", "/settings"})
     public String dashboard(){
         return "index.html";
     }
 
-    @GetMapping(value = {"login", "registration"})
+
+    @GetMapping(value = "/login")
     public String login(){
         return "index.html";
     }

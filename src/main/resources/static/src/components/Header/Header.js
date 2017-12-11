@@ -1,13 +1,5 @@
 import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {
-    Nav,
-    NavbarBrand,
-    NavbarToggler,
-    NavItem,
-    NavLink,
-    Badge
-} from 'reactstrap';
+import {Nav, NavbarBrand, NavbarToggler,} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 
 class Header extends Component {
@@ -21,10 +13,6 @@ class Header extends Component {
         document.body.classList.toggle('sidebar-hidden');
     }
 
-    sidebarMinimize(e) {
-        e.preventDefault();
-        document.body.classList.toggle('sidebar-minimized');
-    }
 
     mobileSidebarToggle(e) {
         e.preventDefault();

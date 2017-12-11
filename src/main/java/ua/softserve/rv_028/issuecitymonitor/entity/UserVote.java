@@ -1,9 +1,14 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_vote")
+@Table(name = "user_votes")
+@SQLDelete(sql = "UPDATE user_votes SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
 public class UserVote {
 
     @Id
@@ -19,11 +24,18 @@ public class UserVote {
     @JoinColumn(name = "petition_id")
     private Petition petition;
 
+    @Column(name = "deleted")
+    private boolean isDeleted = false;
+
     public UserVote() {}
 
     public UserVote(User user, Petition petition) {
         this.user = user;
         this.petition = petition;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public long getId() {
@@ -46,12 +58,21 @@ public class UserVote {
         this.petition = petition;
     }
 
+    public boolean getIsDeleted() {
+        return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
+    }
+
     @Override
     public String toString() {
         return "UserVote{" +
                 "id=" + id +
-                ", user=" + user +
-                ", petition=" + petition +
+                ", user=" + user.getId() +
+                ", petition=" + petition.getId() +
                 '}';
     }
 }
