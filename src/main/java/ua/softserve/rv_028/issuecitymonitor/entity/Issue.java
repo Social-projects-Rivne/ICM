@@ -141,6 +141,14 @@ public class Issue{
         this.category = category;
     }
 
+    public Set<IssueAttachment> getAttachments() {
+        return attachments;
+    }
+
+    public Set<IssueChangeRecord> getChangeRecords() {
+        return changeRecords;
+    }
+
     public boolean getIsDeleted() {
         return isDeleted;
     }
@@ -148,14 +156,6 @@ public class Issue{
     @PreRemove
     public void delete() {
         this.isDeleted = true;
-    }
-
-    public Set<IssueAttachment> getAttachments() {
-        return attachments;
-    }
-
-    public Set<IssueChangeRecord> getChangeRecords() {
-        return changeRecords;
     }
 
     @Override

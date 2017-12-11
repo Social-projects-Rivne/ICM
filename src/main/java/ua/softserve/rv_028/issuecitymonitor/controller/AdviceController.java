@@ -13,7 +13,8 @@ public class AdviceController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalStateException.class)
-    public void issueNotFound(Exception e){
+    public void handleNotFound(Exception e){
         LOG.error(e.getMessage());
     }
 }
+

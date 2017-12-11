@@ -1,4 +1,4 @@
-package ua.softserve.rv_028.issuecitymonitor.service;
+package ua.softserve.rv_028.issuecitymonitor.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
 
 /**
  *
@@ -14,10 +15,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
  * The user with his role has the opportunity to use only available links.
  * All urls are contained in String[] urls.
  *
- * A class with behavior when a user successfully logged into the system is implemented in :
- * {@link AuthenticationSuccessHandlerImpl}
  *
- * A class {@link UserDetailService} is implemented by the interface UserDetailService from Spring Security.
+ * A class {@link UserDetailsServiceImpl} is implemented by the interface UserDetailService from Spring Security.
  *
  * @version     1.0 07 Dec 2017
  * @author      gefasim
@@ -26,18 +25,16 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
-public class Security extends WebSecurityConfigurerAdapter{
+public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    private final UserDetailService userDetailsService;
-
-    private final static AuthenticationSuccessHandlerImpl authHandler = new AuthenticationSuccessHandlerImpl();
+    private final UserDetailsServiceImpl userDetailsService;
 
     /** All possible urls must be here*/
     private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
             "/settings"};
 
     @Autowired
-    public Security(UserDetailService userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
     }
 
@@ -55,7 +52,6 @@ public class Security extends WebSecurityConfigurerAdapter{
 
                 .and().csrf().disable().formLogin()
                 .loginPage("/login").failureUrl("/login?error=true")
-                .successHandler(authHandler)
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .permitAll()

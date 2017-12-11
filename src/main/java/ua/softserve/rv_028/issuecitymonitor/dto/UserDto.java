@@ -19,6 +19,8 @@ public class UserDto {
     private String deleteDate;
     private String avatarUrl;
 
+    public UserDto() {}
+
     public UserDto(User entity) {
         this.id = entity.getId();
         this.userRole = entity.getUserRole();
@@ -50,8 +52,6 @@ public class UserDto {
         this.deleteDate = deleteDate;
         this.avatarUrl = avatarUrl;
     }
-
-    public UserDto(){}
 
     public long getId() {
         return id;
@@ -166,4 +166,6 @@ public class UserDto {
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
+
 }
+

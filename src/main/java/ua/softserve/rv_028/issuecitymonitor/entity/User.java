@@ -1,6 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
@@ -11,14 +13,16 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User {
+@SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> 'true'")
+public class User{
 
 	@Id
 	@GeneratedValue
 	@Column(name = "id", unique = true)
 	private long id;
 
-	@Column(name = "role")
+	@Column(name = "userRole")
 	@Enumerated(EnumType.ORDINAL)
 	private UserRole userRole;
 
@@ -28,15 +32,15 @@ public class User {
 	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "last_name")
-	private String lastName;
-
 	@Column(name = "password")
 	private String password;
 
 	@NaturalId
 	@Column(name = "email", unique = true)
 	private String email;
+
+	@Column(name = "last_name")
+	private String lastName;
 
 	@Column(name = "phone")
 	private String phone;
@@ -54,6 +58,9 @@ public class User {
 	@Column(name = "avatar_url")
 	private String avatarUrl;
 
+	@Column(name = "deleted")
+	private boolean isDeleted = false;
+
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
 
@@ -65,33 +72,30 @@ public class User {
 
 	public User() {}
 
-	public User(UserDto dto) {
-		this.userRole = dto.getUserRole();
-		this.registrationDate = dto.getRegistrationDate();
-		this.firstName = dto.getFirstName();
-		this.lastName = dto.getLastName();
-		this.password = dto.getPassword();
-		this.email = dto.getEmail();
-		this.phone = dto.getPhone();
-		this.userAgreement = dto.isUserAgreement();
-		this.userStatus = dto.getUserStatus();
-		this.deleteDate = dto.getDeleteDate();
-		this.avatarUrl = dto.getAvatarUrl();
+	public User(UserDto userDto) {
+		this.password = userDto.getPassword();
+		this.email = userDto.getEmail();
+		this.registrationDate = userDto.getRegistrationDate();
+		this.firstName = userDto.getFirstName();
+		this.lastName = userDto.getLastName();
+		this.phone = userDto.getPhone();
+		this.userAgreement = userDto.isUserAgreement();
+		this.userStatus = userDto.getUserStatus();
+		this.deleteDate = userDto.getDeleteDate();
+		this.avatarUrl = userDto.getAvatarUrl();
 	}
 
-	public User(String registrationDate, String firstName, String lastName, String password, String email,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
+	public User(String firstName, String lastName, String password, String email,
+                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
                 String avatarUrl) {
+		this.email = email;
+		this.password = password;
 		this.userRole = userRole;
-		this.registrationDate = registrationDate;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.password = password;
-		this.email = email;
 		this.phone = phone;
 		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
-		this.deleteDate = deleteDate;
 		this.avatarUrl = avatarUrl;
 	}
 
@@ -136,19 +140,19 @@ public class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
-	}
-
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	public String getEmail() {
+		return this.email;
 	}
 
 	public String getPhone() {
@@ -203,6 +207,15 @@ public class User {
 		return petitions;
 	}
 
+	public boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	@PreRemove
+	public void delete() {
+		this.isDeleted = true;
+	}
+
 	@Override
 	public String toString() {
 		return "User{" +
@@ -211,14 +224,12 @@ public class User {
 				", registrationDate='" + registrationDate + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", password='" + password + '\'' +
 				", email='" + email + '\'' +
 				", phone='" + phone + '\'' +
 				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +
 				", deleteDate='" + deleteDate + '\'' +
 				", avatarUrl='" + avatarUrl + '\'' +
-				", issues=" + issues +
 				'}';
 	}
 }

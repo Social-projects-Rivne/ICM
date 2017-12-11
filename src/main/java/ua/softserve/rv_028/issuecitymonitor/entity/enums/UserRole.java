@@ -8,7 +8,8 @@ import java.util.Collection;
 import java.util.Collections;
 
 public enum UserRole implements GrantedAuthority{
-    ADMIN ,
+
+    ADMIN,
     MODERATOR,
     USER;
 
@@ -21,10 +22,10 @@ public enum UserRole implements GrantedAuthority{
         return this.name();
     }
 
-    public static Collection<GrantedAuthority> collectionForRole(UserRole role){
-        if (role == ADMIN)
+    public static Collection<GrantedAuthority> collectionForRole(UserRole userRole){
+        if (userRole == ADMIN)
             return Arrays.asList(USER, MODERATOR, ADMIN);
-        else if (role == MODERATOR)
+        else if (userRole == MODERATOR)
             return Arrays.asList(USER, MODERATOR);
         else
             return Collections.singletonList(USER);
