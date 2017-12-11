@@ -6,13 +6,12 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import ua.softserve.rv_028.issuecitymonitor.entity.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import javax.persistence.EntityManagerFactory;
-import java.security.Principal;
 import java.util.Date;
 import java.util.Random;
 
@@ -22,11 +21,13 @@ import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 public class DBSeeder {
 
     private SessionFactory sessionFactory;
+    private final BCryptPasswordEncoder encoder;
 
     private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
 
     @Autowired
-    public DBSeeder(EntityManagerFactory factory){
+    public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder){
+    this.encoder = encoder;
 
         if(factory.unwrap(SessionFactory.class) == null){
             throw new NullPointerException("factory is not a hibernate factory");
@@ -45,7 +46,7 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         for(int i=0; i < 10 ; i++){
-            User user = new User("Tom"+i, "Jerry"+i,i+""+i+""+i,
+            User user = new User("Tom"+i, "Jerry"+i,encoder.encode(i+""+i+""+i),
                     "tom"+i+"@mail.rv.ua","+380997755331",r.nextBoolean(),
                     randomEnum(UserStatus.class),randomEnum(UserRole.class),"http://url.com"+i);
             session.save(user);
