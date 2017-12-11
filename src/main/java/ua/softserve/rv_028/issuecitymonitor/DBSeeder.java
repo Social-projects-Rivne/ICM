@@ -6,20 +6,24 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ua.softserve.rv_028.issuecitymonitor.entity.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import javax.persistence.EntityManagerFactory;
+import java.security.Principal;
 import java.util.Date;
 import java.util.Random;
+
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Component
 public class DBSeeder {
 
     private SessionFactory sessionFactory;
 
-    private static final Logger logger = LogManager.getLogger(DBSeeder.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
 
     @Autowired
     public DBSeeder(EntityManagerFactory factory){
@@ -29,11 +33,11 @@ public class DBSeeder {
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
         try {
-            logger.info("Seeding database...");
+            LOGGER.info("Seeding database...");
             fillDatabase();
-            logger.info("Seeding finished");
+            LOGGER.info("Seeding finished");
         } catch (RuntimeException e) {
-            logger.error("Seeding has been done already. Skipping...");
+            LOGGER.error("Seeding has been done already. Skipping...");
         }
     }
 
@@ -41,91 +45,48 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
         for(int i=0; i < 10 ; i++){
-            User user = new User();
-            user.setFirstName("Tom"+i);
-            user.setLastName("Jerry"+i);
-            user.setEmail("tom"+i+"@mail.rv.ua");
-            user.setPhone("+380997755331");
-            user.setPassword(i+""+i+""+i);
-            user.setRole(randomEnum(Role.class));
-            user.setRegistrationDate(randomDate());
-            user.setAvatarUrl("http://url.com"+i);
-            user.setUserAgreement(r.nextBoolean());
-            user.setUserStatus(randomEnum(UserStatus.class));
+            User user = new User("Tom"+i, "Jerry"+i,i+""+i+""+i,
+                    "tom"+i+"@mail.rv.ua","+380997755331",r.nextBoolean(),
+                    randomEnum(UserStatus.class),randomEnum(UserRole.class),"http://url.com"+i);
             session.save(user);
 
             for(int a=0; a < 3 ; a++) {
-                Event event = new Event();
-                event.setTitle("Title" +a+""+i);
-                event.setCategory(randomEnum(EventCategory.class));
-                event.setDescription("description" +a+""+ i);
-                event.setInitialDate(randomDate());
-                event.setUser(user);
-                event.setLatitude(r.nextDouble());
-                event.setLongitude(r.nextDouble());
+                Event event = new Event(user,"Title" +a+""+i,"description" +a+""+ i,date(),
+                        r.nextDouble(),r.nextDouble(), date(),randomEnum(EventCategory.class));
                 session.save(event);
 
-                Petition petition = new Petition();
-                petition.setCategory(randomEnum(PetitionCategory.class));
-                petition.setDescription("descript" +a+""+ i);
-                petition.setInitialDate(randomDate());
-                petition.setTitle("Title" +a+""+ i);
-                petition.setUser(user);
+                Petition petition = new Petition(user, "Title" +a+""+ i,"descript" +a+""+ i, date(),
+                        randomEnum(PetitionCategory.class));
                 session.save(petition);
 
-                Issue issue = new Issue();
-                issue.setCategory(randomEnum(IssueCategory.class));
-                issue.setDescription("desc" +a+""+ i);
-                issue.setInitialDate(randomDate());
-                issue.setLatitude(r.nextDouble());
-                issue.setLongitude(r.nextDouble());
-                issue.setTitle("title" +a+""+ i);
-                issue.setUser(user);
+                Issue issue = new Issue(user,"title" +a+""+ i,"desc" +a+""+ i,date(),
+                        r.nextDouble(),r.nextDouble(),randomEnum(IssueCategory.class));
                 session.save(issue);
 
                 for (int j = 0; j < 5; j++) {
-                    EventAttachment eventAttachment = new EventAttachment();
-                    eventAttachment.setAttachmentUrl("url" +j+""+a+""+ i);
-                    eventAttachment.setEvent(event);
-                    eventAttachment.setUser(user);
+                    EventAttachment eventAttachment = new EventAttachment(event,user,"url" +j+""+a+""+ i);
                     session.save(eventAttachment);
 
-                    EventChangeRecord eventChangeRecord = new EventChangeRecord();
-                    eventChangeRecord.setChangeRecordStatus(randomEnum(ChangeRecordStatus.class));
-                    eventChangeRecord.setEvent(event);
-                    eventChangeRecord.setMessage("msg" +j+""+a+""+ i);
-                    eventChangeRecord.setUser(user);
+                    EventChangeRecord eventChangeRecord = new EventChangeRecord(event,
+                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
                     session.save(eventChangeRecord);
 
-                    IssueAttachment issueAttachment = new IssueAttachment();
-                    issueAttachment.setAttachmentUrl("url" +j+""+a+""+ i);
-                    issueAttachment.setIssue(issue);
-                    issueAttachment.setUser(user);
+                    IssueAttachment issueAttachment = new IssueAttachment(issue,user,"url" +j+""+a+""+ i);
                     session.save(issueAttachment);
 
-                    IssueChangeRecord issueChangeRecord = new IssueChangeRecord();
-                    issueChangeRecord.setChangeRecordStatus(randomEnum(ChangeRecordStatus.class));
-                    issueChangeRecord.setIssue(issue);
-                    issueChangeRecord.setMessage("msg" +j+""+a+""+ i);
-                    issueChangeRecord.setUser(user);
+                    IssueChangeRecord issueChangeRecord = new IssueChangeRecord(issue,
+                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
                     session.save(issueChangeRecord);
 
-                    PetitionAttachment petitionAttachment = new PetitionAttachment();
-                    petitionAttachment.setAttachmentUrl("url" +j+""+a+""+ i);
-                    petitionAttachment.setPetition(petition);
-                    petitionAttachment.setUser(user);
+                    PetitionAttachment petitionAttachment = new PetitionAttachment(petition,user,
+                            "url" +j+""+a+""+ i);
                     session.save(petitionAttachment);
 
-                    PetitionChangeRecord petitionChangeRecord = new PetitionChangeRecord();
-                    petitionChangeRecord.setChangeRecordStatus(randomEnum(ChangeRecordStatus.class));
-                    petitionChangeRecord.setPetition(petition);
-                    petitionChangeRecord.setMessage("msg" +j+""+a+""+ i);
-                    petitionChangeRecord.setUser(user);
+                    PetitionChangeRecord petitionChangeRecord = new PetitionChangeRecord(petition,
+                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
                     session.save(petitionChangeRecord);
 
-                    UserVote userVote = new UserVote();
-                    userVote.setPetition(petition);
-                    userVote.setUser(user);
+                    UserVote userVote = new UserVote(user,petition);
                     session.save(userVote);
                 }
             }
@@ -135,9 +96,10 @@ public class DBSeeder {
 
     private static final Random r = new Random();
 
-    private String randomDate(){
-        return new Date(r.nextLong()).toString();
+    private String date(){
+        return DATE_FORMAT.format(new Date());
     }
+
     private <T extends Enum<?>> T randomEnum(Class<T> classname){
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
