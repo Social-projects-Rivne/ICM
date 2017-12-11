@@ -1193,7 +1193,7 @@ See this [blog post](https://medium.com/@omgwtfmarc/deploying-create-react-app-t
 Install the Surge CLI if you haven't already by running `npm install -g surge`. Run the `surge` command and log in you or create a new account. You just need to specify the *build* folder and your custom domain, and you are done.
 
 ```sh
-              email: email@domain.com
+              username: username@domain.com
            password: ********
        project path: /path/to/project/build
                size: 7 files, 1.8 MB
@@ -1201,7 +1201,7 @@ Install the Surge CLI if you haven't already by running `npm install -g surge`. 
              upload: [====================] 100%, eta: 0.0s
    propagate on CDN: [====================] 100%
                plan: Free
-              users: email@domain.com
+              users: username@domain.com
          IP Address: X.X.X.X
 
     Success! Project is published and running at create-react-app.surge.sh

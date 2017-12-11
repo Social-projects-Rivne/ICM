@@ -7,9 +7,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 /**
- * This class is implemented by the interface {@link UserDetailsServiceImpl} from Spring Security.
+ * This class is implemented by the interface {@link UserDetailsService} from Spring Security.
  * The method from UserDetailService interface return UserDetail.
  *
  * @version     1.0 07 Dec 2017
@@ -34,8 +36,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userDao.findByEmail(email);
-
-        return new AuthenticatedUser(user);
+        User user = userDao.findUserByUsername(email);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+                true, true, true,
+                (user.getUserStatus()== UserStatus.ACTIVE || user.getUserStatus() == UserStatus.UNCONFIRMED),
+                UserRole.collectionForRole(user.getUserRole()));
     }
 }

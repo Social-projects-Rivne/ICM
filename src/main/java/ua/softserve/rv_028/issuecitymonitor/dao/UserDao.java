@@ -8,6 +8,5 @@ import java.util.Set;
 public interface UserDao extends CrudRepository<User, Long>{
 
     Set<User> findAll();
-
-    User findByEmail(String email);
+    User findUserByUsername(String username);
 }

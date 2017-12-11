@@ -19,8 +19,6 @@ public class UserDto {
     private String deleteDate;
     private String avatarUrl;
 
-    public UserDto() {}
-
     public UserDto(User entity) {
         this.id = entity.getId();
         this.userRole = entity.getUserRole();
@@ -28,7 +26,7 @@ public class UserDto {
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
         this.password = entity.getPassword();
-        this.email = entity.getEmail();
+        this.email = entity.getUsername();
         this.phone = entity.getPhone();
         this.userAgreement = entity.isUserAgreement();
         this.userStatus = entity.getUserStatus();

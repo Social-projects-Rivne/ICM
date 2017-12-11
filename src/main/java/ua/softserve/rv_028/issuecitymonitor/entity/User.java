@@ -15,7 +15,7 @@ import java.util.Set;
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
 @Where(clause = "deleted <> 'true'")
-public class User {
+public class User{
 
 	@Id
 	@GeneratedValue
@@ -32,15 +32,15 @@ public class User {
 	@Column(name = "first_name")
 	private String firstName;
 
-	@Column(name = "last_name")
-	private String lastName;
-
 	@Column(name = "password")
 	private String password;
 
 	@NaturalId
 	@Column(name = "email", unique = true)
-	private String email;
+	private String username;
+
+	@Column(name = "last_name")
+	private String lastName;
 
 	@Column(name = "phone")
 	private String phone;
@@ -73,12 +73,11 @@ public class User {
 	public User() {}
 
 	public User(UserDto userDto) {
-		this.userRole = userDto.getUserRole();
+		this.password = userDto.getPassword();
+		this.username = userDto.getEmail();
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
-		this.password = userDto.getPassword();
-		this.email = userDto.getEmail();
 		this.phone = userDto.getPhone();
 		this.userAgreement = userDto.isUserAgreement();
 		this.userStatus = userDto.getUserStatus();
@@ -86,19 +85,17 @@ public class User {
 		this.avatarUrl = userDto.getAvatarUrl();
 	}
 
-	public User(String registrationDate, String firstName, String lastName, String password, String email,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
+	public User(String firstName, String lastName, String password, String username,
+                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
                 String avatarUrl) {
+		this.username = username;
+		this.password = password;
 		this.userRole = userRole;
-		this.registrationDate = registrationDate;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.password = password;
-		this.email = email;
 		this.phone = phone;
 		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
-		this.deleteDate = deleteDate;
 		this.avatarUrl = avatarUrl;
 	}
 
@@ -143,19 +140,19 @@ public class User {
 	}
 
 	public String getPassword() {
-		return password;
+		return this.password;
 	}
 
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
-	public String getEmail() {
-		return email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public String getUsername() {
+		return this.username;
 	}
 
 	public String getPhone() {
@@ -227,8 +224,7 @@ public class User {
 				", registrationDate='" + registrationDate + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", password='" + password + '\'' +
-				", email='" + email + '\'' +
+				", username='" + username + '\'' +
 				", phone='" + phone + '\'' +
 				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +

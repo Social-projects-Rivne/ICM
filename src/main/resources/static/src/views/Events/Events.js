@@ -110,7 +110,8 @@ class Event extends Component {
                     <td>{this.state.event.category}</td>
                     <td>{this.state.event.userDto.id}</td>
                     <td>
-                        <Link to={"/events/"+this.state.event.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
+                        <Link to={"/events/"+this.state.event.id+"/edit"}>
+                            <Button color="info" size="sm">Edit</Button></Link>{' '}
                         <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                     </td>
                 </tr>
