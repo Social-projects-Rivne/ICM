@@ -25,13 +25,14 @@ public class UserController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable long id ){
-        try{
-            service.deleteById(id);
+    public ResponseEntity<?> deleteUser(@PathVariable long id ) throws UserNotFoundException {
+        service.deleteById(id);
+        if (UserServiceImpl.isMessages()){
+            LOG.info("User is deleted and map show it!");
             return new ResponseEntity<>( HttpStatus.OK);
-        }catch (UserNotFoundException e){
+        } else
             return new ResponseEntity<>( HttpStatus.NOT_FOUND);
-        }
+
     }
 
     @GetMapping

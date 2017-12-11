@@ -15,11 +15,17 @@ import java.util.logging.Logger;
 public class UserServiceImpl implements UserService{
     private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class.getName());
     private final  UserDao userDao;
+    private static boolean messages;
 
     @Autowired
     public UserServiceImpl(UserDao userDao){
         this.userDao = userDao;
     }
+
+    public static boolean isMessages() {
+        return messages;
+    }
+
     @Override
     public UserDto addUser(UserDto dto){
         User user = new User();
@@ -49,10 +55,13 @@ public class UserServiceImpl implements UserService{
     public void deleteById(long id) throws UserNotFoundException {
         User user = findOne(id);
         if(UserRole.ADMIN != user.getUserRole()){
+            LOGGER.info("User is deleted");
             user.delete();
+            messages = true;
             UserDto.setCount(UserDto.getCount() -1);
-        }
-        LOGGER.info("User is deleted");
+        }else
+            messages = false;
+        LOGGER.info("user role is " + user.getUserRole());
 
     }
 

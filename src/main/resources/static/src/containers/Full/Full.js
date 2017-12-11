@@ -7,7 +7,7 @@ import Breadcrumb from '../../components/Breadcrumb/';
 import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
-import Events from "../../views/Events/";
+
 import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
@@ -24,7 +24,7 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route exact path="/events" name="Events" component={Events}/>
+
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
