@@ -25,6 +25,7 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
+    private boolean isDeleted;
     /*private Set<Issue> issues = new HashSet<>();
     private Set<Event> events = new HashSet<>();
     private Set<Petition> petitions = new HashSet<>();*/
@@ -44,6 +45,7 @@ public class UserDto {
         this.userStatus = entity.getUserStatus();
         this.deleteDate = entity.getDeleteDate();
         this.avatarUrl = entity.getAvatarUrl();
+        this.isDeleted = entity.getIsDeleted();
        /* this.issues = entity.getIssues();
         this.events = entity.getEvents();
         this.petitions = entity.getPetitions();*/
@@ -156,6 +158,14 @@ public class UserDto {
 
     public static void setCount(long k) {
         count = k;
+    }
+
+    public boolean isDeleted() {
+        return isDeleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        isDeleted = deleted;
     }
     /*
     public Set<Issue> getIssues() {

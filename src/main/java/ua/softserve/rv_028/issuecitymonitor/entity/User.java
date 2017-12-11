@@ -83,11 +83,12 @@ public class User {
 		this.userStatus = userDto.getUserStatus();
 		this.deleteDate = userDto.getDeleteDate();
 		this.avatarUrl = userDto.getAvatarUrl();
+		this.isDeleted = userDto.isDeleted();
 	}
 	
 	public User(String registrationDate, String firstName, String lastName, String password, String email,
                 String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
-                String avatarUrl) {
+                String avatarUrl, boolean isDeleted) {
 		this.userRole = userRole;
 		this.registrationDate = registrationDate;
 		this.firstName = firstName;
@@ -99,6 +100,7 @@ public class User {
 		this.userStatus = userStatus;
 		this.deleteDate = deleteDate;
 		this.avatarUrl = avatarUrl;
+		this.isDeleted = isDeleted;
 	}
 
 

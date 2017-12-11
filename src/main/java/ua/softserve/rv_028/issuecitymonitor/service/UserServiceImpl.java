@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService{
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
 
+
         LOGGER.info("Adding user!");
 
         userDao.save(new User(dto));

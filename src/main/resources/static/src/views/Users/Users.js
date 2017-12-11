@@ -10,21 +10,7 @@ class User extends Component {
         this.state = {
             users : []
         };
-//        this.load = this.load.bind(this);
     }
-//
-//    load(user){
-//        let _this = this;
-//        axios.get("api/users")
-//            .then(
-//                function(response){
-//                    _this.setState({users: response.data});
-//                    console.log(response);
-//                })
-//            .catch (function (error) {
-//            swal({title: "Something went wrong!", text: error, icon: "error"});
-//        });
-//    }
     componentWillMount() {
             var _this = this;
             axios.get("/api/users")
@@ -59,17 +45,18 @@ class User extends Component {
                                         <th>Password</th>
                                         <th>Email</th>
                                         <th>Phone</th>
-                                        <th>User Agreement</th>
+                                        {/*<th>User Agreement</th>*/}
                                         <th>User status</th>
                                         <th>Delete date</th>
                                         <th>Avatar</th>
+                                        {/*<th>IsDeleted</th>*/}
                                     </tr>
                                     </thead>
                                     <tbody>
                                     {this.state.users.map(
                                         function(user, i)
                                         {
-                                            return ( <Users key={i} user={users}/> );
+                                            return ( <Users key={i} users={user}/> );
                                         }
                                         )
                                     }
@@ -89,6 +76,7 @@ class User extends Component {
 
  class Users extends Component {
 
+
      constructor(props) {
          super(props);
 
@@ -96,51 +84,52 @@ class User extends Component {
              users: this.props.users,
              mounted: true
          };
-
          this.handleDelete = this.handleDelete.bind(this);
-         this.handleEdit = this.handleEdit.bind(this);
+
      }
 
-      handleDelete(){
-          var _this = this;
-          swal({
-              title: "Are you sure?",
-              text: "Once deleted, you will not be able to recover this data!",
-              icon: "warning",
-              buttons: true,
-              dangerMode: true,
-          })
-              .then(function(willDelete) {
-                  if (willDelete) {
-                      axios.delete("/api/users/"+_this.state.users.id)
-                          .then(function(response) {
-                              _this.setState({
-                                  mounted: false
-                              });
-                              swal({title: "Event record deleted", icon: "success"});
-                          }).catch(function (error) {
-                          swal({title: "Something went wrong!", text: error, icon: "error"});
-                      });
-                  }
-              });
-      }
+     handleDelete(){
+         var _this = this;
+         swal({
+             title: "Are you sure?",
+             text: "Once deleted, you will not be able to recover this data!",
+             icon: "warning",
+             buttons: true,
+             dangerMode: true,
+         })
+             .then(function(willDelete) {
+                 if (willDelete) {
+                     axios.delete("/api/users/delete/"+_this.state.users.id)
+                         .then(function(response) {
+                             _this.setState({
+                                 mounted: false
+                             });
+                             swal({title: "Issue record deleted", icon: "success"});
+                         }).catch(function (error) {
+                         swal({title: "Something went wrong!", text: error, icon: "error"});
+                     });
+                 }
+             });
+     }
 
      render() {
          const row = (
              <tr>
                  <td>{this.state.users.id}</td>
-                 <td>{this.state.users.role}</td>
+                 <td>{this.state.users.userRole}</td>
                  <td>{this.state.users.registrationDate}</td>
                  <td>{this.state.users.firstName}</td>
                  <td>{this.state.users.lastName}</td>
                  <td>{this.state.users.password}</td>
                  <td>{this.state.users.email}</td>
                  <td>{this.state.users.phone}</td>
-                 <td>{this.state.users.userAgreement}</td>
+                 {/*<td>{this.state.users.userAgreement}</td>*/}
                  <td>{this.state.users.userStatus}</td>
                  <td>{this.state.users.deleteDate}</td>
                  <td>{this.state.users.avatarUrl}</td>
+                 {/*<td>{this.state.users.isDeleted}</td>*/}
                  <td>
+                     <Link to={"/users/"+this.state.users.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
                      <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                  </td>
              </tr>
