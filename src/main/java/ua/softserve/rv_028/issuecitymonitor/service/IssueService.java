@@ -12,7 +12,6 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Service
 public class IssueService {
 

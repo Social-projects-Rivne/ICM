@@ -45,6 +45,30 @@ public class IssueControllerIntegrationTest {
     }
 
     @Test
+    public void testAddIssue(){
+        String addTitle = "testAddTitle";
+        String addDescription = "testAddDescription";
+        IssueDto issueDto = new IssueDto(issue);
+        issueDto.setTitle(addTitle);
+        issueDto.setDescription(addDescription);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<IssueDto> httpEntity = new HttpEntity<>(issueDto,httpHeaders);
+        ResponseEntity<IssueDto> responseEntity = testRestTemplate.exchange("/api/issues/" + issueDto.getId(),
+                HttpMethod.PUT, httpEntity, IssueDto.class);
+
+        System.out.println(httpEntity.toString());
+
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        IssueDto responseObject = responseEntity.getBody();
+        assertNotNull(responseObject);
+        assertEquals(addTitle, responseObject.getTitle());
+        assertEquals(addDescription, responseObject.getDescription());
+    }
+
+    @Test
     public void testEditIssue(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
