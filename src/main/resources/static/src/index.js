@@ -21,7 +21,8 @@ import Authorization from "./containers/Authorization/Authorization";
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
-            <Route path="/" name="Home" component={Full}/>
+            <Route exact path="/" name="Home" component={Full}/>
+            <Route exact path="/login" name="Home" component={Authorization}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));
