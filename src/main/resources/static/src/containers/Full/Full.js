@@ -26,7 +26,7 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route exact path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route exact path="/events" name="Events" component={Events}/>
+                <Route path="/events" name="Events" component={Events}/>
                 <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route exact path="/petitions" name="Petitions" component={Petitions}/>
                 <Route exact path="/issues" name="Issues" component={Issues}/>
