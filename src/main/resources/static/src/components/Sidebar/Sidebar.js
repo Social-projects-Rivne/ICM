@@ -7,7 +7,6 @@ import SidebarFooter from './../SidebarFooter';
 import SidebarForm from './../SidebarForm';
 import SidebarHeader from './../SidebarHeader';
 
-
 class Sidebar extends Component {
 
   handleClick(e) {

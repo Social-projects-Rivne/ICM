@@ -62,7 +62,7 @@ public class User {
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
 	private Set<Petition> petitions = new HashSet<>();
-	
+
 	public User() {}
 
 	public User(UserDto dto) {
@@ -78,7 +78,7 @@ public class User {
 		this.deleteDate = dto.getDeleteDate();
 		this.avatarUrl = dto.getAvatarUrl();
 	}
-	
+
 	public User(String registrationDate, String firstName, String lastName, String password, String email,
                 String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
                 String avatarUrl) {
@@ -196,7 +196,7 @@ public class User {
 	}
 
 	public Set<Event> getEvents(){
-		 return events;
+		return events;
 	}
 
 	public Set<Petition> getPetitions(){
