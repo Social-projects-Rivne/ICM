@@ -22,16 +22,20 @@ public class RegistrationController {
 
     @PostMapping(path = "/api/registration")
     public Boolean userRegistration(@RequestBody RegistrationDto user) {
-        if (!someFieldIsNull(user))
+        if (!someFieldIsNull(user)) {
             if (!someFieldIsEmpty(user)) {
                 try {
                     service.userRegistration(user.toEntity());
                 } catch (RuntimeException exception) {
+                    System.out.println("Hopa");
                     System.out.println(exception.getMessage());
                     return false;
                 }
             }
-        return false;
+        }
+
+        System.out.println("The end");
+        return true;
     }
 
     private boolean someFieldIsEmpty(RegistrationDto dto){

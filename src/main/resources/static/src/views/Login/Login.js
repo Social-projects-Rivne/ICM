@@ -87,7 +87,7 @@ class Login extends Component {
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Button onClick={this.onLoginInClick} color="success" size="lg" block>Log In</Button>
+                            <Button type="submit" color="success" size="lg" block>Log In</Button>
                         </Col>
                     </FormGroup>
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Col, Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
+import {Alert, Col, Button, Form, FormGroup, FormFeedback, Label, Input, FormText } from 'reactstrap';
 import axios from 'axios';
 
 export default class SignUp extends React.Component {
@@ -16,7 +16,10 @@ export default class SignUp extends React.Component {
             confirmPassValid : false,
             firstName : "",
             lastName : "",
-            btnColor : "secondary"
+            btnColor : "secondary",
+            alertColor: "primary",
+            registrationIsSuccessful: false,
+            registrationIsNotSuccessful: false
         };
 
         this.sendUserToServer = this.sendUserToServer.bind(this);
@@ -31,20 +34,28 @@ export default class SignUp extends React.Component {
             password : this.state.password
         };
 
-        axios.post('/api/registration', user)
+        const _this = this;
+        axios.post('api/registration', user)
             .then(function (response) {
-                console.log(response.data, response);
+                if (response.data) {
+                    _this.setState({registrationIsSuccessful: true});
+                    _this.setState({registrationIsNotSuccessful: false});
+                } else {
+                    _this.setState({registrationIsSuccessful: false});
+                    _this.setState({registrationIsNotSuccessful: true});
+                }
             })
             .catch(function (error) {
-                console.log(error.data, error);
+                _this.setState({registrationIsSuccessful: false});
+                _this.setState({registrationIsNotSuccessful: true});
             });
     }
+
 
     handleChange(event){
         const name = event.target.name;
         const value = event.target.value;
 
-        console.log(name);
         this.setState({[name]: value},
             () => { this.validateField(name, value) });
     }
@@ -91,14 +102,13 @@ export default class SignUp extends React.Component {
         axios.post('/api/checkEmail ', params)
             .then(function (response) {
                 _this.setState({emailIsUsed : response.data});
-                console.log(response.data);
             });
     }
 
     render(){
         return(
             <div className="container login-page-center col-3">
-                <Form  className="registration-form">
+                <Form className="registration-form">
                     <h3 className="text-center">Sign Up</h3>
                     <hr/>
                     <FormGroup>
@@ -163,12 +173,19 @@ export default class SignUp extends React.Component {
                     </FormGroup>
                     <FormGroup>
                         <Col sm={12}>
-                            <Button color={this.state.btnColor} size="lg" block>Sign Up</Button>
+                            <Button onClick={this.sendUserToServer} color={this.state.btnColor} size="lg" block>Sign Up</Button>
+
+                            <Alert color="success" className="alert-form" style={SignUp.visible(this.state.registrationIsSuccessful)}>
+                                Successful registration !
+                            </Alert>
+
+                            <Alert color="danger" className="alert-form" style={SignUp.visible(this.state.registrationIsNotSuccessful)}>
+                                Registration imposible
+                            </Alert>
                         </Col>
                     </FormGroup>
                 </Form>
                 <p className="below-form">Already have an account? <a href="/login">Log in</a></p>
-
             </div>
         )
     }
@@ -228,7 +245,7 @@ export default class SignUp extends React.Component {
 
     static visible(isTrue){
         if (isTrue) {
-            return {display : 'inline'};
+            return {display : 'block'};
         } else {
             return {display : 'none'};
         }

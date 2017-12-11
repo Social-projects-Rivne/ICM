@@ -12,8 +12,8 @@ public class RegistrationService {
     UserDao userDao;
 
     public boolean existUser(String email) {
-        User user = userDao.findByEmail(email);
-        return user != null && user.getEmail().equals(email);
+        User user = userDao.findUserByUsername(email);
+        return user != null && user.getUsername().equals(email);
     }
 
     public void userRegistration(User user){

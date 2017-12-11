@@ -55,7 +55,7 @@ public class RegistrationDto{
         User user = new User();
         user.setFirstName(this.getFirstName());
         user.setLastName(this.getLastName());
-        user.setEmail(this.getEmail());
+        user.setUsername(this.getEmail());
         user.setPassword(this.getPassword());
         return user;
     }
