@@ -17,7 +17,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class ViewController {
 
-    @GetMapping(value = {"/dashboard", "/issues", "/petitions", "/events", "/users", "/settings"})
+    @GetMapping(value="^(\\/api\\/)*")
+    public String index() {
+        return "index.html";
+    }
+
+
+/*    @GetMapping(value = {"/dashboard", "/issues", "/petitions", "/events", "/users", "/settings"})
     public String dashboard(){
         return "index.html";
     }
@@ -25,6 +31,6 @@ public class ViewController {
     @GetMapping(value = "/login")
     public String login(){
         return "index.html";
-    }
+    }*/
 
 }

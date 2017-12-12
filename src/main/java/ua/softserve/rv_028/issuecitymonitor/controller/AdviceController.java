@@ -16,4 +16,9 @@ public class AdviceController {
     public void handleNotFound(Exception e){
         LOGGER.error(e.getMessage());
     }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public void searchWrongAttribute(Exception e){
+        LOGGER.error(e.getMessage());
+    }
 }

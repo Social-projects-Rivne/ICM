@@ -19,6 +19,6 @@ public class EventSpecification implements Specification<Event> {
 
     @Override
     public Predicate toPredicate(Root<Event> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.like(root.get(key),value);
+        return criteriaBuilder.like(root.get(key),"%"+value+"%");
     }
 }
