@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.RegistrationService;
+import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 
 @RestController
 public class RegistrationController {
@@ -17,7 +18,7 @@ public class RegistrationController {
     @PostMapping(path = "/api/checkEmail")
     public Boolean checkEmail(@RequestParam("email") String email){
         System.out.println(email);
-        return service.existUser(email);
+        return service.isUserExist(email);
     }
 
     @PostMapping(path = "/api/registration")
@@ -25,13 +26,14 @@ public class RegistrationController {
         if (!someFieldIsNull(user)) {
             if (!someFieldIsEmpty(user)) {
                 try {
-                    service.userRegistration(user);
+                    service.registrationUser(user);
+                    return true;
                 } catch (RuntimeException exception) {
                     return false;
                 }
             }
         }
-        return true;
+        return false;
     }
 
     private boolean someFieldIsEmpty(UserDto dto){

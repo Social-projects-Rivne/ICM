@@ -1,28 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
-@Service
-public class RegistrationService {
+public interface RegistrationService {
+    boolean isUserExist(String email);
+    void registrationUser(UserDto userDto);
 
-    @Autowired
-    UserDao userDao;
-
-    @Autowired
-    BCryptPasswordEncoder passwordEncoder;
-
-    public boolean existUser(String email) {
-        User user = userDao.findUserByUsername(email);
-        return user != null && user.getUsername().equals(email);
-    }
-
-    public void userRegistration(UserDto dto){
-        userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword())));
-    }
 }
