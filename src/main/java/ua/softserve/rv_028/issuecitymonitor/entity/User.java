@@ -37,7 +37,7 @@ public class User{
 
 	@NaturalId
 	@Column(name = "email", unique = true)
-	private String email;
+	private String username;
 
 	@Column(name = "last_name")
 	private String lastName;
@@ -74,7 +74,7 @@ public class User{
 
 	public User(UserDto userDto) {
 		this.password = userDto.getPassword();
-		this.email = userDto.getEmail();
+		this.username = userDto.getEmail();
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
@@ -85,10 +85,10 @@ public class User{
 		this.avatarUrl = userDto.getAvatarUrl();
 	}
 
-	public User(String firstName, String lastName, String password, String email,
+	public User(String firstName, String lastName, String password, String username,
                 String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
                 String avatarUrl) {
-		this.email = email;
+		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
 		this.firstName = firstName;
@@ -147,12 +147,12 @@ public class User{
 		this.password = password;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
-	public String getEmail() {
-		return this.email;
+	public String getUsername() {
+		return this.username;
 	}
 
 	public String getPhone() {
@@ -224,7 +224,7 @@ public class User{
 				", registrationDate='" + registrationDate + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", email='" + email + '\'' +
+				", username='" + username + '\'' +
 				", phone='" + phone + '\'' +
 				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +

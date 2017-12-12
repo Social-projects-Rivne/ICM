@@ -36,8 +36,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userDao.findByEmail(email);
-        return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(),
+        User user = userDao.findUserByUsername(email);
+        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 true, true, true,
                 (user.getUserStatus()== UserStatus.ACTIVE || user.getUserStatus() == UserStatus.UNCONFIRMED),
                 UserRole.collectionForRole(user.getUserRole()));

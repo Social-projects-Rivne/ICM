@@ -26,7 +26,6 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
-
                 <Route exact path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route exact path="/events" name="Events" component={Events}/>
                 <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
@@ -34,7 +33,6 @@ class Full extends Component {
                 <Route exact path="/issues" name="Issues" component={Issues}/>
                 <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/users" name="Users" component={Users}/>
-
               </Switch>
             </Container>
           </main>

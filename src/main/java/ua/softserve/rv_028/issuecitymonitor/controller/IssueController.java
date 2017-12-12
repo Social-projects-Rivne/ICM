@@ -9,7 +9,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/issues")
+@RequestMapping("/api/issues")
 public class IssueController {
 
     private static final Logger LOGGER = Logger.getLogger(IssueController.class.getName());

@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,6 +11,8 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.google.common.base.Preconditions.checkState;
 
 @Service
 public class IssueService {
@@ -37,9 +40,7 @@ public class IssueService {
     public Issue findOne(long id){
 
         Issue issue = issueDao.findOne(id);
-
-        if(issue == null)
-            throw new IllegalStateException("Issue not found");
+        checkState(issue != null, "Issue not found");
         LOGGER.debug("Find one " + issue.toString());
         return issue;
     }
@@ -47,7 +48,7 @@ public class IssueService {
     public IssueDto findById(long id) {
 
         Issue issue = findOne(id);
-        LOGGER.debug("Finded by id" + issue.toString());
+        LOGGER.debug("Finded by id " + issue.toString());
 
         return new IssueDto(issue);
     }

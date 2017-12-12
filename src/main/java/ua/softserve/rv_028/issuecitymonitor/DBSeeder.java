@@ -26,9 +26,9 @@ public class DBSeeder {
     private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
 
     @Autowired
-    public DBSeeder(EntityManagerFactory factory){
+    public DBSeeder(EntityManagerFactory factory) {
 
-        if(factory.unwrap(SessionFactory.class) == null){
+        if (factory.unwrap(SessionFactory.class) == null) {
             throw new NullPointerException("factory is not a hibernate factory");
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
@@ -44,55 +44,50 @@ public class DBSeeder {
     private void fillDatabase() throws RuntimeException {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
-        for(int i=0; i < 10 ; i++){
+        for (int i = 0; i < 10; i++) {
 
-            User user = new User("Tom"+i, "Jerry"+i,i+""+i+""+i,
-                    "tom"+i+"@mail.rv.ua","+380997755331",r.nextBoolean(),
-                    randomEnum(UserStatus.class),randomEnum(UserRole.class),
-                    "http://url.com"+i);
+            User user = new User("Tom" + i, "Jerry" + i, i + "" + i + "" + i,
+                    "tom" + i + "@mail.rv.ua", "+380997755331", r.nextBoolean(),
+                    randomEnum(UserStatus.class), randomEnum(UserRole.class), "http://url.com" + i);
             session.save(user);
 
-            for(int a=0; a < 3 ; a++) {
-                Event event = new Event(user,"Title" +a+""+i,"description"
-                        +a+""+ i,date(), r.nextDouble(),r.nextDouble(), date(),
-                        randomEnum(EventCategory.class));
-
+            for (int a = 0; a < 3; a++) {
+                Event event = new Event(user, "Title" + a + "" + i, "description" + a + "" + i, date(),
+                        r.nextDouble(), r.nextDouble(), date(), randomEnum(EventCategory.class));
                 session.save(event);
 
-                Petition petition = new Petition(user, "Title" +a+""+ i,"descript" +a+""+ i, date(),
+                Petition petition = new Petition(user, "Title" + a + "" + i, "descript" + a + "" + i, date(),
                         randomEnum(PetitionCategory.class));
-
                 session.save(petition);
 
-                Issue issue = new Issue(user,"title" +a+""+ i,"desc" +a+""+ i,date(),
-                        r.nextDouble(),r.nextDouble(),randomEnum(IssueCategory.class));
-
+                Issue issue = new Issue(user, "title" + a + "" + i, "desc" + a + "" + i, date(),
+                        r.nextDouble(), r.nextDouble(), randomEnum(IssueCategory.class));
                 session.save(issue);
 
                 for (int j = 0; j < 5; j++) {
-                    EventAttachment eventAttachment = new EventAttachment(event,user,"url" +j+""+a+""+ i);
+                    EventAttachment eventAttachment = new EventAttachment(event, user, "url" + j + "" + a + "" + i);
                     session.save(eventAttachment);
 
                     EventChangeRecord eventChangeRecord = new EventChangeRecord(event,
-                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
+                            randomEnum(ChangeRecordStatus.class), user, "msg" + j + "" + a + "" + i);
                     session.save(eventChangeRecord);
 
-                    IssueAttachment issueAttachment = new IssueAttachment(issue,user,"url" +j+""+a+""+ i);
+                    IssueAttachment issueAttachment = new IssueAttachment(issue, user, "url" + j + "" + a + "" + i);
                     session.save(issueAttachment);
 
                     IssueChangeRecord issueChangeRecord = new IssueChangeRecord(issue,
-                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
+                            randomEnum(ChangeRecordStatus.class), user, "msg" + j + "" + a + "" + i);
                     session.save(issueChangeRecord);
 
-                    PetitionAttachment petitionAttachment = new PetitionAttachment(petition,user,
-                            "url" +j+""+a+""+ i);
+                    PetitionAttachment petitionAttachment = new PetitionAttachment(petition, user,
+                            "url" + j + "" + a + "" + i);
                     session.save(petitionAttachment);
 
                     PetitionChangeRecord petitionChangeRecord = new PetitionChangeRecord(petition,
-                            randomEnum(ChangeRecordStatus.class),user,"msg" +j+""+a+""+ i);
+                            randomEnum(ChangeRecordStatus.class), user, "msg" + j + "" + a + "" + i);
                     session.save(petitionChangeRecord);
 
-                    UserVote userVote = new UserVote(user,petition);
+                    UserVote userVote = new UserVote(user, petition);
                     session.save(userVote);
                 }
             }
@@ -102,11 +97,11 @@ public class DBSeeder {
 
     private static final Random r = new Random();
 
-    private String date(){
+    private String date() {
         return DATE_FORMAT.format(new Date());
     }
 
-    private <T extends Enum<?>> T randomEnum(Class<T> classname){
+    private <T extends Enum<?>> T randomEnum(Class<T> classname) {
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
     }

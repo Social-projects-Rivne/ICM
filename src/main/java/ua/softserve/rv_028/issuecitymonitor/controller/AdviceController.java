@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ControllerAdvice
 public class AdviceController {
 
-    private static final Logger LOG = Logger.getLogger(AdviceController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalStateException.class)
     public void handleNotFound(Exception e){
-        LOG.error(e.getMessage());
+        LOGGER.error(e.getMessage());
     }
 }
 

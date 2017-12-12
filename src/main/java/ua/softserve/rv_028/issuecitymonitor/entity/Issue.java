@@ -18,7 +18,6 @@ public class Issue{
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    @OrderBy
     private long id;
 
     @ManyToOne
