@@ -59,4 +59,20 @@ public class MapperService {
         event.setCategory(eventEntity.getCategory());
         return event;
     }
+
+    public Event fromEntityToDto(EventDto eventDto){
+        Event event = new Event();
+
+        event.setId(eventDto.getId());
+        event.setUser(fromDtoToEntity(eventDto.getUserDto()));
+        event.setTitle(eventDto.getTitle());
+        event.setDescription(eventDto.getDescription());
+        event.setInitialDate(eventDto.getInitialDate());
+        event.setLatitude(eventDto.getLatitude());
+        event.setLongitude(eventDto.getLongitude());
+        event.setEndDate(eventDto.getEndDate());
+        event.setCategory(eventDto.getCategory());
+        return event;
+    }
+
 }
