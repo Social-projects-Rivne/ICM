@@ -6,16 +6,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 
 /**
  *
@@ -65,20 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 .anyRequest().permitAll()
 
                 .and().csrf().disable().formLogin()
-                .loginPage("/login")
-                //.failureUrl("/login?error=true")
-                .failureHandler(new AuthenticationFailureHandler(){
-
-                    @Override
-                    public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
-                        //httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
-
-                            httpServletResponse.getWriter().print(
-                                    "{'login': 'FAILURE'}");
-                            httpServletResponse.getWriter().flush();
-
-                    }
-                })
+                .loginPage("/login").failureUrl("/login?error=true")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .permitAll()
