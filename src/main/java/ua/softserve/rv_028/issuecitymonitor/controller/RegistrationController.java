@@ -13,7 +13,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 @RestController
 public class RegistrationController {
 
-    private static final Logger LOGGER = Logger.getLogger(EventController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class.getName());
 
     @Autowired
     RegistrationService service;
