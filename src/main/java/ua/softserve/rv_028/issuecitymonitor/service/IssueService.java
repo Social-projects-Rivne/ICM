@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,13 +26,14 @@ public class IssueService {
     }
 
     public List<IssueDto> findAll(){
+
         LOGGER.debug("Finding all issues");
         List<IssueDto> issueDto = new ArrayList<>();
-
         for(Issue issue : issueDao.findAllByOrderByIdAsc()){
             issueDto.add(new IssueDto(issue));
         }
         LOGGER.debug("Finded all issues");
+
         return issueDto;
     }
 
@@ -54,8 +54,9 @@ public class IssueService {
     }
 
     public IssueDto addIssue(IssueDto issueDto){
+
+        LOGGER.debug("Adding issue");
         Issue issue = new Issue();
-        LOGGER.debug("Adding " + issue.toString());
         issue.setUser(new User(issueDto.getUserDto()));
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
@@ -63,22 +64,20 @@ public class IssueService {
         issue.setLatitude(issueDto.getLatitude());
         issue.setInitialDate(issueDto.getInitialDate());
         issue.setCategory(issueDto.getCategory());
-        LOGGER.debug("Added " + issue.toString());
         issueDao.save(issue);
-
+        LOGGER.debug("Added " + issue.toString());
 
         return new IssueDto(issue);
     }
 
     public IssueDto editIssue(IssueDto issueDto){
 
+        LOGGER.debug("Edit issue");
         Issue issue = findOne(issueDto.getId());
-        LOGGER.debug("Edit " + issue.toString());
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
         issue.setInitialDate(issueDto.getInitialDate());
         issue.setCategory(issueDto.getCategory());
-
         issueDao.save(issue);
         LOGGER.debug("Updated " + issue.toString());
 
@@ -87,10 +86,9 @@ public class IssueService {
 
     public void deleteIssue(long id){
 
-        Issue issue = findOne(id);
-        LOGGER.debug("Deleting " + issue.toString());
-        issueDao.delete(issue);
-        LOGGER.debug("Deleted " + issue.toString());
+        LOGGER.debug("Deleting issue by id " + id);
+        issueDao.delete(id);
+        LOGGER.debug("Deleted issue");
     }
 
 }

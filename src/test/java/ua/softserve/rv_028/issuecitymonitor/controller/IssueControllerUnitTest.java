@@ -54,7 +54,7 @@ public class IssueControllerUnitTest {
     @Test
     public void testAddIssue(){
         IssueDto issueDto = new IssueDto();
-        issueDto.setId(1);
+        issueDto.setId(1L);
         issueDto.setTitle(TEST_TITLE);
         issueDto.setDescription(TEST_DESCRIPTION);
         when(issueService.addIssue(issueDto)).thenReturn(issueDto);
@@ -68,7 +68,7 @@ public class IssueControllerUnitTest {
     @Test
     public void testEditIssue(){
         IssueDto issueDto = new IssueDto();
-        issueDto.setId(1);
+        issueDto.setId(1L);
         issueDto.setTitle(TEST_TITLE);
         issueDto.setDescription(TEST_DESCRIPTION);
         when(issueService.editIssue(issueDto)).thenReturn(issueDto);
@@ -82,7 +82,7 @@ public class IssueControllerUnitTest {
     @Test
     public void testEditIssueNotFound(){
         IssueDto issueDto = new IssueDto();
-        issueDto.setId(1);
+        issueDto.setId(1L);
         when(issueService.editIssue(issueDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
