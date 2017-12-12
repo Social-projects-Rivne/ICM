@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class IssueService {
 
-    private static final Logger LOG = LogManager.getLogger(IssueService.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(IssueService.class.getName());
 
     private IssueDao issueDao;
 
@@ -25,13 +25,13 @@ public class IssueService {
     }
 
     public List<IssueDto> findAll(){
-
+        LOGGER.debug("Finding all issues");
         List<IssueDto> issueDto = new ArrayList<>();
 
         for(Issue issue : issueDao.findAllByOrderByIdAsc()){
             issueDto.add(new IssueDto(issue));
         }
-        LOG.info("Show all issues");
+        LOGGER.debug("Finded all issues");
         return issueDto;
     }
 
@@ -41,20 +41,21 @@ public class IssueService {
 
         if(issue == null)
             throw new IllegalStateException("Issue not found");
+        LOGGER.debug("Find one " + issue.toString());
         return issue;
     }
 
     public IssueDto findById(long id) {
 
         Issue issue = findOne(id);
+        LOGGER.debug("Finded by id" + issue.toString());
 
-        LOG.info("Find issue by id " + issue.toString());
         return new IssueDto(issue);
     }
 
     public IssueDto addIssue(IssueDto issueDto){
         Issue issue = new Issue();
-
+        LOGGER.debug("Adding " + issue.toString());
         issue.setUser(new User(issueDto.getUserDto()));
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
@@ -62,34 +63,34 @@ public class IssueService {
         issue.setLatitude(issueDto.getLatitude());
         issue.setInitialDate(issueDto.getInitialDate());
         issue.setCategory(issueDto.getCategory());
-
+        LOGGER.debug("Added " + issue.toString());
         issueDao.save(issue);
 
-        LOG.info("Add " + issue.toString());
+
         return new IssueDto(issue);
     }
 
     public IssueDto editIssue(IssueDto issueDto){
 
         Issue issue = findOne(issueDto.getId());
+        LOGGER.debug("Edit " + issue.toString());
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
         issue.setInitialDate(issueDto.getInitialDate());
         issue.setCategory(issueDto.getCategory());
 
         issueDao.save(issue);
+        LOGGER.debug("Updated " + issue.toString());
 
-        LOG.info("Edit " + issue.toString());
         return new IssueDto(issue);
     }
 
     public void deleteIssue(long id){
 
         Issue issue = findOne(id);
-
+        LOGGER.debug("Deleting " + issue.toString());
         issueDao.delete(issue);
-
-        LOG.info("Delete " + issue.toString());
+        LOGGER.debug("Deleted " + issue.toString());
     }
 
 }
