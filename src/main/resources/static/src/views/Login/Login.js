@@ -14,18 +14,6 @@ class Login extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.onLoginInClick = this.onLoginInClick.bind(this);
-    }
-
-    onLoginInClick(){
-        if(this.state.emailValid && this.state.passwordValid){
-            console.log();
-            alert("Yes1yes");
-        } else {
-            console.log(this.state.emailValid, this.state.passwordValid);
-            alert("No0no");
-        }
-
     }
 
     handleChange(event) {
@@ -64,7 +52,7 @@ class Login extends Component {
         return (
             <div className="container login-page-center col-3">
                 <Form className="registration-form" method="POST" action="/login">
-                    <h3 className="text-center">Login In</h3>
+                    <h3 className="text-center">Log In</h3>
                     <hr/>
                     <FormGroup>
                         <Col sm={12}>
