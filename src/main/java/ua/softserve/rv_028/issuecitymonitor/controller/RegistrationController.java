@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,12 +13,13 @@ import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 @RestController
 public class RegistrationController {
 
+    private static final Logger LOGGER = Logger.getLogger(EventController.class.getName());
+
     @Autowired
     RegistrationService service;
 
     @PostMapping(path = "/api/checkEmail")
     public Boolean checkEmail(@RequestParam("email") String email){
-        System.out.println(email);
         return service.isUserExist(email);
     }
 
@@ -27,12 +29,14 @@ public class RegistrationController {
             if (!someFieldIsEmpty(user)) {
                 try {
                     service.registrationUser(user);
+                    LOGGER.info("The user " + user.getEmail() + " has successfully registered");
                     return true;
                 } catch (RuntimeException exception) {
                     return false;
                 }
             }
         }
+
         return false;
     }
 
