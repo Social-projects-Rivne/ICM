@@ -11,6 +11,7 @@ import Dashboard from '../../views/Dashboard/';
 import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
 import Users from "../../views/Users/";
+import EditUsers from "../../views/Users/EditUsers";
 
 class Full extends Component {
   render() {
@@ -24,7 +25,7 @@ class Full extends Component {
             <Container fluid>
               <Switch>
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
-
+                <Route path="/users/:id/edit" name="Users" component = {EditUsers}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
