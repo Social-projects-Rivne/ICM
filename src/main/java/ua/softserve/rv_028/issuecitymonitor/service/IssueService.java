@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,7 +14,7 @@ import java.util.List;
 @Service
 public class IssueService {
 
-    private static final Logger LOGGER = LogManager.getLogger(IssueService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IssueService.class.getName());
 
     private IssueDao issueDao;
 
