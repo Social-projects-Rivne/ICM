@@ -29,6 +29,22 @@ class EditUsers extends Component {
 
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
+    }
+
+    componentWillMount() {
+        let _this = this;
+        axios.get("/api/users/" + this.props.match.params.id)
+            .then(function(response) {
+                _this.setState({
+                    users: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong! + Chet ne to", text: error, icon: "error"});
+            })
+
+
     }
 
 
@@ -72,20 +88,6 @@ class EditUsers extends Component {
         });
     }
 
-    componentWillMount() {
-        var _this = this;
-        axios.get("/api/users" + this.props.match.params.id)
-            .then(function (response) {
-                _this.setState({
-                    users: response.data
-                })
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            })
-
-
-    }
 
     render() {
         return (
@@ -105,8 +107,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="10">
                                             <Input value={this.state.users.userRole} onChange={this.handleChange}
-                                                   type="text" name="title"
-                                                   placeholder="Title">
+                                                   type="text" name="role"
+                                                   placeholder="Role">
                                                 <option>ADMIN</option>
                                                 <option>MODERATOR</option>
                                                 <option>USER</option>
@@ -122,7 +124,7 @@ class EditUsers extends Component {
                                         <Col xs="12" md="4">
                                             <InputGroup>
                                                 <Input value={this.state.users.registrationDate} type="text"
-                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
+                                                       name="registrationDate" placeholder="DD/MM/YYYY hh:mm"
                                                        onChange={this.handleDateChange}/>
                                                 <InputGroupAddon className={this.state.users.registrationDate ?
                                                     "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
@@ -136,8 +138,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="10">
                                             <Input value={this.state.users.firstName} onChange={this.handleChange}
-                                                   type="textarea" name="description" rows="9"
-                                                   placeholder="Description"/>
+                                                   type="textarea" name="firstname"
+                                                   placeholder="F. Name"/>
                                         </Col>
                                     </FormGroup>
 
@@ -147,8 +149,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.lastName} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="lastname"
+                                                   placeholder="L. Name">
                                             </Input>
                                         </Col>
                                     </FormGroup>
@@ -159,8 +161,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.password} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="password"
+                                                   placeholder="Password">
                                             </Input>
                                         </Col>
                                     </FormGroup>
@@ -171,8 +173,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.email} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="email"
+                                                   placeholder="Email">
                                             </Input>
                                         </Col>
                                     </FormGroup>
@@ -183,8 +185,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.phone} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="phone"
+                                                   placeholder="Phone">
                                             </Input>
                                         </Col>
                                     </FormGroup>
@@ -195,8 +197,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.userStatus} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="userstatus"
+                                                   placeholder="Status">
                                                 <option>DELETED</option>
                                                 <option>BANNED</option>
                                                 <option>ACTIVE</option>
@@ -211,8 +213,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.avatarUrl} onChange={this.handleChange}
-                                                   type="select" name="category"
-                                                   placeholder="Category">
+                                                   type="select" name="avatar"
+                                                   placeholder="default">
                                             </Input>
                                         </Col>
                                     </FormGroup>

@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService{
     @Override
     public UserDto findByID(long id) throws UserNotFoundException {
         User user = findOne(id);
-        LOGGER.info("User is finded");
+        LOGGER.info("User is finded by id");
         return new UserDto(user);
     }
 

@@ -41,6 +41,11 @@ public class UserController {
         return new ResponseEntity<Object>(service.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public UserDto getOne(@PathVariable long id) throws UserNotFoundException {
+        LOG.info("User is founded!");
+        return service.findByID(id);
+    }
 
     @PostMapping("/{id}")
     public ResponseEntity<?> updateForUser(@PathVariable(value = "id") long id, @RequestBody UserDto userDto){
