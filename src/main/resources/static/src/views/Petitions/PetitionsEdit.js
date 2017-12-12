@@ -41,7 +41,6 @@ class Forms extends Component {
                             </CardHeader>
                             <CardBody>
 
-
                                 <FormGroup row>
                                     <Col md="3">
                                         <Label>Status</Label>
@@ -58,31 +57,51 @@ class Forms extends Component {
                                                     <Input type="radio" id="radio2" name="radios" value="2"/> OFF
                                                 </Label>
                                             </div>
+                                            <div className="radio">
+                                                <Label check htmlFor="radio2">
+                                                    <Input type="radio" id="radio3" name="radios" value="3"/> Delete
+                                                </Label>
+                                            </div>
                                         </FormGroup>
                                     </Col>
                                 </FormGroup>
 
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="text-input">Text Input</Label>
+                                            <Label htmlFor="text-input">Category</Label>
                                         </Col>
                                         <Col xs="12" md="9">
-                                            <Input type="text" id="text-input" name="text-input" placeholder="Text"/>
+                                            <Input type="select" name="select" id="select">
+                                                <option value="0">Please select</option>
+                                                <option value="1">Option #1</option>
+                                                <option value="2">Option #2</option>
+                                                <option value="3">Option #3</option>
+                                            </Input>
                                             <FormText color="muted">This is a help text</FormText>
                                         </Col>
                                     </FormGroup>
+
+                                <FormGroup row>
+                                    <Col md="3">
+                                        <Label htmlFor="text-input">Title</Label>
+                                    </Col>
+                                    <Col xs="12" md="9">
+                                        <Input type="text" id="text-input" name="text-input" defaultValue="Petition title"/>
+                                        <FormText color="muted">This is a help text</FormText>
+                                    </Col>
+                                </FormGroup>
+
 
                                     <FormGroup row>
                                         <Col md="3">
-                                            <Label htmlFor="textarea-input">Textarea</Label>
+                                            <Label htmlFor="textarea-input">Description</Label>
                                         </Col>
                                         <Col xs="12" md="9">
                                             <Input type="textarea" name="textarea-input" id="textarea-input" rows="9"
-                                                   placeholder="Content..."/>
+                                                   placeholder="Content..." defaultValue="Petition Description"/>
                                             <FormText color="muted">This is a help text</FormText>
                                         </Col>
                                     </FormGroup>
-
 
 
                                     <FormGroup row>
