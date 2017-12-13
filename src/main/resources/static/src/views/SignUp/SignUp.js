@@ -44,13 +44,24 @@ export default class SignUp extends React.Component {
                     _this.setState({registrationIsSuccessful: false});
                     _this.setState({registrationIsNotSuccessful: true});
                 }
+                _this.autoLogIn(user.email, user.password)
+
             })
             .catch(function (error) {
                 _this.setState({registrationIsSuccessful: false});
                 _this.setState({registrationIsNotSuccessful: true});
             });
+
     }
 
+    autoLogIn(email, password){
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        axios.post("/login", formData).then(function () {
+            location.href = "/";
+        });
+    }
 
     handleChange(event){
         const name = event.target.name;
