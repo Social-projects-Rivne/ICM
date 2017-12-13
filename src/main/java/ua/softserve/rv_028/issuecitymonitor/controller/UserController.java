@@ -6,8 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
-import ua.softserve.rv_028.issuecitymonitor.service.UserServiceImpl;
+import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import java.util.logging.Logger;
 
@@ -17,17 +16,17 @@ import java.util.logging.Logger;
 public class UserController {
     private static final Logger LOG = Logger.getLogger(UserController.class.getName());
 
-    private final UserServiceImpl service;
+    private final UserService service;
 
     @Autowired
-    public UserController(UserServiceImpl service){
+    public UserController(UserService service){
         this.service = service;
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> deleteUser(@PathVariable long id ) throws UserNotFoundException {
+    public ResponseEntity<?> deleteUser(@PathVariable long id ){
         service.deleteById(id);
-        if (UserServiceImpl.isMessages()){
+        if (UserService.isMessages()){
             LOG.info("User is deleted and map show it!");
             return new ResponseEntity<>( HttpStatus.OK);
         } else
@@ -42,25 +41,14 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDto getOne(@PathVariable long id) throws UserNotFoundException {
+    public UserDto getOne(@PathVariable long id){
         LOG.info("User is founded!");
         return service.findByID(id);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateForUser(@PathVariable(value = "id") long id, @RequestBody UserDto userDto){
+    public UserDto updateForUser(@RequestBody UserDto userDto) {
         LOG.info("OK");
-        try {
-            UserDto updateUser = service.updateUser(userDto);
-            return new ResponseEntity<Object>(updateUser, HttpStatus.OK);
-        }catch (UserNotFoundException e)
-        {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
-    @PostMapping("/add")
-    public UserDto addUser(@RequestBody UserDto dto){
-        return service.addUser(dto);
-
+        return service.updateUser(userDto);
     }
 }
