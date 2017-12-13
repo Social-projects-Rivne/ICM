@@ -1,6 +1,12 @@
 package ua.softserve.rv_028.issuecitymonitor.entity.enums;
 
-public enum UserRole {
+import org.springframework.security.core.GrantedAuthority;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
+public enum UserRole implements GrantedAuthority{
     ADMIN,
     MODERATOR,
     USER;
@@ -22,4 +28,5 @@ public enum UserRole {
         else
             return Collections.singletonList(USER);
     }
+
 }
