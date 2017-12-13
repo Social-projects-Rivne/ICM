@@ -7,10 +7,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
+import ua.softserve.rv_028.issuecitymonitor.service.EmailService;
 import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 
 @RestController
 public class RegistrationController {
+
+    @Autowired
+    EmailService emailService;
 
     @Autowired
     RegistrationServiceImpl service;
@@ -23,8 +27,10 @@ public class RegistrationController {
     @PostMapping(path = "/api/registration")
     public HttpStatus userRegistration(@RequestBody UserDto user) {
 
-        if (!someFieldIsNull(user) && !someFieldIsEmpty(user))
+        if (!someFieldIsNull(user) && !someFieldIsEmpty(user)) {
             service.registrationUser(user);
+            emailService.sendEmail(user.getEmail(), user.getFirstName(), user.getLastName());
+        }
         else
             return HttpStatus.BAD_REQUEST;
 
