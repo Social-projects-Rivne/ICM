@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,7 +17,7 @@ import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 @Service
 public class EventServiceImpl implements EventService {
 
-    private static final Logger LOGGER = LogManager.getLogger(EventServiceImpl.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EventServiceImpl.class.getName());
 
     private final EventDao eventDao;
 

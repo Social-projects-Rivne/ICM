@@ -28,5 +28,6 @@ public enum UserRole implements GrantedAuthority{
         else
             return Collections.singletonList(USER);
     }
+
 }
 
