@@ -2,15 +2,14 @@ package ua.softserve.rv_028.issuecitymonitor.dao.specifiation;
 
 import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import javax.persistence.criteria.*;
 
 public class EventSpecification implements Specification<Event> {
 
-    private String key, value;
+    private String key;
+    private String value;
 
     public EventSpecification(String key, String value){
         this.key = key;
@@ -19,6 +18,16 @@ public class EventSpecification implements Specification<Event> {
 
     @Override
     public Predicate toPredicate(Root<Event> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.like(root.get(key),"%"+value+"%");
+        Path<String> actualValue = root.get(key);
+
+        if(value==null) {
+            return null;
+        }
+
+        if(key.equals("category")) {
+            return criteriaBuilder.equal(actualValue, EventCategory.valueOf(value));
+        }
+
+        return criteriaBuilder.like(actualValue, "%"+value+"%");
     }
 }

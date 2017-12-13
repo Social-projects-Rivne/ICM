@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Link, Switch, Route, Redirect} from 'react-router-dom';
+import {Route, Switch} from 'react-router-dom';
 import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
@@ -13,7 +13,7 @@ import Issues from "../../views/Issues/";
 import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
 import EventEdit from "../../views/Events/EventEdit";
-import Login from "../../views/Login/Login";
+import Search from "../../views/Search/Search";
 
 class Full extends Component {
   render() {
@@ -33,6 +33,7 @@ class Full extends Component {
                 <Route exact path="/issues" name="Issues" component={Issues}/>
                 <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/users" name="Users" component={Users}/>
+                <Route exact path="/search" name="Search" component={Search}/>
               </Switch>
             </Container>
           </main>

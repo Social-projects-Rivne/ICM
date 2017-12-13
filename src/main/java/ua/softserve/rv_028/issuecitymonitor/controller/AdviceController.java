@@ -17,8 +17,9 @@ public class AdviceController {
         LOGGER.error(e.getMessage());
     }
 
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)
-    public void searchWrongAttribute(Exception e){
+    public void handleSearchWrongAttribute(Exception e){
         LOGGER.error(e.getMessage());
     }
 }

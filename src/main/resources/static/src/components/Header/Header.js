@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Nav, NavbarBrand, NavbarToggler,} from 'reactstrap';
+import {Input, Nav, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 
 class Header extends Component {
@@ -29,7 +29,11 @@ class Header extends Component {
                 <NavbarToggler className="d-md-down-none" onClick={this.sidebarToggle}>
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
-
+                <Nav navbar>
+                    <NavItem>
+                        <NavLink><Input type="search" name="search" id="exampleSearch" placeholder="search placeholder" /></NavLink>
+                    </NavItem>
+                </Nav>
                 <Nav className="ml-auto" navbar>
                     <HeaderDropdown/>
                 </Nav>
