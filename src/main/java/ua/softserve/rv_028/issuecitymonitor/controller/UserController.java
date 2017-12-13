@@ -47,8 +47,9 @@ public class UserController {
         return service.findByID(id);
     }
 
-    @PostMapping("/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<?> updateForUser(@PathVariable(value = "id") long id, @RequestBody UserDto userDto){
+        LOG.info("OK");
         try {
             UserDto updateUser = service.updateUser(userDto);
             return new ResponseEntity<Object>(updateUser, HttpStatus.OK);

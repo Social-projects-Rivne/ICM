@@ -56,12 +56,12 @@ public class UserServiceImpl implements UserService{
         User user = findOne(id);
         if(UserRole.ADMIN != user.getUserRole()){
             LOGGER.info("User is deleted");
-            user.delete();
+            userDao.delete(id);
             messages = true;
             UserDto.setCount(UserDto.getCount() -1);
         }else
             messages = false;
-        LOGGER.info("user role is " + user.getUserRole());
+        LOGGER.info("user role is " + user.getUserRole() + user.getIsDeleted());
 
     }
 
@@ -79,6 +79,7 @@ public class UserServiceImpl implements UserService{
     public List<UserDto> findAll(){
         List<UserDto> all = new ArrayList<>();
         for (User users : userDao.findAll()) {
+            if(!users.getIsDeleted())
             all.add( new UserDto(users));
         }
         LOGGER.info("Show all users!");

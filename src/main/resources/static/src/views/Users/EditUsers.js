@@ -11,6 +11,7 @@ import {Link} from "react-router-dom";
 class EditUsers extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             users: {
                 id: "",
@@ -18,35 +19,32 @@ class EditUsers extends Component {
                 registrationDate: "",
                 firstName: "",
                 lastName: "",
-                password: "",
-                email: "",
-                phone: "",
-                userStatus: "",
-                avatarUrl: "",
+                // password: "",
+                // email: "",
+                // phone: "",
+                // userStatus: "",
+                // avatarUrl: "",
             },
-            registrationDate: true,
+            registrationDate: true
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleChange = this.handleChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     componentWillMount() {
-        let _this = this;
-        axios.get("/api/users/" + this.props.match.params.id)
+        var _this = this;
+        axios.get("/api/users/"+this.props.match.params.id)
             .then(function(response) {
                 _this.setState({
                     users: response.data
                 })
             })
             .catch(function (error) {
-                swal({title: "Something went wrong! + Chet ne to", text: error, icon: "error"});
-            })
-
-
+                swal({title: "Something went wrong with data!", text: error, icon: "error"});
+            });
     }
-
 
     handleDateChange(e) {
         const name = e.target.name;
@@ -54,8 +52,8 @@ class EditUsers extends Component {
 
         this.setState(function (prev) {
             return {
-                event: {
-                    ...prev.event,
+                users: {
+                    ...prev.users,
                     [name]: value
                 },
                 [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
@@ -63,31 +61,27 @@ class EditUsers extends Component {
         })
     }
 
-
     handleChange(e) {
         const name = e.target.name;
         const value = e.target.value;
-        this.setState(function (prev) {
+        this.setState(function(prev) {
             return {
-                event: {
-                    ...prev.event,
+                users: {
+                    ...prev.users,
                     [name]: value
                 }
             }
         })
-
-
     }
 
     handleSave(){
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function (response) {
-                swal({title: "Event record saved", icon: "success"})
+                swal({title: "Issue record saved", icon: "success"})
             }).catch(function (error) {
             swal({title: "Something went wrong!", text: error, icon: "error"});
         });
     }
-
 
     render() {
         return (
@@ -103,30 +97,36 @@ class EditUsers extends Component {
 
                                     <FormGroup row>
                                         <Col md="2">
-                                            <Label>User role</Label>
+                                            <Label>First Name</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input value={this.state.users.userRole} onChange={this.handleChange}
-                                                   type="text" name="role"
-                                                   placeholder="Role">
-                                                <option>ADMIN</option>
-                                                <option>MODERATOR</option>
-                                                <option>USER</option>
-                                                <option>GUEST</option>
-                                            </Input>
+                                            <Input  onChange={this.handleChange}
+                                                   type="text" name="name"
+                                                   placeholder="Name"/>
                                         </Col>
                                     </FormGroup>
 
                                     <FormGroup row>
                                         <Col md="2">
-                                            <Label>Registration date</Label>
+                                            <Label>Second Name</Label>
+                                        </Col>
+                                        <Col xs="12" md="10">
+                                            <Input value={this.state.users.lastName} onChange={this.handleChange}
+                                                   type="text" name="lastname"
+                                                   placeholder="Description"/>
+                                        </Col>
+                                    </FormGroup>
+
+                                    <FormGroup row>
+                                        <Col md="2">
+                                            <Label>Registration Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
                                             <InputGroup>
                                                 <Input value={this.state.users.registrationDate} type="text"
-                                                       name="registrationDate" placeholder="DD/MM/YYYY hh:mm"
+                                                       name="regDate" placeholder="DD/MM/YYYY hh:mm"
                                                        onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.users.registrationDate ?
+                                                <InputGroupAddon className={this.state.registrationDate ?
                                                     "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
                                             </InputGroup>
                                         </Col>
@@ -134,97 +134,24 @@ class EditUsers extends Component {
 
                                     <FormGroup row>
                                         <Col md="2">
-                                            <Label>First Name</Label>
-                                        </Col>
-                                        <Col xs="12" md="10">
-                                            <Input value={this.state.users.firstName} onChange={this.handleChange}
-                                                   type="textarea" name="firstname"
-                                                   placeholder="F. Name"/>
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>Last Name</Label>
+                                            <Label>Role</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <Input value={this.state.users.lastName} onChange={this.handleChange}
-                                                   type="select" name="lastname"
-                                                   placeholder="L. Name">
+                                            <Input value={this.state.users.userRole} onChange={this.handleChange}
+                                                   type="select" name="role"
+                                                   placeholder="Role">
+                                                <option>ADMIN</option>
+                                                <option>USER</option>
+                                                <option>GUEST</option>
                                             </Input>
                                         </Col>
                                     </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>Password</Label>
-                                        </Col>
-                                        <Col xs="12" md="4">
-                                            <Input value={this.state.users.password} onChange={this.handleChange}
-                                                   type="select" name="password"
-                                                   placeholder="Password">
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>Email</Label>
-                                        </Col>
-                                        <Col xs="12" md="4">
-                                            <Input value={this.state.users.email} onChange={this.handleChange}
-                                                   type="select" name="email"
-                                                   placeholder="Email">
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>Phone number</Label>
-                                        </Col>
-                                        <Col xs="12" md="4">
-                                            <Input value={this.state.users.phone} onChange={this.handleChange}
-                                                   type="select" name="phone"
-                                                   placeholder="Phone">
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>User status</Label>
-                                        </Col>
-                                        <Col xs="12" md="4">
-                                            <Input value={this.state.users.userStatus} onChange={this.handleChange}
-                                                   type="select" name="userstatus"
-                                                   placeholder="Status">
-                                                <option>DELETED</option>
-                                                <option>BANNED</option>
-                                                <option>ACTIVE</option>
-                                                <option>UNCONFIRMED</option>
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-
-                                    <FormGroup row>
-                                        <Col md="2">
-                                            <Label>Add photo</Label>
-                                        </Col>
-                                        <Col xs="12" md="4">
-                                            <Input value={this.state.users.avatarUrl} onChange={this.handleChange}
-                                                   type="select" name="avatar"
-                                                   placeholder="default">
-                                            </Input>
-                                        </Col>
-                                    </FormGroup>
-
                                 </CardBody>
                                 <CardFooter className="text-right">
 
                                     <Button color="success" onClick={this.handleSave}>
                                         <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/issues"><Button color="primary">
+                                    <Link to="/users"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>
                                 </CardFooter>
@@ -235,10 +162,6 @@ class EditUsers extends Component {
             </div>
         )
     }
-
-
-
 }
+
 export default EditUsers
-
-
