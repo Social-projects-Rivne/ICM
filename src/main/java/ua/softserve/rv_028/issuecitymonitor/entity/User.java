@@ -82,7 +82,6 @@ public class User {
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
 		this.password = userDto.getPassword();
-		this.email = userDto.getEmail();
 		this.phone = userDto.getPhone();
 		this.userAgreement = userDto.isUserAgreement();
 		this.userStatus = userDto.getUserStatus();
@@ -91,7 +90,7 @@ public class User {
 		this.isDeleted = userDto.isDeleted();
 	}
 	
-	public User(String registrationDate, String firstName, String lastName, String password, String email,
+	public User(String registrationDate, String firstName, String lastName, String password,
                 String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
                 String avatarUrl, boolean isDeleted) {
 		this.userRole = userRole;
@@ -99,7 +98,6 @@ public class User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.password = password;
-		this.email = email;
 		this.phone = phone;
 		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;

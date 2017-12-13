@@ -100,8 +100,8 @@ class EditUsers extends Component {
                                             <Label>First Name</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input  onChange={this.handleChange}
-                                                   type="text" name="name"
+                                            <Input value={this.state.users.firstName} Change={this.handleChange}
+                                                   type="text" name="firstName"
                                                    placeholder="Name"/>
                                         </Col>
                                     </FormGroup>
@@ -112,8 +112,8 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="10">
                                             <Input value={this.state.users.lastName} onChange={this.handleChange}
-                                                   type="text" name="lastname"
-                                                   placeholder="Description"/>
+                                                   type="text" name="lastName"
+                                                   placeholder="lastName"/>
                                         </Col>
                                     </FormGroup>
 
@@ -124,7 +124,7 @@ class EditUsers extends Component {
                                         <Col xs="12" md="4">
                                             <InputGroup>
                                                 <Input value={this.state.users.registrationDate} type="text"
-                                                       name="regDate" placeholder="DD/MM/YYYY hh:mm"
+                                                       name="registrationDate" placeholder="DD/MM/YYYY hh:mm"
                                                        onChange={this.handleDateChange}/>
                                                 <InputGroupAddon className={this.state.registrationDate ?
                                                     "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
@@ -138,7 +138,7 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <Input value={this.state.users.userRole} onChange={this.handleChange}
-                                                   type="select" name="role"
+                                                   type="select" name="userRole"
                                                    placeholder="Role">
                                                 <option>ADMIN</option>
                                                 <option>USER</option>
