@@ -86,8 +86,8 @@ public class User{
 	}
 
 	public User(String firstName, String lastName, String password, String username,
-				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
-				String avatarUrl) {
+                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
+                String avatarUrl) {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
