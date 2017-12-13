@@ -14,6 +14,8 @@ import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
 import EventEdit from "../../views/Events/EventEdit";
 import Login from "../../views/Login/Login";
+import Page500 from "../../views/Page500/Page500";
+import Page404 from "../../views/Page404/Page404";
 
 class Full extends Component {
 
@@ -31,7 +33,6 @@ class Full extends Component {
                 <Route exact path="/events" name="Events" component={Events}/>
                 <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route exact path="/petitions" name="Petitions" component={Petitions}/>
-                <Route path="/petitions/:id/edit" name="Petitions" component={PetitionEdit}/>
                 <Route exact path="/issues" name="Issues" component={Issues}/>
                 <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/users" name="Users" component={Users}/>
