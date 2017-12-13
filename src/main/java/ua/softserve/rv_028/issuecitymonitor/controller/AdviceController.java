@@ -16,4 +16,10 @@ public class AdviceController {
     public void handleNotFound(Exception e){
         LOGGER.error(e.getMessage());
     }
+
+
+    @ExceptionHandler(RuntimeException.class)
+    public void handleNotFound(RuntimeException e){
+        LOGGER.error(e.getMessage());
+    }
 }

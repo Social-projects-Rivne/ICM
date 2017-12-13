@@ -1,22 +1,19 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.service.RegistrationService;
 import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 
 @RestController
 public class RegistrationController {
 
-    private static final Logger LOGGER = Logger.getLogger(RegistrationController.class.getName());
-
     @Autowired
-    RegistrationService service;
+    RegistrationServiceImpl service;
 
     @PostMapping(path = "/api/checkEmail")
     public Boolean checkEmail(@RequestParam("email") String email){
@@ -24,20 +21,14 @@ public class RegistrationController {
     }
 
     @PostMapping(path = "/api/registration")
-    public Boolean userRegistration(@RequestBody UserDto user) {
-        if (!someFieldIsNull(user)) {
-            if (!someFieldIsEmpty(user)) {
-                try {
-                    service.registrationUser(user);
-                    LOGGER.info("The user " + user.getEmail() + " has successfully registered");
-                    return true;
-                } catch (RuntimeException exception) {
-                    return false;
-                }
-            }
-        }
+    public HttpStatus userRegistration(@RequestBody UserDto user) {
 
-        return false;
+        if (!someFieldIsNull(user) && !someFieldIsEmpty(user))
+            service.registrationUser(user);
+        else
+            return HttpStatus.BAD_REQUEST;
+
+        return HttpStatus.CREATED;
     }
 
     private boolean someFieldIsEmpty(UserDto dto){
