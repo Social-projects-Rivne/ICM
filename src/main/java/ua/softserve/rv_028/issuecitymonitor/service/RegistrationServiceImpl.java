@@ -11,23 +11,29 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 public class RegistrationServiceImpl implements RegistrationService{
 
     @Autowired
-    UserDao userDao;
+    private UserDao userDao;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    private EmailService emailService;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
 
     @Override
     public boolean isUserExist(String email) {
         User user = userDao.findUserByUsername(email);
-        if (user != null)
-            return user.getUsername().equals(email);
-        else return false;
+        return user != null && user.getUsername().equals(email);
     }
 
     @Override
     public void registrationUser(UserDto dto) {
-        userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword())));
+        try {
+            userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
+                    passwordEncoder.encode(dto.getPassword())));
+            emailService.sendEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
+        } catch (RuntimeException e){
+            throw new IllegalArgumentException("Registration Failed");
+        }
     }
 }
