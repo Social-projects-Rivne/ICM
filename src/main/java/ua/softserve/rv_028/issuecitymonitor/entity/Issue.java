@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
@@ -52,7 +53,6 @@ public class Issue{
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public Issue() {
-        super();
     }
 
     public Issue(User user, String title, String description, String initialDate, double latitude, double longitude,
@@ -64,6 +64,16 @@ public class Issue{
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
+    }
+
+    public Issue(IssueDto dto) {
+        this.user = new User(dto.getUserDto());
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.initialDate = dto.getInitialDate();
+        this.latitude = dto.getLatitude();
+        this.longitude = dto.getLongitude();
+        this.category = dto.getCategory();
     }
 
     public void setId(long id) {
