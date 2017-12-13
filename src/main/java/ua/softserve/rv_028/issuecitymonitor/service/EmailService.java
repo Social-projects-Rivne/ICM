@@ -38,8 +38,7 @@ public class EmailService extends Thread{
         message.setSubject(emailSubject);
         message.setText(emailText);
 
-        System.out.println("start sending email to "+ receiverEmail + "...");
-        LOGGER.debug("start sending email to "+ receiverEmail + "...");
+        LOGGER.info("Sending greeting email to "+ receiverEmail + " ...");
         emailSender.send(message);
     }
 }
