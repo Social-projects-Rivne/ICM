@@ -22,7 +22,8 @@ public class ViewController {
         return "index.html";
     }
 
-    @GetMapping(value = "/login")
+
+    @GetMapping(value = {"/login", "/registration"})
     public String login(){
         return "index.html";
     }
