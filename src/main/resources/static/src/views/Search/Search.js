@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {FormGroup, Input} from 'reactstrap';
 
 class Search extends Component {
     constructor(props) {
@@ -29,8 +30,8 @@ class Search extends Component {
                                         <Label>Keyword</Label>
                                     </Col>
                                     <Col xs="12" md="10">
-                                        <Input value={this.state.keyword} onChange={this.handleChange}
-                                            type="text" name="keyword" placeholder="Search..."/>
+                                    <Input value={this.state.keyword} onChange={this.handleChange}
+                                        type="text" name="keyword" placeholder="Search..."/>
                                     </Col>
                                 </FormGroup>
                                 <FormGroup row>

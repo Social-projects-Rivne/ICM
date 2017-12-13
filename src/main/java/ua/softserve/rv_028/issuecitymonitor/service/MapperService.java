@@ -6,6 +6,8 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+
+//TODO generic
 @Service
 public class MapperService {
 

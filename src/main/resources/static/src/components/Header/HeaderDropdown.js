@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 import {
     Badge,
@@ -15,7 +16,6 @@ class HeaderDropdown extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
         this.state = {
             dropdownOpen: false,
         };
@@ -34,10 +34,6 @@ class HeaderDropdown extends Component {
             });
     }
 
-    handleLogoutClick(){
-        location.href = "/logout";
-    }
-
     dropAccount() {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
@@ -46,7 +42,7 @@ class HeaderDropdown extends Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-                    <DropdownItem onClick={this.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
+                    <DropdownItem><Link to="/login"><i className="fa fa-lock"/> Logout </Link></DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );

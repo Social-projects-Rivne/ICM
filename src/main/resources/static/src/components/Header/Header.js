@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Input, Nav, NavbarBrand, NavbarToggler, NavItem, NavLink} from 'reactstrap';
+import {Input, Nav, NavbarBrand, NavbarToggler, NavItem, NavLink, InputGroupButton, InputGroup, Button} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
+import {Link} from 'react-router-dom';
 
 class Header extends Component {
 
@@ -31,7 +32,15 @@ class Header extends Component {
                 </NavbarToggler>
                 <Nav navbar>
                     <NavItem>
-                        <NavLink><Input type="search" name="search" id="exampleSearch" placeholder="search placeholder" /></NavLink>
+                        <InputGroup>
+                            <Input type="text" name="search" placeholder="Search..."/>
+                            <InputGroupButton>
+                                <Button className="btn btn-outline-secondary fa fa-search"></Button>
+                                <Link to="/search">
+                                    <Button className="btn btn-outline-secondary fa fa-sliders"></Button>
+                                </Link>
+                            </InputGroupButton>
+                        </InputGroup>
                     </NavItem>
                 </Nav>
                 <Nav className="ml-auto" navbar>
