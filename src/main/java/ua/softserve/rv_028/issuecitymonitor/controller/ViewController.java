@@ -16,22 +16,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 public class ViewController {
-
+    //TODO redirect all except /api/ to index.html
     @GetMapping(value="^(\\/api\\/)*")
     public String index() {
         return "index.html";
     }
-
-
-/*    @GetMapping(value = {"/dashboard", "/issues", "/petitions", "/events", "/users", "/settings"})
-    public String dashboard(){
-        return "index.html";
-    }
-
-
-    @GetMapping(value = {"/login", "/registration"})
-    public String login(){
-        return "index.html";
-    }*/
-
 }

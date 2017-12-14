@@ -13,8 +13,12 @@ import ua.softserve.rv_028.issuecitymonitor.service.RegistrationServiceImpl;
 @RestController
 public class RegistrationController {
 
+    private final RegistrationService service;
+
     @Autowired
-    private RegistrationService service;
+    public RegistrationController(RegistrationService service) {
+        this.service = service;
+    }
 
     @PostMapping(path = "/api/checkEmail")
     public Boolean checkEmail(@RequestParam("email") String email){

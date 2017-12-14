@@ -10,11 +10,15 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 @Service
 public class RegistrationServiceImpl implements RegistrationService{
 
-    @Autowired
-    UserDao userDao;
+    private final UserDao userDao;
+
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    public RegistrationServiceImpl(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
+        this.userDao = userDao;
+        this.passwordEncoder = passwordEncoder;
+    }
 
 
     @Override

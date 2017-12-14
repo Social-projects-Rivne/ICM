@@ -7,6 +7,16 @@ class Header extends Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            keywords: ""
+        };
+
+        this.handleChange = this.handleChange.bind(this);
+    }
+
+    handleChange(e){
+        this.setState({keywords: e.target.value});
     }
 
     sidebarToggle(e) {
@@ -31,13 +41,13 @@ class Header extends Component {
                     <span className="navbar-toggler-icon"></span>
                 </NavbarToggler>
                 <Nav navbar>
-                    <NavItem>
+                    <NavItem >
                         <InputGroup>
-                            <Input type="text" name="search" placeholder="Search..."/>
+                            <Input value={this.state.keywords} type="text" name="search" placeholder="Search..."
+                                   onChange={this.handleChange}/>
                             <InputGroupButton>
-                                <Button className="btn btn-outline-secondary fa fa-search"></Button>
-                                <Link to="/search">
-                                    <Button className="btn btn-outline-secondary fa fa-sliders"></Button>
+                                <Link to={{pathname: "/search", query: this.state.keywords}}>
+                                    <Button className="btn btn-outline-secondary fa fa-search"></Button>
                                 </Link>
                             </InputGroupButton>
                         </InputGroup>

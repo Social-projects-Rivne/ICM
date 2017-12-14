@@ -5,6 +5,7 @@ const routes = {
   '/petitions': 'Petitions',
   '/events': 'Events',
   '/issues': 'Issues',
-  '/login': 'Login'
+  '/login': 'Login',
+  '/search': 'Search'
 };
 export default routes;
