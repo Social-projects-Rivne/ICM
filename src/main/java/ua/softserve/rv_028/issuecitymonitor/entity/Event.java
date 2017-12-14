@@ -70,6 +70,18 @@ public class Event {
         this.category = eventDto.getCategory();
     }
 
+    public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
+                 String endDate, EventCategory category) {
+        this.user = user;
+        this.title = title;
+        this.description = description;
+        this.initialDate = initialDate;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.endDate = endDate;
+        this.category = category;
+    }
+
     public void setId(long id) {
         this.id = id;
     }

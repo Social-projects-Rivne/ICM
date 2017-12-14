@@ -103,11 +103,10 @@ public class User implements UserDetails{
 		this.isDeleted = userDto.isDeleted();
 	}
 
-	public User(String registrationDate, String firstName, String lastName, String password, String email,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole, String deleteDate,
-                String avatarUrl, boolean isDeleted) {
-		this.registrationDate = registrationDate;
-		this.email = email;
+	public User(String firstName, String lastName, String password, String username,
+				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
+				String avatarUrl) {
+		this.email= username;
 		this.password = password;
 		this.userRole = userRole;
 		this.firstName = firstName;
@@ -116,18 +115,17 @@ public class User implements UserDetails{
 		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
 		this.avatarUrl = avatarUrl;
-		this.isDeleted = isDeleted;
 	}
 
-	public User(String firstName, String lastName, String email, String password){
+	public User(String firstName, String lastName, String username, String password){
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email;
+		this.email = username;
 		this.password = password;
-        this.userRole = UserRole.USER;
-        this.userStatus = UserStatus.UNCONFIRMED;
-        this.registrationDate = new Date().toString();
-    }
+		this.userRole = UserRole.USER;
+		this.userStatus = UserStatus.UNCONFIRMED;
+		this.registrationDate = new Date().toString();
+	}
 
 	public void setId(long id) {
 		this.id = id;
@@ -242,6 +240,10 @@ public class User implements UserDetails{
 	public boolean getIsDeleted() {
 		return isDeleted;
 	}
+
+
+
+
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
