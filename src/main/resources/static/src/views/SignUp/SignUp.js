@@ -1,6 +1,7 @@
 import React from 'react';
 import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 export default class SignUp extends React.Component {
 
@@ -185,7 +186,7 @@ export default class SignUp extends React.Component {
                         </Col>
                     </FormGroup>
                 </Form>
-                <p className="below-form">Already have an account? <a href="/login">Log in</a></p>
+                <p className="below-form">Already have an account? <Link to="/login">Log in</Link></p>
             </div>
         )
     }
