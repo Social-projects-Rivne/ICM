@@ -10,7 +10,6 @@ import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
@@ -65,23 +64,23 @@ public class UserControllerIntegrationTest {
         System.out.println(httpEntity.toString());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        IssueDto responseObject = responseEntity.getBody();
+        UserDto responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
-        assertEquals(updatedTitle, responseObject.getTitle());
-        assertEquals(updatedDescription, responseObject.getDescription());
+        assertEquals(updatedName, responseObject.getFirstName());
+        assertEquals(updatedStatus, responseObject.getUserStatus());
     }
 
     @Test
-    public void testDeleteIssue(){
-        long prevCount = issueDao.count();
-        testRestTemplate.delete("/api/issues/" + issue.getId());
-        assertEquals(prevCount-1, issueDao.count());
+    public void testDeleteUser(){
+        long prevCount = userDao.count();
+        testRestTemplate.delete("/api/users/delete/" + user.getId());
+        assertEquals(prevCount, userDao.count());
     }
-
-    @Test
-    public void testIssueNotFound(){
-        ResponseEntity<IssueDto> responseEntity = testRestTemplate.
-                getForEntity("/api/issues/-1", IssueDto.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
-    }
+//
+//    @Test
+//    public void testUserNotFound(){
+//        ResponseEntity<UserDto> responseEntity = testRestTemplate.
+//                getForEntity("/api/users/-1", UserDto.class);
+//        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+//    }
 }

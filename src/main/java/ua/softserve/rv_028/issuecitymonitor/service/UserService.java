@@ -26,7 +26,7 @@ public class UserService {
         return messages;
     }
 
-    public void deleteById(long id) throws UserNotFoundException {
+    public void deleteById(long id) {
         User user = findOne(id);
         if(UserRole.ADMIN != user.getUserRole()){
             LOGGER.info("User is deleted");
@@ -41,11 +41,8 @@ public class UserService {
 
 
 
-    private User findOne(long id) throws UserNotFoundException {
+    private User findOne(long id){
         User user = userDao.findOne(id);
-        if (user == null){
-            throw new UserNotFoundException("User not found");
-        }
         return user;
     }
 
@@ -60,7 +57,7 @@ public class UserService {
 
     }
 
-    public UserDto findByID(long id) throws UserNotFoundException {
+    public UserDto findByID(long id){
         User user = findOne(id);
         LOGGER.info("User is finded by id");
         return new UserDto(user);
