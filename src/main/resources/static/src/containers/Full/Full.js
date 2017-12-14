@@ -10,8 +10,11 @@ import Dashboard from '../../views/Dashboard/';
 
 import Petitions from "../../views/Petitions/";
 import Issues from "../../views/Issues/";
+import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
 import EditUsers from "../../views/Users/EditUsers";
+import EventEdit from "../../views/Events/EventEdit";
+import Login from "../../views/Login/Login";
 
 class Full extends Component {
   render() {
@@ -24,11 +27,19 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
+
                 <Route path="/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route path="/users/:id/edit" name="EditUsers" component = {EditUsers}/>
                 <Route path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/issues" name="Issues" component={Issues}/>
                 <Route path="/users" name="Users" component={Users}/>
+                <Route exact path="/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route exact path="/events" name="Events" component={Events}/>
+                <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
+                <Route exact path="/petitions" name="Petitions" component={Petitions}/>
+                <Route exact path="/issues" name="Issues" component={Issues}/>
+                <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
+                <Route exact path="/users" name="Users" component={Users}/>
               </Switch>
             </Container>
           </main>

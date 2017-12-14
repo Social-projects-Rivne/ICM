@@ -70,7 +70,7 @@ public class UserService {
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
         user.setPassword(dto.getPassword());
-        user.setEmail(dto.getEmail());
+        user.setUsername(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setUserAgreement(dto.isUserAgreement());
         user.setUserStatus(dto.getUserStatus());

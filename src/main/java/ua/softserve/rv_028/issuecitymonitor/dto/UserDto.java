@@ -1,8 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
+
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
+
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
@@ -11,10 +13,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class UserDto {
+
     private static long count;
 
     private long id;
-    private UserRole role;
+    private UserRole userRole;
     private String registrationDate;
     private String firstName;
     private String lastName;
@@ -30,16 +33,16 @@ public class UserDto {
     private Set<Event> events = new HashSet<>();
     private Set<Petition> petitions = new HashSet<>();*/
 
-    public UserDto(){}
+    public UserDto() {}
 
-    public UserDto(User entity){
+    public UserDto(User entity) {
         this.id = entity.getId();
-        this.role = entity.getUserRole();
+        this.userRole = entity.getUserRole();
         this.registrationDate = entity.getRegistrationDate();
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
         this.password = entity.getPassword();
-        this.email = entity.getEmail();
+        this.email = entity.getUsername();
         this.phone = entity.getPhone();
         this.userAgreement = entity.isUserAgreement();
         this.userStatus = entity.getUserStatus();
@@ -51,7 +54,22 @@ public class UserDto {
         this.petitions = entity.getPetitions();*/
     }
 
-
+    public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
+                   String password, String email, String phone, boolean userAgreement, UserStatus userStatus,
+                   String deleteDate, String avatarUrl) {
+        this.id = id;
+        this.userRole = userRole;
+        this.registrationDate = registrationDate;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.password = password;
+        this.email = email;
+        this.phone = phone;
+        this.userAgreement = userAgreement;
+        this.userStatus = userStatus;
+        this.deleteDate = deleteDate;
+        this.avatarUrl = avatarUrl;
+    }
 
     public long getId() {
         return id;
@@ -62,14 +80,14 @@ public class UserDto {
     }
 
     public UserRole getUserRole() {
-        if(role == UserRole.ADMIN) {
+        if(userRole == UserRole.ADMIN) {
             count++;
         }
-        return role;
+        return userRole;
     }
 
-    public void setUserRole(UserRole role) {
-        this.role = role;
+    public void setUserRole(UserRole userRole) {
+        this.userRole = userRole;
     }
 
     public String getRegistrationDate() {
@@ -124,7 +142,7 @@ public class UserDto {
         return userAgreement;
     }
 
-    public void setUserAgreement() {
+    public void setUserAgreement(boolean userAgreement) {
         this.userAgreement = userAgreement;
     }
 
@@ -152,7 +170,7 @@ public class UserDto {
         this.avatarUrl = avatarUrl;
     }
 
-    public static long getCount() {
+      public static long getCount() {
         return count;
     }
 
@@ -194,4 +212,25 @@ public class UserDto {
 
     */
 
+
+
+    @Override
+    public String toString() {
+        return "UserDto{" +
+                "id=" + id +
+                ", userRole=" + userRole +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", userAgreement=" + userAgreement +
+                ", userStatus=" + userStatus +
+                ", deleteDate='" + deleteDate + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                '}';
+    }
+
 }
+

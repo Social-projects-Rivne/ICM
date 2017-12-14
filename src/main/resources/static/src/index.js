@@ -17,10 +17,12 @@ import Full from './containers/Full/'
 import Users from "./views/Users/Users";
 
 ReactDOM.render((
-  <BrowserRouter>
-    <Switch>
-      <Route path="/" name="Home" component={Full}/>
-        <Route path="/users" name="Users" component={Users}/>
-    </Switch>
-  </BrowserRouter>
+    <BrowserRouter>
+        <Switch>
+            <Route exact path="/registration" name="SignUp" component={Authorization}/>
+            <Route exact path="/login" name="Login" component={Authorization}/>
+            <Route path="/" name="Home" component={Full}/>
+            <Route path="/users" name="Users" component={Users}/>
+        </Switch>
+    </BrowserRouter>
 ), document.getElementById('root'));

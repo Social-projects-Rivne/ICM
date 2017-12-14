@@ -2,11 +2,12 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
+import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -50,6 +51,24 @@ public class Event {
     @Column(name = "deleted")
     private boolean isDeleted = false;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
+    private Set<EventAttachment> attachments = new HashSet<>();
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
+    private Set<EventChangeRecord> changeRecords = new HashSet<>();
+
+    public Event() {}
+
+    public Event(EventDto eventDto) {
+        this.user = new User(eventDto.getUserDto());
+        this.title = eventDto.getTitle();
+        this.description = eventDto.getDescription();
+        this.initialDate = eventDto.getInitialDate();
+        this.latitude = eventDto.getLatitude();
+        this.longitude = eventDto.getLongitude();
+        this.endDate = eventDto.getEndDate();
+        this.category = eventDto.getCategory();
+    }
 
     public void setId(long id) {
         this.id = id;
@@ -125,6 +144,10 @@ public class Event {
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public Set<EventAttachment> getAttachments() {
+        return attachments;
     }
 
     @PreRemove
