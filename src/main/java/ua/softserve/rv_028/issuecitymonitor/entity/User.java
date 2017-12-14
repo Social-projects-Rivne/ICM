@@ -4,6 +4,7 @@ import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,16 +39,20 @@ public class User implements UserDetails{
 	@Column(name = "reg_date")
 	private String registrationDate;
 
+	@NotEmpty
 	@Column(name = "first_name")
 	private String firstName;
 
+	@NotEmpty
 	@Column(name = "password")
 	private String password;
 
+	@NotEmpty
 	@NaturalId
 	@Column(name = "email", unique = true)
 	private String email;
 
+	@NotEmpty
 	@Column(name = "last_name")
 	private String lastName;
 

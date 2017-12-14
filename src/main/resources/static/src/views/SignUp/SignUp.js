@@ -26,7 +26,7 @@ export default class SignUp extends React.Component {
         this.handleChange = this.handleChange.bind(this);
     }
 
-    sendUserToServer(event){
+    sendUserToServer(){
         const user = {
             firstName : this.state.firstName,
             lastName : this.state.lastName,
@@ -36,21 +36,26 @@ export default class SignUp extends React.Component {
 
         const _this = this;
         axios.post('api/registration', user)
-            .then(function (response) {
-                if (response.data) {
-                    _this.setState({registrationIsSuccessful: true});
-                    _this.setState({registrationIsNotSuccessful: false});
-                } else {
-                    _this.setState({registrationIsSuccessful: false});
-                    _this.setState({registrationIsNotSuccessful: true});
-                }
+            .then(function () {
+                _this.setState({registrationIsSuccessful: true});
+                _this.setState({registrationIsNotSuccessful: false});
+                _this.autoLogIn(user.email, user.password)
             })
-            .catch(function (error) {
+            .catch(function () {
                 _this.setState({registrationIsSuccessful: false});
                 _this.setState({registrationIsNotSuccessful: true});
             });
+
     }
 
+    autoLogIn(email, password){
+        const formData = new FormData();
+        formData.append("email", email);
+        formData.append("password", password);
+        axios.post("/login", formData).then(function () {
+            location.href = "/";
+        });
+    }
 
     handleChange(event){
         const name = event.target.name;
