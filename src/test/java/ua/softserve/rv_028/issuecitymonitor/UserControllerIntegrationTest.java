@@ -74,13 +74,13 @@ public class UserControllerIntegrationTest {
     public void testDeleteUser(){
         long prevCount = userDao.count();
         testRestTemplate.delete("/api/users/delete/" + user.getId());
-        assertEquals(prevCount, userDao.count());
+        assertEquals(prevCount-1, userDao.count());
     }
-//
+
 //    @Test
 //    public void testUserNotFound(){
 //        ResponseEntity<UserDto> responseEntity = testRestTemplate.
-//                getForEntity("/api/users/-1", UserDto.class);
+//                getForEntity("/api/users/0", UserDto.class);
 //        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
 //    }
 }
