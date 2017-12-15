@@ -4,7 +4,10 @@ import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 
 public class EventSpecification implements Specification<Event> {
 
@@ -18,16 +21,21 @@ public class EventSpecification implements Specification<Event> {
 
     @Override
     public Predicate toPredicate(Root<Event> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
-        Path<String> actualValue = root.get(key);
 
-        if(value==null) {
+        if(value==null || key.equals("")) {
             return null;
         }
 
-        if(key.equals("category")) {
-            return criteriaBuilder.equal(actualValue, EventCategory.valueOf(value));
+        if(key.equals("text")){
+            return criteriaBuilder.or(
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("title")), ("%"+value+"%").toLowerCase()),
+                    criteriaBuilder.like(criteriaBuilder.lower(root.get("description")), ("%"+value+"%").toLowerCase()));
         }
 
-        return criteriaBuilder.like(criteriaBuilder.lower(actualValue), ("%"+value+"%").toLowerCase());
+        if(key.equals("category")) {
+            return criteriaBuilder.equal(root.get(key), EventCategory.valueOf(value));
+        }
+
+        return null;
     }
 }

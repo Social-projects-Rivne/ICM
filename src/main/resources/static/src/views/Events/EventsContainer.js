@@ -6,10 +6,17 @@ class EventsContainer extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            data: this.props.data
+        };
+    }
+
+    componentWillReceiveProps(props) {
+      this.setState({data: props.data});
     }
 
     table() {
-        if(this.props.data.length !== 0) {
+        if(this.state.data.length !== 0) {
             return (
                 <Table responsive bordered>
                     <thead>
@@ -24,7 +31,7 @@ class EventsContainer extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.props.data.map(function (event, i) {
+                    {this.state.data.map(function (event, i) {
                         return (
                             <Event key={i} event={event}/>
                         );

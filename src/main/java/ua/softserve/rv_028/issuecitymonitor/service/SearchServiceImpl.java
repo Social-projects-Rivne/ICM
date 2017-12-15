@@ -30,7 +30,7 @@ public class SearchServiceImpl implements SearchService{
         List<EventDto> events = new ArrayList<>();
         Specifications<Event> specifications = Specifications.where(null);
         for(Map.Entry<String, String> entry : queryMap.entrySet()){
-            specifications = specifications.or(new EventSpecification(entry.getKey(), entry.getValue()));
+            specifications = specifications.and(new EventSpecification(entry.getKey(), entry.getValue()));
         }
         for(Event e : eventDao.findAll(specifications)) {
             events.add(new EventDto(e));

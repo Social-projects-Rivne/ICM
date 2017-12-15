@@ -15,7 +15,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
-    private static final Logger LOGGER = Logger.getLogger(SearchController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(SearchController.class);
 
     private final SearchService searchService;
 

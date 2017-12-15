@@ -17,6 +17,10 @@ class Event extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({event: props.event});
+    }
+
     handleDelete(){
         var _this = this;
         swal({

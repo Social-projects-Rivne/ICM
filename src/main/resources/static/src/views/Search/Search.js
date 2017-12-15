@@ -10,8 +10,7 @@ import qs from 'qs';
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 
-const title = "title";
-const description = "description";
+const text = "text";
 const user = "user";
 const fromDate = "fromDate";
 const toDate = "toDate";
@@ -24,8 +23,7 @@ class Search extends Component {
 
         this.state = {
             eventQuery: {
-                title: "",
-                description: ""
+                text: ""
             },
             /*issueQuery: {
                 title: "",
@@ -40,10 +38,10 @@ class Search extends Component {
                 description: this.props.location.query
             },*/
             currentTab: "users",
-            events: [],
-            users: [],
-            petitions: [],
-            issues: []
+            events: "",
+            users: "",
+            petitions: "",
+            issues: ""
         };
         this.handleTabClick = this.handleTabClick.bind(this);
         this.handleEventQueryChange = this.handleEventQueryChange.bind(this);
@@ -53,13 +51,25 @@ class Search extends Component {
     }
 
     componentWillMount(){
+        if(this.props.location.query!==undefined) {
+            this.setState(function(prev) {
+                return {
+                    eventQuery: {
+                        ...prev.eventQuery,
+                        text: this.props.location.query
+                    }
+                }
+            });
+        }
+        console.log(this.props.location.query);
         this.makeEventQuery();
+
         //TODO other queries
     }
 
     makeEventQuery() {
-        console.log(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""));
         var _this = this;
+        console.log(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""));
         axios.get(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""))
             .then(function(response) {
                 _this.setState({
@@ -74,16 +84,14 @@ class Search extends Component {
     handleEventQueryChange(e) {
         const value = e.target.value;
         const name = e.target.name;
-        if(name!=="category" && value!=="ANY") {
-            this.setState(function (prev) {
-                return {
-                    eventQuery: {
-                        ...prev.eventQuery,
-                        [name]: value
-                    }
+        this.setState(function (prev) {
+            return {
+                eventQuery: {
+                    ...prev.eventQuery,
+                    [name]: value
                 }
-            });
-        }
+            }
+        });
     }
 
     handleFromDateChange(m){
@@ -120,18 +128,10 @@ class Search extends Component {
         return (<div>
             <FormGroup row>
                 <Col md="2">
-                    <Label>By title</Label>
+                    <Label>By text</Label>
                 </Col>
                 <Col xs="12" md="10">
-                    <Input type="text" value={this.state.eventQuery.title} name={title} onChange={this.handleEventQueryChange}/>
-                </Col>
-            </FormGroup>
-            <FormGroup row>
-                <Col md="2">
-                    <Label>By description</Label>
-                </Col>
-                <Col xs="12" md="10">
-                    <Input type="text" value={this.state.eventQuery.description} name={description} onChange={this.handleEventQueryChange}/>
+                    <Input type="text" value={this.state.eventQuery.text} name={text} onChange={this.handleEventQueryChange}/>
                 </Col>
             </FormGroup>
             <FormGroup row>
