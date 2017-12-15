@@ -28,6 +28,6 @@ public class EventSpecification implements Specification<Event> {
             return criteriaBuilder.equal(actualValue, EventCategory.valueOf(value));
         }
 
-        return criteriaBuilder.like(actualValue, "%"+value+"%");
+        return criteriaBuilder.like(criteriaBuilder.lower(actualValue), ("%"+value+"%").toLowerCase());
     }
 }

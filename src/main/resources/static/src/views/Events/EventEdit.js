@@ -7,6 +7,8 @@ import {
     Label, Row
 } from "reactstrap";
 import {Link} from "react-router-dom";
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 
 class EventEdit extends Component {
     constructor(props) {
@@ -20,15 +22,15 @@ class EventEdit extends Component {
                 initialDate: "",
                 endDate: "",
                 category: ""
-            },
-            initialDate: true,
-            endDate: true
+            }
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleEndDateChange = this.handleEndDateChange.bind(this);
+        this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
+
 
     componentWillMount() {
         var _this = this;
@@ -43,19 +45,26 @@ class EventEdit extends Component {
             });
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
+    handleInitialDateChange(m){
+        this.setState(function(prev) {
             return {
                 event: {
                     ...prev.event,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
+                    initialDate: m.format("DD/MM/YYYY HH:mm")
+                }
             }
-        })
+        });
+    }
+
+    handleEndDateChange(m){
+        this.setState(function(prev) {
+            return {
+                event: {
+                    ...prev.event,
+                    endDate: m.format("DD/MM/YYYY HH:mm")
+                }
+            }
+        });
     }
 
     handleChange(e) {
@@ -119,25 +128,17 @@ class EventEdit extends Component {
                                             <Label>Initial Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <InputGroup>
-                                                <Input value={this.state.event.initialDate} type="text"
-                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
-                                                       onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.initialDate ?
-                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
-                                            </InputGroup>
+                                            <DateTime value={this.state.event.initialDate} dateFormat="DD/MM/YYYY"
+                                                      timeFormat="HH:mm" onChange={this.handleInitialDateChange}
+                                                      inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                         <Col md="2">
                                             <Label>End Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <InputGroup>
-                                                <Input value={this.state.event.endDate} type="text"
-                                                       name="endDate" placeholder="DD/MM/YYYY hh:mm"
-                                                       onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.endDate ?
-                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
-                                            </InputGroup>
+                                            <DateTime value={this.state.event.endDate} dateFormat="DD/MM/YYYY"
+                                                      timeFormat="HH:mm" onChange={this.handleEndDateChange}
+                                                      inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                     </FormGroup>
 
@@ -158,11 +159,8 @@ class EventEdit extends Component {
 
                                 </CardBody>
                                 <CardFooter className="text-right">
-                                    {(this.state.endDate && this.state.initialDate) ?
-                                        <Button color="success" onClick={this.handleSave}>
-                                            <i className="fa fa-dot-circle-o"/> Save</Button> :
-                                        <Button disabled color="success" onClick={this.handleSave}>
-                                            <i className="fa fa-dot-circle-o"/> Save</Button>}
+                                    <Button color="success" onClick={this.handleSave}>
+                                        <i className="fa fa-dot-circle-o"/> Save</Button>
                                     <Link to="/events"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>

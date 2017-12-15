@@ -30,3 +30,6 @@
   margin-top: 2em;
 }
 
+.form-control-readonly[readonly] {
+  background-color: white;
+}
