@@ -2,13 +2,12 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-
-import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl extends Thread implements EmailService{
@@ -29,14 +28,6 @@ public class EmailServiceImpl extends Thread implements EmailService{
     }
 
     @Override
-    public void sendRestorePasswordEmail(UserDto user, String token) {
-        this.receiverEmail = user.getEmail();
-        this.emailSubject = "Restore password";
-        this.emailText = templateRestorePassword(user.getFirstName(), user.getLastName(), token);
-        this.start();
-    }
-
-    @Override
     public void sendEmail(UserDto user, String subject, String text) {
         this.receiverEmail = user.getEmail();
         this.emailSubject = subject;
@@ -44,26 +35,40 @@ public class EmailServiceImpl extends Thread implements EmailService{
     }
 
     @Override
+    public void sendRestorePasswordEmail(UserDto user, String token) {
+        System.out.println(user);
+        this.receiverEmail = user.getEmail();
+        this.emailSubject = "Restore password";
+        this.emailText = templateRestorePassword(user.getFirstName(), user.getLastName(), token);
+        this.start();
+    }
+
+    @Override
     public void sendGreetingEmail(String emailUser, String firstName, String lastName){
         this.receiverEmail = emailUser;
         this.emailSubject = "ICM registration";
-        this.emailText = "Dear " + firstName + " " + lastName + ".\nYou have been successfully registered!";
+        this.emailText = templateGreeting(firstName, lastName);
         this.start();
     }
 
     private void sendEmail(){
-        SimpleMailMessage message = new SimpleMailMessage();
-        message.setTo(receiverEmail);
-        message.setSubject(emailSubject);
-        message.setText(emailText);
-
+       MimeMessagePreparator message = mimeMessage -> {
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+            messageHelper.setTo(receiverEmail);
+            messageHelper.setSubject(emailSubject);
+            messageHelper.setText(emailText, true);
+        };
 
         LOGGER.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
         emailSender.send(message);
     }
 
     private String templateRestorePassword(String firstName, String lastName, String token){
-        return "Dear " + firstName + " " + lastName + ".\nSomeone has requested a link to change your password. " +
-                "You can do this through the link below.\n" + token;
+        return "<html><body><p>Dear " + firstName + " " + lastName + ".</p><p>Someone has requested a link to change your password. " +
+                "You can do this through the link below.</p>" + "<a>" + token + "</a></body></html>";
+    }
+
+    private String templateGreeting(String firstName, String lastName){
+        return "<html><body><p>Dear " + firstName + " " + lastName + ".</p><p>You have been successfully registered!</p></body></html>";
     }
 }

@@ -15,32 +15,32 @@ import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 @Service
 public class RestorePasswordImpl implements RestorePasswordService {
 
-    @Autowired
-    UserDao userDao;
+    private UserDao userDao;
+    private RestorePasswordDao restorePasswordDao;
+    private EmailService emailService;
+    private MapperService mapperService;
 
     @Autowired
-    RestorePasswordDao restorePasswordDao;
-
-    @Autowired
-    EmailService emailService;
-
-    @Autowired
-    MapperService mapperService;
+    public RestorePasswordImpl(UserDao userDao, RestorePasswordDao restorePasswordDao, EmailService emailService, MapperService mapperService) {
+        this.userDao = userDao;
+        this.restorePasswordDao = restorePasswordDao;
+        this.emailService = emailService;
+        this.mapperService = mapperService;
+    }
 
     @Override
     public boolean createOrderRestore(String email) {
         User user = userDao.findUserByUsername(email);
+        if (user == null)
+            return false;
+
         if (user.getUsername().equals(email)){
             String token = UUID.randomUUID().toString();
-
-
             restorePasswordDao.save(new RestorePassword(
                     user,
-                    UUID.randomUUID().toString(),
+                    token,
                     DATE_FORMAT.format(new Date())));
-
             emailService.sendRestorePasswordEmail(mapperService.fromEntityToDto(user), token);
-
             return true;
         } else {
             return false;
