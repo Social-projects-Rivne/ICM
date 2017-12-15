@@ -32,7 +32,7 @@ class Petitions extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Petition list</CardHeader>
+                            <CardHeader>Petition list <Link to={"/petition/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link></CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>

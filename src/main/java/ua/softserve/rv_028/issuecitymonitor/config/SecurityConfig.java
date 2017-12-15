@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
 
@@ -29,19 +30,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     private final UserDetailsServiceImpl userDetailsService;
 
+    private final BCryptPasswordEncoder passwordEncoder;
+
     /** All possible urls must be here*/
     private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
             "/settings"};
 
     @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService) {
+    public SecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
         this.userDetailsService = userDetailsService;
+        this.passwordEncoder = passwordEncoder;
     }
+
+
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.
-                userDetailsService(userDetailsService);
+        auth
+                .userDetailsService(userDetailsService)
+                .passwordEncoder(passwordEncoder);
     }
 
     @Override

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import {Alert, InputGroup, InputGroupAddon, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
+
 
 class Login extends Component {
     constructor(props) {
@@ -19,7 +21,7 @@ class Login extends Component {
         const value = event.target.value;
         this.setState({[name]: value},
             () => { this.validateField(name, value) });
-
+        console.log(name, value);
     }
 
     validateField(fieldName, value) {
@@ -48,73 +50,41 @@ class Login extends Component {
 
     render() {
         return (
-            <div className="container login-page-center" >
-                <form className="form-horizontal" role="form" method="POST" action="/login">
-                    <div className="row">
-                        <div className="col-md-3"/>
-                        <div className="col-md-6">
-                            <h2>Please Login</h2>
-                            <hr/>
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-md-3"/>
-                        <div className="col-md-6">
-                            <div className="form-group">
-                                <label className="sr-only" htmlFor="email">E-Mail Address</label>
-                                <div className="input-group mb-2 mr-sm-2 mb-sm-0">
-                                    <div className="input-group-addon"><i className="fa fa-at"/></div>
-                                    <input type="text" name="email" className="form-control" id="email"
-                                           value={this.state.value} onChange={this.handleChange}
-                                           placeholder="you@example.com" required autoFocus/>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="col-md-3">
-                            <div className="form-control-feedback" style={this.emailHasError()}>
-                                <span className="text-danger align-middle">
-                                    <i className="fa fa-close"/> Email is incorrect
-                                </span>
-                            </div>
-                        </div>
+            <div className="container login-page-center col-3">
+                <Form className="registration-form" method="POST" action="/login">
+                    <h3 className="text-center">Log In</h3>
+                    <hr/>
+                    <FormGroup>
+                        <Col sm={12}>
+                           <InputGroup>
+                                  <InputGroupAddon>@</InputGroupAddon>
+                                  <Input id="email" name="email" placeholder="email" type="email" value={this.state.email} onChange={this.handleChange}/>
+                           </InputGroup>
+                           <FormFeedback style={this.emailHasError()}>Email is incorrect. </FormFeedback>
+                        </Col>
+                    </FormGroup>
 
-                    </div>
-                    <div className="row">
-                        <div className="col-md-3"/>
-                        <div className="col-md-6">
-                            <div className="form-group has-error">
-                                <label className="sr-only" htmlFor="password">Password</label>
-                                <div className="input-group mb-2 mr-sm-2 mb-sm-0">
-                                    <div className="input-group-addon"><i className="fa fa-key"/></div>
-                                    <input type="password" name="password" className="form-control" id="password"
-                                           value={this.state.value} onChange={this.handleChange}
-                                           placeholder="Password" required/>
-                                </div>
-                                <div className="form-control-feedback" style={this.incorrectUserEmailPass()}>
-                                    <span className="text-danger align-middle">
-                                        <i className="fa fa-close"/> Incorrect email or password
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                    <FormGroup>
+                        <Col sm={12}>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-key"/></InputGroupAddon>
+                                <Input id="password" name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
+                            </InputGroup>
+                        </Col>
+                    </FormGroup>
 
-                        <div className="col-md-3">
-                            <div className="form-control-feedback" style={this.passHasError()}>
-                                <span className="text-danger align-middle">
-                                    <i className="fa fa-close"/> Password is too short
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                    <FormGroup>
+                        <Col sm={12}>
+                            <Button type="submit" color="success" size="lg" block>Log In</Button>
 
-                    <div className="row">
-                        <div className="col-md-3"/>
-                        <div className="col-md-6">
-                            <button type="submit" className="btn btn-success"><i className="fa fa-sign-in"/> Login </button>
-                        </div>
-                    </div>
-                </form>
+                            <Alert color="danger" className="alert-form" style={this.incorrectUserEmailPass()}>
+                                Incorrect email or password
+                            </Alert>
+                        </Col>
+                    </FormGroup>
 
+                </Form>
+                <p className="below-form">Don`t have an account? <a href="/registration">Sign up</a></p>
             </div>
         )
     }
@@ -137,7 +107,7 @@ class Login extends Component {
         if (this.props.history.location.search !== ""){
             console.log(this.props);
             console.log(this.props.history.location.search);
-            return {display:'inline'}
+            return {display:'block'}
         } else
             return {display:'none'}
     }
