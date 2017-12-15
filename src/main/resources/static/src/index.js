@@ -14,6 +14,7 @@ import '../scss/core/_dropdown-menu-right.scss'
 
 // Containers
 import Full from './containers/Full/'
+import Authorization from "./containers/Authorization/Authorization";
 import Users from "./views/Users/Users";
 
 ReactDOM.render((

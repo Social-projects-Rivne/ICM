@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-<<<<<<< HEAD
-import {
+
+/*import {
   NavbarToggler,
   NavbarBrand,
 } from 'reactstrap';
@@ -31,8 +31,8 @@ class Header extends Component {
         
       </header>
     );
-  }
-=======
+  }*/
+
 import {Nav, NavbarBrand, NavbarToggler,} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 
@@ -70,7 +70,7 @@ class Header extends Component {
             </header>
         );
     }
->>>>>>> 69db67648c4384c5fd3c640bebd4636ff79e8d0d
+
 }
 
 export default Header;

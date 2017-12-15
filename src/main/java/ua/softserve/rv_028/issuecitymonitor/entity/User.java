@@ -3,7 +3,6 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,19 +11,16 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
-import javax.jws.soap.SOAPBinding;
 import javax.persistence.*;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
 @Where(clause = "deleted <> 'true'")
-
 public class User implements UserDetails{
 
 	@Id
@@ -50,7 +46,7 @@ public class User implements UserDetails{
 	@NotEmpty
 	@NaturalId
 	@Column(name = "email", unique = true)
-	private String email;
+	private String username;
 
 	@NotEmpty
 	@Column(name = "last_name")
@@ -84,29 +80,25 @@ public class User implements UserDetails{
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
 	private Set<Petition> petitions = new HashSet<>();
 
-	public User() {
-		super();
-	}
+	public User() {}
 
 	public User(UserDto userDto) {
-		this.userRole = userDto.getUserRole();
+		this.password = userDto.getPassword();
+		this.username = userDto.getEmail();
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
-		this.password = userDto.getPassword();
-		this.email = userDto.getEmail();;
 		this.phone = userDto.getPhone();
 		this.userAgreement = userDto.isUserAgreement();
 		this.userStatus = userDto.getUserStatus();
 		this.deleteDate = userDto.getDeleteDate();
 		this.avatarUrl = userDto.getAvatarUrl();
-		this.isDeleted = userDto.isDeleted();
 	}
 
 	public User(String firstName, String lastName, String password, String username,
 				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
 				String avatarUrl) {
-		this.email= username;
+		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
 		this.firstName = firstName;
@@ -120,7 +112,7 @@ public class User implements UserDetails{
 	public User(String firstName, String lastName, String username, String password){
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = username;
+		this.username = username;
 		this.password = password;
 		this.userRole = UserRole.USER;
 		this.userStatus = UserStatus.UNCONFIRMED;
@@ -178,11 +170,11 @@ public class User implements UserDetails{
 
 	@Override
 	public String getUsername() {
-		return this.email;
+		return this.username;
 	}
 
-	public void setUsername(String email) {
-		this.email = email;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPhone() {
@@ -241,10 +233,6 @@ public class User implements UserDetails{
 		return isDeleted;
 	}
 
-
-
-
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return prepareCollection(this.userRole);
@@ -302,7 +290,7 @@ public class User implements UserDetails{
 				", registrationDate='" + registrationDate + '\'' +
 				", firstName='" + firstName + '\'' +
 				", lastName='" + lastName + '\'' +
-				", username='" + email + '\'' +
+				", username='" + username + '\'' +
 				", phone='" + phone + '\'' +
 				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +
@@ -310,5 +298,4 @@ public class User implements UserDetails{
 				", avatarUrl='" + avatarUrl + '\'' +
 				'}';
 	}
-
 }

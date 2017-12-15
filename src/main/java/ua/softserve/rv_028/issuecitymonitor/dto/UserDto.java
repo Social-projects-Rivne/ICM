@@ -1,16 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-
-import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
-
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
-
-import java.util.HashSet;
-import java.util.Set;
 
 public class UserDto {
 
@@ -28,10 +20,6 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-    private boolean isDeleted;
-    /*private Set<Issue> issues = new HashSet<>();
-    private Set<Event> events = new HashSet<>();
-    private Set<Petition> petitions = new HashSet<>();*/
 
     public UserDto() {}
 
@@ -48,10 +36,6 @@ public class UserDto {
         this.userStatus = entity.getUserStatus();
         this.deleteDate = entity.getDeleteDate();
         this.avatarUrl = entity.getAvatarUrl();
-        this.isDeleted = entity.getIsDeleted();
-       /* this.issues = entity.getIssues();
-        this.events = entity.getEvents();
-        this.petitions = entity.getPetitions();*/
     }
 
     public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
@@ -71,6 +55,14 @@ public class UserDto {
         this.avatarUrl = avatarUrl;
     }
 
+    public static long getCount() {
+        return count;
+    }
+
+    public static void setCount(long count) {
+        UserDto.count = count;
+    }
+
     public long getId() {
         return id;
     }
@@ -80,13 +72,13 @@ public class UserDto {
     }
 
     public UserRole getUserRole() {
-        if(userRole == UserRole.ADMIN) {
-            count++;
-        }
         return userRole;
     }
 
     public void setUserRole(UserRole userRole) {
+        if(userRole == UserRole.ADMIN) {
+            count++;
+        }
         this.userRole = userRole;
     }
 
@@ -170,50 +162,6 @@ public class UserDto {
         this.avatarUrl = avatarUrl;
     }
 
-      public static long getCount() {
-        return count;
-    }
-
-    public static void setCount(long k) {
-        count = k;
-    }
-
-    public boolean isDeleted() {
-        return isDeleted;
-    }
-
-    public void setDeleted() {
-        isDeleted = true;
-    }
-    /*
-    public Set<Issue> getIssues() {
-        return issues;
-    }
-
-    public void setIssues(Set<Issue> issues) {
-        this.issues = issues;
-    }
-
-    public Set<Event> getEvents() {
-        return events;
-    }
-
-    public void setEvents(Set<Event> events) {
-        this.events = events;
-    }
-
-    public Set<Petition> getPetitions() {
-        return petitions;
-    }
-
-    public void setPetitions(Set<Petition> petitions) {
-        this.petitions = petitions;
-    }
-
-    */
-
-
-
     @Override
     public String toString() {
         return "UserDto{" +
@@ -233,4 +181,3 @@ public class UserDto {
     }
 
 }
-

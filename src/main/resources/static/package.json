@@ -51,7 +51,6 @@
     "requirejs": "^2.3.5",
     "rest": "^2.0.0",
     "simple-line-icons": "2.4.1",
-
     "sweetalert": "^2.0.8",
     "typed-css-modules-loader": "0.0.11"
   },

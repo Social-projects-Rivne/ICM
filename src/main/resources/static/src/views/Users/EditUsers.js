@@ -79,7 +79,7 @@ class EditUsers extends Component {
             .then(function (response) {
                 swal({title: "Issue record saved", icon: "success"})
             }).catch(function (error) {
-            swal({title: "Something went wrong!", text: error, icon: "error"});
+            swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
     }
 

@@ -63,14 +63,12 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public UserDto updateUser(UserDto dto)  {
+    public void updateUser(UserDto dto)  {
         User user = userDao.findOne(dto.getId());
         user.setUserRole(dto.getUserRole());
         user.setRegistrationDate(dto.getRegistrationDate());
         user.setFirstName(dto.getFirstName());
         user.setLastName(dto.getLastName());
-        user.setPassword(dto.getPassword());
-        user.setUsername(dto.getEmail());
         user.setPassword(dto.getPassword());
         user.setUserAgreement(dto.isUserAgreement());
         user.setUserStatus(dto.getUserStatus());
@@ -82,7 +80,6 @@ public class UserService {
         userDao.save(new User(dto));
 
         LOGGER.info("Added user");
-        return new UserDto(user);
 
 
     }
