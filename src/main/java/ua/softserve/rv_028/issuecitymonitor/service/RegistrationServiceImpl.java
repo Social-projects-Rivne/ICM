@@ -31,7 +31,7 @@ public class RegistrationServiceImpl implements RegistrationService{
         try {
             userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                     passwordEncoder.encode(dto.getPassword())));
-            emailService.sendEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
+            emailService.sendGreetingEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
         } catch (RuntimeException e){
             throw new IllegalArgumentException("Registration Failed");
         }

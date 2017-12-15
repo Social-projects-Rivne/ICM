@@ -6,6 +6,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
+
+import javax.mail.internet.MimeMessage;
 
 @Service
 public class EmailServiceImpl extends Thread implements EmailService{
@@ -22,24 +25,45 @@ public class EmailServiceImpl extends Thread implements EmailService{
     @Override
     public void run() {
         super.run();
-        sendGreetingEmail();
+        sendEmail();
     }
 
     @Override
-    public void sendEmail(String emailUser, String firstName, String lastName){
+    public void sendRestorePasswordEmail(UserDto user, String token) {
+        this.receiverEmail = user.getEmail();
+        this.emailSubject = "Restore password";
+        this.emailText = templateRestorePassword(user.getFirstName(), user.getLastName(), token);
+        this.start();
+    }
+
+    @Override
+    public void sendEmail(UserDto user, String subject, String text) {
+        this.receiverEmail = user.getEmail();
+        this.emailSubject = subject;
+        this.emailText = text;
+    }
+
+    @Override
+    public void sendGreetingEmail(String emailUser, String firstName, String lastName){
         this.receiverEmail = emailUser;
         this.emailSubject = "ICM registration";
         this.emailText = "Dear " + firstName + " " + lastName + ".\nYou have been successfully registered!";
         this.start();
     }
 
-    private void sendGreetingEmail(){
+    private void sendEmail(){
         SimpleMailMessage message = new SimpleMailMessage();
         message.setTo(receiverEmail);
         message.setSubject(emailSubject);
         message.setText(emailText);
 
-        LOGGER.info("Sending greeting email to "+ receiverEmail + " ...");
+
+        LOGGER.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
         emailSender.send(message);
+    }
+
+    private String templateRestorePassword(String firstName, String lastName, String token){
+        return "Dear " + firstName + " " + lastName + ".\nSomeone has requested a link to change your password. " +
+                "You can do this through the link below.\n" + token;
     }
 }
