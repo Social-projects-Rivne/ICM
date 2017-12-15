@@ -5,7 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-import ua.softserve.rv_028.issuecitymonitor.Constants;
 
 @ControllerAdvice
 public class AdviceController {
@@ -19,7 +18,7 @@ public class AdviceController {
     }
 
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_REASON)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public void registrationError(IllegalArgumentException e){
         LOGGER.error(e.getMessage());
