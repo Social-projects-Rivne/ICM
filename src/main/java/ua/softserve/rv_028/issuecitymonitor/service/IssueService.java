@@ -2,6 +2,9 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
@@ -91,4 +94,14 @@ public class IssueService {
         LOGGER.debug("Deleted issue");
     }
 
+    public Page<IssueDto> findAllByPage(Pageable pageable){
+        Page<Issue> issues = issueDao.findAll(pageable);
+        Page<IssueDto> issueDtos = issues.map(new Converter<Issue, IssueDto>() {
+            @Override
+            public IssueDto convert(Issue issue) {
+                return new IssueDto(issue);
+            }
+        });
+        return issueDtos;
+    }
 }
