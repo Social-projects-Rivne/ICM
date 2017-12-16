@@ -36,7 +36,6 @@ public class EmailServiceImpl extends Thread implements EmailService{
 
     @Override
     public void sendRestorePasswordEmail(UserDto user, String token) {
-        System.out.println(user);
         this.receiverEmail = user.getEmail();
         this.emailSubject = "Restore password";
         this.emailText = templateRestorePassword(user.getFirstName(), user.getLastName(), token);
