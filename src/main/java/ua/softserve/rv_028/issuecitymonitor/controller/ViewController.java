@@ -23,7 +23,7 @@ public class ViewController {
     }
 
 
-    @GetMapping(value = {"/login", "/registration"})
+    @GetMapping(value = {"/login", "/registration", "/confirmEmail"})
     public String login(){
         return "index.html";
     }

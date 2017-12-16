@@ -119,7 +119,7 @@ export default class SignUp extends React.Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Input type="text" name="firstName" id="firstName"
-                                   size="lg"
+                                   bsSize="lg"
                                    className="border-radius"
                                    placeholder="First Name"
                                    onChange={this.handleChange}
@@ -130,7 +130,7 @@ export default class SignUp extends React.Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Input type="text" name="lastName" id="lastName"
-                                   size="lg"
+                                   bsSize="lg"
                                    className="border-radius"
                                    placeholder="Last Name"
                                    onChange={this.handleChange}
@@ -141,7 +141,7 @@ export default class SignUp extends React.Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Input type="email" name="email" id="exampleEmail"
-                                   size="lg"
+                                   bsSize="lg"
                                    className="border-radius"
                                    placeholder="E-Mail"
                                    onChange={this.handleChange}
@@ -156,7 +156,7 @@ export default class SignUp extends React.Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Input type="password" name="password" id="password"
-                                   size="lg"
+                                   bsSize="lg"
                                    className="border-radius"
                                    placeholder="Password"
                                    onChange={this.handleChange}
@@ -168,7 +168,7 @@ export default class SignUp extends React.Component {
                     <FormGroup>
                         <Col sm={12}>
                             <Input type="password" name="confirmPass" id="confirmPass"
-                                   size="lg"
+                                   bsSize="lg"
                                    className="border-radius"
                                    placeholder="Confirm Password"
                                    onChange={this.handleChange}
@@ -190,7 +190,7 @@ export default class SignUp extends React.Component {
                         </Col>
                     </FormGroup>
                 </Form>
-                <p className="below-form">Already have an account? <a href="/login">Log in</a></p>
+                <p className="below-form-text">Already have an account? <a href="/login">Log in</a></p>
             </div>
         )
     }
