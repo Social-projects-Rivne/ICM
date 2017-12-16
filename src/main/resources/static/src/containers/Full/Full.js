@@ -9,6 +9,7 @@ import Footer from '../../components/Footer/';
 import Dashboard from '../../views/Dashboard/';
 import Events from "../../views/Events/";
 import Petitions from "../../views/Petitions/";
+import PetitionEdit from "../../views/Petitions/PetitionEdit";
 import Issues from "../../views/Issues/";
 import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
