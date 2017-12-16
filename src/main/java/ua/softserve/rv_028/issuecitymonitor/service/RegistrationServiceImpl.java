@@ -1,39 +1,55 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService{
 
-    @Autowired
     private UserDao userDao;
-
-    @Autowired
     private EmailService emailService;
+    private MapperService mapperService;
+    private BCryptPasswordEncoder passwordEncoder;
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-
-    @Override
-    public boolean isUserExist(String email) {
-        User user = userDao.findUserByUsername(email);
-        return user != null && user.getUsername().equals(email);
+    public RegistrationServiceImpl(MapperService mapperService, UserDao userDao, EmailService emailService,
+                                   BCryptPasswordEncoder passwordEncoder) {
+        this.mapperService = mapperService;
+        this.userDao = userDao;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
-    public void registrationUser(UserDto dto) {
+    public boolean isPossibleRegistration(String email) {
+        User user = userDao.findUserByUsername(email);
+        return isUserExist(email) && !user.getIsDeleted();
+    }
+
+    @Override
+    public UserDto registrationUser(UserDto dto) {
+        // TODO: Remove user from table if it isDeleted
         try {
-            userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
+            User user = userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                     passwordEncoder.encode(dto.getPassword())));
             emailService.sendGreetingEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
+            LOGGER.info("The user " + dto.getEmail() + " has been registered");
+            return mapperService.fromEntityToDto(user);
         } catch (RuntimeException e){
-            throw new IllegalArgumentException("Registration Failed");
+            throw new RegistrationException();
         }
+    }
+
+    private boolean isUserExist(String email){
+        User user = userDao.findUserByUsername(email);
+        return user != null && user.getUsername().equals(email);
     }
 }
