@@ -5,9 +5,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import static org.junit.Assert.assertEquals;
@@ -20,6 +22,9 @@ public class RestorePasswordServiceTest {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private MapperService mapper;
 
     @Autowired
     private RestorePasswordService restorePassword;
@@ -40,5 +45,18 @@ public class RestorePasswordServiceTest {
         String NOT_EXIST_EMAIL = "no-email!";
         boolean response = restorePassword.createOrderRestorePassword(NOT_EXIST_EMAIL);
         assertEquals(false, response);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void setNewPasswordTestEmptyUser(){
+        UserDto emptyUser = new UserDto();
+        restorePassword.setNewPasswordForUser(emptyUser);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void setNewPasswordTestEmptyPassword(){
+        UserDto userEmptyPassword = mapper.fromEntityToDto(user);
+        userEmptyPassword.setPassword("");
+        restorePassword.setNewPasswordForUser(userEmptyPassword);
     }
 }

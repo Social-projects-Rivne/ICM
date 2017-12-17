@@ -58,7 +58,7 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
 
 
     @Override
-    public User setNewPasswordForUser(UserDto userDto) {
+    public void setNewPasswordForUser(UserDto userDto) {
         User userEntity = userDao.findUserByUsername(userDto.getEmail());
 
         if (userEntity == null)
@@ -70,6 +70,5 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDao.save(userEntity);
         LOGGER.info("User \'" + userDto.getEmail() + "\' have been update his password");
-        return userEntity;
     }
 }
