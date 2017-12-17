@@ -1,9 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.RestorePasswordService;
 
 @RestController
@@ -16,6 +15,12 @@ public class RestorePasswordController {
         this.restorePasswordService = restorePasswordService;
     }
 
-    @PostMapping(path = "/api/restorePassword")
-    public void restore(@RequestParam("email") String email){restorePasswordService.createOrderRestorePassword(email);}
+    @PostMapping(path = "/api/createOrderRestorePassword")
+    public void createOrder(@RequestParam("email") String email){restorePasswordService.createOrderRestorePassword(email);}
+
+    @PostMapping(path = "/api/createNewPassword")
+    public void createNewPassword(@RequestBody UserDto user){
+        System.out.println(user);
+    }
+
 }

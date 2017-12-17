@@ -9,11 +9,16 @@ export default class ConfirmEmail extends Component {
         this.state = {
             email : "",
             emailValid : null,
-            btnColor: "secondary",
-            onSubmitClicked: false
+            btnColor: "primary",
+            isEmailSent: false,
+            password: "",
+            confirmPass: "",
+            token: ""
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.createOrderRestorePassword = this.createOrderRestorePassword.bind(this);
+        this.sendNewPassword = this.sendNewPassword.bind(this);
     }
 
     handleChange(event) {
@@ -34,9 +39,29 @@ export default class ConfirmEmail extends Component {
         this.setState({emailValid: emailValid, btnColor: btnColor});
     }
 
-    restoreAccount(){
-        this.setState({onSubmitClicked: true});
-        alert("sss");
+    createOrderRestorePassword(){
+        let data = new FormData();
+        data.append("email", this.state.email);
+
+        let _this = this;
+        axios.post("/api/createOrderRestorePassword", data)
+            .then(function(response){_this.showHiddenForms()})
+            .catch(function(error){})
+    }
+
+    sendNewPassword(){
+        let data = {
+            email: this.state.email,
+            password: this.state.password
+        };
+
+        axios.post("/api/createNewPassword", data)
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
     }
 
     render(){
@@ -52,21 +77,63 @@ export default class ConfirmEmail extends Component {
                                    className="border-radius"
                                    placeholder="E-Mail"
                                    onChange={this.handleChange}
-                                   value={this.state.email}/>
+                                   value={this.state.email}
+                                   valid={this.checkEmail()}/>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Button onClick={this.restoreAccount} color={this.state.btnColor} size="lg" block>Send email</Button>
+                            <Button id="emailSend" onClick={this.createOrderRestorePassword} color={this.state.btnColor} size="lg" block>Send Email</Button>
 
-                            <Alert color="success" className="alert-form" style={ConfirmEmail.visible(this.state.onSubmitClicked)}>
-                                Successful registration !
+                            <Alert color="info" className="alert-form" style={ConfirmEmail.visible(this.state.isEmailSent)}>
+                                Please insert the token from your email and new password
                             </Alert>
-
-
                         </Col>
                     </FormGroup>
+
+                    <div style={ConfirmEmail.visible(this.state.isEmailSent)}>
+                        <FormGroup>
+                            <Col sm={12}>
+                                <Input type="text" name="token" id="token"
+                                       bsSize="lg"
+                                       className="border-radius"
+                                       placeholder="Token"
+                                       onChange={this.handleChange}
+                                       value={this.state.token}/>
+                            </Col>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Col sm={12}>
+                                <Input type="password" name="password" id="password"
+                                       bsSize="lg"
+                                       className="border-radius"
+                                       placeholder="Password"
+                                       onChange={this.handleChange}
+                                       value={this.state.password}
+                                       valid={this.checkPassword()}/>
+                            </Col>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Col sm={12}>
+                                <Input type="password" name="confirmPass" id="confirmPass"
+                                       bsSize="lg"
+                                       className="border-radius"
+                                       placeholder="Confirm Password"
+                                       onChange={this.handleChange}
+                                       value={this.state.confirmPass}
+                                       valid={this.checkConfirmPassword()}/>
+                            </Col>
+                        </FormGroup>
+
+                        <FormGroup>
+                            <Col sm={12}>
+                                <Button onClick={this.sendNewPassword} size="lg" block>Set new password</Button>
+                            </Col>
+                        </FormGroup>
+                    </div>
 
                     <FormGroup className="below-form-div">
                         <Col sm={12}>
@@ -77,6 +144,35 @@ export default class ConfirmEmail extends Component {
 
             </div>
         )
+    }
+
+    showHiddenForms(){
+        this.setState({isEmailSent: true});
+        document.getElementById("email").disabled = true;
+        document.getElementById("emailSend").disabled = true;
+    }
+
+    checkEmail(){
+        if (this.state.email === '') {
+            return null;
+        }
+        return this.state.emailValid && !this.state.emailIsUsed;
+    }
+
+    checkPassword(){
+        if (this.state.password === '') {
+            return null;
+        }
+        return this.state.passwordValid;
+
+    }
+
+    checkConfirmPassword(){
+        if (this.state.confirmPass === '') {
+            return null;
+        }
+        return this.state.confirmPassValid;
+
     }
 
     static visible(isTrue){
