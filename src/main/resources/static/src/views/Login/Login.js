@@ -87,7 +87,7 @@ class Login extends Component {
                     </FormGroup>
                     <FormGroup className="below-form-div">
                         <Col sm={12}>
-                            <Link className="below-form-text" to='/confirmEmail'>Forgot password?</Link>
+                            <Link className="below-form-text" to='/restore-password'>Forgot password?</Link>
                         </Col>
                     </FormGroup>
                 </Form>

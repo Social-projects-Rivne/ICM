@@ -3,7 +3,7 @@ import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstr
 import axios from 'axios';
 import {Link} from "react-router-dom";
 
-export default class ConfirmEmail extends Component {
+export default class RestorePassword extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -128,13 +128,13 @@ export default class ConfirmEmail extends Component {
                         <Col sm={12}>
                             <Button id="emailSend" onClick={this.createOrderRestorePassword} color={this.state.btnColor} size="lg" block>Send Email</Button>
 
-                            <Alert color="info" className="alert-form" style={ConfirmEmail.visible(this.state.isEmailSent)}>
+                            <Alert color="info" className="alert-form" style={RestorePassword.visible(this.state.isEmailSent)}>
                                 Please insert the token from our mail and insert your new password.
                             </Alert>
                         </Col>
                     </FormGroup>
 
-                    <div style={ConfirmEmail.visible(this.state.isEmailSent)}>
+                    <div style={RestorePassword.visible(this.state.isEmailSent)}>
                         <FormGroup>
                             <Col sm={12}>
                                 <Input type="text" name="token" id="token"
@@ -175,11 +175,11 @@ export default class ConfirmEmail extends Component {
                             <Col sm={12}>
                                 <Button onClick={this.sendNewPassword} color={this.setButtonColor()} size="lg" block>Set new password</Button>
 
-                                <Alert color="success" className="alert-form" style={ConfirmEmail.visible(this.state.responseTrue)}>
+                                <Alert color="success" className="alert-form" style={RestorePassword.visible(this.state.responseTrue)}>
                                     Successful registration !
                                 </Alert>
 
-                                <Alert color="danger" className="alert-form" style={ConfirmEmail.visible(this.state.responseError)}>
+                                <Alert color="danger" className="alert-form" style={RestorePassword.visible(this.state.responseError)}>
                                     Restore password Fail !
                                 </Alert>
                             </Col>
