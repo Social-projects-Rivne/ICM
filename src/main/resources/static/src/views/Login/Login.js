@@ -87,11 +87,11 @@ class Login extends Component {
                     </FormGroup>
                     <FormGroup className="below-form-div">
                         <Col sm={12}>
-                            <Link className="below-form-text" to={'/confirmEmail'}>Forgot password?</Link>
+                            <Link className="below-form-text" to='/confirmEmail'>Forgot password?</Link>
                         </Col>
                     </FormGroup>
                 </Form>
-                <p className="below-form-text">Don`t have an account? <Link href="/registration">Sign up</Link></p>
+                <p className="below-form-text">Don`t have an account? <Link to="/registration">Sign up</Link></p>
             </div>
         )
     }

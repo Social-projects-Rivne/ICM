@@ -1,10 +1,12 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.Util;
+import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dao.RestorePasswordDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
@@ -16,6 +18,8 @@ import java.util.UUID;
 
 @Service
 public class RestorePasswordServiceImpl implements RestorePasswordService {
+
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     private UserDao userDao;
     private RestorePasswordDao restorePasswordDao;
@@ -65,6 +69,7 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
 
         userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
         userDao.save(userEntity);
+        LOGGER.info("User \'" + userDto.getEmail() + "\' have been update his password");
         return userEntity;
     }
 }
