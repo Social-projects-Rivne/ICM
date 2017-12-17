@@ -7,13 +7,19 @@ export default class ConfirmEmail extends Component {
     constructor(props){
         super(props);
         this.state = {
+            btnColor: "primary",
             email : "",
             emailValid : null,
-            btnColor: "primary",
             isEmailSent: false,
-            password: "",
-            confirmPass: "",
-            token: ""
+            password : "",
+            passwordValid : false,
+            confirmPass : "",
+            confirmPassValid : false,
+            token: "",
+            tokenValid: false,
+            formValid: false,
+            responseError: false,
+            responseTrue: true
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,17 +32,50 @@ export default class ConfirmEmail extends Component {
         const value = event.target.value;
 
         this.setState({[name]: value},
-            () => { this.validateEmail(value)});
+            () => { this.validateField(name, value) });
     }
 
-    validateEmail(value){
+    validateField(fieldName, value) {
         let btnColor = this.state.btnColor;
-        let emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value);
-        if (emailValid)
-            btnColor = "success";
+        let emailValid = this.state.emailValid;
+        let passwordValid = this.state.passwordValid;
+        let confirmPassValid = this.state.confirmPass;
+        let tokenValid = this.state.tokenValid;
+
+        switch(fieldName) {
+            case 'email':
+                emailValid = (/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i).test(value);
+                if (emailValid) {
+                    btnColor = "success";
+                }
+                break;
+            case 'password':
+                passwordValid = value.length >= 3;
+                break;
+            case 'confirmPass':
+                confirmPassValid = (value === this.state.password);
+                break;
+            case 'token':
+                tokenValid = (value.length === 36);
+                break;
+            default:
+                break;
+        }
+        this.setState({
+            btnColor: btnColor,
+            emailValid: emailValid,
+            passwordValid: passwordValid,
+            confirmPassValid: confirmPassValid,
+            tokenValid: tokenValid
+        }, this.validateForm);
+    }
+
+    validateForm(){
+        if (this.state.tokenValid && this.state.passwordValid && this.state.confirmPassValid)
+            this.setState({formValid: true});
         else
-            btnColor = "secondary";
-        this.setState({emailValid: emailValid, btnColor: btnColor});
+            this.setState({formValid: false});
+
     }
 
     createOrderRestorePassword(){
@@ -55,12 +94,15 @@ export default class ConfirmEmail extends Component {
             password: this.state.password
         };
 
+        let _this = this;
         axios.post("/api/createNewPassword", data)
             .then(function (response) {
-                console.log(response);
+                _this.setState({responseTrue: true});
+                _this.setState({responseError: false});
             })
             .catch(function (error) {
-                console.log(error)
+                _this.setState({responseError: true});
+                _this.setState({responseTrue: false});
             })
     }
 
@@ -87,7 +129,7 @@ export default class ConfirmEmail extends Component {
                             <Button id="emailSend" onClick={this.createOrderRestorePassword} color={this.state.btnColor} size="lg" block>Send Email</Button>
 
                             <Alert color="info" className="alert-form" style={ConfirmEmail.visible(this.state.isEmailSent)}>
-                                Please insert the token from your email and new password
+                                Please insert the token from our mail and insert your new password.
                             </Alert>
                         </Col>
                     </FormGroup>
@@ -100,7 +142,8 @@ export default class ConfirmEmail extends Component {
                                        className="border-radius"
                                        placeholder="Token"
                                        onChange={this.handleChange}
-                                       value={this.state.token}/>
+                                       value={this.state.token}
+                                       valid={this.checkToken()}/>
                             </Col>
                         </FormGroup>
 
@@ -130,14 +173,22 @@ export default class ConfirmEmail extends Component {
 
                         <FormGroup>
                             <Col sm={12}>
-                                <Button onClick={this.sendNewPassword} size="lg" block>Set new password</Button>
+                                <Button onClick={this.sendNewPassword} color={this.setButtonColor()} size="lg" block>Set new password</Button>
+
+                                <Alert color="success" className="alert-form" style={ConfirmEmail.visible(this.state.responseTrue)}>
+                                    Successful registration !
+                                </Alert>
+
+                                <Alert color="danger" className="alert-form" style={ConfirmEmail.visible(this.state.responseError)}>
+                                    Restore password Fail !
+                                </Alert>
                             </Col>
                         </FormGroup>
                     </div>
 
                     <FormGroup className="below-form-div">
                         <Col sm={12}>
-                            <Link className="below-form-text" to="/login">Log in</Link>
+                            <Link className="below-form-text" to="/login">Log in page</Link>
                         </Col>
                     </FormGroup>
                 </Form>
@@ -159,6 +210,13 @@ export default class ConfirmEmail extends Component {
         return this.state.emailValid && !this.state.emailIsUsed;
     }
 
+    checkToken(){
+        if (this.state.token === '') {
+            return null;
+        }
+        return this.state.tokenValid;
+    }
+
     checkPassword(){
         if (this.state.password === '') {
             return null;
@@ -173,6 +231,13 @@ export default class ConfirmEmail extends Component {
         }
         return this.state.confirmPassValid;
 
+    }
+
+    setButtonColor() {
+        if (this.state.formValid)
+            return "success";
+        else
+            return "secondary";
     }
 
     static visible(isTrue){
