@@ -20,7 +20,7 @@ public class RestorePasswordController {
 
     @PostMapping(path = "/api/createNewPassword")
     public void createNewPassword(@RequestBody UserDto user){
-        System.out.println(user);
+        restorePasswordService.setNewPasswordForUser(user);
     }
 
 }

@@ -1,12 +1,16 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.Util;
 import ua.softserve.rv_028.issuecitymonitor.dao.RestorePasswordDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.RestorePassword;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
 
 import java.util.UUID;
 
@@ -17,13 +21,16 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
     private RestorePasswordDao restorePasswordDao;
     private EmailService emailService;
     private MapperService mapperService;
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public RestorePasswordServiceImpl(UserDao userDao, RestorePasswordDao restorePasswordDao, EmailService emailService, MapperService mapperService) {
+    public RestorePasswordServiceImpl(UserDao userDao, RestorePasswordDao restorePasswordDao, EmailService emailService,
+                                      MapperService mapperService, BCryptPasswordEncoder encoder) {
         this.userDao = userDao;
         this.restorePasswordDao = restorePasswordDao;
         this.emailService = emailService;
         this.mapperService = mapperService;
+        this.passwordEncoder = encoder;
     }
 
     @Override
@@ -45,4 +52,19 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
         }
     }
 
+
+    @Override
+    public User setNewPasswordForUser(UserDto userDto) {
+        User userEntity = userDao.findUserByUsername(userDto.getEmail());
+
+        if (userEntity == null)
+            throw new IllegalStateException("User with the following email \'" + userDto.getEmail() + "\' doesn't not exist");
+
+        if (userDto.getPassword() == null || userDto.getPassword().isEmpty())
+            throw new IllegalArgumentException("User \'" + userDto.getEmail() + "\' wrote empty password");
+
+        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userDao.save(userEntity);
+        return userEntity;
+    }
 }
