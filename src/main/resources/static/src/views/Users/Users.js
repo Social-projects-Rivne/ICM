@@ -3,6 +3,7 @@ import axios from 'axios';
 import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
 import swal from 'sweetalert';
 import {Link} from "react-router-dom";
+import Map from "./Map";
 class User extends Component {
 
     constructor(props) {
@@ -29,6 +30,7 @@ class User extends Component {
     render() {
         return (
             <div className="animated fadeIn">
+                <Map/>
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>

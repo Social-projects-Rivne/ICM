@@ -15,7 +15,7 @@ import Users from "../../views/Users/";
 import EditUsers from "../../views/Users/EditUsers";
 import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";
-import Login from "../../views/Login/Login";
+
 
 class Full extends Component {
   render() {

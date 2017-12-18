@@ -63,7 +63,7 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public void updateUser(UserDto dto)  {
+    public UserDto updateUser(UserDto dto)  {
         User user = userDao.findOne(dto.getId());
         user.setUserRole(dto.getUserRole());
         user.setRegistrationDate(dto.getRegistrationDate());
@@ -80,7 +80,7 @@ public class UserService {
         userDao.save(new User(dto));
 
         LOGGER.info("Added user");
-
+        return new UserDto(user);
 
     }
 

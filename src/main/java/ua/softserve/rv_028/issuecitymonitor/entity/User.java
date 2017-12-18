@@ -45,7 +45,7 @@ public class User implements UserDetails{
 
 	@NotEmpty
 	@NaturalId
-	@Column(name = "email", unique = true)
+	@Column(name = "email")
 	private String username;
 
 	@NotEmpty
@@ -84,7 +84,10 @@ public class User implements UserDetails{
 
 	public User(UserDto userDto) {
 		this.password = userDto.getPassword();
-		this.username = userDto.getEmail();
+
+		if (this.getUsername() == null)
+			this.username = userDto.getEmail();
+
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();

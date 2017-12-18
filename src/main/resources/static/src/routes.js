@@ -4,6 +4,7 @@ const routes = {
   '/users': 'Users',
   '/petitions': 'Petitions',
   '/events': 'Events',
-  '/issues': 'Issues'
+  '/issues': 'Issues',
+    'maps':'IssueMap'
 };
 export default routes;

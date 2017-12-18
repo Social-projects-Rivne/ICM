@@ -47,8 +47,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public void updateForUser(@RequestBody UserDto userDto) {
+    public UserDto updateForUser(@RequestBody UserDto userDto) {
         LOG.info("OK");
-        service.updateUser(userDto);
+        return service.updateUser(userDto);
     }
 }

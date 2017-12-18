@@ -118,7 +118,9 @@ public class UserDto {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
+        if (this.email == null)
         this.email = email;
     }
 

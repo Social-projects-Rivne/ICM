@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 
-class Petitions extends Component {
+export default class Petitions extends Component {
 
   render() {
     return (
-      <div className="animated fadeIn">
-        Hello Petitions
-      </div>
+       <div>hi!</div>
     )
   }
 }
 
-export default Petitions;
+
+
