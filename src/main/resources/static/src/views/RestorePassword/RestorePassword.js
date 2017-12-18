@@ -19,7 +19,7 @@ export default class RestorePassword extends Component {
             tokenValid: false,
             formValid: false,
             responseError: false,
-            responseTrue: true
+            responseTrue: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -85,7 +85,7 @@ export default class RestorePassword extends Component {
         let _this = this;
         axios.post("/api/createOrderRestorePassword", data)
             .then(function(response){_this.showHiddenForms()})
-            .catch(function(error){})
+            .catch(function(error){_this.showHiddenForms()})
     }
 
     sendNewPassword(){
@@ -129,7 +129,7 @@ export default class RestorePassword extends Component {
                             <Button id="emailSend" onClick={this.createOrderRestorePassword} color={this.state.btnColor} size="lg" block>Send Email</Button>
 
                             <Alert color="info" className="alert-form" style={RestorePassword.visible(this.state.isEmailSent)}>
-                                Please insert the token from our mail and insert your new password.
+                                We sent you a letter, please copy the token from it.
                             </Alert>
                         </Col>
                     </FormGroup>
@@ -180,7 +180,7 @@ export default class RestorePassword extends Component {
                                 </Alert>
 
                                 <Alert color="danger" className="alert-form" style={RestorePassword.visible(this.state.responseError)}>
-                                    Restore password Fail !
+                                    Restore password fail
                                 </Alert>
                             </Col>
                         </FormGroup>
@@ -188,7 +188,7 @@ export default class RestorePassword extends Component {
 
                     <FormGroup className="below-form-div">
                         <Col sm={12}>
-                            <Link className="below-form-text" to="/login">Log in page</Link>
+                            <Link className="below-form-text" to="/login">Log in</Link>
                         </Col>
                     </FormGroup>
                 </Form>
