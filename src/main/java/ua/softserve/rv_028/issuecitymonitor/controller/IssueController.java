@@ -3,6 +3,7 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
@@ -15,6 +16,7 @@ import java.util.List;
 public class IssueController {
 
     private static final Logger LOGGER = Logger.getLogger(IssueController.class.getName());
+    private static final int PAGE_SIZE = 10;
 
     private IssueService service;
 
@@ -37,9 +39,9 @@ public class IssueController {
     }
 
     @GetMapping
-    public Page<IssueDto> getAllByPage(Pageable pageable){
+    public Page<IssueDto> getAllByPage(@RequestParam(value = "page") int page, @RequestParam int size){
         LOGGER.debug("GET request for all issues by page");
-        return service.findAllByPage(pageable);
+        return service.findAllByPage(new PageRequest(page, size));
     }
 
     @PostMapping

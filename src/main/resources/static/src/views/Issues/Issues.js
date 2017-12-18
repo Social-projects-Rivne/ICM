@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import {Button, Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import {Button, Card, CardBody, CardHeader, CardFooter, Col, Row, Table} from "reactstrap";
 import swal from 'sweetalert';
 import {Link} from "react-router-dom";
 
@@ -15,7 +15,7 @@ class Issues extends Component {
 
     componentWillMount() {
         var _this = this;
-        axios.get("/api/issues")
+        axios.get("/api/issues?p="+page+"&size="+size)
             .then(function(response) {
                 _this.setState({
                     issues: response.data.content
@@ -54,6 +54,12 @@ class Issues extends Component {
                                     </tbody>
                                 </Table>
                             </CardBody>
+                            <CardFooter className="text-center">
+                                <Link to="/issues"><Button color="primary"> Previous </Button>
+                                </Link>
+                                <Link to="/issues"><Button color="primary"> Next </Button>
+                                </Link>
+                        </CardFooter>
                         </Card>
                     </Col>
                 </Row>
