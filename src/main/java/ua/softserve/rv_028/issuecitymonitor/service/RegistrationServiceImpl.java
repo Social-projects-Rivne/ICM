@@ -36,12 +36,11 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Override
     public UserDto registrationUser(UserDto dto) {
-        // TODO: Remove user from table if it isDeleted
         try {
             User user = userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                     passwordEncoder.encode(dto.getPassword())));
-            emailService.sendGreetingEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
             LOGGER.info("The user " + dto.getEmail() + " has been registered");
+            emailService.sendGreetingEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
             return mapperService.fromEntityToDto(user);
         } catch (RuntimeException e){
             throw new RegistrationException();

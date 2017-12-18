@@ -6,53 +6,51 @@ import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 
 @Service
-public class EmailServiceImpl extends Thread implements EmailService{
+public class EmailServiceImpl implements EmailService{
 
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EmailServiceImpl.class.getName());
 
     private String receiverEmail;
     private String emailSubject;
     private String emailText;
 
-    @Autowired
-    public JavaMailSender emailSender;
+    private JavaMailSender emailSender;
 
-    @Override
-    public void run() {
-        super.run();
-        try {
-            sendEmail();
-        } catch (MailAuthenticationException e){
-            LOGGER.error("GMail invalid email or password. " + e);
-        }
+    @Autowired
+    public EmailServiceImpl(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
     }
 
+    @Async
     @Override
     public void sendEmail(UserDto user, String subject, String text) {
         this.receiverEmail = user.getEmail();
         this.emailSubject = subject;
         this.emailText = text;
+        sendEmail();
     }
 
+    @Async
     @Override
     public void sendRestorePasswordEmail(UserDto user, String token) {
         this.receiverEmail = user.getEmail();
         this.emailSubject = "Restore password";
         this.emailText = templateRestorePassword(user.getFirstName(), user.getLastName(), token);
-        this.start();
+        sendEmail();
     }
 
+    @Async
     @Override
     public void sendGreetingEmail(String emailUser, String firstName, String lastName){
         this.receiverEmail = emailUser;
         this.emailSubject = "ICM registration";
         this.emailText = templateGreeting(firstName, lastName);
-        this.start();
+        sendEmail();
     }
 
     private void sendEmail(){
@@ -63,8 +61,12 @@ public class EmailServiceImpl extends Thread implements EmailService{
             messageHelper.setText(emailText, true);
         };
 
-        LOGGER.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
-        emailSender.send(message);
+        try {
+            LOGGER.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
+            emailSender.send(message);
+        } catch (MailAuthenticationException e){
+            LOGGER.error(e);
+        }
     }
 
     private String templateRestorePassword(String firstName, String lastName, String token){

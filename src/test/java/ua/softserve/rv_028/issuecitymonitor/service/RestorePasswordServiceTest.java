@@ -42,14 +42,13 @@ public class RestorePasswordServiceTest {
         assertEquals(true, response);
     }
 
-    @Test
+    @Test(expected = RestorePasswordException.class)
     public void createOrderRestorePasswordFailTest(){
         String NOT_EXIST_EMAIL = "no-email!";
-        boolean response = restorePassword.createOrderRestorePassword(NOT_EXIST_EMAIL);
-        assertEquals(false, response);
+        restorePassword.createOrderRestorePassword(NOT_EXIST_EMAIL);
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test(expected = RestorePasswordException.class)
     public void setNewPasswordTestEmptyUser(){
         UserDto emptyUser = new UserDto();
         restorePassword.setNewPasswordForUser(emptyUser.getEmail(), emptyUser.getPassword(), NO_TOKEN);

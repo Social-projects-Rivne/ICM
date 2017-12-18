@@ -39,7 +39,7 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
     public boolean createOrderRestorePassword(String email) {
         User user = userDao.findUserByUsername(email);
         if (user == null)
-            return false;
+            throw new RestorePasswordException("User with the following email \'" + email + "\' doesn't not exist");
 
         if (user.getUsername().equals(email)){
             String token = UUID.randomUUID().toString();
@@ -60,7 +60,7 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
         User userEntity = userDao.findUserByUsername(email);
 
         if (userEntity == null)
-            throw new IllegalStateException("User with the following email \'" + email + "\' doesn't not exist");
+            throw new RestorePasswordException("User with the following email \'" + email + "\' doesn't not exist");
 
         if (password == null || password.isEmpty())
             throw new RestorePasswordException("User \'" + email + "\' wrote empty password");
