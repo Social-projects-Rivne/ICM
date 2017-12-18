@@ -11,6 +11,7 @@ import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,6 +20,7 @@ import static org.junit.Assert.assertEquals;
 public class RestorePasswordServiceTest {
 
     private User user;
+    private static final String NO_TOKEN = "NO_TOKEN";
 
     @Autowired
     private UserDao userDao;
@@ -50,13 +52,14 @@ public class RestorePasswordServiceTest {
     @Test(expected = IllegalStateException.class)
     public void setNewPasswordTestEmptyUser(){
         UserDto emptyUser = new UserDto();
-        restorePassword.setNewPasswordForUser(emptyUser);
+        restorePassword.setNewPasswordForUser(emptyUser.getEmail(), emptyUser.getPassword(), NO_TOKEN);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = RestorePasswordException.class)
     public void setNewPasswordTestEmptyPassword(){
         UserDto userEmptyPassword = mapper.fromEntityToDto(user);
         userEmptyPassword.setPassword("");
-        restorePassword.setNewPasswordForUser(userEmptyPassword);
+        restorePassword.setNewPasswordForUser(userEmptyPassword.getEmail(), userEmptyPassword.getPassword(),
+                NO_TOKEN);
     }
 }
