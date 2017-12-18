@@ -43,13 +43,14 @@ public class UserService {
 
     private User findOne(long id){
         User user = userDao.findOne(id);
+        LOGGER.info("Find one " + user.toString());
         return user;
     }
 
     public List<UserDto> findAll(){
         List<UserDto> all = new ArrayList<>();
         for (User users : userDao.findAll()) {
-            if(!users.getIsDeleted())
+            if(!users.getIsDeleted() && users.getUserRole() != null)
             all.add( new UserDto(users));
         }
         LOGGER.info("Show all users!");
@@ -75,11 +76,10 @@ public class UserService {
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
 
-        LOGGER.info("Adding user!");
-
+        LOGGER.info("Adding user!" + user.toString());
         userDao.save(new User(dto));
 
-        LOGGER.info("Added user");
+        LOGGER.info("Added user" + user.toString());
         return new UserDto(user);
 
     }
