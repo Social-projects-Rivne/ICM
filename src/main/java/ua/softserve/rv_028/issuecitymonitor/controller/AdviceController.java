@@ -31,7 +31,6 @@ public class AdviceController {
         LOGGER.error(e.getMessage());
     }
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(RestorePasswordException.class)
     public void registrationError(RestorePasswordException e, HttpServletResponse response) throws IOException {
         LOGGER.error(e.getMessage());
