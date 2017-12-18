@@ -29,18 +29,19 @@ public class DBSeeder {
     @Autowired
 
     public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder){
-    this.encoder = encoder;
+
+        this.encoder = encoder;
 
         if (factory.unwrap(SessionFactory.class) == null) {
             throw new NullPointerException("factory is not a hibernate factory");
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
         try {
-            LOGGER.info("Seeding database...");
+            LOGGER.debug("Seeding database...");
             fillDatabase();
-            LOGGER.info("Seeding finished");
+            LOGGER.debug("Seeding finished");
         } catch (RuntimeException e) {
-            LOGGER.error("Seeding has been done already. Skipping...");
+            LOGGER.debug("Seeding has been done already. Skipping...");
         }
     }
 

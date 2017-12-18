@@ -59,7 +59,7 @@ public class EventControllerUnitTest {
         eventDto.setDescription(TEST_DESCRIPTION);
         when(eventService.update(eventDto)).thenReturn(eventDto);
 
-        EventDto success = eventController.update(eventDto.getId(),eventDto);
+        EventDto success = eventController.update(eventDto);
 
         assertEquals(TEST_TITLE,success.getTitle());
         assertEquals(TEST_DESCRIPTION,success.getDescription());
@@ -72,7 +72,7 @@ public class EventControllerUnitTest {
         when(eventService.update(eventDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
-            eventController.update(2,eventDto);
+            eventController.update(eventDto);
             fail("expected exception was not thrown");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));

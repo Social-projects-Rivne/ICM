@@ -9,6 +9,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,12 +22,12 @@ public class EventServiceImpl implements EventService {
 
     private final EventDao eventDao;
 
-    private final UserDao userDao;
+    private final MapperService mapperService;
 
     @Autowired
-    public EventServiceImpl(EventDao eventDao, UserDao userDao){
+    public EventServiceImpl(EventDao eventDao, MapperService mapperService){
         this.eventDao = eventDao;
-        this.userDao = userDao;
+        this.mapperService = mapperService;
     }
 
     @Override
@@ -40,10 +41,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> findAll() {
         LOGGER.debug("Finding all events");
-        List<EventDto> eventDtos = new ArrayList<>();
-        for(Event e : eventDao.findAllByOrderByIdAsc()){
-            eventDtos.add(new EventDto(e));
-        }
+        List<EventDto> eventDtos = mapperService.toDtoList(eventDao.findAllByOrderByIdAsc());
         LOGGER.debug("Found all events");
         return eventDtos;
     }
@@ -53,28 +51,21 @@ public class EventServiceImpl implements EventService {
         LOGGER.debug("Finding event by id " + id);
         Event event = findOne(id);
         LOGGER.debug("Found " + event.toString());
-        return new EventDto(event);
+        return mapperService.toDto(event);
     }
 
     @Override
     public EventDto update(EventDto eventDto) {
-        try {
-            DATE_FORMAT.parse(eventDto.getInitialDate());
-            DATE_FORMAT.parse(eventDto.getEndDate());
-        } catch (ParseException e) {
-            throw new IllegalStateException("incorrect date");
-        }
-
         Event event = findOne(eventDto.getId());
         event.setTitle(eventDto.getTitle());
         event.setDescription(eventDto.getDescription());
-        event.setInitialDate(eventDto.getInitialDate());
-        event.setEndDate(eventDto.getEndDate());
+        event.setInitialDate(LocalDateTime.parse(eventDto.getInitialDate(), DATE_FORMAT));
+        event.setEndDate(LocalDateTime.parse(eventDto.getEndDate(), DATE_FORMAT));
         event.setCategory(eventDto.getCategory());
         LOGGER.debug("Updating " + event.toString());
         eventDao.save(event);
         LOGGER.debug("Updated " + event.toString());
-        return new EventDto(event);
+        return mapperService.toDto(event);
     }
 
     private Event findOne(long id){

@@ -30,23 +30,18 @@ public class EventController {
     @GetMapping(value = "/{id}")
     public EventDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");
-        EventDto result = eventService.findById(id);
-        LOGGER.debug("GET request successful");
-        return result;
+        return eventService.findById(id);
     }
 
     @PutMapping("/{id}")
-    public EventDto update(@PathVariable long id, @RequestBody EventDto eventDto){
+    public EventDto update(@RequestBody EventDto eventDto){
         LOGGER.debug("PUT request");
-        EventDto result = eventService.update(eventDto);
-        LOGGER.debug("PUT request successful");
-        return result;
+        return eventService.update(eventDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
         LOGGER.debug("DELETE request");
         eventService.deleteById(id);
-        LOGGER.debug("DELETE request successful");
     }
 }

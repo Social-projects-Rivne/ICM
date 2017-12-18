@@ -12,6 +12,7 @@ import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
+import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -27,6 +28,9 @@ public class IssueControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Autowired
+    private MapperService mapperService;
 
     @Before
     public void setup(){
@@ -48,7 +52,7 @@ public class IssueControllerIntegrationTest {
     public void testAddIssue(){
         String addTitle = "testAddTitle";
         String addDescription = "testAddDescription";
-        IssueDto issueDto = new IssueDto(issue);
+        IssueDto issueDto = mapperService.toDto(issue);
         issueDto.setTitle(addTitle);
         issueDto.setDescription(addDescription);
 
@@ -72,7 +76,7 @@ public class IssueControllerIntegrationTest {
     public void testEditIssue(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        IssueDto issueDto = new IssueDto(issue);
+        IssueDto issueDto = mapperService.toDto(issue);
         issueDto.setTitle(updatedTitle);
         issueDto.setDescription(updatedDescription);
 

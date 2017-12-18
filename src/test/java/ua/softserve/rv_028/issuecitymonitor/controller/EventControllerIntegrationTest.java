@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -25,6 +26,9 @@ public class EventControllerIntegrationTest {
 
     @Autowired
     private TestRestTemplate testRestTemplate;
+
+    @Autowired
+    private MapperService mapperService;
 
     private Event event;
 
@@ -48,7 +52,7 @@ public class EventControllerIntegrationTest {
     public void testUpdateEventSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        EventDto eventDto = new EventDto(event);
+        EventDto eventDto = mapperService.toDto(event);
         eventDto.setTitle(updatedTitle);
         eventDto.setDescription(updatedDescription);
 
