@@ -19,8 +19,9 @@ public class RestorePasswordController {
     public void createOrder(@RequestParam("email") String email){restorePasswordService.createOrderRestorePassword(email);}
 
     @PostMapping(path = "/api/createNewPassword")
-    public void createNewPassword(@RequestBody UserDto user){
-        restorePasswordService.setNewPasswordForUser(user);
+    public void createNewPassword(@RequestParam("email") String email, @RequestParam("password") String password,
+                                  @RequestParam("token") String token){
+        restorePasswordService.setNewPasswordForUser(email, password, token);
     }
 
 }

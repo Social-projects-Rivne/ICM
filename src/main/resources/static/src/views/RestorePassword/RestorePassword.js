@@ -89,10 +89,10 @@ export default class RestorePassword extends Component {
     }
 
     sendNewPassword(){
-        let data = {
-            email: this.state.email,
-            password: this.state.password
-        };
+        let data = new FormData();
+        data.append("email", this.state.email);
+        data.append("password", this.state.password);
+        data.append("token", this.state.token);
 
         let _this = this;
         axios.post("/api/createNewPassword", data)
@@ -176,7 +176,7 @@ export default class RestorePassword extends Component {
                                 <Button onClick={this.sendNewPassword} color={this.setButtonColor()} size="lg" block>Set new password</Button>
 
                                 <Alert color="success" className="alert-form" style={RestorePassword.visible(this.state.responseTrue)}>
-                                    Successful registration !
+                                    Successful restore password !
                                 </Alert>
 
                                 <Alert color="danger" className="alert-form" style={RestorePassword.visible(this.state.responseError)}>

@@ -2,17 +2,15 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.Util;
 import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dao.RestorePasswordDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.RestorePassword;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
+import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
 
 import java.util.UUID;
 
@@ -45,6 +43,7 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
 
         if (user.getUsername().equals(email)){
             String token = UUID.randomUUID().toString();
+            restorePasswordDao.deleteByUser(user);
             restorePasswordDao.save(new RestorePassword(
                     user,
                     token,
@@ -56,19 +55,24 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
         }
     }
 
-
     @Override
-    public void setNewPasswordForUser(UserDto userDto) {
-        User userEntity = userDao.findUserByUsername(userDto.getEmail());
+    public void setNewPasswordForUser(String email, String password, String token) {
+        User userEntity = userDao.findUserByUsername(email);
 
         if (userEntity == null)
-            throw new IllegalStateException("User with the following email \'" + userDto.getEmail() + "\' doesn't not exist");
+            throw new IllegalStateException("User with the following email \'" + email + "\' doesn't not exist");
 
-        if (userDto.getPassword() == null || userDto.getPassword().isEmpty())
-            throw new IllegalArgumentException("User \'" + userDto.getEmail() + "\' wrote empty password");
+        if (password == null || password.isEmpty())
+            throw new RestorePasswordException("User \'" + email + "\' wrote empty password");
 
-        userEntity.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        if (token == null || token.isEmpty())
+            throw new RestorePasswordException("User \'" + email + "\' wrote empty token");
+
+        if (!restorePasswordDao.findByUser(userEntity).getToken().equals(token))
+            throw new RestorePasswordException("User \'" + email + "\' wrote incorrect token");
+
+        userEntity.setPassword(passwordEncoder.encode(password));
         userDao.save(userEntity);
-        LOGGER.info("User \'" + userDto.getEmail() + "\' have been update his password");
+        LOGGER.info("User \'" + email + "\' have been update his password");
     }
 }
