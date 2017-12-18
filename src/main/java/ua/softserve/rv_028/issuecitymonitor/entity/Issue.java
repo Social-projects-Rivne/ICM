@@ -6,6 +6,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class Issue{
     private String description;
 
     @Column(name = "initial_date")
-    private String initialDate;
+    private LocalDateTime initialDate;
 
     @Column(name = "latitude")
     private double latitude;
@@ -55,7 +56,7 @@ public class Issue{
     public Issue() {
     }
 
-    public Issue(User user, String title, String description, String initialDate, double latitude, double longitude,
+    public Issue(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
                  IssueCategory category) {
         this.user = user;
         this.title = title;
@@ -64,16 +65,6 @@ public class Issue{
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
-    }
-
-    public Issue(IssueDto dto) {
-        this.user = new User(dto.getUserDto());
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
-        this.initialDate = dto.getInitialDate();
-        this.latitude = dto.getLatitude();
-        this.longitude = dto.getLongitude();
-        this.category = dto.getCategory();
     }
 
     public void setId(long id) {
@@ -108,11 +99,11 @@ public class Issue{
         this.description = description;
     }
 
-    public String getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(String initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 

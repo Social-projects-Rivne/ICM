@@ -12,6 +12,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import javax.persistence.EntityManagerFactory;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Random;
 
@@ -100,8 +101,8 @@ public class DBSeeder {
 
     private static final Random r = new Random();
 
-    private String date() {
-        return DATE_FORMAT.format(new Date());
+    private LocalDateTime date() {
+        return LocalDateTime.now();
     }
 
     private <T extends Enum<?>> T randomEnum(Class<T> classname) {

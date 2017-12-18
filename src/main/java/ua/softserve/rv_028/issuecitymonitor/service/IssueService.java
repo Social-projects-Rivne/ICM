@@ -21,19 +21,20 @@ public class IssueService {
 
     private IssueDao issueDao;
 
+    private MapperService mapperService;
+
     @Autowired
-    public IssueService(IssueDao issueDao) {
+    public IssueService(IssueDao issueDao, MapperService mapperService) {
         this.issueDao = issueDao;
+        this.mapperService = mapperService;
     }
 
     public List<IssueDto> findAll(){
         LOGGER.debug("Finding all issues");
-        List<IssueDto> issueDto = new ArrayList<>();
+        List<IssueDto> issueDto;
 
-        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
-            issueDto.add(new IssueDto(issue));
-        }
-        LOGGER.debug("Finded all issues");
+        issueDto = mapperService.<IssueDto>toDtoList(issueDao.findAllByOrderByIdAsc());
+        LOGGER.debug("Found all issues");
         return issueDto;
     }
 

@@ -2,79 +2,107 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
-//TODO generic
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
+
+
 @Service
 public class MapperService {
 
-    public UserDto fromEntityToDto(User userEntity){
+
+    public UserDto toDto(User entity){
         UserDto dto = new UserDto();
 
-        dto.setId(userEntity.getId());
-        dto.setUserRole(userEntity.getUserRole());
-        dto.setRegistrationDate(userEntity.getRegistrationDate());
-        dto.setFirstName(userEntity.getFirstName());
-        dto.setLastName(userEntity.getLastName());
-        dto.setPassword(userEntity.getPassword());
-        dto.setEmail(userEntity.getUsername());
-        dto.setPhone(userEntity.getPhone());
-        dto.setUserAgreement(userEntity.isUserAgreement());
-        dto.setUserStatus(userEntity.getUserStatus());
-        dto.setDeleteDate(userEntity.getDeleteDate());
-        dto.setAvatarUrl(userEntity.getAvatarUrl());
+        dto.setId(entity.getId());
+        dto.setUserRole(entity.getUserRole());
+        dto.setRegistrationDate(entity.getRegistrationDate().format(DATE_FORMAT));
+        dto.setFirstName(entity.getFirstName());
+        dto.setLastName(entity.getLastName());
+        dto.setPassword(entity.getPassword());
+        dto.setEmail(entity.getUsername());
+        dto.setPhone(entity.getPhone());
+        dto.setUserAgreement(entity.isUserAgreement());
+        dto.setUserStatus(entity.getUserStatus());
+        dto.setDeleteDate(entity.getDeleteDate().format(DATE_FORMAT));
+        dto.setAvatarUrl(entity.getAvatarUrl());
         return dto;
     }
 
-    public User fromDtoToEntity(UserDto userDto){
-        User user = new User();
+    public IssueDto toDto(Issue entity){
+        IssueDto dto = new IssueDto();
 
-        user.setId(userDto.getId());
-        user.setUserRole(userDto.getUserRole());
-        user.setRegistrationDate(userDto.getRegistrationDate());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
-        user.setUsername(userDto.getEmail());
-        user.setPhone(userDto.getPhone());
-        user.setUserAgreement(userDto.isUserAgreement());
-        user.setUserStatus(userDto.getUserStatus());
-        user.setDeleteDate(userDto.getDeleteDate());
-        user.setAvatarUrl(userDto.getAvatarUrl());
-        return user;
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setInitialDate(entity.getInitialDate().format(DATE_FORMAT));
+        dto.setLatitude(entity.getLatitude());
+        dto.setLongitude(entity.getLongitude());
+        dto.setUserDto(toDto(entity.getUser()));
+        dto.setCategory(entity.getCategory());
+        return dto;
     }
 
-    public EventDto fromEntityToDto(Event eventEntity){
-        EventDto event = new EventDto();
+    public EventDto toDto(Event entity){
+        EventDto dto = new EventDto();
 
-        event.setId(eventEntity.getId());
-        event.setUserDto(fromEntityToDto(eventEntity.getUser()));
-        event.setTitle(eventEntity.getTitle());
-        event.setDescription(eventEntity.getDescription());
-        event.setInitialDate(eventEntity.getInitialDate());
-        event.setLatitude(eventEntity.getLatitude());
-        event.setLongitude(eventEntity.getLongitude());
-        event.setEndDate(eventEntity.getEndDate());
-        event.setCategory(eventEntity.getCategory());
-        return event;
+        dto.setId(entity.getId());
+        dto.setUserDto(toDto(entity.getUser()));
+        dto.setTitle(entity.getTitle());
+        dto.setDescription(entity.getDescription());
+        dto.setInitialDate(entity.getInitialDate().format(DATE_FORMAT));
+        dto.setLatitude(entity.getLatitude());
+        dto.setLongitude(entity.getLongitude());
+        dto.setEndDate(entity.getEndDate().format(DATE_FORMAT));
+        dto.setCategory(entity.getCategory());
+        return dto;
     }
 
-    public Event fromEntityToDto(EventDto eventDto){
-        Event event = new Event();
+    public User toEntity(UserDto dto){
+        User entity = new User();
 
-        event.setId(eventDto.getId());
-        event.setUser(fromDtoToEntity(eventDto.getUserDto()));
-        event.setTitle(eventDto.getTitle());
-        event.setDescription(eventDto.getDescription());
-        event.setInitialDate(eventDto.getInitialDate());
-        event.setLatitude(eventDto.getLatitude());
-        event.setLongitude(eventDto.getLongitude());
-        event.setEndDate(eventDto.getEndDate());
-        event.setCategory(eventDto.getCategory());
-        return event;
+        entity.setId(dto.getId());
+        entity.setUserRole(dto.getUserRole());
+        entity.setRegistrationDate(LocalDateTime.parse(dto.getRegistrationDate(), DATE_FORMAT));
+        entity.setFirstName(dto.getFirstName());
+        entity.setLastName(dto.getLastName());
+        entity.setPassword(dto.getPassword());
+        entity.setUsername(dto.getEmail());
+        entity.setPhone(dto.getPhone());
+        entity.setUserAgreement(dto.isUserAgreement());
+        entity.setUserStatus(dto.getUserStatus());
+        entity.setDeleteDate(LocalDateTime.parse(dto.getDeleteDate(), DATE_FORMAT));
+        entity.setAvatarUrl(dto.getAvatarUrl());
+        return entity;
     }
 
+    public Event toEntity(EventDto dto){
+        Event entity = new Event();
+
+        entity.setId(dto.getId());
+        entity.setUser(toEntity(dto.getUserDto()));
+        entity.setTitle(dto.getTitle());
+        entity.setDescription(dto.getDescription());
+        entity.setInitialDate(LocalDateTime.parse(dto.getInitialDate(), DATE_FORMAT));
+        entity.setLatitude(dto.getLatitude());
+        entity.setLongitude(dto.getLongitude());
+        entity.setEndDate(LocalDateTime.parse(dto.getEndDate()));
+        entity.setCategory(dto.getCategory());
+        return entity;
+    }
+
+    //TODO GENERIFICATION!!!
+    public List<EventDto> toDtoList(List<Event> entities) {
+        return entities.stream().map(e -> {
+            return toDto(e);
+        }).collect(Collectors.toList());
+    }
 }

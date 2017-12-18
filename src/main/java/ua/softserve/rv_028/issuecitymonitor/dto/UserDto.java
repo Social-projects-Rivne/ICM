@@ -21,21 +21,6 @@ public class UserDto {
 
     public UserDto() {}
 
-    public UserDto(User entity) {
-        this.id = entity.getId();
-        this.userRole = entity.getUserRole();
-        this.registrationDate = entity.getRegistrationDate();
-        this.firstName = entity.getFirstName();
-        this.lastName = entity.getLastName();
-        this.password = entity.getPassword();
-        this.email = entity.getUsername();
-        this.phone = entity.getPhone();
-        this.userAgreement = entity.isUserAgreement();
-        this.userStatus = entity.getUserStatus();
-        this.deleteDate = entity.getDeleteDate();
-        this.avatarUrl = entity.getAvatarUrl();
-    }
-
     public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
                    String password, String email, String phone, boolean userAgreement, UserStatus userStatus,
                    String deleteDate, String avatarUrl) {

@@ -6,6 +6,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,7 +32,7 @@ public class Event {
     private String description;
 
     @Column(name = "initial_date")
-    private String initialDate;
+    private LocalDateTime initialDate;
 
     @Column(name = "latitude")
     private double latitude;
@@ -40,7 +41,7 @@ public class Event {
     private double longitude;
 
     @Column(name = "end_date")
-    private String endDate;
+    private LocalDateTime endDate;
 
     @Column(name = "category")
     @Enumerated(EnumType.ORDINAL)
@@ -57,19 +58,8 @@ public class Event {
 
     public Event() {}
 
-    public Event(EventDto eventDto) {
-        this.user = new User(eventDto.getUserDto());
-        this.title = eventDto.getTitle();
-        this.description = eventDto.getDescription();
-        this.initialDate = eventDto.getInitialDate();
-        this.latitude = eventDto.getLatitude();
-        this.longitude = eventDto.getLongitude();
-        this.endDate = eventDto.getEndDate();
-        this.category = eventDto.getCategory();
-    }
-
-    public Event(User user, String title, String description, String initialDate, double latitude, double longitude,
-                 String endDate, EventCategory category) {
+    public Event(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
+                 LocalDateTime endDate, EventCategory category) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -112,11 +102,11 @@ public class Event {
         this.description = description;
     }
 
-    public String getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(String initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 
@@ -136,11 +126,11 @@ public class Event {
         this.longitude = longitude;
     }
 
-    public String getEndDate() {
+    public LocalDateTime getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(LocalDateTime endDate) {
         this.endDate = endDate;
     }
 

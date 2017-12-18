@@ -17,18 +17,6 @@ public class EventDto {
 
     public EventDto() {}
 
-    public EventDto(Event entity) {
-        this.id = entity.getId();
-        this.userDto = new UserDto(entity.getUser());
-        this.title = entity.getTitle();
-        this.description = entity.getDescription();
-        this.initialDate = entity.getInitialDate();
-        this.latitude = entity.getLatitude();
-        this.longitude = entity.getLongitude();
-        this.endDate = entity.getEndDate();
-        this.category = entity.getCategory();
-    }
-
     public EventDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude,
                     double longitude, String endDate, EventCategory category) {
         this.id = id;

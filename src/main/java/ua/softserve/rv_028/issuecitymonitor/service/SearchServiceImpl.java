@@ -19,10 +19,12 @@ public class SearchServiceImpl implements SearchService{
     private final static Logger LOGGER = Logger.getLogger(SearchServiceImpl.class.getName());
 
     private final EventDao eventDao;
+    private final MapperService mapperService;
 
     @Autowired
-    public SearchServiceImpl(EventDao eventDao) {
+    public SearchServiceImpl(EventDao eventDao, MapperService mapperService) {
         this.eventDao = eventDao;
+        this.mapperService = mapperService;
     }
 
     @Override
@@ -41,12 +43,9 @@ public class SearchServiceImpl implements SearchService{
             }
         }
 
-        if(!isWrappedSpecificationsNull) {
-            for (Event e : eventDao.findAll(specifications)) {
-                events.add(new EventDto(e));
-            }
+        if(isWrappedSpecificationsNull) {
+            events = mapperService.toDtoList(eventDao.findAll(specifications));
         }
-
 
         LOGGER.debug("found events "+events.toString());
         return events;

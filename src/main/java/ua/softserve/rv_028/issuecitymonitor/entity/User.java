@@ -11,6 +11,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -32,7 +33,7 @@ public class User implements UserDetails{
 	private UserRole userRole;
 
 	@Column(name = "reg_date")
-	private String registrationDate;
+	private LocalDateTime registrationDate;
 
 	@Column(name = "first_name")
 	private String firstName;
@@ -58,7 +59,7 @@ public class User implements UserDetails{
 	private UserStatus userStatus;
 
 	@Column(name = "delete_date")
-	private String deleteDate;
+	private LocalDateTime deleteDate;
 
 	@Column(name = "avatar_url")
 	private String avatarUrl;
@@ -76,19 +77,6 @@ public class User implements UserDetails{
 	private Set<Petition> petitions = new HashSet<>();
 
 	public User() {}
-
-	public User(UserDto userDto) {
-		this.password = userDto.getPassword();
-		this.username = userDto.getEmail();
-		this.registrationDate = userDto.getRegistrationDate();
-		this.firstName = userDto.getFirstName();
-		this.lastName = userDto.getLastName();
-		this.phone = userDto.getPhone();
-		this.userAgreement = userDto.isUserAgreement();
-		this.userStatus = userDto.getUserStatus();
-		this.deleteDate = userDto.getDeleteDate();
-		this.avatarUrl = userDto.getAvatarUrl();
-	}
 
 	public User(String firstName, String lastName, String password, String username,
                 String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
@@ -111,7 +99,6 @@ public class User implements UserDetails{
 		this.password = password;
         this.userRole = UserRole.USER;
         this.userStatus = UserStatus.UNCONFIRMED;
-        this.registrationDate = new Date().toString();
     }
 
 	public void setId(long id) {
@@ -130,11 +117,11 @@ public class User implements UserDetails{
 		this.userRole = userRole;
 	}
 
-	public String getRegistrationDate() {
+	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
 	}
 
-	public void setRegistrationDate(String registrationDate) {
+	public void setRegistrationDate(LocalDateTime registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
@@ -196,11 +183,11 @@ public class User implements UserDetails{
 		this.userStatus = userStatus;
 	}
 
-	public String getDeleteDate() {
+	public LocalDateTime getDeleteDate() {
 		return deleteDate;
 	}
 
-	public void setDeleteDate(String deleteDate) {
+	public void setDeleteDate(LocalDateTime deleteDate) {
 		this.deleteDate = deleteDate;
 	}
 
@@ -230,7 +217,7 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return prepareCollection(this.userRole);
+		return UserRole.collectionForRole(this.userRole);
 	}
 
 	@Override
@@ -260,21 +247,6 @@ public class User implements UserDetails{
 
 	private static boolean checkUserStatus(UserStatus status) {
 		return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
-	}
-
-	private Collection<GrantedAuthority> prepareCollection(UserRole userRole) {
-		HashSet<GrantedAuthority> roles = new HashSet<>();
-		if (userRole == UserRole.USER) {
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-		} else if (userRole == UserRole.MODERATOR){
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.MODERATOR.name()));
-		} else if (userRole == UserRole.ADMIN){
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.MODERATOR.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.ADMIN.name()));
-		}
-		return roles;
 	}
 
 	@Override
