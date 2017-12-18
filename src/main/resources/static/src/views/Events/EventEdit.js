@@ -29,6 +29,7 @@ class EventEdit extends Component {
         this.handleEndDateChange = this.handleEndDateChange.bind(this);
         this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
 
 
@@ -78,6 +79,10 @@ class EventEdit extends Component {
                 }
             }
         })
+    }
+
+    handleBack(){
+        this.props.history.goBack();
     }
 
     handleSave(){
@@ -160,10 +165,11 @@ class EventEdit extends Component {
                                 </CardBody>
                                 <CardFooter className="text-right">
                                     <Button color="success" onClick={this.handleSave}>
-                                        <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/events"><Button color="primary">
-                                        <i className="fa fa-ban"/> Back</Button>
-                                    </Link>
+                                        <i className="fa fa-dot-circle-o"/> Save
+                                    </Button>
+                                    <Button color="primary" onClick={this.handleBack}>
+                                        <i className="fa fa-ban"/> Back
+                                    </Button>
                                 </CardFooter>
                             </Form>
                         </Card>

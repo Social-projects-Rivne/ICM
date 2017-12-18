@@ -16,6 +16,7 @@ const fromDate = "fromDate";
 const toDate = "toDate";
 const radius = "radius";
 const category = "category";
+const fullName = "fullName";
 
 class Search extends Component {
     constructor(props) {
@@ -23,20 +24,15 @@ class Search extends Component {
 
         this.state = {
             eventQuery: {
-                text: ""
+                text: this.props.location.query === undefined ? "" : this.props.location.query
             },
-            /*issueQuery: {
-                title: "",
-                description: ""
+            issueQuery: {
             },
             userQuery: {
-                firstName: this.props.location.query,
-                lastName: this.props.location.query
+                fullName: this.props.location.query
             },
             petitionQuery: {
-                title: this.props.location.query,
-                description: this.props.location.query
-            },*/
+            },
             currentTab: "users",
             events: "",
             users: "",
@@ -45,23 +41,26 @@ class Search extends Component {
         };
         this.handleTabClick = this.handleTabClick.bind(this);
         this.handleEventQueryChange = this.handleEventQueryChange.bind(this);
-        this.handleFromDateChange = this.handleFromDateChange.bind(this);
-        this.handleToDateChange = this.handleToDateChange.bind(this);
+        this.handleUserQueryChange = this.handleUserQueryChange.bind(this);
+        this.handleEventFromDateChange = this.handleEventFromDateChange.bind(this);
+        this.handleEventToDateChange = this.handleEventToDateChange.bind(this);
         this.handleSearch = this.handleSearch.bind(this);
     }
 
-    componentWillMount(){
-        if(this.props.location.query!==undefined) {
-            this.setState(function(prev) {
-                return {
-                    eventQuery: {
-                        ...prev.eventQuery,
-                        text: this.props.location.query
-                    }
+    componentWillReceiveProps(props){
+        this.setState(function(prev) {
+            return {
+                eventQuery: {
+                    ...prev.eventQuery,
+                    text: props.location.query
                 }
-            });
-        }
-        console.log(this.props.location.query);
+            }
+        },function(){
+            this.makeEventQuery()
+        });
+    }
+
+    componentWillMount(){
         this.makeEventQuery();
 
         //TODO other queries
@@ -94,23 +93,38 @@ class Search extends Component {
         });
     }
 
-    handleFromDateChange(m){
-        this.setState(function(prev) {
+    handleUserQueryChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        this.setState(function (prev) {
             return {
-                eventQuery: {
-                    ...prev.eventQuery,
-                    fromDate: m.format("DD/MM/YYYY HH:mm")
+                userQuery: {
+                    ...prev.userQuery,
+                    [name]: value
                 }
             }
         });
     }
 
-    handleToDateChange(m){
+
+
+    handleEventFromDateChange(m){
         this.setState(function(prev) {
             return {
                 eventQuery: {
                     ...prev.eventQuery,
-                    toDate: m.format("DD/MM/YYYY HH:mm")
+                    fromDate: m.format("DD/MM/YYYY")
+                }
+            }
+        });
+    }
+
+    handleEventToDateChange(m){
+        this.setState(function(prev) {
+            return {
+                eventQuery: {
+                    ...prev.eventQuery,
+                    toDate: m.format("DD/MM/YYYY")
                 }
             }
         });
@@ -122,6 +136,19 @@ class Search extends Component {
 
     handleTabClick(e){
         this.setState({currentTab: e.target.name});
+    }
+
+    userSearchForm(){
+        return (<div>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By name</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.userQuery.fullName} name={fullName} onChange={this.handleUserQueryChange}/>
+                </Col>
+            </FormGroup>
+        </div>);
     }
 
     eventSearchForm(){
@@ -148,7 +175,7 @@ class Search extends Component {
                 </Col>
                 <Col xs="12" md="4">
                     <DateTime value={this.state.eventQuery.fromDate} dateFormat="DD/MM/YYYY"
-                              timeFormat="HH:mm" onChange={this.handleFromDateChange}
+                              timeFormat={false} onChange={this.handleEventFromDateChange}
                               inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                 </Col>
                 <Col md="2">
@@ -156,7 +183,7 @@ class Search extends Component {
                 </Col>
                 <Col xs="12" md="4">
                     <DateTime value={this.state.eventQuery.toDate} dateFormat="DD/MM/YYYY"
-                              timeFormat="HH:mm" onChange={this.handleToDateChange}
+                              timeFormat={false} onChange={this.handleEventToDateChange}
                               inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                 </Col>
             </FormGroup>
@@ -212,7 +239,11 @@ class Search extends Component {
                                         <Label>Search parameters:</Label>
                                     </Col>
                                 </FormGroup>
-                                {this.eventSearchForm()}
+                                {this.state.currentTab==="users" ? this.userSearchForm() :
+                                    this.state.currentTab==="events" ? this.eventSearchForm() :
+                                        this.state.currentTab==="issues" ? null :
+                                            this.state.currentTab==="petitions" ? null :
+                                                null}
                             </CardBody>
                             <CardFooter className="text-right">
                                 <Button className="btn btn-outline-secondary" onClick={this.handleSearch}>
