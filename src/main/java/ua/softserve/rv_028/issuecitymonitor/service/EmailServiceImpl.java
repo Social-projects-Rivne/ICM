@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -24,7 +25,11 @@ public class EmailServiceImpl extends Thread implements EmailService{
     @Override
     public void run() {
         super.run();
-        sendEmail();
+        try {
+            sendEmail();
+        } catch (MailAuthenticationException e){
+            LOGGER.error("GMail invalid email or password. " + e);
+        }
     }
 
     @Override
