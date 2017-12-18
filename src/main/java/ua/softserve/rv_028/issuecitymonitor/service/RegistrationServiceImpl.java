@@ -12,11 +12,14 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     private final UserDao userDao;
 
+    private final EmailService emailService;
+
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public RegistrationServiceImpl(UserDao userDao, BCryptPasswordEncoder passwordEncoder) {
+    public RegistrationServiceImpl(UserDao userDao, EmailService emailService, BCryptPasswordEncoder passwordEncoder) {
         this.userDao = userDao;
+        this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -24,14 +27,17 @@ public class RegistrationServiceImpl implements RegistrationService{
     @Override
     public boolean isUserExist(String email) {
         User user = userDao.findUserByUsername(email);
-        if (user != null)
-            return user.getUsername().equals(email);
-        else return false;
+        return user != null && user.getUsername().equals(email);
     }
 
     @Override
     public void registrationUser(UserDto dto) {
-        userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
-                passwordEncoder.encode(dto.getPassword())));
+        try {
+            userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
+                    passwordEncoder.encode(dto.getPassword())));
+            emailService.sendEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
+        } catch (RuntimeException e){
+            throw new IllegalArgumentException("Registration Failed");
+        }
     }
 }
