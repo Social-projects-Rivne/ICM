@@ -3,9 +3,12 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import java.util.logging.Logger;
@@ -52,17 +55,7 @@ public class UserController {
         return service.updateUser(userDto);
     }
 
-    @GetMapping("/redirect/{id}")
-    public String redirectUser(@PathVariable long id ){
-        UserDto user = new UserDto();
-        if ( 1 == id){
-            LOG.info("OK");
-            return "redirect:dashbord";
-        }
-        else {
-            return "redirect:#";
 
-        }
-    }
+
 
 }

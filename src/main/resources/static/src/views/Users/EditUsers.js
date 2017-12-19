@@ -78,9 +78,9 @@ class EditUsers extends Component {
 
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function (response) {
-                swal({title: "Issue record saved", icon: "success"});
-                axios.get("/api/users/redirect/" + this.props.match.params.id);
-            }).catch(function (error) {
+                swal({title: "Users record saved", icon: "success"});
+            })
+            .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
     }

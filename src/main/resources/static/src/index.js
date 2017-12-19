@@ -25,7 +25,7 @@ ReactDOM.render((
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/" name="Home" component={Full}/>
             <Route path="/users" name="Users" component={Users}/>
-            <Route path="/maps" name="IssueMap" component={IssueMap}/>
+//            <Route path="/maps" name="IssueMap" component={IssueMap}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));

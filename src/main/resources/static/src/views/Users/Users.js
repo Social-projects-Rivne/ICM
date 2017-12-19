@@ -21,7 +21,7 @@ class User extends Component {
                     })
                 })
                 .catch(function (error) {
-                    swal({title: "Something went wrong!asdad", text: error, icon: "error"});
+                    swal({title: "Something went wrong!", text: error, icon: "error"});
                 })
     }
 

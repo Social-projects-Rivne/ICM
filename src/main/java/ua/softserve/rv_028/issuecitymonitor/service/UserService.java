@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
@@ -7,6 +9,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -16,7 +19,8 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final  UserDao userDao;
     private static boolean messages;
-
+    private static String redirect;
+    Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
     @Autowired
     public UserService(UserDao userDao){
         this.userDao = userDao;
@@ -24,6 +28,14 @@ public class UserService {
 
     public static boolean isMessages() {
         return messages;
+    }
+
+    public static String getRedirect() {
+        return redirect;
+    }
+
+    public static void setRedirect(String redirect) {
+        UserService.redirect = redirect;
     }
 
     public void deleteById(long id) {
@@ -77,7 +89,9 @@ public class UserService {
         user.setAvatarUrl(dto.getAvatarUrl());
 
         LOGGER.info("Adding user!" + user.toString());
-        userDao.save(new User(dto));
+        if (userAuth.== UserRole.ADMIN)
+            userDao.save(new User(dto));
+
 
         LOGGER.info("Added user" + user.toString());
         return new UserDto(user);
