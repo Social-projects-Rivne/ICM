@@ -16,7 +16,7 @@ import '../scss/core/_dropdown-menu-right.scss'
 import Full from './containers/Full/'
 import Authorization from "./containers/Authorization/Authorization";
 import Users from "./views/Users/Users";
-import Map from "./containers/Map/Map";
+import IssueMap from "./views/IssueMap/IssueMap";
 
 ReactDOM.render((
     <BrowserRouter>
@@ -25,7 +25,7 @@ ReactDOM.render((
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/" name="Home" component={Full}/>
             <Route path="/users" name="Users" component={Users}/>
-            <Route exact path="/maps" name="IssueMap" component={Map}/>
+            <Route path="/maps" name="IssueMap" component={IssueMap}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));

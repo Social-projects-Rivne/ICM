@@ -64,7 +64,6 @@ class EditUsers extends Component {
     handleChange(e) {
         const name = e.target.name;
         const value = e.target.value;
-
         this.setState(function(prev) {
             return {
                 users: {
@@ -76,12 +75,11 @@ class EditUsers extends Component {
     }
 
     handleSave(){
+
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function (response) {
                 swal({title: "Issue record saved", icon: "success"});
-                Console.log("as das " + this.name + this.value)
-                window.location = "/";
-
+                axios.get("/api/users/redirect/" + this.props.match.params.id);
             }).catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
