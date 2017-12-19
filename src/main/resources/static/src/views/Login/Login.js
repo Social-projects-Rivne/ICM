@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import {Alert, InputGroup, InputGroupAddon, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
 import {Link} from 'react-router-dom';
 
-
 class Login extends Component {
     constructor(props) {
         super(props);
@@ -81,11 +80,18 @@ class Login extends Component {
                             <Alert color="danger" className="alert-form" style={this.incorrectUserEmailPass()}>
                                 Incorrect email or password
                             </Alert>
+
+
                         </Col>
                     </FormGroup>
-
+                    <FormGroup className="below-form-div">
+                        <Col sm={12}>
+                            <Link className="below-form-text" to='/restore-password'>Forgot password?</Link>
+                        </Col>
+                    </FormGroup>
                 </Form>
-                <p className="below-form">Don`t have an account? <Link to="/registration">Sign Up</Link></p>
+
+                <p className="below-form-text">Don`t have an account? <Link to="/registration">Sign up</Link></p>
             </div>
         )
     }

@@ -21,6 +21,13 @@ public class UserDto {
 
     public UserDto() {}
 
+    public UserDto(String firstName, String lastName, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
+
     public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
                    String password, String email, String phone, boolean userAgreement, UserStatus userStatus,
                    String deleteDate, String avatarUrl) {
