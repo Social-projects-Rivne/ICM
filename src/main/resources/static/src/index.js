@@ -25,8 +25,8 @@ ReactDOM.render((
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
-            <Route exact path="/client" name="Client" component={Client}/>
-            <Route path="/" name="Home" component={Full}/>
+            <Route path="/admin/" name="Home" component={Full}/>
+            <Route path="/" name="Client" component={Client}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));
