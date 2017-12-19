@@ -16,6 +16,7 @@ import '../scss/core/_dropdown-menu-right.scss'
 // Containers
 import Full from './containers/Full/'
 import Authorization from "./containers/Authorization/Authorization";
+import Client from "./containers/Client/Client";
 
 
 ReactDOM.render((
@@ -24,6 +25,7 @@ ReactDOM.render((
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
+            <Route exact path="/client" name="Client" component={Client}/>
             <Route path="/" name="Home" component={Full}/>
         </Switch>
     </BrowserRouter>

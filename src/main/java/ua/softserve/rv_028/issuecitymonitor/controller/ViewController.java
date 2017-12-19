@@ -28,4 +28,10 @@ public class ViewController {
         return "index.html";
     }
 
+    @GetMapping(value = "/client")
+    public String client(){
+        return "index.html";
+    }
+
+
 }
