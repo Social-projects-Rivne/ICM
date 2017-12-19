@@ -9,13 +9,15 @@ class Issues extends Component {
         super(props);
 
         this.state = {
-            issues: []
+            issues: [],
+            page: 0,
+            size: 10
         };
     }
 
     componentWillMount() {
         var _this = this;
-        axios.get("/api/issues?p="+page+"&size="+size)
+        axios.get("/api/issues?page=" + this.state.page + "&size=" + this.state.size)
             .then(function(response) {
                 _this.setState({
                     issues: response.data.content
@@ -55,10 +57,8 @@ class Issues extends Component {
                                 </Table>
                             </CardBody>
                             <CardFooter className="text-center">
-                                <Link to="/issues"><Button color="primary"> Previous </Button>
-                                </Link>
-                                <Link to="/issues"><Button color="primary"> Next </Button>
-                                </Link>
+                                <Button color="primary"> Previous </Button>
+                                <Button color="primary"> Next </Button>
                         </CardFooter>
                         </Card>
                     </Col>
