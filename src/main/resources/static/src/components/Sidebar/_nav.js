@@ -3,15 +3,14 @@ export default {
 
     {
       name: 'Dashboard',
-      url: '/dashboard',
+      url: '/admin/dashboard',
       icon: 'icon-home',
 
     },
 
-
     {
       name: 'Issues',
-      url: '/issues',
+      url: '/admin/issues',
       icon: 'icon-layers',
       badge: {
         variant: 'info',
@@ -21,7 +20,7 @@ export default {
 
     {
       name: 'Petitions',
-      url: '/petitions',
+      url: '/admin/petitions',
       icon: 'icon-list',
       badge: {
         variant: 'info',
@@ -31,7 +30,7 @@ export default {
 
     {
       name: 'Events',
-      url: '/events',
+      url: '/admin/events',
       icon: 'icon-event',
       badge: {
         variant: 'info',
@@ -41,7 +40,7 @@ export default {
 
     {
       name: 'Users',
-      url: '/users',
+      url: '/admin/users',
       icon: 'icon-people',
       badge: {
         variant: 'info',
@@ -51,10 +50,9 @@ export default {
 
     {
       name: 'Settings',
-      url: '/settings',
+      url: '/admin/settings',
       icon: 'icon-wrench',
     },
-
 
   ]
 };

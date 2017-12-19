@@ -146,7 +146,7 @@ class IssueEdit extends Component {
 
                                         <Button color="success" onClick={this.handleSave}>
                                             <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/issues"><Button color="primary">
+                                    <Link to="/admin/issues"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>
                                 </CardFooter>

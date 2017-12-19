@@ -26,13 +26,13 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
-                <Route exact path="/dashboard" name="Dashboard" component={Dashboard}/>
-                <Route exact path="/events" name="Events" component={Events}/>
-                <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
-                <Route exact path="/petitions" name="Petitions" component={Petitions}/>
-                <Route exact path="/issues" name="Issues" component={Issues}/>
-                <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
-                <Route exact path="/users" name="Users" component={Users}/>
+                <Route exact path="/admin/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route exact path="/admin/events" name="Events" component={Events}/>
+                <Route path="/admin/events/:id/edit" name="Events" component={EventEdit}/>
+                <Route exact path="/admin/petitions" name="Petitions" component={Petitions}/>
+                <Route exact path="/admin/issues" name="Issues" component={Issues}/>
+                <Route path="/admin/issues/:id/edit" name="Issues" component={IssueEdit}/>
+                <Route exact path="/admin/users" name="Users" component={Users}/>
               </Switch>
             </Container>
           </main>
