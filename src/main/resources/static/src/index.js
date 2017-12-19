@@ -22,9 +22,9 @@ import Client from "./containers/Client/Client";
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
+            <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
-            <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
             <Route path="/admin/" name="Home" component={Full}/>
             <Route path="/" name="Client" component={Client}/>
         </Switch>
