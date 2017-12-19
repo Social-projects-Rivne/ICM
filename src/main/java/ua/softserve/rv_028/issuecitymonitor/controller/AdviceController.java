@@ -23,11 +23,5 @@ public class AdviceController {
     public void handleSearchWrongAttribute(Exception e) {
         LOGGER.debug(e.getMessage());
     }
-
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_REASON)
-    @ExceptionHandler(IllegalArgumentException.class)
-    public void registrationError(IllegalArgumentException e){
-        LOGGER.debug(e.getMessage());
-    }
 }
 

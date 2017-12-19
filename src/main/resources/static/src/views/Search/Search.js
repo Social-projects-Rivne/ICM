@@ -53,26 +53,44 @@ class Search extends Component {
                 eventQuery: {
                     ...prev.eventQuery,
                     text: props.location.query
+                },
+                userQuery: {
+                    ...prev.userQuery,
+                    fullName: props.location.query
                 }
             }
         },function(){
-            this.makeEventQuery()
+            this.makeEventQuery();
+            this.makeUserQuery();
         });
     }
 
     componentWillMount(){
         this.makeEventQuery();
+        this.makeUserQuery();
 
         //TODO other queries
     }
 
     makeEventQuery() {
         var _this = this;
-        console.log(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""));
         axios.get(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""))
             .then(function(response) {
                 _this.setState({
                     events: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            })
+    }
+
+    makeUserQuery() {
+        var _this = this;
+        axios.get(["/api/search/users?", qs.stringify(this.state.userQuery)].join(""))
+            .then(function(response) {
+                _this.setState({
+                    users: response.data
                 })
             })
             .catch(function (error) {
@@ -105,8 +123,6 @@ class Search extends Component {
             }
         });
     }
-
-
 
     handleEventFromDateChange(m){
         this.setState(function(prev) {

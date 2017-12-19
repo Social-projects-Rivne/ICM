@@ -5,19 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
-import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 
 @Service
 public class EmailServiceImpl extends Thread implements EmailService{
 
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EmailServiceImpl.class.getName());
 
     private String receiverEmail;
     private String emailSubject;
     private String emailText;
 
+    private final JavaMailSender emailSender;
+
     @Autowired
-    public JavaMailSender emailSender;
+    public EmailServiceImpl(JavaMailSender emailSender) {
+        this.emailSender = emailSender;
+    }
 
     @Override
     public void run() {

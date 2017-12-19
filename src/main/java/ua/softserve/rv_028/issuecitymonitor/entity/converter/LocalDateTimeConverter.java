@@ -1,4 +1,4 @@
-package ua.softserve.rv_028.issuecitymonitor.entity;
+package ua.softserve.rv_028.issuecitymonitor.entity.converter;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

@@ -3,6 +3,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
@@ -32,6 +33,7 @@ public class Issue{
     private String description;
 
     @Column(name = "initial_date")
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime initialDate;
 
     @Column(name = "latitude")

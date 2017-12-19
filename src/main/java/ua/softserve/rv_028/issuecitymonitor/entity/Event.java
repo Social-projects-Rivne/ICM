@@ -2,7 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
-import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
@@ -32,6 +32,7 @@ public class Event {
     private String description;
 
     @Column(name = "initial_date")
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime initialDate;
 
     @Column(name = "latitude")
@@ -41,6 +42,7 @@ public class Event {
     private double longitude;
 
     @Column(name = "end_date")
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime endDate;
 
     @Column(name = "category")

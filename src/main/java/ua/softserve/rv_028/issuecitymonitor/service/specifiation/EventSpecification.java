@@ -1,21 +1,18 @@
 package ua.softserve.rv_028.issuecitymonitor.service.specifiation;
 
-import org.apache.log4j.Logger;
 import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
-import javax.persistence.criteria.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Date;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
+import java.time.LocalDateTime;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 public class EventSpecification implements Specification<Event> {
-
-    private static final Logger LOGGER = Logger.getLogger(EventSpecification.class);
 
     private String key;
     private String value;
@@ -28,19 +25,27 @@ public class EventSpecification implements Specification<Event> {
     @Override
     public Predicate toPredicate(Root<Event> root, CriteriaQuery<?> criteriaQuery, CriteriaBuilder criteriaBuilder) {
 
-        if(value==null || value.equals("")) {
+        if(value==null || value.replace(" ", "").equals("")) {
             return null;
         }
-        //TODO DATES
-        /*if(key.equals("fromDate")) {
-            try {
-                return criteriaBuilder.greaterThanOrEqualTo(,
-                        new SimpleDateFormat("dd/MM/yyyy").parse(value));
-            } catch (ParseException e) {
-                LOGGER.debug("error parsing date");
-                return null;
-            }
-        }*/
+
+        if(key.equals("fromDate")) {
+            value += " 00:00";
+            return criteriaBuilder.or(
+                    criteriaBuilder.greaterThanOrEqualTo(root.get("initialDate"),
+                            LocalDateTime.parse(value, DATE_FORMAT)),
+                    criteriaBuilder.greaterThanOrEqualTo(root.get("endDate"),
+                            LocalDateTime.parse(value, DATE_FORMAT)));
+        }
+
+        if(key.equals("toDate")) {
+            value += " 00:00";
+            return criteriaBuilder.or(
+                    criteriaBuilder.lessThanOrEqualTo(root.get("initialDate"),
+                            LocalDateTime.parse(value, DATE_FORMAT)),
+                    criteriaBuilder.lessThanOrEqualTo(root.get("endDate"),
+                            LocalDateTime.parse(value, DATE_FORMAT)));
+        }
 
         if(key.equals("user")) {
             String[] values = value.split(" ",2);
