@@ -13,7 +13,8 @@ import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +31,7 @@ public class EventControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private MapperService mapperService;
+    private EventMapper mapperService;
 
     private Event event;
 

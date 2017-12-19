@@ -11,6 +11,8 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.RestorePassword;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.util.UUID;
 
@@ -22,12 +24,12 @@ public class RestorePasswordServiceImpl implements RestorePasswordService {
     private UserDao userDao;
     private RestorePasswordDao restorePasswordDao;
     private EmailService emailService;
-    private MapperService mapperService;
+    private UserMapper mapperService;
     private BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public RestorePasswordServiceImpl(UserDao userDao, RestorePasswordDao restorePasswordDao, EmailService emailService,
-                                      MapperService mapperService, BCryptPasswordEncoder encoder) {
+                                      UserMapper mapperService, BCryptPasswordEncoder encoder) {
         this.userDao = userDao;
         this.restorePasswordDao = restorePasswordDao;
         this.emailService = emailService;

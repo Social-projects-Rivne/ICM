@@ -8,13 +8,16 @@ import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 import ua.softserve.rv_028.issuecitymonitor.service.specifiation.EventSpecification;
-import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.specifiation.IssueSpecification;
 import ua.softserve.rv_028.issuecitymonitor.service.specifiation.UserSpecification;
 
@@ -32,36 +35,27 @@ public class SearchServiceImpl implements SearchService{
     private final IssueDao issueDao;
     private final PetitionDao petitionDao;
 
-    private final MapperService mapperService;
+    private final UserMapper userMapper;
+    private final EventMapper eventMapper;
+    private final IssueMapper issueMapper;
 
     @Autowired
-    public SearchServiceImpl(EventDao eventDao, MapperService mapperService, UserDao userDao, IssueDao issueDao, PetitionDao petitionDao) {
+    public SearchServiceImpl(EventDao eventDao, UserMapper userMapper, UserDao userDao, IssueDao issueDao,
+                             PetitionDao petitionDao, EventMapper eventMapper, IssueMapper issueMapper) {
         this.eventDao = eventDao;
-        this.mapperService = mapperService;
+        this.userMapper = userMapper;
         this.userDao = userDao;
         this.issueDao = issueDao;
         this.petitionDao = petitionDao;
+        this.eventMapper = eventMapper;
+        this.issueMapper = issueMapper;
     }
 
     @Override
     public List<EventDto> findEventsByCriteria(Map<String, String> queryMap) {
-        List<EventDto> events = new ArrayList<>();
-        Specifications<Event> specifications = Specifications.where(null);
-        boolean isWrappedSpecificationsNull = true;
+        Specifications<Event> specifications = getEventSpecifications(queryMap);
 
-        for(Map.Entry<String, String> entry : queryMap.entrySet()) {
-            if(!entry.getKey().isEmpty() && !entry.getValue().isEmpty()) {
-                specifications = specifications.and(new EventSpecification(entry.getKey(), entry.getValue()));
-                isWrappedSpecificationsNull = false;
-            }
-            else {
-                LOGGER.debug("skipping empty key or value");
-            }
-        }
-
-        if(!isWrappedSpecificationsNull) {
-            events = mapperService.toDtoList(eventDao.findAll(specifications));
-        }
+        List<EventDto> events = eventMapper.toDtoList(eventDao.findAll(specifications));
 
         LOGGER.debug("found events "+events.toString());
         return events;
@@ -69,49 +63,23 @@ public class SearchServiceImpl implements SearchService{
 
     @Override
     public List<UserDto> findUsersByCriteria(Map<String, String> queryMap) {
-        List<UserDto> users = new ArrayList<>();
-        Specifications<User> specifications = Specifications.where(null);
-        boolean isWrappedSpecificationsNull = true;
-
-        for(Map.Entry<String, String> entry : queryMap.entrySet()) {
-            if(!entry.getKey().isEmpty() && !entry.getValue().isEmpty()) {
-                specifications = specifications.and(new UserSpecification(entry.getKey(), entry.getValue()));
-                isWrappedSpecificationsNull = false;
-            }
-            else {
-                LOGGER.debug("skipping empty key or value");
-            }
-        }
-
-        if(!isWrappedSpecificationsNull) {
-            users = mapperService.toDtoList(userDao.findAll(specifications));
-        }
-
-        LOGGER.debug("found users "+users.toString());
-        return users;
+        return null;
     }
 
     @Override
     public List<IssueDto> findIssuesByCriteria(Map<String, String> queryMap) {
-        List<IssueDto> issues = new ArrayList<>();
-        Specifications<Issue> specifications = Specifications.where(null);
-        boolean isWrappedSpecificationsNull = true;
-
-        for(Map.Entry<String, String> entry : queryMap.entrySet()) {
-            if(!entry.getKey().isEmpty() && !entry.getValue().isEmpty()) {
-                specifications = specifications.and(new IssueSpecification(entry.getKey(), entry.getValue()));
-                isWrappedSpecificationsNull = false;
-            }
-            else {
-                LOGGER.debug("skipping empty key or value");
-            }
-        }
-
-        if(!isWrappedSpecificationsNull) {
-            issues = mapperService.toDtoList(issueDao.findAll(specifications));
-        }
-
-        LOGGER.debug("found issues "+issues.toString());
-        return issues;
+        return null;
     }
+
+    private Specifications<Event> getEventSpecifications(Map<String, String> queryMap) {
+        Specifications<Event> specifications = Specifications.where(null);
+        for(Map.Entry<String, String> entry : queryMap.entrySet()) {
+            if(!entry.getValue().isEmpty()) {
+                specifications = specifications.and(new EventSpecification(entry.getKey(), entry.getValue()));
+            }
+        }
+        return specifications;
+    }
+
+
 }

@@ -11,8 +11,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -30,7 +30,7 @@ public class IssueControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private MapperService mapperService;
+    private IssueMapper mapperService;
 
     @Before
     public void setup(){

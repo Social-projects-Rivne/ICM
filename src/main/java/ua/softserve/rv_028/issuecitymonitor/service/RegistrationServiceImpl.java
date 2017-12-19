@@ -9,18 +9,20 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 @Service
 public class RegistrationServiceImpl implements RegistrationService{
 
     private UserDao userDao;
     private EmailService emailService;
-    private MapperService mapperService;
+    private UserMapper mapperService;
     private BCryptPasswordEncoder passwordEncoder;
     private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     @Autowired
-    public RegistrationServiceImpl(MapperService mapperService, UserDao userDao, EmailService emailService,
+    public RegistrationServiceImpl(UserMapper mapperService, UserDao userDao, EmailService emailService,
                                    BCryptPasswordEncoder passwordEncoder) {
         this.mapperService = mapperService;
         this.userDao = userDao;

@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -19,10 +21,10 @@ public class IssueService {
 
     private IssueDao issueDao;
 
-    private MapperService mapperService;
+    private IssueMapper mapperService;
 
     @Autowired
-    public IssueService(IssueDao issueDao, MapperService mapperService) {
+    public IssueService(IssueDao issueDao, IssueMapper mapperService) {
         this.issueDao = issueDao;
         this.mapperService = mapperService;
     }

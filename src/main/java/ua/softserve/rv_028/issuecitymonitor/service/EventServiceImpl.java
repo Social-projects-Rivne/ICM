@@ -4,13 +4,11 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
-import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
-import java.text.ParseException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
@@ -22,10 +20,10 @@ public class EventServiceImpl implements EventService {
 
     private final EventDao eventDao;
 
-    private final MapperService mapperService;
+    private final EventMapper mapperService;
 
     @Autowired
-    public EventServiceImpl(EventDao eventDao, MapperService mapperService){
+    public EventServiceImpl(EventDao eventDao, EventMapper mapperService){
         this.eventDao = eventDao;
         this.mapperService = mapperService;
     }

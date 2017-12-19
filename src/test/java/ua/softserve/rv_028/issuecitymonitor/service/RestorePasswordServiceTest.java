@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.RestorePasswordDao;
@@ -14,6 +13,8 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.RestorePassword;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import static org.junit.Assert.assertEquals;
 
@@ -34,7 +35,7 @@ public class RestorePasswordServiceTest {
     private RestorePasswordDao restorePasswordDao;
 
     @Autowired
-    private MapperService mapper;
+    private UserMapper mapper;
 
     @Autowired
     private RestorePasswordService restorePassword;

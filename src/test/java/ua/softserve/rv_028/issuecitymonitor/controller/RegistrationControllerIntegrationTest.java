@@ -12,7 +12,8 @@ import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.util.Random;
 
@@ -30,7 +31,7 @@ public class RegistrationControllerIntegrationTest {
     private UserDao userDao;
 
     @Autowired
-    private MapperService mapperService;
+    private UserMapper mapperService;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
