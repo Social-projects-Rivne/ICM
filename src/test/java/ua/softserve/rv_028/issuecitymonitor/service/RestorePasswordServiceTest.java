@@ -43,7 +43,7 @@ public class RestorePasswordServiceTest {
     public void setup(){
         user = userDao.findAll().get(0);
         user2 = userDao.findAll().get(1);
-        user2Dto = mapper.fromEntityToDto(user2);
+        user2Dto = mapper.toDto(user2);
         restorePasswordDao.deleteByUser(user2);
         restorePasswordDao.save(new RestorePassword(user2, TOKEN));
     }
@@ -68,7 +68,7 @@ public class RestorePasswordServiceTest {
 
     @Test(expected = RestorePasswordException.class)
     public void setNewPasswordTestEmptyPassword(){
-        UserDto userEmptyPassword = mapper.fromEntityToDto(user);
+        UserDto userEmptyPassword = mapper.toDto(user);
         userEmptyPassword.setPassword("");
         restorePassword.setNewPasswordForUser(userEmptyPassword.getEmail(), userEmptyPassword.getPassword(),
                 NO_TOKEN);

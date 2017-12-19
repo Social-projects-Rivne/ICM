@@ -48,6 +48,6 @@ public class RegistrationServiceTest {
 
     @Test(expected = RegistrationException.class)
     public void registrationFailUserExist(){
-        registrationService.registrationUser(mapper.fromEntityToDto(user));
+        registrationService.registrationUser(mapper.toDto(user));
     }
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
 import {Link} from "react-router-dom";
 import axios from 'axios';
-import {Link} from "react-router-dom";
 
 export default class SignUp extends React.Component {
 

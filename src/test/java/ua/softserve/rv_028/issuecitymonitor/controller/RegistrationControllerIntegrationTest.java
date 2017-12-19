@@ -45,7 +45,7 @@ public class RegistrationControllerIntegrationTest {
     @Test
     public void registrationFailUserExist(){
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<UserDto> request = new HttpEntity<>(mapperService.fromEntityToDto(userInDB), headers);
+        HttpEntity<UserDto> request = new HttpEntity<>(mapperService.toDto(userInDB), headers);
 
         ResponseEntity<String> response = testRestTemplate.postForEntity( "/api/registration", request, String.class);
         System.out.println(response.getBody());
