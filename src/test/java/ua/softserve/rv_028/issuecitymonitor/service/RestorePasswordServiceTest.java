@@ -13,7 +13,6 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.RestorePassword;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import static org.junit.Assert.assertEquals;

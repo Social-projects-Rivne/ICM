@@ -10,7 +10,6 @@ import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import static org.junit.Assert.assertEquals;

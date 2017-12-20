@@ -9,7 +9,6 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 @Service
@@ -17,14 +16,14 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     private UserDao userDao;
     private EmailService emailService;
-    private UserMapper mapperService;
+    private UserMapper userMapper;
     private BCryptPasswordEncoder passwordEncoder;
     private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     @Autowired
-    public RegistrationServiceImpl(UserMapper mapperService, UserDao userDao, EmailService emailService,
+    public RegistrationServiceImpl(UserMapper userMapper, UserDao userDao, EmailService emailService,
                                    BCryptPasswordEncoder passwordEncoder) {
-        this.mapperService = mapperService;
+        this.userMapper = userMapper;
         this.userDao = userDao;
         this.emailService = emailService;
         this.passwordEncoder = passwordEncoder;
@@ -43,7 +42,7 @@ public class RegistrationServiceImpl implements RegistrationService{
                     passwordEncoder.encode(dto.getPassword())));
             LOGGER.info("The user " + dto.getEmail() + " has been registered");
             emailService.sendGreetingEmail(dto.getEmail(), dto.getFirstName(), dto.getLastName());
-            return mapperService.toDto(user);
+            return userMapper.toDto(user);
         } catch (RuntimeException e){
             throw new RegistrationException();
         }

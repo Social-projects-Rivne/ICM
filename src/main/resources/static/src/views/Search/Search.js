@@ -25,21 +25,13 @@ class Search extends Component {
 
         this.state = {
             eventQuery: {
-                text: this.props.location.query === undefined ? "" : this.props.location.query,
-                category: "",
-                fromDate: "",
-                toDate: "",
-                user: ""
+                text: this.props.location.query === undefined ? "" : this.props.location.query
             },
             issueQuery: {
-                text: this.props.location.query === undefined ? "" : this.props.location.query,
-                category: "",
-                fromDate: "",
-                toDate: "",
-                user: ""
+                text: this.props.location.query === undefined ? "" : this.props.location.query
             },
             userQuery: {
-                fullName: this.props.location.query
+                fullName: this.props.location.query === undefined ? "" : this.props.location.query
             },
             petitionQuery: {
             },
@@ -99,7 +91,6 @@ class Search extends Component {
 
     makeQuery(type, queryObj) {
         var _this = this;
-        console.log(qs.stringify(queryObj));
         axios.get(["/api/search/", type, "/?", qs.stringify(queryObj)].join(""))
             .then(function(response) {
                 _this.setState({
@@ -188,7 +179,7 @@ class Search extends Component {
             return {
                 issueQuery: {
                     ...prev.issueQuery,
-                    fromDate: m.format("DD/MM/YYYY")
+                    toDate: m.format("DD/MM/YYYY")
                 }
             }
         });

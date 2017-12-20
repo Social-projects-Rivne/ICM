@@ -7,6 +7,8 @@ import {
     Label, Row
 } from "reactstrap";
 import {Link} from "react-router-dom";
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 
 class IssueEdit extends Component {
     constructor(props) {
@@ -23,9 +25,10 @@ class IssueEdit extends Component {
             initialDate: true
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
+        this.handleBack = this.handleBack.bind(this);
     }
 
     componentWillMount() {
@@ -41,20 +44,16 @@ class IssueEdit extends Component {
             });
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
-            return {
-                issue: {
-                    ...prev.issue,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
-            }
-        })
-    }
+    handleInitialDateChange(m){
+            this.setState(function(prev) {
+                return {
+                    issue: {
+                        ...prev.issue,
+                        initialDate: m.format("DD/MM/YYYY HH:mm")
+                    }
+                }
+            });
+        }
 
     handleChange(e) {
         const name = e.target.name;
@@ -76,6 +75,10 @@ class IssueEdit extends Component {
             }).catch(function (error) {
             swal({title: "Something went wrong!", text: error, icon: "error"});
         });
+    }
+
+    handleBack() {
+        this.props.history.goBack();
     }
 
     render() {
@@ -117,13 +120,9 @@ class IssueEdit extends Component {
                                             <Label>Initial Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <InputGroup>
-                                                <Input value={this.state.issue.initialDate} type="text"
-                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
-                                                       onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.issue.initialDate ?
-                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
-                                            </InputGroup>
+                                            <DateTime value={this.state.issue.initialDate} dateFormat="DD/MM/YYYY"
+                                                timeFormat="HH:mm" onChange={this.handleInitialDateChange}
+                                                inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                         </FormGroup>
 
@@ -143,12 +142,10 @@ class IssueEdit extends Component {
                                     </FormGroup>
                                 </CardBody>
                                 <CardFooter className="text-right">
-
-                                        <Button color="success" onClick={this.handleSave}>
+                                    <Button color="success" onClick={this.handleSave}>
                                             <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/issues"><Button color="primary">
+                                    <Button color="primary" onClick={this.handleBack}>
                                         <i className="fa fa-ban"/> Back</Button>
-                                    </Link>
                                 </CardFooter>
                             </Form>
                         </Card>

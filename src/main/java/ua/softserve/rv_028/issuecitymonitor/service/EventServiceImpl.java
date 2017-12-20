@@ -20,12 +20,12 @@ public class EventServiceImpl implements EventService {
 
     private final EventDao eventDao;
 
-    private final EventMapper mapperService;
+    private final EventMapper eventMapper;
 
     @Autowired
-    public EventServiceImpl(EventDao eventDao, EventMapper mapperService){
+    public EventServiceImpl(EventDao eventDao, EventMapper eventMapper){
         this.eventDao = eventDao;
-        this.mapperService = mapperService;
+        this.eventMapper = eventMapper;
     }
 
     @Override
@@ -39,7 +39,7 @@ public class EventServiceImpl implements EventService {
     @Override
     public List<EventDto> findAll() {
         LOGGER.debug("Finding all events");
-        List<EventDto> eventDtos = mapperService.toDtoList(eventDao.findAllByOrderByIdAsc());
+        List<EventDto> eventDtos = eventMapper.toDtoList(eventDao.findAllByOrderByIdAsc());
         LOGGER.debug("Found all events");
         return eventDtos;
     }
@@ -49,7 +49,7 @@ public class EventServiceImpl implements EventService {
         LOGGER.debug("Finding event by id " + id);
         Event event = findOne(id);
         LOGGER.debug("Found " + event.toString());
-        return mapperService.toDto(event);
+        return eventMapper.toDto(event);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class EventServiceImpl implements EventService {
         LOGGER.debug("Updating " + event.toString());
         eventDao.save(event);
         LOGGER.debug("Updated " + event.toString());
-        return mapperService.toDto(event);
+        return eventMapper.toDto(event);
     }
 
     private Event findOne(long id){

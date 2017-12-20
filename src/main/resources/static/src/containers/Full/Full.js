@@ -16,6 +16,10 @@ import EventEdit from "../../views/Events/EventEdit";
 import Search from "../../views/Search/Search";
 
 class Full extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   render() {
     return (
       <div className="app">

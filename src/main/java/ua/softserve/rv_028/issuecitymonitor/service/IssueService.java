@@ -7,7 +7,6 @@ import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -21,26 +20,26 @@ public class IssueService {
 
     private IssueDao issueDao;
 
-    private IssueMapper mapperService;
+    private IssueMapper issueMapper;
 
     @Autowired
-    public IssueService(IssueDao issueDao, IssueMapper mapperService) {
+    public IssueService(IssueDao issueDao, IssueMapper issueMapper) {
         this.issueDao = issueDao;
-        this.mapperService = mapperService;
+        this.issueMapper = issueMapper;
     }
 
     public List<IssueDto> findAll(){
         LOGGER.debug("Finding all issues");
-        List<IssueDto> issueDto = mapperService.toDtoList(issueDao.findAllByOrderByIdAsc());
+        List<IssueDto> issueDto = issueMapper.toDtoList(issueDao.findAllByOrderByIdAsc());
         LOGGER.debug("Found all issues");
         return issueDto;
     }
 
     public IssueDto addIssue(IssueDto issueDto){
         LOGGER.debug("Adding issue");
-        Issue issue = mapperService.toEntity(issueDto);
+        Issue issue = issueMapper.toEntity(issueDto);
         LOGGER.debug("Added issue " + issueDto);
-        return mapperService.toDto(issue);
+        return issueMapper.toDto(issue);
     }
 
     private Issue findOne(long id){
@@ -55,7 +54,7 @@ public class IssueService {
         LOGGER.debug("Finding issue by id" + id);
         Issue issue = findOne(id);
         LOGGER.debug("Found by id " + issue.toString());
-        return mapperService.toDto(issue);
+        return issueMapper.toDto(issue);
     }
 
     public IssueDto editIssue(IssueDto issueDto){
@@ -69,7 +68,7 @@ public class IssueService {
         issueDao.save(issue);
         LOGGER.debug("Updated " + issue.toString());
 
-        return mapperService.toDto(issue);
+        return issueMapper.toDto(issue);
     }
 
     public void deleteIssue(long id){

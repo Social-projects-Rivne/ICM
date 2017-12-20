@@ -12,7 +12,6 @@ import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.util.Random;
@@ -31,7 +30,7 @@ public class RegistrationControllerIntegrationTest {
     private UserDao userDao;
 
     @Autowired
-    private UserMapper mapperService;
+    private UserMapper userMapper;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -46,7 +45,7 @@ public class RegistrationControllerIntegrationTest {
     @Test
     public void registrationFailUserExist(){
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<UserDto> request = new HttpEntity<>(mapperService.toDto(userInDB), headers);
+        HttpEntity<UserDto> request = new HttpEntity<>(userMapper.toDto(userInDB), headers);
 
         ResponseEntity<String> response = testRestTemplate.postForEntity( "/api/registration", request, String.class);
         System.out.println(response.getBody());
