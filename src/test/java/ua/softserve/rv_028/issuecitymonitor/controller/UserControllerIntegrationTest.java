@@ -76,10 +76,4 @@ public class UserControllerIntegrationTest {
         assertEquals(prevCount-1, userDao.count());
     }
 
-//    @Test
-//    public void testUserNotFound(){
-//        ResponseEntity<UserDto> responseEntity = testRestTemplate.
-//                getForEntity("/api/users/0", UserDto.class);
-//        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
-//    }
 }

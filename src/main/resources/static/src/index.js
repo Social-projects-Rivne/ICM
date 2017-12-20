@@ -23,6 +23,7 @@ ReactDOM.render((
         <Switch>
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
+            <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
             <Route path="/" name="Home" component={Full}/>
             <Route path="/users" name="Users" component={Users}/>
             <Route path="/maps" name="IssueMap" component={IssueMap}/>

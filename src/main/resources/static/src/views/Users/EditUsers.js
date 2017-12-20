@@ -8,6 +8,7 @@ import {
 } from "reactstrap";
 import {Link} from "react-router-dom";
 import Redirect from "react-router-dom/es/Redirect";
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class EditUsers extends Component {
     constructor(props) {
@@ -20,11 +21,8 @@ class EditUsers extends Component {
                 registrationDate: "",
                 firstName: "",
                 lastName: "",
-                // password: "",
-                // email: "",
                 // phone: "",
                 // userStatus: "",
-                // avatarUrl: "",
             },
             registrationDate: true,
             mounted1: "",
@@ -80,16 +78,15 @@ class EditUsers extends Component {
         var _this = this;
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function(response) {
-                _this.setState({
-                    mounted1: response.data
-                })
+                swal({title: "Users record saved", icon: "success"})
+                <Route path="/registration"/>
+
+
             })
             .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
         console.log(this.state.mounted1);
-        if ( this.state.mounted1 === "REDIRECT")
-            this.props.history.push("/dashboard");
     }
 
     render() {

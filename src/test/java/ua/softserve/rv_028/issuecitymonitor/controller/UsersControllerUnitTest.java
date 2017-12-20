@@ -86,7 +86,7 @@ public class UsersControllerUnitTest {
 
     @Test
     public void testDeleteUser() throws UserNotFoundException {
-        doNothing().when(userService).deleteById(1); //This is obvious
+        doNothing().when(userService).deleteById(1);
         userController.deleteUser(1);
     }
 
