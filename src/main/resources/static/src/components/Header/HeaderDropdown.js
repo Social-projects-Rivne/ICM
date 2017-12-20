@@ -1,13 +1,7 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 
-import {
-    Badge,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Dropdown
-} from 'reactstrap';
+import {DropdownItem,DropdownMenu,DropdownToggle,Dropdown} from 'reactstrap';
 
 class HeaderDropdown extends Component {
 
@@ -15,7 +9,7 @@ class HeaderDropdown extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
+        HeaderDropdown.handleLogoutClick = HeaderDropdown.handleLogoutClick.bind(this);
         this.state = {
             dropdownOpen: false,
         };
@@ -34,7 +28,7 @@ class HeaderDropdown extends Component {
             });
     }
 
-    handleLogoutClick(){
+    static handleLogoutClick(){
         location.href = "/logout";
     }
 
@@ -46,7 +40,7 @@ class HeaderDropdown extends Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-                    <DropdownItem onClick={this.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
+                    <DropdownItem onClick={HeaderDropdown.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );

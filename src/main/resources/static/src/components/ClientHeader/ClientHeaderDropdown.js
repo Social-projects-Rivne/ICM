@@ -1,24 +1,18 @@
 import React, {Component} from 'react';
-import axios from 'axios';
-
-import {
-    Badge,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Dropdown
-} from 'reactstrap';
+import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 class ClientHeaderDropdown extends Component {
 
     constructor(props) {
         super(props);
-
-        this.toggle = this.toggle.bind(this);
-        this.handleLogoutClick = this.handleLogoutClick.bind(this);
         this.state = {
             dropdownOpen: false,
+            userName: "user"
         };
+
+        this.toggle = this.toggle.bind(this);
+        ClientHeaderDropdown.handleLogoutClick = ClientHeaderDropdown.handleLogoutClick.bind(this);
     }
 
     toggle() {
@@ -27,40 +21,35 @@ class ClientHeaderDropdown extends Component {
         });
     }
 
-    componentDidMount(){
-        axios.get('/api/admin_name')
-            .then(function (response) {
-                document.getElementById('admin-logo').alt = response.data
-            });
-    }
-
-    handleLogoutClick(){
-        location.href = "/logout";
-    }
-
-    dropAccount() {
+    render() {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
-                    {/*<img id='admin-logo' src="" className="img-avatar" />*/}
-                    <p>AAA</p>
+                    <img src={'https://www.shareicon.net/data/128x128/2016/09/07/827169_man_512x512.png'} className="img-avatar "  alt="admin@bootstrapmaster.com"/>
                 </DropdownToggle>
 
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-                    <DropdownItem >Settings</DropdownItem>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={this.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
+
+                    {ClientHeaderDropdown.renderAdminDropdownItem(this.props.userAuthorities)}
+                    <DropdownItem><i className="fa fa-user"/> Profile</DropdownItem>
+                    <DropdownItem><i className="fa fa-wrench"/> Settings</DropdownItem>
+                    <DropdownItem divider/>
+                    <DropdownItem onClick={ClientHeaderDropdown.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
     }
 
-    render() {
-        const {...attributes} = this.props;
-        return (
-            this.dropAccount()
-        );
+    static renderAdminDropdownItem(authorities){
+        if (authorities != null)
+        if (authorities.some(function(auth){return auth === "ADMIN"})) {
+            return <DropdownItem><Link to="/admin"><i className="fa fa-users"/> Admin Panel</Link></DropdownItem>
+        }
+    }
+
+    static handleLogoutClick(){
+        location.href = "/logout";
     }
 }
 
