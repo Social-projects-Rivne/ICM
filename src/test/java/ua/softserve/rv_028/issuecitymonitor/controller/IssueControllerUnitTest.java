@@ -5,8 +5,14 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -18,6 +24,8 @@ public class IssueControllerUnitTest {
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
     private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("issue not found");
+    private final static int PAGE_INDEX = 0;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private IssueController issueController;
@@ -49,6 +57,17 @@ public class IssueControllerUnitTest {
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
+    }
+
+    @Test
+    public void testGetAllByPage(){
+        List<IssueDto> expected = new ArrayList<>();
+        Page<IssueDto> issueDtoPage = new PageImpl<>(expected);
+        when(issueService.findAllByPage(any(Pageable.class))).thenReturn(issueDtoPage);
+
+        Page<IssueDto> success = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        assertEquals(issueDtoPage, success);
     }
 
     @Test

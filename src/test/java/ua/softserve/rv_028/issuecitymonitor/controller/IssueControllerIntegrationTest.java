@@ -11,7 +11,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,6 +42,19 @@ public class IssueControllerIntegrationTest {
         assertEquals(issue.getTitle(), responseObject.getTitle());
         assertEquals(issue.getDescription(), responseObject.getDescription());
     }
+
+   /* @Test
+    public void testGetAllByPage(){
+        int page = 0;
+        int size = 10;
+        ResponseEntity<IssueDto> responseEntity = testRestTemplate.
+                getForEntity("/api/issues?page=" + page + "&size=" + size);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        IssueDto responseObject = responseEntity.getBody();
+        assertNotNull(responseObject);
+        assertEquals(issue.getTitle(), responseObject.getTitle());
+        assertEquals(issue.getDescription(), responseObject.getDescription());
+    }*/
 
     @Test
     public void testAddIssue(){
