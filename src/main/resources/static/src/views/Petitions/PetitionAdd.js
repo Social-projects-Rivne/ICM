@@ -8,7 +8,7 @@ import {
 } from "reactstrap";
 import {Link} from "react-router-dom";
 
-class PetitionEdit extends Component {
+class PetitionAdd extends Component {
     constructor(props) {
         super(props);
 
@@ -86,7 +86,7 @@ class PetitionEdit extends Component {
                         <Card>
                             <Form className="form-horizontal">
                                 <CardHeader>
-                                    <strong>Petition #{this.state.petition.id} edit form</strong>
+                                    <strong>Petition add form</strong>
                                 </CardHeader>
                                 <CardBody>
 
@@ -95,7 +95,7 @@ class PetitionEdit extends Component {
                                             <Label>Title</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input value={this.state.petition.title} onChange={this.handleChange}
+                                            <Input onChange={this.handleChange}
                                                    type="text" name="title"
                                                    placeholder="Title"/>
                                         </Col>
@@ -106,7 +106,7 @@ class PetitionEdit extends Component {
                                             <Label>Description</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input value={this.state.petition.description} onChange={this.handleChange}
+                                            <Input onChange={this.handleChange}
                                                    type="textarea" name="description" rows="9"
                                                    placeholder="Description"/>
                                         </Col>
@@ -118,7 +118,7 @@ class PetitionEdit extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <InputGroup>
-                                                <Input value={this.state.petition.initialDate} type="text"
+                                                <Input type="text"
                                                        name="initialDate" placeholder="DD/MM/YYYY hh:mm"
                                                        onChange={this.handleDateChange}/>
                                                 <InputGroupAddon className={this.state.initialDate ?
@@ -132,7 +132,7 @@ class PetitionEdit extends Component {
                                             <Label>Category</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <Input value={this.state.petition.category} onChange={this.handleChange}
+                                            <Input onChange={this.handleChange}
                                                    type="select" name="category"
                                                    placeholder="Category">
                                                 <option>CAT1</option>
@@ -144,7 +144,7 @@ class PetitionEdit extends Component {
 
                                 </CardBody>
                                 <CardFooter className="text-right">
-                                    <Button color="success" onClick={this.handleSave}><i className="fa fa-dot-circle-o"/> Save</Button>
+                                        <Button color="success" onClick={this.handleSave}><i className="fa fa-dot-circle-o"/> Save</Button>
                                     <Link to="/petitions"><Button color="primary"><i className="fa fa-ban"/> Back</Button></Link>
                                 </CardFooter>
                             </Form>
@@ -156,4 +156,4 @@ class PetitionEdit extends Component {
     }
 }
 
-export default PetitionEdit
+export default PetitionAdd

@@ -10,6 +10,7 @@ import Dashboard from '../../views/Dashboard/';
 import Events from "../../views/Events/";
 import Petitions from "../../views/Petitions/";
 import PetitionEdit from "../../views/Petitions/PetitionEdit";
+import PetitionAdd from "../../views/Petitions/PetitionAdd";
 import Issues from "../../views/Issues/";
 import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
@@ -33,6 +34,7 @@ class Full extends Component {
                 <Route path="/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route exact path="/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/petitions/:id/edit" name="Petitions" component={PetitionEdit}/>
+                <Route path="/petitions/add" name="PetitionAdd" component={PetitionAdd}/>
                 <Route exact path="/issues" name="Issues" component={Issues}/>
                 <Route path="/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/users" name="Users" component={Users}/>
