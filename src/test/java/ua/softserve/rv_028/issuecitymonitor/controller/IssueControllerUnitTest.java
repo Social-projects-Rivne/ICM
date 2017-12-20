@@ -2,12 +2,14 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
@@ -67,6 +69,14 @@ public class IssueControllerUnitTest {
 
         Page<IssueDto> success = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
 
+        ArgumentCaptor<Pageable> pageArgument = ArgumentCaptor.forClass(Pageable.class);
+        verify(issueService, times(1)).findAllByPage(pageArgument.capture());
+        verifyNoMoreInteractions(issueService);
+
+        Pageable pageSpecification = pageArgument.getValue();
+
+        assertEquals(PAGE_INDEX, pageSpecification.getPageNumber());
+        assertEquals(PAGE_SIZE, pageSpecification.getPageSize());
         assertEquals(issueDtoPage, success);
     }
 
