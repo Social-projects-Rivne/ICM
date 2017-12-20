@@ -165,7 +165,7 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", user=" + user.getId() +
+                ", user=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

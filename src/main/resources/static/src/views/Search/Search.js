@@ -9,6 +9,7 @@ import swal from 'sweetalert';
 import qs from 'qs';
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
+import IssuesContainer from "../Issues/IssuesContainer";
 
 const text = "text";
 const user = "user";
@@ -24,9 +25,18 @@ class Search extends Component {
 
         this.state = {
             eventQuery: {
-                text: this.props.location.query === undefined ? "" : this.props.location.query
+                text: this.props.location.query === undefined ? "" : this.props.location.query,
+                category: "",
+                fromDate: "",
+                toDate: "",
+                user: ""
             },
             issueQuery: {
+                text: this.props.location.query === undefined ? "" : this.props.location.query,
+                category: "",
+                fromDate: "",
+                toDate: "",
+                user: ""
             },
             userQuery: {
                 fullName: this.props.location.query
@@ -40,10 +50,16 @@ class Search extends Component {
             issues: ""
         };
         this.handleTabClick = this.handleTabClick.bind(this);
+
         this.handleEventQueryChange = this.handleEventQueryChange.bind(this);
         this.handleUserQueryChange = this.handleUserQueryChange.bind(this);
+        this.handleIssueQueryChange = this.handleIssueQueryChange.bind(this);
+
         this.handleEventFromDateChange = this.handleEventFromDateChange.bind(this);
         this.handleEventToDateChange = this.handleEventToDateChange.bind(this);
+        this.handleIssueFromDateChange = this.handleIssueFromDateChange.bind(this);
+        this.handleIssueToDateChange = this.handleIssueToDateChange.bind(this);
+
         this.handleSearch = this.handleSearch.bind(this);
     }
 
@@ -57,40 +73,37 @@ class Search extends Component {
                 userQuery: {
                     ...prev.userQuery,
                     fullName: props.location.query
+                },
+                issueQuery: {
+                    ...prev.issueQuery,
+                    text: props.location.query
                 }
             }
-        },function(){
-            this.makeEventQuery();
-            this.makeUserQuery();
+        }, function(){
+            this.makeQueries();
         });
     }
 
     componentWillMount(){
-        this.makeEventQuery();
-        this.makeUserQuery();
-
-        //TODO other queries
+        this.makeQueries();
     }
 
-    makeEventQuery() {
-        var _this = this;
-        axios.get(["/api/search/events?", qs.stringify(this.state.eventQuery)].join(""))
-            .then(function(response) {
-                _this.setState({
-                    events: response.data
-                })
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            })
+    makeQueries() {
+        this.makeQuery("events", this.state.eventQuery);
+        this.makeQuery("users", this.state.userQuery);
+        this.makeQuery("issues", this.state.issueQuery);
+        //TODO queries
+
+        //TODO from date
     }
 
-    makeUserQuery() {
+    makeQuery(type, queryObj) {
         var _this = this;
-        axios.get(["/api/search/users?", qs.stringify(this.state.userQuery)].join(""))
+        console.log(qs.stringify(queryObj));
+        axios.get(["/api/search/", type, "/?", qs.stringify(queryObj)].join(""))
             .then(function(response) {
                 _this.setState({
-                    users: response.data
+                    [type]: response.data
                 })
             })
             .catch(function (error) {
@@ -105,19 +118,6 @@ class Search extends Component {
             return {
                 eventQuery: {
                     ...prev.eventQuery,
-                    [name]: value
-                }
-            }
-        });
-    }
-
-    handleUserQueryChange(e) {
-        const value = e.target.value;
-        const name = e.target.name;
-        this.setState(function (prev) {
-            return {
-                userQuery: {
-                    ...prev.userQuery,
                     [name]: value
                 }
             }
@@ -146,8 +146,56 @@ class Search extends Component {
         });
     }
 
+    handleUserQueryChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        this.setState(function (prev) {
+            return {
+                userQuery: {
+                    ...prev.userQuery,
+                    [name]: value
+                }
+            }
+        });
+    }
+
+    handleIssueQueryChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        this.setState(function (prev) {
+            return {
+                issueQuery: {
+                    ...prev.issueQuery,
+                    [name]: value
+                }
+            }
+        });
+    }
+
+    handleIssueFromDateChange(m){
+        this.setState(function(prev) {
+            return {
+                issueQuery: {
+                    ...prev.issueQuery,
+                    fromDate: m.format("DD/MM/YYYY")
+                }
+            }
+        });
+    }
+
+    handleIssueToDateChange(m){
+        this.setState(function(prev) {
+            return {
+                issueQuery: {
+                    ...prev.issueQuery,
+                    fromDate: m.format("DD/MM/YYYY")
+                }
+            }
+        });
+    }
+
     handleSearch(){
-        this.makeEventQuery();
+        this.makeQueries();
     }
 
     handleTabClick(e){
@@ -219,6 +267,59 @@ class Search extends Component {
         </div>);
     }
 
+    issueSearchForm(){
+        return (<div>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By text</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.issueQuery.text} name={text} onChange={this.handleIssueQueryChange}/>
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By user</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.issueQuery.user} name={user} onChange={this.handleIssueQueryChange}/>
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>From date</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <DateTime value={this.state.issueQuery.fromDate} dateFormat="DD/MM/YYYY"
+                              timeFormat={false} onChange={this.handleIssueFromDateChange}
+                              inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                </Col>
+                <Col md="2">
+                    <Label>To date</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <DateTime value={this.state.issueQuery.toDate} dateFormat="DD/MM/YYYY"
+                              timeFormat={false} onChange={this.handleIssueToDateChange}
+                              inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>Category</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <Input type="select" value={this.state.issueQuery.category} name={category} onChange={this.handleIssueQueryChange}>
+                        <option>ANY</option>
+                        <option>CAT1</option>
+                        <option>CAT2</option>
+                        <option>CAT3</option>
+                    </Input>
+                </Col>
+            </FormGroup>
+        </div>);
+    }
+
+
     render() {
         return(
             <div className="animated fadeIn">
@@ -257,7 +358,7 @@ class Search extends Component {
                                 </FormGroup>
                                 {this.state.currentTab==="users" ? this.userSearchForm() :
                                     this.state.currentTab==="events" ? this.eventSearchForm() :
-                                        this.state.currentTab==="issues" ? null :
+                                        this.state.currentTab==="issues" ? this.issueSearchForm() :
                                             this.state.currentTab==="petitions" ? null :
                                                 null}
                             </CardBody>
@@ -271,7 +372,7 @@ class Search extends Component {
                 </Row>
                 {this.state.currentTab==="users" ? null :
                     this.state.currentTab==="events" ? <EventsContainer data={this.state.events}/> :
-                        this.state.currentTab==="issues" ? null :
+                        this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues}/> :
                             this.state.currentTab==="petitions" ? null :
                                 null}
             </div>

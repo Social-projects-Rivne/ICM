@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
-import Event from "./Event";
+import Issue from "./Issue";
 
-class EventsContainer extends Component {
+class IssuesContainer extends Component {
     constructor(props) {
         super(props);
 
@@ -24,16 +24,15 @@ class EventsContainer extends Component {
                         <th>#</th>
                         <th>Title</th>
                         <th>Initial Date</th>
-                        <th>End Date</th>
                         <th>Category</th>
                         <th>User ID</th>
                         <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.data.map(function (event, i) {
+                    {this.state.data.map(function(issue, i) {
                         return (
-                            <Event key={i} event={event}/>
+                            <Issue key={i} issue={issue}/>
                         );
                     })}
                     </tbody>
@@ -50,7 +49,7 @@ class EventsContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Event list</CardHeader>
+                            <CardHeader>Issue list</CardHeader>
                             <CardBody>
                                 {this.table()}
                             </CardBody>
@@ -60,6 +59,6 @@ class EventsContainer extends Component {
             </div>
         )
     }
-}
 
-export default EventsContainer;
+}
+export default IssuesContainer;
