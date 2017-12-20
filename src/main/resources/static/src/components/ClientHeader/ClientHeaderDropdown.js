@@ -43,9 +43,8 @@ class ClientHeaderDropdown extends Component {
 
     static renderAdminDropdownItem(authorities){
         if (authorities != null)
-        if (authorities.some(function(auth){return auth === "ADMIN"})) {
-            return <DropdownItem><Link to="/admin"><i className="fa fa-users"/> Admin Panel</Link></DropdownItem>
-        }
+            if (authorities.some(function(auth){return auth === "ADMIN" || auth === "MODERATOR"}))
+                return <DropdownItem><Link to="/admin"><i className="fa fa-users"/> Admin Panel</Link></DropdownItem>
     }
 
     static handleLogoutClick(){

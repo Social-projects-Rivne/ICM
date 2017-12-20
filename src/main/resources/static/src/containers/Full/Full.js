@@ -14,12 +14,32 @@ import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
 import EventEdit from "../../views/Events/EventEdit";
 import Login from "../../views/Login/Login";
+import axios from "axios/index";
 
 class Full extends Component {
+
+    constructor(props){
+        super(props);
+
+        this.state = {
+          userAuthorities: null
+        };
+    }
+
+
+    componentDidMount() {
+        const _this = this;
+        axios.get("/api/authority")
+            .then(function (response) {
+                _this.setState({userAuthorities: response.data});
+                console.log("authority", response.data)
+            });
+    }
+
   render() {
     return (
       <div className="app">
-        <Header />
+        <Header userAuthorities={this.state.userAuthorities}/>
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className="main">

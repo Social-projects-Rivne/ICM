@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import axios from 'axios';
 
 import {DropdownItem,DropdownMenu,DropdownToggle,Dropdown} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 class HeaderDropdown extends Component {
 
@@ -12,6 +13,7 @@ class HeaderDropdown extends Component {
         HeaderDropdown.handleLogoutClick = HeaderDropdown.handleLogoutClick.bind(this);
         this.state = {
             dropdownOpen: false,
+            userAuthorities : null
         };
     }
 
@@ -32,7 +34,7 @@ class HeaderDropdown extends Component {
         location.href = "/logout";
     }
 
-    dropAccount() {
+    render() {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
@@ -40,17 +42,18 @@ class HeaderDropdown extends Component {
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
+                    {HeaderDropdown.renderUserPanelDropdownItem(this.props.userAuthorities)}
                     <DropdownItem onClick={HeaderDropdown.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
     }
 
-    render() {
-        const {...attributes} = this.props;
-        return (
-            this.dropAccount()
-        );
+    static renderUserPanelDropdownItem(authorities) {
+        if (authorities != null)
+            if (authorities.some(function(auth){return auth === "USER"}))
+                return <DropdownItem><Link to="/"><i className="fa fa-users"/> User Panel</Link></DropdownItem>
+        console.log("aith", authorities);
     }
 }
 

@@ -31,7 +31,7 @@ class Header extends Component {
                 </NavbarToggler>
 
                 <Nav className="ml-auto" navbar>
-                    <HeaderDropdown/>
+                    <HeaderDropdown userAuthorities={this.props.userAuthorities}/>
                 </Nav>
             </header>
         );
