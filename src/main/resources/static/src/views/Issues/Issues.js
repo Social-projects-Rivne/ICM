@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import ReactPaginate from 'react-paginate';
 import {Button, Card, CardBody, CardHeader, CardFooter, Col, Row, Table} from "reactstrap";
 import swal from 'sweetalert';
 import {Link} from "react-router-dom";
@@ -28,7 +29,57 @@ class Issues extends Component {
             });
     }
 
+    onNavigate(navUri) {
+        var _this = this;
+    	axios.get(navUri).done(issueCollection => {
+    		_this.setState({
+    			issues: issueCollection.entity._embedded.issues,
+    			attributes: this.state.attributes,
+    			pageSize: this.state.pageSize,
+    			links: issueCollection.entity._links
+    		});
+    	});
+    }
+
+    handleNavFirst(e){
+    	e.preventDefault();
+    	this.onNavigate(this.props.links.first.href);
+    }
+
+    handleNavPrev(e) {
+    	e.preventDefault();
+    	this.props.onNavigate(this.props.links.prev.href);
+    }
+
+    handleNavNext(e) {
+    	e.preventDefault();
+    	this.props.onNavigate(this.props.links.next.href);
+    }
+
+    handleNavLast(e) {
+    	e.preventDefault();
+    	this.props.onNavigate(this.props.links.last.href);
+    }
+
     render() {
+        var issues = this.state.issues.map(function(issue, i) {
+            return (<Issue key={i} issue={issue}/>);
+            })
+
+        	var navLinks = [];
+        	if ("first" in this.props.links) {
+        		navLinks.push(<Button color="primary" key="first" onClick={this.handleNavFirst}>First</Button>);
+        	}
+        	if ("prev" in this.props.links) {
+        		navLinks.push(<Button color="primary" key="prev" onClick={this.handleNavPrev}>Previous</Button>);
+        	}
+        	if ("next" in this.props.links) {
+        		navLinks.push(<Button color="primary" key="next" onClick={this.handleNavNext}>Next</Button>);
+        	}
+        	if ("last" in this.props.links) {
+        		navLinks.push(<Button color="primary" key="last" onClick={this.handleNavLast}>Last</Button>);
+        	}
+
         return (
             <div className="animated fadeIn">
                 <Row>
@@ -48,18 +99,13 @@ class Issues extends Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {this.state.issues.map(function(issue, i) {
-                                        return (
-                                            <Issue key={i} issue={issue}/>
-                                        );
-                                    })}
+                                        {issues}
                                     </tbody>
                                 </Table>
                             </CardBody>
                             <CardFooter className="text-center">
-                                <Button color="primary"> Previous </Button>
-                                <Button color="primary"> Next </Button>
-                        </CardFooter>
+                                {navLinks}
+                            </CardFooter>
                         </Card>
                     </Col>
                 </Row>
