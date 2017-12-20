@@ -106,7 +106,7 @@ class User extends Component {
                              _this.setState({
                                  mounted: false
                              });
-                             swal({title: "Issue record deleted", icon: "success"});
+                             swal({title: "User record deleted", icon: "success"});
                          }).catch(function (error) {
                          swal({title: "Something went wrong!", text: "User has role Admin!", icon: "error"});
                      });

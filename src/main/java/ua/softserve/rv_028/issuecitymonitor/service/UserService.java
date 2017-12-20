@@ -20,7 +20,6 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final  UserDao userDao;
     private static boolean messages;
-    private String redirect = "NOPE";
     @Autowired
     public UserService(UserDao userDao){
         this.userDao = userDao;
@@ -28,13 +27,6 @@ public class UserService {
 
     public static boolean isMessages() {
         return messages;
-    }
-
-    public String getRedirect() {
-        return redirect;
-    }
-
-    public void setRedirect(String redirect) { this.redirect = redirect;
     }
 
     public void deleteById(long id) {
