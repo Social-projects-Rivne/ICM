@@ -15,7 +15,9 @@ class HeaderDropdown extends Component {
             dropdownOpen: false,
             userAuthorities : null
         };
+
     }
+
 
     toggle() {
         this.setState({
@@ -38,7 +40,7 @@ class HeaderDropdown extends Component {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
-                    <img id='admin-logo' src="" className="img-avatar" />
+                    <img id='admin-logo' src={'https://www.shareicon.net/data/128x128/2016/09/07/827169_man_512x512.png'} className="img-avatar" />
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
@@ -52,7 +54,7 @@ class HeaderDropdown extends Component {
     static renderUserPanelDropdownItem(authorities) {
         if (authorities != null)
             if (authorities.some(function(auth){return auth === "USER"}))
-                return <DropdownItem><Link to="/"><i className="fa fa-users"/> User Panel</Link></DropdownItem>
+                return <DropdownItem tag={Link} to="/"><i className="fa fa-users"/> User Panel</DropdownItem>
         console.log("aith", authorities);
     }
 }

@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Dropdown} from 'reactstrap';
+import {Badge, DropdownItem, DropdownMenu, DropdownToggle, Dropdown, NavLink} from 'reactstrap';
 import {Link} from "react-router-dom";
 
 class ClientHeaderDropdown extends Component {
@@ -44,7 +44,7 @@ class ClientHeaderDropdown extends Component {
     static renderAdminDropdownItem(authorities){
         if (authorities != null)
             if (authorities.some(function(auth){return auth === "ADMIN" || auth === "MODERATOR"}))
-                return <DropdownItem><Link to="/admin"><i className="fa fa-users"/> Admin Panel</Link></DropdownItem>
+                return <DropdownItem tag={Link} to="/admin">><i className="fa fa-users"/> Admin Panel</DropdownItem>
     }
 
     static handleLogoutClick(){
