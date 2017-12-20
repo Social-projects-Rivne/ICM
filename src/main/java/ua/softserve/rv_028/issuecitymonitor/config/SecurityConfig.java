@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     /** All possible urls must be here*/
     private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
-            "/settings"};
+            "/settings","/maps"};
 
     @Autowired
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {

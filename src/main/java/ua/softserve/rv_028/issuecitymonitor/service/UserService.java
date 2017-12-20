@@ -12,6 +12,7 @@ import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 @Component
@@ -19,8 +20,7 @@ public class UserService {
     private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
     private final  UserDao userDao;
     private static boolean messages;
-    private static String redirect;
-    Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+    private String redirect = "NOPE";
     @Autowired
     public UserService(UserDao userDao){
         this.userDao = userDao;
@@ -30,12 +30,11 @@ public class UserService {
         return messages;
     }
 
-    public static String getRedirect() {
+    public String getRedirect() {
         return redirect;
     }
 
-    public static void setRedirect(String redirect) {
-        UserService.redirect = redirect;
+    public void setRedirect(String redirect) { this.redirect = redirect;
     }
 
     public void deleteById(long id) {
@@ -76,7 +75,8 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public UserDto updateUser(UserDto dto)  {
+    public String updateUser(UserDto dto)  {
+        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         User user = userDao.findOne(dto.getId());
         user.setUserRole(dto.getUserRole());
         user.setRegistrationDate(dto.getRegistrationDate());
@@ -89,13 +89,18 @@ public class UserService {
         user.setAvatarUrl(dto.getAvatarUrl());
 
         LOGGER.info("Adding user!" + user.toString());
-        if (userAuth.== UserRole.ADMIN)
-            userDao.save(new User(dto));
+        userDao.save(new User(dto));
 
+        LOGGER.info(String.valueOf(UserDto.getCount()));
 
         LOGGER.info("Added user" + user.toString());
-        return new UserDto(user);
 
+        if (Objects.equals(userAuth.getName(), user.getUsername())) {
+            LOGGER.info("REDIRECT");
+            return "REDIRECT";
+        }
+        LOGGER.info("nope");
+        return "nope";
     }
 
 

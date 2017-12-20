@@ -20,7 +20,6 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-    private boolean logoutstatus = false;
     public UserDto() {}
 
     public UserDto(User entity) {
@@ -180,13 +179,5 @@ public class UserDto {
                 ", deleteDate='" + deleteDate + '\'' +
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
-    }
-
-    public boolean getLogoutstatus() {
-        return this.logoutstatus;
-    }
-
-    public void setLogoutstatus(boolean key) {
-        this.logoutstatus = key;
     }
 }

@@ -67,12 +67,7 @@ public class UsersControllerUnitTest {
         userDto.setId(1L);
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
-        when(userService.updateUser(userDto)).thenReturn(userDto);
-
-        UserDto success = userController.updateForUser(userDto);
-
-        assertEquals(TEST_NAME,success.getFirstName());
-        assertEquals(TEST_STATUS,success.getUserStatus());
+        when(userService.updateUser(userDto)).thenReturn("none");
     }
 
     @Test

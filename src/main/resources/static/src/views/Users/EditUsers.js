@@ -7,6 +7,7 @@ import {
     Label, Row
 } from "reactstrap";
 import {Link} from "react-router-dom";
+import Redirect from "react-router-dom/es/Redirect";
 
 class EditUsers extends Component {
     constructor(props) {
@@ -25,7 +26,8 @@ class EditUsers extends Component {
                 // userStatus: "",
                 // avatarUrl: "",
             },
-            registrationDate: true
+            registrationDate: true,
+            mounted1: "",
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -75,14 +77,19 @@ class EditUsers extends Component {
     }
 
     handleSave(){
-
+        var _this = this;
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
-            .then(function (response) {
-                swal({title: "Users record saved", icon: "success"});
+            .then(function(response) {
+                _this.setState({
+                    mounted1: response.data
+                })
             })
             .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
+        console.log(this.state.mounted1);
+        if ( this.state.mounted1 === "REDIRECT")
+            this.props.history.push("/dashboard");
     }
 
     render() {
