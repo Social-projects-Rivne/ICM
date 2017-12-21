@@ -34,7 +34,7 @@ export default class ClientHeader extends Component {
             if (!authorities.some(function(auth){return auth.authority === "ROLE_ANONYMOUS"})){
                 return <ClientHeaderDropdown userAuthorities={authorities}/>
             } else {
-                return <Nav><NavItem className="d-md-down-none"><Link to="/login" className="nav-link">Log in</Link></NavItem> or <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link">Sign up</Link></NavItem></Nav>
+                return <Nav><NavItem className="d-md-down-none"><Link to="/login" className="nav-link-custom">Log in</Link></NavItem> or <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link-custom">Sign up</Link></NavItem></Nav>
             }
         }
     }
