@@ -163,7 +163,7 @@ class EventEdit extends Component {
                                             <i className="fa fa-dot-circle-o"/> Save</Button> :
                                         <Button disabled color="success" onClick={this.handleSave}>
                                             <i className="fa fa-dot-circle-o"/> Save</Button>}
-                                    <Link to="/events"><Button color="primary">
+                                    <Link to="/admin/events"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>
                                 </CardFooter>
