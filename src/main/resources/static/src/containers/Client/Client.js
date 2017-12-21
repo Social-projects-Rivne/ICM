@@ -3,9 +3,10 @@ import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
 import Footer from '../../components/Footer/Footer';
+import EditProfile from '../../views/Settings/EditProfile';
 import axios from 'axios';
 
-export default class SignUp extends Component{
+export default class Client extends Component{
 
     constructor(props) {
         super(props);
@@ -31,7 +32,7 @@ export default class SignUp extends Component{
                 <div className="app-body">
                     <Container fluid>
                         <Switch>
-
+                            <Route path="/settings/profile/" name="Client" component={EditProfile}/>
                         </Switch>
                     </Container>
                 </div>
