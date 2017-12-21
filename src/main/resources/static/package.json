@@ -45,7 +45,6 @@
     "react-chartjs-2": "2.6.4",
     "react-dom": "^15.6.2",
     "react-input-slider": "^4.0.1",
-    "react-paginate": "^5.0.0",
     "react-router-dom": "4.2.2",
     "react-transition-group": "2.2.1",
     "reactstrap": "5.0.0-alpha.4",

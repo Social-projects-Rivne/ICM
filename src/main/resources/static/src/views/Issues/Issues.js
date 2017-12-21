@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import ReactPaginate from 'react-paginate';
 import {Button, Card, CardBody, CardHeader, CardFooter, Col, Row, Table} from "reactstrap";
 import swal from 'sweetalert';
 import {Link} from "react-router-dom";
@@ -31,19 +30,20 @@ class Issues extends Component {
 
     onNavigate(navUri) {
         var _this = this;
-    	axios.get(navUri).done(issueCollection => {
+    	axios.get(navUri)
+            .then(function(response) {
     		_this.setState({
-    			issues: issueCollection.entity._embedded.issues,
+                issues: response.data.content,
     			attributes: this.state.attributes,
     			pageSize: this.state.pageSize,
-    			links: issueCollection.entity._links
+    			links: response.data.content._links
     		});
     	});
     }
 
     handleNavFirst(e){
     	e.preventDefault();
-    	this.onNavigate(this.props.links.first.href);
+    	this.props.onNavigate(this.props.links.first.href);
     }
 
     handleNavPrev(e) {
@@ -62,11 +62,7 @@ class Issues extends Component {
     }
 
     render() {
-        var issues = this.state.issues.map(function(issue, i) {
-            return (<Issue key={i} issue={issue}/>);
-            })
-
-        	var navLinks = [];
+         	var navLinks = [];
         	if ("first" in this.props.links) {
         		navLinks.push(<Button color="primary" key="first" onClick={this.handleNavFirst}>First</Button>);
         	}
@@ -99,7 +95,9 @@ class Issues extends Component {
                                     </tr>
                                     </thead>
                                     <tbody>
-                                        {issues}
+                                        {this.state.issues.map(function(issue, i) {
+                                            return (<Issue key={i} issue={issue}/>);
+                                        })}
                                     </tbody>
                                 </Table>
                             </CardBody>
