@@ -11,7 +11,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 
 @RestController
@@ -51,7 +51,7 @@ public class UserController {
 
     @PutMapping("/{id}")
     public String updateForUser(@RequestBody UserDto userDto) {
-        LOG.info("OK");
+        LOG.debug("User ready for update!");
         return service.updateUser(userDto);
     }
 

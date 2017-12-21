@@ -3,21 +3,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
-import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 
-import javax.servlet.http.HttpSession;
+import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 @Component
 public class UserService {
-    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
+
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+
     private final  UserDao userDao;
     private static boolean messages;
     @Autowired
@@ -32,13 +33,13 @@ public class UserService {
     public void deleteById(long id) {
         User user = findOne(id);
         if(UserRole.ADMIN != user.getUserRole()){
-            LOGGER.info("User is deleted");
+            LOGGER.debug("User is deleted");
             userDao.delete(id);
             messages = true;
             UserDto.setCount(UserDto.getCount() -1);
         }else
             messages = false;
-        LOGGER.info("user role is " + user.getUserRole() + user.getIsDeleted());
+        LOGGER.debug("user role is " + user.getUserRole() + user.getIsDeleted());
 
     }
 
@@ -46,7 +47,7 @@ public class UserService {
 
     private User findOne(long id){
         User user = userDao.findOne(id);
-        LOGGER.info("Find one " + user.toString());
+        LOGGER.debug("Find one " + user.toString());
         return user;
     }
 
@@ -56,14 +57,14 @@ public class UserService {
             if(!users.getIsDeleted() && users.getUserRole() != null)
             all.add( new UserDto(users));
         }
-        LOGGER.info("Show all users!");
+        LOGGER.debug("Show all users!");
         return all;
 
     }
 
     public UserDto findByID(long id){
         User user = findOne(id);
-        LOGGER.info("User is finded by id");
+        LOGGER.debug("User is finded by id");
         return new UserDto(user);
     }
 
@@ -80,18 +81,17 @@ public class UserService {
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
 
-        LOGGER.info("Adding user!" + user.toString());
+        LOGGER.debug("Adding user!" + user.toString());
         userDao.save(new User(dto));
+        LOGGER.debug(String.valueOf(userDao.countByUserRole(UserRole.ADMIN)));
 
-        LOGGER.info(String.valueOf(UserDto.getCount()));
-
-        LOGGER.info("Added user" + user.toString());
+        LOGGER.debug("Added user" + user.toString());
 
         if (Objects.equals(userAuth.getName(), user.getUsername())) {
-            LOGGER.info("REDIRECT");
+            LOGGER.debug("REDIRECT");
             return "REDIRECT";
         }
-        LOGGER.info("nope");
+        LOGGER.debug("nope");
         return "nope";
     }
 
