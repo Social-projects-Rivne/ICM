@@ -2,13 +2,8 @@ import React, {Component} from 'react';
 import axios from 'axios';
 import {Link} from 'react-router-dom';
 
-import {
-    Badge,
-    DropdownItem,
-    DropdownMenu,
-    DropdownToggle,
-    Dropdown
-} from 'reactstrap';
+import {DropdownItem,DropdownMenu,DropdownToggle,Dropdown} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 class HeaderDropdown extends Component {
 
@@ -16,10 +11,14 @@ class HeaderDropdown extends Component {
         super(props);
 
         this.toggle = this.toggle.bind(this);
+        HeaderDropdown.handleLogoutClick = HeaderDropdown.handleLogoutClick.bind(this);
         this.state = {
             dropdownOpen: false,
+            userAuthorities : null
         };
+
     }
+
 
     toggle() {
         this.setState({
@@ -34,25 +33,33 @@ class HeaderDropdown extends Component {
             });
     }
 
-    dropAccount() {
+    static handleLogoutClick(){
+        location.href = "/logout";
+    }
+
+    render() {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
-                    <img id='admin-logo' src="" className="img-avatar" />
+                    <img id='admin-logo' src={'https://www.shareicon.net/data/128x128/2016/09/07/827169_man_512x512.png'} className="img-avatar" />
                 </DropdownToggle>
                 <DropdownMenu right>
                     <DropdownItem header tag="div" className="text-center"><strong>Account</strong></DropdownItem>
-                    <DropdownItem><Link to="/login"><i className="fa fa-lock"/> Logout </Link></DropdownItem>
+                    {HeaderDropdown.renderUserPanelDropdownItem(this.props.userAuthorities)}
+                    <DropdownItem onClick={HeaderDropdown.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
                 </DropdownMenu>
             </Dropdown>
         );
     }
 
-    render() {
-        const {...attributes} = this.props;
-        return (
-            this.dropAccount()
-        );
+    static renderUserPanelDropdownItem(authorities) {
+        if (authorities !== null) {
+            if (authorities.some(function (auth) {
+                    return auth === "USER"
+                })) {
+                return <DropdownItem tag={Link} to="/"><i className="fa fa-users"/> User Panel</DropdownItem>
+            }
+        }
     }
 }
 

@@ -37,6 +37,9 @@ public class RegistrationServiceImpl implements RegistrationService{
 
     @Override
     public UserDto registrationUser(UserDto dto) {
+        if (isUserExist(dto.getEmail()))
+            throw new RegistrationException();
+
         try {
             User user = userDao.save(new User(dto.getFirstName(), dto.getLastName(), dto.getEmail(),
                     passwordEncoder.encode(dto.getPassword())));

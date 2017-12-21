@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Input, Nav, NavbarBrand, NavbarToggler, NavItem, NavLink, InputGroupButton, InputGroup, Button} from 'reactstrap';
+import {Button, Input, InputGroup, InputGroupButton, Nav, NavbarBrand, NavbarToggler, NavItem} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 import {Link} from 'react-router-dom';
 
@@ -54,7 +54,7 @@ class Header extends Component {
                     </NavItem>
                 </Nav>
                 <Nav className="ml-auto" navbar>
-                    <HeaderDropdown/>
+                    <HeaderDropdown userAuthorities={this.props.userAuthorities}/>
                 </Nav>
             </header>
         );

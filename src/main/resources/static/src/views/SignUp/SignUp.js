@@ -1,5 +1,5 @@
 import React from 'react';
-import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
+import {Alert, Col, Button, Form, FormGroup, FormFeedback, Input, InputGroup, InputGroupAddon} from 'reactstrap';
 import {Link} from "react-router-dom";
 import axios from 'axios';
 
@@ -119,35 +119,41 @@ export default class SignUp extends React.Component {
                     <hr/>
                     <FormGroup>
                         <Col sm={12}>
-                            <Input type="text" name="firstName" id="firstName"
-                                   bsSize="lg"
-                                   className="border-radius"
-                                   placeholder="First Name"
-                                   onChange={this.handleChange}
-                                   valid={this.checkFirstName()}/>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-user fa-fw"/></InputGroupAddon>
+                                <Input type="text" name="firstName" id="firstName"
+                                    bsSize="lg"
+                                    placeholder="First Name"
+                                    onChange={this.handleChange}
+                                    valid={this.checkFirstName()}/>
+                            </InputGroup>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Input type="text" name="lastName" id="lastName"
-                                   bsSize="lg"
-                                   className="border-radius"
-                                   placeholder="Last Name"
-                                   onChange={this.handleChange}
-                                   valid={this.checkLastName()}/>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-user fa-fw"/></InputGroupAddon>
+                                <Input type="text" name="lastName" id="lastName"
+                                       bsSize="lg"
+                                       placeholder="Last Name"
+                                       onChange={this.handleChange}
+                                       valid={this.checkLastName()}/>
+                            </InputGroup>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Input type="email" name="email" id="exampleEmail"
-                                   bsSize="lg"
-                                   className="border-radius"
-                                   placeholder="E-Mail"
-                                   onChange={this.handleChange}
-                                   value={this.state.value}
-                                   valid={this.checkEmail()}/>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-envelope-o fa-fw"/></InputGroupAddon>
+                                <Input type="email" name="email" id="exampleEmail"
+                                       bsSize="lg"
+                                       placeholder="E-Mail"
+                                       onChange={this.handleChange}
+                                       value={this.state.value}
+                                       valid={this.checkEmail()}/>
+                            </InputGroup>
 
                             <FormFeedback style={SignUp.visible(this.state.emailValid ^ this.state.email !== "")}>Email is incorrect. </FormFeedback>
                             <FormFeedback style={SignUp.visible(this.state.emailIsUsed)}>Oh noes! that name is already registered</FormFeedback>
@@ -156,25 +162,29 @@ export default class SignUp extends React.Component {
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Input type="password" name="password" id="password"
-                                   bsSize="lg"
-                                   className="border-radius"
-                                   placeholder="Password"
-                                   onChange={this.handleChange}
-                                   value={this.state.password}
-                                   valid={this.checkPassword()}/>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-key fa-fw"/></InputGroupAddon>
+                                <Input type="password" name="password" id="password"
+                                       bsSize="lg"
+                                       placeholder="Password"
+                                       onChange={this.handleChange}
+                                       value={this.state.password}
+                                       valid={this.checkPassword()}/>
+                            </InputGroup>
                         </Col>
                     </FormGroup>
 
                     <FormGroup>
                         <Col sm={12}>
-                            <Input type="password" name="confirmPass" id="confirmPass"
-                                   bsSize="lg"
-                                   className="border-radius"
-                                   placeholder="Confirm Password"
-                                   onChange={this.handleChange}
-                                   value={this.state.confirmPass}
-                                   valid={this.checkConfirmPassword()}/>
+                            <InputGroup>
+                                <InputGroupAddon><i className="fa fa-key fa-fw"/></InputGroupAddon>
+                                    <Input type="password" name="confirmPass" id="confirmPass"
+                                           bsSize="lg"
+                                           placeholder="Confirm Password"
+                                           onChange={this.handleChange}
+                                           value={this.state.confirmPass}
+                                           valid={this.checkConfirmPassword()}/>
+                            </InputGroup>
                         </Col>
                     </FormGroup>
                     <FormGroup>

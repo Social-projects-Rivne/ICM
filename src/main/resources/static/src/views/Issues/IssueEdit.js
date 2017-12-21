@@ -1,12 +1,7 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-import moment from 'moment';
-import {
-    Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
-    Label, Row
-} from "reactstrap";
-import {Link} from "react-router-dom";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
 

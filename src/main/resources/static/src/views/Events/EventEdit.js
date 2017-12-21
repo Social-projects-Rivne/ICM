@@ -4,7 +4,6 @@ import swal from 'sweetalert';
 import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
-import moment from 'moment';
 
 class EventEdit extends Component {
     constructor(props) {
