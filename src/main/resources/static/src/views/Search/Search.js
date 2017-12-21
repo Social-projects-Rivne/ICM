@@ -35,11 +35,7 @@ class Search extends Component {
             },
             petitionQuery: {
             },
-            currentTab: "users",
-            events: "",
-            users: "",
-            petitions: "",
-            issues: ""
+            currentTab: "users"
         };
         this.handleTabClick = this.handleTabClick.bind(this);
 
@@ -72,16 +68,20 @@ class Search extends Component {
                 }
             }
         }, function(){
-            this.makeQueries();
+            this.makeQueryUrls();
         });
     }
 
     componentWillMount(){
-        this.makeQueries();
+        this.makeQueryUrls();
     }
 
-    makeQueries() {
-        this.makeQuery("events", this.state.eventQuery);
+    makeQueryUrls() {
+        this.setState(function(prev) {
+            return {
+
+            }
+        });
         this.makeQuery("users", this.state.userQuery);
         this.makeQuery("issues", this.state.issueQuery);
         //TODO queries
@@ -91,7 +91,7 @@ class Search extends Component {
 
     makeQuery(type, queryObj) {
         var _this = this;
-        axios.get(["/api/search/", type, "/?", qs.stringify(queryObj)].join(""))
+        axios.get()
             .then(function(response) {
                 _this.setState({
                     [type]: response.data
@@ -186,7 +186,7 @@ class Search extends Component {
     }
 
     handleSearch(){
-        this.makeQueries();
+        this.makeQueryUrls();
     }
 
     handleTabClick(e){
@@ -362,7 +362,8 @@ class Search extends Component {
                     </Col>
                 </Row>
                 {this.state.currentTab==="users" ? null :
-                    this.state.currentTab==="events" ? <EventsContainer data={this.state.events}/> :
+                    this.state.currentTab==="events" ? <EventsContainer
+                            url={["/api/search/events?", qs.stringify(this.state.eventQuery)].join("")}/> :
                         this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues}/> :
                             this.state.currentTab==="petitions" ? null :
                                 null}

@@ -1,18 +1,39 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
 import Event from "./Event";
+import axios from 'axios';
+import swal from 'sweetalert';
 
 class EventsContainer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: this.props.data
+            data: "",
+            queryUrl: this.props.queryUrl
         };
     }
 
+    updateData() {
+        var _this = this;
+        axios.get(this.state.queryUrl)
+            .then(function(response) {
+                _this.setState({
+                    data: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+    }
+
+    componentWillMount() {
+        this.updateData();
+    }
+
     componentWillReceiveProps(props) {
-        this.setState({data: props.data});
+        this.setState({queryUrl: props.queryUrl});
+        this.updateData();
     }
 
     table() {
