@@ -10,9 +10,6 @@ import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.google.common.base.Preconditions.checkState;
 
 @Service
@@ -27,7 +24,7 @@ public class IssueService {
         this.issueDao = issueDao;
     }
 
-    public List<IssueDto> findAll() {
+    /*public List<IssueDto> findAll() {
 
         LOGGER.debug("Finding all issues");
         List<IssueDto> issueDto = new ArrayList<>();
@@ -37,7 +34,7 @@ public class IssueService {
         LOGGER.debug("Finded all issues");
 
         return issueDto;
-    }
+    }*/
 
     public Issue findOne(long id) {
 

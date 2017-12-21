@@ -22,11 +22,12 @@ public class IssueController {
     }
 
     /*@GetMapping
-    public List<IssueDto> getAll(){
+    public List<IssueDto> getAll(@RequestParam(value = "page") int page,
+                                 @RequestParam(value = "size") int size){
         LOGGER.debug("GET request for all issues");
         return service.findAll();
-    }*/
-
+    }
+*/
     @GetMapping("/{id}")
     public IssueDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");

@@ -16,8 +16,12 @@ class Issues extends Component {
     }
 
     componentWillMount() {
+        this.onNavigate();
+    }
+
+    onNavigate() {
         var _this = this;
-        axios.get("/api/issues?page=" + this.state.page + "&size=" + this.state.size)
+        axios.get(["/api/issues?page=", this.state.page, "&size=",this.state.size].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data.content
@@ -28,53 +32,29 @@ class Issues extends Component {
             });
     }
 
-    onNavigate(navUri) {
-        var _this = this;
-    	axios.get(navUri)
-            .then(function(response) {
-    		_this.setState({
-                issues: response.data.content,
-    			attributes: this.state.attributes,
-    			pageSize: this.state.pageSize,
-    			links: response.data.content._links
-    		});
-    	});
+    handleNavFirst(){
+    	this.setState({page: 0});
+    	this.onNavigate();
     }
 
-    handleNavFirst(e){
-    	e.preventDefault();
-    	this.props.onNavigate(this.props.links.first.href);
-    }
-
-    handleNavPrev(e) {
-    	e.preventDefault();
-    	this.props.onNavigate(this.props.links.prev.href);
+    handleNavPrev() {
+    	this.setState({page: 1})
+    	this.onNavigate();
     }
 
     handleNavNext(e) {
     	e.preventDefault();
-    	this.props.onNavigate(this.props.links.next.href);
+    	this.setState({page: page+1})
+    	this.onNavigate();
     }
 
     handleNavLast(e) {
     	e.preventDefault();
-    	this.props.onNavigate(this.props.links.last.href);
+    	this.setState({page: page})
+    	this.onNavigate();
     }
 
     render() {
-         	var navLinks = [];
-        	if ("first" in this.props.links) {
-        		navLinks.push(<Button color="primary" key="first" onClick={this.handleNavFirst}>First</Button>);
-        	}
-        	if ("prev" in this.props.links) {
-        		navLinks.push(<Button color="primary" key="prev" onClick={this.handleNavPrev}>Previous</Button>);
-        	}
-        	if ("next" in this.props.links) {
-        		navLinks.push(<Button color="primary" key="next" onClick={this.handleNavNext}>Next</Button>);
-        	}
-        	if ("last" in this.props.links) {
-        		navLinks.push(<Button color="primary" key="last" onClick={this.handleNavLast}>Last</Button>);
-        	}
 
         return (
             <div className="animated fadeIn">
@@ -102,7 +82,10 @@ class Issues extends Component {
                                 </Table>
                             </CardBody>
                             <CardFooter className="text-center">
-                                {navLinks}
+                                <Button color="info" onClick={this.handleNavFirst}>First</Button>
+                                <Button color="info" onClick={this.handleNavPrev}>Previous</Button>
+                                <Button color="info" onClick={this.handleNavNext}>Next</Button>
+                                <Button color="info" onClick={this.handleNavLast}>Last</Button>
                             </CardFooter>
                         </Card>
                     </Col>
