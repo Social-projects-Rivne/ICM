@@ -27,9 +27,11 @@ public class SearchController {
     }
 
     @GetMapping("/events")
-    public List<EventDto> searchEvents(@RequestParam Map<String, String> queryMap) {
+    public List<EventDto> searchEvents(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
+                                       @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                       @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching events by criteria" + queryMap.toString());
-        return searchService.findEventsByCriteria(queryMap);
+        return searchService.findEventsByCriteria(queryMap, pageNumber, pageSize);
     }
 
     @GetMapping("/users")
