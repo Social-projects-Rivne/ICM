@@ -13,7 +13,6 @@ import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import org.apache.log4j.Logger;
 
-import javax.xml.ws.Response;
 
 
 @RestController
@@ -31,10 +30,6 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public void deleteUser(@PathVariable long id ){
         service.deleteById(id);
-//        if (UserService.isMessages()){
-//            LOG.debug("User is deleted and map show it!");
-//        }
-
     }
 
     @GetMapping

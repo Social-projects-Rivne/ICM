@@ -25,7 +25,8 @@ class EditUsers extends Component {
                 // userStatus: "",
             },
             registrationDate: true,
-            mounted1: "",
+            user-name: "",
+            users-edit-name:"",
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -76,17 +77,31 @@ class EditUsers extends Component {
 
     handleSave(){
         var _this = this;
+        axios.get("/api/admin_name")
+            .then(function(response){
+                _this.setState({
+                    user-name: response.data
+                })
+            })
+            .catch(function (error) {
+                 swal({title: "Something went wrong!!!!", text: error, icon: "error"});
+            });
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function(response) {
-                swal({title: "Users record saved", icon: "success"})
-                <Route path="/registration"/>
-
-
+                swal({title: "Users record saved", icon: "success"});
+                _this.setState({
+                                    users-edit-name: response.data
+                                })
             })
             .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
-        console.log(this.state.mounted1);
+        console.log(this.state.user-name);
+        console.log
+
+        if(this.state.user-name === this.state.users-edit-name)
+            this.props.history.push("/dashboard")
+
     }
 
     render() {

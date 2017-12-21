@@ -1,25 +1,27 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
+
+import org.apache.log4j.Logger;
 import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 
-import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import org.apache.log4j.Logger;
+
 
 @Component
 public class UserService {
-    private static final Logger LOGGER = Logger.getLogger(UserService.class.getName());
+
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+
     private final  UserDao userDao;
     private static boolean messages;
     @Autowired
@@ -36,7 +38,8 @@ public class UserService {
         if(UserRole.ADMIN != user.getUserRole()){
             LOGGER.debug("User is deleted");
             userDao.delete(id);
-        }
+        }else
+            throw new UserNotFoundException("Users role is ADMIN, you can't delete ADMIN, try change his role!");
         LOGGER.debug("user role is " + user.getUserRole() + user.getIsDeleted());
 
     }
@@ -66,8 +69,7 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public ResponseEntity<?> updateUser(UserDto dto)  {
-        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+    public UserDto updateUser(UserDto dto)  {
         User user = userDao.findOne(dto.getId());
         user.setUserRole(dto.getUserRole());
         user.setRegistrationDate(dto.getRegistrationDate());
@@ -81,15 +83,9 @@ public class UserService {
 
         LOGGER.debug("Adding user!" + user.toString());
         userDao.save(new User(dto));
-
-        LOGGER.debug(String.valueOf(UserDto.getCount()));
-
         LOGGER.debug("Added user" + user.toString());
-
-        if (Objects.equals(userAuth.getName(), user.getUsername())) {
-            return new UserDto(user);
-        }
-        return new ResponseEntity<>(new UserDto(user), HttpStatus.);
+        LOGGER.debug(String.valueOf(userDao.countByUserRole(UserRole.ADMIN)));
+        return new UserDto(user);
     }
 
 
