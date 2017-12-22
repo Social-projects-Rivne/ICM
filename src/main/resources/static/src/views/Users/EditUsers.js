@@ -147,7 +147,6 @@ class EditUsers extends Component {
                                                placeholder="Role">
                                             <option>ADMIN</option>
                                             <option>USER</option>
-                                            <option>GUEST</option>
                                             <option>MODERATOR</option>
                                         </Input>
                                     </Col>
@@ -174,7 +173,7 @@ class EditUsers extends Component {
 
                                     <Button color="success" onClick={this.handleSave}>
                                         <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/users"><Button color="primary">
+                                    <Link to="/admin/users"><Button color="primary">
                                         <i className="fa fa-ban"/> Back</Button>
                                     </Link>
                                 </CardFooter>

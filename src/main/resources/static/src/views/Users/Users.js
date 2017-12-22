@@ -131,7 +131,7 @@ class User extends Component {
                  <td>{this.state.users.avatarUrl}</td>
                  {/*<td>{this.state.users.isDeleted}</td>*/}
                  <td>
-                     <Link to={"/users/"+this.state.users.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
+                     <Link to={"/admin/users/"+this.state.users.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
                      <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                  </td>
              </tr>

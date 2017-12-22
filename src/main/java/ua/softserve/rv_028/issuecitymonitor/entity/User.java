@@ -237,7 +237,7 @@ public class User implements UserDetails{
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return prepareCollection(this.userRole);
+		return UserRole.collectionForRole(this.userRole);
 	}
 
 	@Override
@@ -267,21 +267,6 @@ public class User implements UserDetails{
 
 	private static boolean checkUserStatus(UserStatus status) {
 		return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
-	}
-
-	private Collection<GrantedAuthority> prepareCollection(UserRole userRole) {
-		HashSet<GrantedAuthority> roles = new HashSet<>();
-		if (userRole == UserRole.USER) {
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-		} else if (userRole == UserRole.MODERATOR){
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.MODERATOR.name()));
-		} else if (userRole == UserRole.ADMIN){
-			roles.add(new SimpleGrantedAuthority(UserRole.USER.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.MODERATOR.name()));
-			roles.add(new SimpleGrantedAuthority(UserRole.ADMIN.name()));
-		}
-		return roles;
 	}
 
 	@Override
