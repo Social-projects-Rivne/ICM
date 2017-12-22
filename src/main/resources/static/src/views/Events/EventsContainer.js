@@ -53,18 +53,21 @@ class EventsContainer extends Component {
     }
 
     handlePage(i) {
-        this.setState({page: i});
-        this.props.onPageChange(this.state.page);
+        this.setState({page: i}, function() {
+            this.props.onPageChange(this.state.page);
+        });
     }
 
     handleFirstPage() {
-        this.setState({page: 1});
-        this.props.onPageChange(this.state.page);
+        this.setState({page: 1}, function() {
+            this.props.onPageChange(this.state.page);
+        });
     }
 
     handleLastPage() {
-        this.setState({page: this.state.data.totalPages});
-        this.props.onPageChange(this.state.page);
+        this.setState({page: this.state.data.totalPages}, function() {
+            this.props.onPageChange(this.state.page);
+        });
     }
 
     pagination() {

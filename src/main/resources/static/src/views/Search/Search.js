@@ -157,7 +157,7 @@ class Search extends Component {
             }
         }, function() {
             this.makeQuery("events", this.state.eventQuery);
-        }); //TODO bugfix change page
+        });
     }
 
     handleUserQueryChange(e) {
@@ -234,7 +234,20 @@ class Search extends Component {
     }
 
     handleSearch(){
-        this.makeQueries();
+        this.setState(function(prev) {
+            return {
+                eventQuery: {
+                    ...prev.eventQuery,
+                    page: 1
+                },
+                issueQuery: {
+                    ...prev.issueQuery,
+                    page: 1
+                } //TODO other pages
+            }
+        }, function() {
+            this.makeQueries();
+        });
     }
 
     handleTabClick(e){
