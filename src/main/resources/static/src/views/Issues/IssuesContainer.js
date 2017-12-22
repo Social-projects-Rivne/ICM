@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardHeader, Col, Row, Table} from "reactstrap";
+import {Table} from "reactstrap";
 import Issue from "./Issue";
+import PageContainer from "../../components/PageContainer/PageContainer";
 
 class IssuesContainer extends Component {
     constructor(props) {
@@ -9,6 +10,12 @@ class IssuesContainer extends Component {
         this.state = {
             data: this.props.data
         };
+
+        this.handlePageChange = this.handlePageChange.bind(this);
+    }
+
+    handlePageChange(page) {
+        this.props.onPageChange(page);
     }
 
     componentWillReceiveProps(props) {
@@ -45,18 +52,10 @@ class IssuesContainer extends Component {
 
     render() {
         return (
-            <div className="animated fadeIn">
-                <Row>
-                    <Col xs="12" lg="12">
-                        <Card>
-                            <CardHeader>Issue list</CardHeader>
-                            <CardBody>
-                                {this.table()}
-                            </CardBody>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>
+            <PageContainer onPageChange={this.handlePageChange} title="Issues list"
+                           page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
+                {this.table()}
+            </PageContainer>
         )
     }
 

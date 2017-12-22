@@ -1,22 +1,21 @@
 import React, {Component} from 'react';
-import {
-    Card, CardBody, CardFooter, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row,
-    Table
-} from "reactstrap";
+import {Table} from "reactstrap";
 import Event from "./Event";
+import PageContainer from "../../components/PageContainer/PageContainer";
 
 class EventsContainer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            data: this.props.data,
-            page: this.props.data.number + 1
+            data: this.props.data
         };
 
-        this.handleFirstPage = this.handleFirstPage.bind(this);
-        this.handleLastPage = this.handleLastPage.bind(this);
-        this.handlePage = this.handlePage.bind(this);
+        this.handlePageChange = this.handlePageChange.bind(this);
+    }
+
+    handlePageChange(page) {
+        this.props.onPageChange(page);
     }
 
     componentWillReceiveProps(props) {
@@ -46,78 +45,18 @@ class EventsContainer extends Component {
                     })}
                     </tbody>
                 </Table>
-            )
+            );
         } else {
             return (<div className="text-center">The list is empty</div>)
         }
     }
 
-    handlePage(i) {
-        this.setState({page: i}, function() {
-            this.props.onPageChange(this.state.page);
-        });
-    }
-
-    handleFirstPage() {
-        this.setState({page: 1}, function() {
-            this.props.onPageChange(this.state.page);
-        });
-    }
-
-    handleLastPage() {
-        this.setState({page: this.state.data.totalPages}, function() {
-            this.props.onPageChange(this.state.page);
-        });
-    }
-
-    pagination() {
-        var items = [];
-        for(var i = (this.state.page - 3 > 0) ? (this.state.page - 3) : 1;
-            i < ((this.state.data.totalPages - this.state.page > 3) ? (this.state.page + 3) : this.state.data.totalPages) + 1;
-            i++) {
-            items.push(i);
-        }
-
-        var _this = this;
-
-        return (
-            <Pagination size="sm">
-                <PaginationItem disabled={this.state.data.first}>
-                    <PaginationLink previous onClick={this.handleFirstPage} />
-                </PaginationItem>
-                {items.map(function (item, i) {
-                    return (
-                        <PaginationItem key={i} active={item === _this.state.page}>
-                            <PaginationLink onClick={() => _this.handlePage(item)}>
-                                {item}
-                            </PaginationLink>
-                        </PaginationItem>
-                    )
-                })}
-                <PaginationItem disabled={this.state.data.last}>
-                    <PaginationLink next onClick={this.handleLastPage} />
-                </PaginationItem>
-            </Pagination>
-        )
-    }
-
     render() {
         return (
-            <div className="animated fadeIn">
-                <Row>
-                    <Col xs="12" lg="12">
-                        <Card>
-                            <CardHeader>Event list</CardHeader>
-                            <CardBody>
-                                {this.table()}
-                            </CardBody>
-                            <CardFooter>
-                                {this.pagination()}
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                </Row>
-            </div>
+            <PageContainer onPageChange={this.handlePageChange} title="Events list"
+                           page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
+                {this.table()}
+            </PageContainer>
         )
     }
 }

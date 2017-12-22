@@ -42,6 +42,11 @@ class Search extends Component {
                 fullName: this.props.location.query === undefined ? "" : this.props.location.query
             },
             petitionQuery: {
+                text: this.props.location.query === undefined ? "" : this.props.location.query,
+                user: "",
+                fromDate: "",
+                toDate: "",
+                category: ""
             },
             events: "",
             issues: "",
@@ -60,7 +65,8 @@ class Search extends Component {
         this.handleIssueFromDateChange = this.handleIssueFromDateChange.bind(this);
         this.handleIssueToDateChange = this.handleIssueToDateChange.bind(this);
 
-        this.handlePageChange = this.handlePageChange.bind(this);
+        this.handleEventsPageChange = this.handleEventsPageChange.bind(this);
+        this.handleIssuesPageChange = this.handleIssuesPageChange.bind(this);
 
         this.handleClear = this.handleClear.bind(this);
 
@@ -84,6 +90,10 @@ class Search extends Component {
                 },
                 issueQuery: {
                     ...prev.issueQuery,
+                    text: props.location.query === undefined ? "" : props.location.query
+                },
+                petitionQuery: {
+                    ...prev.petitionQuery,
                     text: props.location.query === undefined ? "" : props.location.query
                 }
             }
@@ -112,6 +122,7 @@ class Search extends Component {
             })
     }
 
+    // Events
     handleEventQueryChange(e) {
         const value = e.target.value;
         const name = e.target.name;
@@ -147,7 +158,7 @@ class Search extends Component {
         });
     }
 
-    handlePageChange(pageNum) {
+    handleEventsPageChange(pageNum) {
         this.setState(function(prev) {
             return {
                 eventQuery: {
@@ -160,16 +171,18 @@ class Search extends Component {
         });
     }
 
-    handleUserQueryChange(e) {
-        const value = e.target.value;
-        const name = e.target.name;
-        this.setState(function (prev) {
+
+    // Issues
+    handleIssuesPageChange(pageNum) {
+        this.setState(function(prev) {
             return {
-                userQuery: {
-                    ...prev.userQuery,
-                    [name]: value
+                issueQuery: {
+                    ...prev.issueQuery,
+                    page: pageNum
                 }
             }
+        }, function() {
+            this.makeQuery("issues", this.state.issueQuery);
         });
     }
 
@@ -208,6 +221,21 @@ class Search extends Component {
         });
     }
 
+    // Users
+    handleUserQueryChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        this.setState(function (prev) {
+            return {
+                userQuery: {
+                    ...prev.userQuery,
+                    [name]: value
+                }
+            }
+        });
+    }
+
+    // Search
     handleClear(e){
         const name = e.target.name;
         this.setState(function(prev) {
@@ -228,7 +256,14 @@ class Search extends Component {
                 },
                 userQuery: {
                     fullName: ""
-                }
+                },
+                petitionQuery: {
+                    text: "",
+                    user: "",
+                    fromDate: "",
+                    toDate: "",
+                    category: ""
+                },
             }
         });
     }
@@ -243,7 +278,15 @@ class Search extends Component {
                 issueQuery: {
                     ...prev.issueQuery,
                     page: 1
-                } //TODO other pages
+                },
+                userQuery: {
+                    ...prev.userQuery,
+                    page: 1
+                },
+                petitionQuery: {
+                    ...prev.petitionQuery,
+                    page: 1
+                }
             }
         }, function() {
             this.makeQueries();
@@ -252,6 +295,68 @@ class Search extends Component {
 
     handleTabClick(e){
         this.setState({currentTab: e.target.name});
+    }
+
+    render() {
+        return(
+            <div className="animated fadeIn">
+                <Row>
+                    <Col xs="12" lg="12">
+                        <Card>
+                            <CardHeader>Search</CardHeader>
+                            <CardBody>
+                                <Nav tabs>
+                                    <NavItem>
+                                        {(this.state.currentTab==="users") ?
+                                            <NavLink active>Users</NavLink> :
+                                            <NavLink name="users" onClick={this.handleTabClick}>Users</NavLink>}
+                                    </NavItem>
+                                    <NavItem>
+                                        {(this.state.currentTab==="events") ?
+                                            <NavLink active>Events</NavLink> :
+                                            <NavLink name="events" onClick={this.handleTabClick}>Events</NavLink>}
+                                    </NavItem>
+                                    <NavItem>
+                                        {(this.state.currentTab==="issues") ?
+                                            <NavLink active>Issues</NavLink> :
+                                            <NavLink name="issues" onClick={this.handleTabClick}>Issues</NavLink>}
+                                    </NavItem>
+                                    <NavItem>
+                                        {(this.state.currentTab==="petitions") ?
+                                            <NavLink active>Petitions</NavLink> :
+                                            <NavLink name="petitions" onClick={this.handleTabClick}>Petitions</NavLink>}
+                                    </NavItem>
+                                </Nav>
+                                <br/>
+                                <FormGroup row>
+                                    <Col md="2">
+                                        <Label>Search parameters:</Label>
+                                    </Col>
+                                </FormGroup>
+                                {this.state.currentTab==="users" ? this.userSearchForm() :
+                                    this.state.currentTab==="events" ? this.eventSearchForm() :
+                                        this.state.currentTab==="issues" ? this.issueSearchForm() :
+                                            this.state.currentTab==="petitions" ? null :
+                                                null}
+                            </CardBody>
+                            <CardFooter className="text-right">
+                                <Button className="btn btn-outline-secondary" onClick={this.handleClear}>
+                                    Clear
+                                </Button>{' '}
+                                <Button className="btn btn-outline-secondary" onClick={this.handleSearch}>
+                                    <i className="fa fa-search"/> Search
+                                </Button>
+                            </CardFooter>
+                        </Card>
+                    </Col>
+                </Row>
+                {this.state.currentTab==="users" ? null :
+                    this.state.currentTab==="events" ? <EventsContainer data={this.state.events} onPageChange={this.handleEventsPageChange}/> :
+                        this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues} onPageChange={this.handleIssuesPageChange}/> :
+                            this.state.currentTab==="petitions" ? null :
+                                null}
+            </div>
+        );
     }
 
     userSearchForm(){
@@ -369,69 +474,6 @@ class Search extends Component {
                 </Col>
             </FormGroup>
         </div>);
-    }
-
-
-    render() {
-        return(
-            <div className="animated fadeIn">
-                <Row>
-                    <Col xs="12" lg="12">
-                        <Card>
-                            <CardHeader>Search</CardHeader>
-                            <CardBody>
-                                <Nav tabs>
-                                    <NavItem>
-                                        {(this.state.currentTab==="users") ?
-                                            <NavLink active>Users</NavLink> :
-                                            <NavLink name="users" onClick={this.handleTabClick}>Users</NavLink>}
-                                    </NavItem>
-                                    <NavItem>
-                                        {(this.state.currentTab==="events") ?
-                                            <NavLink active>Events</NavLink> :
-                                            <NavLink name="events" onClick={this.handleTabClick}>Events</NavLink>}
-                                    </NavItem>
-                                    <NavItem>
-                                        {(this.state.currentTab==="issues") ?
-                                            <NavLink active>Issues</NavLink> :
-                                            <NavLink name="issues" onClick={this.handleTabClick}>Issues</NavLink>}
-                                    </NavItem>
-                                    <NavItem>
-                                        {(this.state.currentTab==="petitions") ?
-                                            <NavLink active>Petitions</NavLink> :
-                                            <NavLink name="petitions" onClick={this.handleTabClick}>Petitions</NavLink>}
-                                    </NavItem>
-                                </Nav>
-                                <br/>
-                                <FormGroup row>
-                                    <Col md="2">
-                                        <Label>Search parameters:</Label>
-                                    </Col>
-                                </FormGroup>
-                                {this.state.currentTab==="users" ? this.userSearchForm() :
-                                    this.state.currentTab==="events" ? this.eventSearchForm() :
-                                        this.state.currentTab==="issues" ? this.issueSearchForm() :
-                                            this.state.currentTab==="petitions" ? null :
-                                                null}
-                            </CardBody>
-                            <CardFooter className="text-right">
-                                <Button className="btn btn-outline-secondary" onClick={this.handleClear}>
-                                    Clear
-                                </Button>{' '}
-                                <Button className="btn btn-outline-secondary" onClick={this.handleSearch}>
-                                    <i className="fa fa-search"/> Search
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </Col>
-                </Row>
-                {this.state.currentTab==="users" ? null :
-                    this.state.currentTab==="events" ? <EventsContainer data={this.state.events} onPageChange={this.handlePageChange}/> :
-                        this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues}/> :
-                            this.state.currentTab==="petitions" ? null :
-                                null}
-            </div>
-        );
     }
 }
 
