@@ -44,13 +44,11 @@ class User extends Component {
                                         <th>registrationDate</th>
                                         <th>First name</th>
                                         <th>Last name</th>
-                                        <th>Password</th>
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>User status</th>
                                         {/*<th>User Agreement</th>*/}
                                         {/*<th>Delete date</th>*/}
-                                        <th>Avatar</th>
                                         {/*<th>IsDeleted</th>*/}
                                     </tr>
                                     </thead>
@@ -122,13 +120,11 @@ class User extends Component {
                  <td>{this.state.users.registrationDate}</td>
                  <td>{this.state.users.firstName}</td>
                  <td>{this.state.users.lastName}</td>
-                 <td>{this.state.users.password}</td>
                  <td>{this.state.users.email}</td>
                  <td>{this.state.users.phone}</td>
                  <td>{this.state.users.userStatus}</td>
                  {/*<td>{this.state.users.userAgreement}</td>*/}
                  {/*<td>{this.state.users.deleteDate}</td>*/}
-                 <td>{this.state.users.avatarUrl}</td>
                  {/*<td>{this.state.users.isDeleted}</td>*/}
                  <td>
                      <Link to={"/admin/users/"+this.state.users.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
