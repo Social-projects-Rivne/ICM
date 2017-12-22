@@ -81,7 +81,7 @@ class EditUsers extends Component {
                 swal({title: "Users record saved", icon: "success"});
                 console.log("cookie is:" + document.cookie);
                 if(document.cookie === response.data.email)
-                    _this.props.history.push("/");
+                    _this.props.history.push("/registration");
             })
             .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});

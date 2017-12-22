@@ -6,8 +6,6 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 public class UserDto {
 
-    private static long count;
-
     private long id;
     private UserRole userRole;
     private String registrationDate;
@@ -61,14 +59,6 @@ public class UserDto {
         this.avatarUrl = avatarUrl;
     }
 
-    public static long getCount() {
-        return count;
-    }
-
-    public static void setCount(long count) {
-        UserDto.count = count;
-    }
-
     public long getId() {
         return id;
     }
@@ -82,9 +72,6 @@ public class UserDto {
     }
 
     public void setUserRole(UserRole userRole) {
-        if(userRole == UserRole.ADMIN) {
-            count++;
-        }
         this.userRole = userRole;
     }
 
