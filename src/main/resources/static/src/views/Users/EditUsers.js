@@ -163,7 +163,7 @@ class EditUsers extends Component {
                                                 <option>DELETED</option>
                                                 <option>BANNED</option>
                                                 <option>ACTIVE</option>
-                                                <option>UNCONFIRM</option>
+                                                <option>UNCONFIRMED</option>
                                             </Input>
                                         </Col>
                                     </FormGroup>
