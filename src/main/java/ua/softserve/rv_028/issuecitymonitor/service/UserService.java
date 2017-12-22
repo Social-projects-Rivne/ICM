@@ -10,6 +10,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 
 //import org.apache.log4j.Logger;
+import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 
 import java.util.ArrayList;
@@ -71,6 +72,7 @@ public class UserService {
 
     public UserDto updateUser(UserDto dto)  {
         User user = userDao.findOne(dto.getId());
+        final UserRole keyuser = user.getUserRole();
         user.setUserRole(dto.getUserRole());
         user.setRegistrationDate(dto.getRegistrationDate());
         user.setFirstName(dto.getFirstName());
@@ -81,12 +83,21 @@ public class UserService {
         user.setDeleteDate(dto.getDeleteDate());
         user.setAvatarUrl(dto.getAvatarUrl());
 
-        LOGGER.info("Adding user!" + user.toString());
-        userDao.save(new User(dto));
-        LOGGER.info("Added user" + user.toString());
+
         LOGGER.info(String.valueOf(userDao.countByUserRole(UserRole.ADMIN)));
-        LOGGER.info(user.toString());
-        return new UserDto(user);
+//        LOGGER.debug("Adding user!" + user.toString());
+
+
+        if (userDao.countByUserRole(UserRole.ADMIN) > 1) {
+            userDao.save(new User(dto));
+            LOGGER.info("Added user" + user.toString());
+//            LOGGER.debug(user.toString());
+            return new UserDto(user);
+        }
+        else{
+            throw new LastAdminException();
+        }
+
     }
 
 
