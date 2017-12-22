@@ -67,7 +67,7 @@ public class UsersControllerUnitTest {
         userDto.setId(1L);
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
-        when(userService.updateUser(userDto)).thenReturn("none");
+        when(userService.updateUser(userDto)).thenReturn(userDto);
     }
 
     @Test

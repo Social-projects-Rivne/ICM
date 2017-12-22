@@ -7,8 +7,7 @@ import {
     Label, Row
 } from "reactstrap";
 import {Link} from "react-router-dom";
-import Redirect from "react-router-dom/es/Redirect";
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+
 
 class EditUsers extends Component {
     constructor(props) {
@@ -22,11 +21,10 @@ class EditUsers extends Component {
                 firstName: "",
                 lastName: "",
                 // phone: "",
-                // userStatus: "",
+                userStatus: "",
+                username:"",
             },
             registrationDate: true,
-            user-name: "",
-            users-edit-name:"",
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -77,31 +75,17 @@ class EditUsers extends Component {
 
     handleSave(){
         var _this = this;
-        axios.get("/api/admin_name")
-            .then(function(response){
-                _this.setState({
-                    user-name: response.data
-                })
-            })
-            .catch(function (error) {
-                 swal({title: "Something went wrong!!!!", text: error, icon: "error"});
-            });
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function(response) {
+                console.log(response.data.email);
                 swal({title: "Users record saved", icon: "success"});
-                _this.setState({
-                                    users-edit-name: response.data
-                                })
+                console.log("cookie is:" + document.cookie);
+                if(document.cookie === response.data.email)
+                    _this.props.history.push("/");
             })
             .catch(function (error) {
             swal({title: "Something went wrong!!!!", text: error, icon: "error"});
         });
-        console.log(this.state.user-name);
-        console.log
-
-        if(this.state.user-name === this.state.users-edit-name)
-            this.props.history.push("/dashboard")
-
     }
 
     render() {
@@ -154,19 +138,37 @@ class EditUsers extends Component {
                                     </FormGroup>
 
                                     <FormGroup row>
+                                    <Col md="2">
+                                        <Label>Role</Label>
+                                    </Col>
+                                    <Col xs="12" md="4">
+                                        <Input value={this.state.users.userRole} onChange={this.handleChange}
+                                               type="select" name="userRole"
+                                               placeholder="Role">
+                                            <option>ADMIN</option>
+                                            <option>USER</option>
+                                            <option>GUEST</option>
+                                            <option>MODERATOR</option>
+                                        </Input>
+                                    </Col>
+                                </FormGroup>
+
+                                    <FormGroup row>
                                         <Col md="2">
-                                            <Label>Role</Label>
+                                            <Label>Status</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <Input value={this.state.users.userRole} onChange={this.handleChange}
-                                                   type="select" name="userRole"
+                                            <Input value={this.state.users.userStatus} onChange={this.handleChange}
+                                                   type="select" name="userStatus"
                                                    placeholder="Role">
-                                                <option>ADMIN</option>
-                                                <option>USER</option>
-                                                <option>GUEST</option>
+                                                <option>DELETED</option>
+                                                <option>BANNED</option>
+                                                <option>ACTIVE</option>
+                                                <option>UNCONFIRM</option>
                                             </Input>
                                         </Col>
                                     </FormGroup>
+
                                 </CardBody>
                                 <CardFooter className="text-right">
 

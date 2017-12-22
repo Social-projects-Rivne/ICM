@@ -40,13 +40,14 @@ export default class SignUp extends React.Component {
             .then(function () {
                 _this.setState({registrationIsSuccessful: true});
                 _this.setState({registrationIsNotSuccessful: false});
-                _this.autoLogIn(user.email, user.password)
+                _this.autoLogIn(user.email, user.password);
+                document.cookie = user.email;
             })
             .catch(function () {
                 _this.setState({registrationIsSuccessful: false});
                 _this.setState({registrationIsNotSuccessful: true});
             });
-
+        console.log("cookie: " + document.cookie);
     }
 
     autoLogIn(email, password){
