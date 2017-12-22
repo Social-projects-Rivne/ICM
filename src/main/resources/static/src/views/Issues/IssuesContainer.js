@@ -16,7 +16,7 @@ class IssuesContainer extends Component {
     }
 
     table() {
-        if(this.state.data.length !== 0) {
+        if(this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
                     <thead>
@@ -30,7 +30,7 @@ class IssuesContainer extends Component {
                     </tr>
                     </thead>
                     <tbody>
-                    {this.state.data.map(function(issue, i) {
+                    {this.state.data.content.map(function(issue, i) {
                         return (
                             <Issue key={i} issue={issue}/>
                         );

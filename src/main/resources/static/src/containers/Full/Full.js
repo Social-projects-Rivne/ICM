@@ -26,17 +26,16 @@ class Full extends Component {
         };
     }
 
-
     componentDidMount() {
         const _this = this;
         axios.get("/api/authority")
             .then(function (response) {
                 _this.setState({userAuthorities: response.data});
-                console.log("authority", response.data)
             });
     }
-  render() {
-    return (
+
+    render() {
+     return (
       <div className="app">
         <Header userAuthorities={this.state.userAuthorities}/>
         <div className="app-body">
@@ -59,8 +58,8 @@ class Full extends Component {
         </div>
         <Footer />
       </div>
-    );
-  }
+     );
+    }
 }
 
 export default Full;

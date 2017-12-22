@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {
     Card, CardBody, CardFooter, CardHeader, Col, FormGroup, Input, Label, Nav, NavItem, NavLink,
-    Row, Button
+    Row, Button, InputGroup, InputGroupButton
 } from 'reactstrap';
 import EventsContainer from "../Events/EventsContainer";
 import axios from 'axios';
@@ -25,16 +25,28 @@ class Search extends Component {
 
         this.state = {
             eventQuery: {
-                text: this.props.location.query === undefined ? "" : this.props.location.query
+                text: this.props.location.query === undefined ? "" : this.props.location.query,
+                user: "",
+                fromDate: "",
+                toDate: "",
+                category: ""
             },
             issueQuery: {
-                text: this.props.location.query === undefined ? "" : this.props.location.query
+                text: this.props.location.query === undefined ? "" : this.props.location.query,
+                user: "",
+                fromDate: "",
+                toDate: "",
+                category: ""
             },
             userQuery: {
                 fullName: this.props.location.query === undefined ? "" : this.props.location.query
             },
             petitionQuery: {
             },
+            events: "",
+            issues: "",
+            users: "",
+            petitions: "",
             currentTab: "users"
         };
         this.handleTabClick = this.handleTabClick.bind(this);
@@ -48,7 +60,15 @@ class Search extends Component {
         this.handleIssueFromDateChange = this.handleIssueFromDateChange.bind(this);
         this.handleIssueToDateChange = this.handleIssueToDateChange.bind(this);
 
+        this.handlePageChange = this.handlePageChange.bind(this);
+
+        this.handleClear = this.handleClear.bind(this);
+
         this.handleSearch = this.handleSearch.bind(this);
+    }
+
+    componentWillMount() {
+        this.makeQueries();
     }
 
     componentWillReceiveProps(props){
@@ -56,42 +76,32 @@ class Search extends Component {
             return {
                 eventQuery: {
                     ...prev.eventQuery,
-                    text: props.location.query
+                    text: props.location.query === undefined ? "" : props.location.query
                 },
                 userQuery: {
                     ...prev.userQuery,
-                    fullName: props.location.query
+                    fullName: props.location.query === undefined ? "" : props.location.query
                 },
                 issueQuery: {
                     ...prev.issueQuery,
-                    text: props.location.query
+                    text: props.location.query === undefined ? "" : props.location.query
                 }
             }
-        }, function(){
-            this.makeQueryUrls();
+        }, function() {
+            this.makeQueries();
         });
     }
 
-    componentWillMount(){
-        this.makeQueryUrls();
-    }
-
-    makeQueryUrls() {
-        this.setState(function(prev) {
-            return {
-
-            }
-        });
+    makeQueries() {
+        this.makeQuery("events", this.state.eventQuery);
         this.makeQuery("users", this.state.userQuery);
         this.makeQuery("issues", this.state.issueQuery);
         //TODO queries
-
-        //TODO from date
     }
 
     makeQuery(type, queryObj) {
         var _this = this;
-        axios.get()
+        axios.get(["/api/search/",type,qs.stringify(queryObj, { addQueryPrefix: true })].join(""))
             .then(function(response) {
                 _this.setState({
                     [type]: response.data
@@ -120,7 +130,7 @@ class Search extends Component {
             return {
                 eventQuery: {
                     ...prev.eventQuery,
-                    fromDate: m.format("DD/MM/YYYY")
+                    fromDate: m.format("DD/MM/YYYY HH:mm")
                 }
             }
         });
@@ -131,10 +141,23 @@ class Search extends Component {
             return {
                 eventQuery: {
                     ...prev.eventQuery,
-                    toDate: m.format("DD/MM/YYYY")
+                    toDate: m.format("DD/MM/YYYY HH:mm")
                 }
             }
         });
+    }
+
+    handlePageChange(pageNum) {
+        this.setState(function(prev) {
+            return {
+                eventQuery: {
+                    ...prev.eventQuery,
+                    page: pageNum
+                }
+            }
+        }, function() {
+            this.makeQuery("events", this.state.eventQuery);
+        }); //TODO bugfix change page
     }
 
     handleUserQueryChange(e) {
@@ -168,7 +191,7 @@ class Search extends Component {
             return {
                 issueQuery: {
                     ...prev.issueQuery,
-                    fromDate: m.format("DD/MM/YYYY")
+                    fromDate: m.format("DD/MM/YYYY HH:mm")
                 }
             }
         });
@@ -179,14 +202,39 @@ class Search extends Component {
             return {
                 issueQuery: {
                     ...prev.issueQuery,
-                    toDate: m.format("DD/MM/YYYY")
+                    toDate: m.format("DD/MM/YYYY HH:mm")
+                }
+            }
+        });
+    }
+
+    handleClear(e){
+        const name = e.target.name;
+        this.setState(function(prev) {
+            return {
+                eventQuery: {
+                    text: "",
+                    user: "",
+                    fromDate: "",
+                    toDate: "",
+                    category: ""
+                },
+                issueQuery: {
+                    text: "",
+                    user: "",
+                    fromDate: "",
+                    toDate: "",
+                    category: ""
+                },
+                userQuery: {
+                    fullName: ""
                 }
             }
         });
     }
 
     handleSearch(){
-        this.makeQueryUrls();
+        this.makeQueries();
     }
 
     handleTabClick(e){
@@ -354,6 +402,9 @@ class Search extends Component {
                                                 null}
                             </CardBody>
                             <CardFooter className="text-right">
+                                <Button className="btn btn-outline-secondary" onClick={this.handleClear}>
+                                    Clear
+                                </Button>{' '}
                                 <Button className="btn btn-outline-secondary" onClick={this.handleSearch}>
                                     <i className="fa fa-search"/> Search
                                 </Button>
@@ -362,8 +413,7 @@ class Search extends Component {
                     </Col>
                 </Row>
                 {this.state.currentTab==="users" ? null :
-                    this.state.currentTab==="events" ? <EventsContainer
-                            url={["/api/search/events?", qs.stringify(this.state.eventQuery)].join("")}/> :
+                    this.state.currentTab==="events" ? <EventsContainer data={this.state.events} onPageChange={this.handlePageChange}/> :
                         this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues}/> :
                             this.state.currentTab==="petitions" ? null :
                                 null}

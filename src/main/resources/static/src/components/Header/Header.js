@@ -46,7 +46,7 @@ class Header extends Component {
                             <Input value={this.state.keywords} type="text" name="search" placeholder="Search..."
                                    onChange={this.handleChange}/>
                             <InputGroupButton>
-                                <Link to={{pathname: "/search", query: this.state.keywords}}>
+                                <Link to={{pathname: "/admin/search", query: this.state.keywords}}>
                                     <Button className="btn btn-outline-secondary fa fa-search"></Button>
                                 </Link>
                             </InputGroupButton>

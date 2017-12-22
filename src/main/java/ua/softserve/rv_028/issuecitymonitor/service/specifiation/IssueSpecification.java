@@ -31,13 +31,11 @@ public class IssueSpecification implements Specification<Issue> {
         }
 
         if(key.equals("fromDate")) {
-            value += " 00:00";
             return cb.greaterThanOrEqualTo(root.get("initialDate"),
                     LocalDateTime.parse(value, DATE_FORMAT));
         }
 
         if(key.equals("toDate")) {
-            value += " 00:00";
             return cb.lessThanOrEqualTo(root.get("initialDate"),
                     LocalDateTime.parse(value, DATE_FORMAT));
         }

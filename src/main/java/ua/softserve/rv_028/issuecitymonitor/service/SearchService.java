@@ -2,6 +2,8 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
@@ -52,19 +54,25 @@ public class SearchService {
         this.issueMapper = issueMapper;
     }
 
-    public List<EventDto> findEventsByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
-        PageRequest page = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        List<EventDto> eventDtos = eventMapper.toDtoList(eventDao.findAll(getEventSpecifications(queryMap), page).getContent());
-        LOGGER.debug("Event search successful");
+    public Page<EventDto> findEventsByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<EventDto> eventDtos = eventDao.findAll(getEventSpecifications(queryMap), pageRequest).map(eventMapper::toDto);
+        LOGGER.debug("Events search successful");
         return eventDtos;
     }
 
-    public List<UserDto> findUsersByCriteria(Map<String, String> queryMap) {
-        return userMapper.toDtoList(userDao.findAll(getUserSpecifications(queryMap)));
+    public Page<UserDto> findUsersByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<UserDto> userDtos = userDao.findAll(getUserSpecifications(queryMap), pageRequest).map(userMapper::toDto);
+        LOGGER.debug("Users search successful");
+        return userDtos;
     }
 
-    public List<IssueDto> findIssuesByCriteria(Map<String, String> queryMap) {
-        return issueMapper.toDtoList(issueDao.findAll(getIssueSpecifications(queryMap)));
+    public Page<IssueDto> findIssuesByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<IssueDto> issueDtos = issueDao.findAll(getIssueSpecifications(queryMap), pageRequest).map(issueMapper::toDto);
+        LOGGER.debug("Issues search successful");
+        return issueDtos;
     }
 
     private Specifications<Event> getEventSpecifications(Map<String, String> queryMap) {
