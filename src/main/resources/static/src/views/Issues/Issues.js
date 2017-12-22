@@ -11,8 +11,13 @@ class Issues extends Component {
         this.state = {
             issues: [],
             page: 0,
-            size: 10
-        };
+            size: 10,
+            step: 1
+        },
+        this.handleNavFirst = this.handleNavFirst.bind(this);
+        this.handleNavPrev = this.handleNavPrev.bind(this);
+        this.handleNavNext = this.handleNavNext.bind(this);
+        this.handleNavLast = this.handleNavLast.bind(this);
     }
 
     componentWillMount() {
@@ -38,18 +43,16 @@ class Issues extends Component {
     }
 
     handleNavPrev() {
-    	this.setState({page: 1})
+    	this.setState({page: this.state.page-this.state.step})
     	this.onNavigate();
     }
 
-    handleNavNext(e) {
-    	e.preventDefault();
-    	this.setState({page: page+1})
+    handleNavNext() {
+    	this.setState({page: this.state.page+this.state.step})
     	this.onNavigate();
     }
 
-    handleNavLast(e) {
-    	e.preventDefault();
+    handleNavLast() {
     	this.setState({page: page})
     	this.onNavigate();
     }
@@ -74,7 +77,7 @@ class Issues extends Component {
                                         <th>Actions</th>
                                     </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody>{this.forceUpdate}
                                         {this.state.issues.map(function(issue, i) {
                                             return (<Issue key={i} issue={issue}/>);
                                         })}
