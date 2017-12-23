@@ -16,7 +16,7 @@ public class RegistrationController {
 
     @PostMapping(path = "/api/checkEmail")
     public Boolean checkEmail(@RequestParam("email") String email){
-        return service.isUserExist(email);
+        return service.isPossibleRegistration(email);
     }
 
     @PostMapping(path = "/api/registration")
