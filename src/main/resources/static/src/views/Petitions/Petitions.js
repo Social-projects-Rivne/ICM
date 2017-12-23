@@ -32,7 +32,7 @@ class Petitions extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Petition list <Link to={"/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link></CardHeader>
+                            <CardHeader>Petition list <Link to={"/admin/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link></CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>
@@ -108,7 +108,7 @@ class Petition extends Component {
                 <td>{this.state.petition.category}</td>
                 <td>{this.state.petition.userDto.id}</td>
                 <td>
-                    <Link to={"/petitions/"+this.state.petition.id+"/edit"}>
+                    <Link to={"/admin/petitions/"+this.state.petition.id+"/edit"}>
                         <Button color="info" size="sm">Edit</Button></Link>{' '}
                     <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                 </td>

@@ -145,7 +145,7 @@ class PetitionEdit extends Component {
                                 </CardBody>
                                 <CardFooter className="text-right">
                                     <Button color="success" onClick={this.handleSave}><i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Link to="/petitions"><Button color="primary"><i className="fa fa-ban"/> Back</Button></Link>
+                                    <Link to="/admin/petitions"><Button color="primary"><i className="fa fa-ban"/> Back</Button></Link>
                                 </CardFooter>
                             </Form>
                         </Card>
