@@ -8,26 +8,39 @@ class Events extends Component {
         super(props);
 
         this.state = {
-            events: []
+            events: "",
+            page: 1
         };
+
+        this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
+        this.makeQuery();
+    }
+
+    handlePageChange(pageNum) {
+        this.setState({page: pageNum}, function() {
+            this.makeQuery()
+        });
+    }
+
+    makeQuery() {
         var _this = this;
-        axios.get("/api/events")
+        axios.get(["/api/events?page=",this.state.page].join(""))
             .then(function(response) {
                 _this.setState({
                     events: response.data
-                })
+                });
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
-            })
+            });
     }
 
     render() {
         return (
-            <EventsContainer data={this.state.events}/>
+            <EventsContainer data={this.state.events} onPageChange={this.handlePageChange}/>
         )
     }
 }

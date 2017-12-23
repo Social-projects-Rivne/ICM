@@ -64,7 +64,7 @@ class PageContainer extends Component {
                 {items.map(function (item, i) {
                     return (
                         <PaginationItem key={i} active={item === _this.state.page}>
-                            <PaginationLink onClick={() => _this.handlePage(item)}>
+                            <PaginationLink key={i} onClick={() => _this.handlePage(item)}>
                                 {item}
                             </PaginationLink>
                         </PaginationItem>

@@ -18,7 +18,7 @@ class Issue extends Component {
     }
 
     componentWillReceiveProps(props) {
-        this.setState({event: props.issue});
+        this.setState({issue: props.issue});
     }
 
     handleDelete(){
@@ -54,7 +54,7 @@ class Issue extends Component {
                 <td>{this.state.issue.category}</td>
                 <td>{this.state.issue.userDto.id}</td>
                 <td>
-                    <Link to={"/issues/"+this.state.issue.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
+                    <Link to={"/admin/issues/"+this.state.issue.id+"/edit"}><Button color="info" size="sm">Edit</Button></Link>{' '}
                     <Button color="danger" size="sm" onClick={this.handleDelete}>Delete</Button>
                 </td>
             </tr>

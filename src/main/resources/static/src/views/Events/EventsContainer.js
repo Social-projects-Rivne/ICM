@@ -23,7 +23,7 @@ class EventsContainer extends Component {
     }
 
     table() {
-        if(this.state.data.content.length !== 0) {
+        if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
                     <thead>

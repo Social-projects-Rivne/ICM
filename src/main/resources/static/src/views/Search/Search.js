@@ -236,8 +236,7 @@ class Search extends Component {
     }
 
     // Search
-    handleClear(e){
-        const name = e.target.name;
+    handleClear(){
         this.setState(function(prev) {
             return {
                 eventQuery: {

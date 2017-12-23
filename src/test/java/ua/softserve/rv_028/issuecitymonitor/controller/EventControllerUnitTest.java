@@ -80,12 +80,6 @@ public class EventControllerUnitTest {
     }
 
     @Test
-    public void testDeleteEventSuccessfully(){
-        doNothing().when(eventService).deleteById(1); //This is obvious
-        eventController.delete(1);
-    }
-
-    @Test
     public void testDeleteEventNotFound(){
         doThrow(EXCEPTION_NOT_FOUND).when(eventService).deleteById(1);
 
