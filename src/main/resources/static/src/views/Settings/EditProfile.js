@@ -15,100 +15,78 @@ export default class EditProfile extends Component{
         }
     }
 
-    font(){
+    static fonts(){
         return '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     }
 
     render(){
         return(
-            <Container style={{paddingTop: '30px', fontFamily: this.font()}}>
-    <Col sm={10}>
-            <h3 >Profile Settings</h3>
-        <hr className="col-12"/>
-            <Row style={{marginBottom: '40px'}}>
+            <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
+                <Col sm={10}>
+                    <h3 >Profile Settings 2</h3>
+                    <hr className="col-12"/>
+                    <Row style={{marginBottom: '40px'}}>
 
-    <Col sm={8}>
-            <FormGroup>
-            <Label htmlFor='first-name' style={{fontWeight:'600'}}>First name</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-user fa-fw"/></InputGroupAddon>
-            <Input type="text" name="lastName" id="first-name"
-        bsSize="lg"
-        placeholder="first name"/>
-            </InputGroup>
+                        <Col sm={8}>
+                            <FormGroup>
+                                <Label htmlFor='first-name' style={{fontWeight:'600'}}>First name</Label>
+                                    <Input type="text" name="lastName" id="first-name"
+                                           bsSize="lg"
+                                           placeholder="first name"/>
+                            </FormGroup>
 
-            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor='last-name' style={{fontWeight:'600'}}>Last name</Label>
+                                    <Input type="text" name="lastName" id="last-name"
+                                           bsSize="lg"
+                                           placeholder="last name"/>
 
-            <FormGroup>
-            <Label htmlFor='last-name' style={{fontWeight:'600'}}>Last name</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-user fa-fw"/></InputGroupAddon>
-            <Input type="text" name="lastName" id="last-name"
-        bsSize="lg"
-        placeholder="last name"/>
-            </InputGroup>
+                            </FormGroup>
 
-            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
+                                    <Input type="text" name="lastName" id="phone"
+                                           bsSize="lg"
+                                           placeholder="+380958379474"/>
+                            </FormGroup>
 
-            <FormGroup>
-            <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-phone fa-fw"/></InputGroupAddon>
-            <Input type="text" name="lastName" id="phone"
-        bsSize="lg"
-        placeholder="+380958379474"/>
-            </InputGroup>
+                        </Col>
+                        <Col sm={4} style={{paddingLeft: '60px'}}>
+                            <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
+                            <div id='profile-photo' className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}></div>
+                        </Col>
 
-            </FormGroup>
-
-            </Col>
-            <Col sm={4} style={{paddingLeft: '60px'}}>
-    <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
-        <div id='profile-photo' className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}></div>
-        </Col>
-
-        </Row>
+                    </Row>
 
 
-        <h3>Change password</h3>
-        <hr className="col-12"/>
-            <Row>
-            <Col sm={8}>
-            <FormGroup>
-            <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-key fa-fw"/></InputGroupAddon>
-            <Input type="password" name="password" id="password"
-        bsSize="lg"
-        placeholder="Password"/>
-            </InputGroup>
-            </FormGroup>
+                    <h3>Change password</h3>
+                    <hr className="col-12"/>
+                    <Row>
+                        <Col sm={8}>
+                            <FormGroup>
+                                <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
+                                    <Input type="password" name="password" id="password"
+                                           bsSize="lg"
+                                           placeholder="Password"/>
+                            </FormGroup>
 
-            <FormGroup>
-            <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-key fa-fw"/></InputGroupAddon>
-            <Input type="password" name="password" id="password"
-        bsSize="lg"
-        placeholder="Password"/>
-            </InputGroup>
-            </FormGroup>
+                            <FormGroup>
+                                <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
+                                    <Input type="password" name="password" id="password"
+                                           bsSize="lg"
+                                           placeholder="Password"/>
+                            </FormGroup>
 
-            <FormGroup>
-            <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
-        <InputGroup>
-        <InputGroupAddon><i className="fa fa-key fa-fw"/></InputGroupAddon>
-            <Input type="password" name="password" id="password2"
-        bsSize="lg"
-        placeholder="Password"/>
-            </InputGroup>
-            </FormGroup>
-            </Col>
-            </Row>
-
-
-            </Col>
+                            <FormGroup>
+                                <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
+                                    <Input type="password" name="password" id="password2"
+                                           bsSize="lg"
+                                           placeholder="Password"/>
+                            </FormGroup>
+                        </Col>
+                    </Row>
+                </Col>
             </Container>
-    )
+        )
     }
 }
