@@ -95,6 +95,10 @@ public class DBSeeder {
                 }
             }
         }
+
+        User admin = new User("admin", "admin", "admin@mail.com", encoder.encode("12345"));
+        admin.setUserRole(UserRole.ADMIN);
+        session.save(admin);
         transaction.commit();
     }
 

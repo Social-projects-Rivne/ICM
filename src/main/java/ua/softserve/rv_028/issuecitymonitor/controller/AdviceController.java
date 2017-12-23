@@ -19,7 +19,7 @@ public class AdviceController {
     }
 
 
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_REASON)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     @ExceptionHandler(IllegalArgumentException.class)
     public void registrationError(IllegalArgumentException e){
         LOGGER.error(e.getMessage());

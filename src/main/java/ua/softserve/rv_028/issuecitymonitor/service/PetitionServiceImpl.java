@@ -3,15 +3,21 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
+
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -76,6 +82,11 @@ public class PetitionServiceImpl implements PetitionService {
         return new PetitionDto(petition);
     }
 
+
+
+
+
+
     private Petition findOne(long id){
         Petition petition = petitionDao.findOne(id);
         if(petition == null){
@@ -83,4 +94,23 @@ public class PetitionServiceImpl implements PetitionService {
         }
         return petition;
     }
+
+
+
+    @Override
+    public void regPetition(PetitionDto dto) {
+        try {
+
+            Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+            User user1 = userDao.findUserByUsername(userAuth.getName());
+            petitionDao.save(new Petition(user1, dto.getTitle(), dto.getDescription(), dto.getInitialDate(), dto.getCategory()));
+        }
+
+        catch (RuntimeException e){
+            throw new IllegalArgumentException("Petition add Failed", e);
+        }
+    }
+
+
+
 }
