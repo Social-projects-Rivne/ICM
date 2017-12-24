@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class IssueControllerUnitTest {
+public class IssueControllerTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
@@ -36,17 +36,17 @@ public class IssueControllerUnitTest {
     private IssueService issueService;
 
     @Test
-    public void testGetIssue(){
+    public void testGetIssue() {
         IssueDto issue = new IssueDto();
         issue.setTitle(TEST_TITLE);
         issue.setDescription(TEST_DESCRIPTION);
 
         when(issueService.findById(1)).thenReturn(issue);
 
-        IssueDto dto = issueController.getOne(1);
+        IssueDto issueResult = issueController.getOne(1);
 
-        assertEquals(TEST_TITLE,dto.getTitle());
-        assertEquals(TEST_DESCRIPTION,dto.getDescription());
+        assertEquals(TEST_TITLE, issueResult.getTitle());
+        assertEquals(TEST_DESCRIPTION, issueResult.getDescription());
     }
 
     @Test
@@ -62,60 +62,54 @@ public class IssueControllerUnitTest {
     }
 
     @Test
-    public void testGetAllByPage(){
-        List<IssueDto> expected = new ArrayList<>();
-        Page<IssueDto> issueDtoPage = new PageImpl<>(expected);
+    public void testGetAllByPage() {
+        Page<IssueDto> issueDtoPage = new PageImpl<>(new ArrayList<>());
         when(issueService.findAllByPage(any(Pageable.class))).thenReturn(issueDtoPage);
 
-        Page<IssueDto> success = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+        Page<IssueDto> allByPageResult = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
 
-        ArgumentCaptor<Pageable> pageArgument = ArgumentCaptor.forClass(Pageable.class);
-        verify(issueService, times(1)).findAllByPage(pageArgument.capture());
+        verify(issueService).findAllByPage(any(Pageable.class));
         verifyNoMoreInteractions(issueService);
 
-        Pageable pageSpecification = pageArgument.getValue();
-
-        assertEquals(PAGE_INDEX, pageSpecification.getPageNumber());
-        assertEquals(PAGE_SIZE, pageSpecification.getPageSize());
-        assertEquals(issueDtoPage, success);
+        assertEquals(issueDtoPage, allByPageResult);
     }
 
     @Test
-    public void testAddIssue(){
+    public void testAddIssue() {
         IssueDto issueDto = new IssueDto();
         issueDto.setId(1L);
         issueDto.setTitle(TEST_TITLE);
         issueDto.setDescription(TEST_DESCRIPTION);
         when(issueService.addIssue(issueDto)).thenReturn(issueDto);
 
-        IssueDto success = issueController.addIssue(issueDto);
+        IssueDto issueResult = issueController.addIssue(issueDto);
 
-        assertEquals(TEST_TITLE,success.getTitle());
-        assertEquals(TEST_DESCRIPTION,success.getDescription());
+        assertEquals(TEST_TITLE, issueResult.getTitle());
+        assertEquals(TEST_DESCRIPTION, issueResult.getDescription());
     }
 
     @Test
-    public void testEditIssue(){
-        IssueDto issueDto = new IssueDto();
-        issueDto.setId(1L);
-        issueDto.setTitle(TEST_TITLE);
-        issueDto.setDescription(TEST_DESCRIPTION);
-        when(issueService.editIssue(issueDto)).thenReturn(issueDto);
+    public void testEditIssue() {
+        IssueDto issue = new IssueDto();
+        issue.setId(1L);
+        issue.setTitle(TEST_TITLE);
+        issue.setDescription(TEST_DESCRIPTION);
+        when(issueService.editIssue(issue)).thenReturn(issue);
 
-        IssueDto success = issueController.editIssue(issueDto);
+        IssueDto issueResult = issueController.editIssue(issue);
 
-        assertEquals(TEST_TITLE,success.getTitle());
-        assertEquals(TEST_DESCRIPTION,success.getDescription());
+        assertEquals(TEST_TITLE, issueResult.getTitle());
+        assertEquals(TEST_DESCRIPTION, issueResult.getDescription());
     }
 
     @Test
-    public void testEditIssueNotFound(){
-        IssueDto issueDto = new IssueDto();
-        issueDto.setId(1L);
-        when(issueService.editIssue(issueDto)).thenThrow(EXCEPTION_NOT_FOUND);
+    public void testEditIssueNotFound() {
+        IssueDto issue = new IssueDto();
+        issue.setId(1L);
+        when(issueService.editIssue(issue)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
-            issueController.editIssue(issueDto);
+            issueController.editIssue(issue);
             fail("expected exception was not thrown");
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
@@ -123,13 +117,13 @@ public class IssueControllerUnitTest {
     }
 
     @Test
-    public void testDeleteIssue(){
+    public void testDeleteIssue() {
         doNothing().when(issueService).deleteIssue(1); //This is obvious
         issueController.deleteIssue(1);
     }
 
     @Test
-    public void testDeleteIssueNotFound(){
+    public void testDeleteIssueNotFound() {
         doThrow(EXCEPTION_NOT_FOUND).when(issueService).deleteIssue(1);
 
         try {

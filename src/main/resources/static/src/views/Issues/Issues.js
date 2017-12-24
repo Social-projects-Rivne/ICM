@@ -21,7 +21,7 @@ class Issues extends Component {
 
     onNavigate() {
         var _this = this;
-        axios.get(["/api/issues?page=", this.state.page, "&size=",this.state.size].join(""))
+        axios.get(["/api/issues?page=", this.state.page, "&size=", this.state.size].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data.content
@@ -32,25 +32,25 @@ class Issues extends Component {
             });
     }
 
-    handleNavFirst(){
-    	this.setState({page: 0});
-    	this.onNavigate();
+    handleNavFirst() {
+        this.setState({page: 0});
+        this.onNavigate();
     }
 
     handleNavPrev() {
-    	this.setState({page: 1})
+    	this.setState({page: 1});
     	this.onNavigate();
     }
 
     handleNavNext(e) {
     	e.preventDefault();
-    	this.setState({page: page+1})
+    	this.setState({page: page+1});
     	this.onNavigate();
     }
 
     handleNavLast(e) {
     	e.preventDefault();
-    	this.setState({page: page})
+    	this.setState({page: page});
     	this.onNavigate();
     }
 
