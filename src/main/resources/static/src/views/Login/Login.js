@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {Alert, InputGroup, InputGroupAddon, Col, Button, Form, FormGroup, FormFeedback, Input} from 'reactstrap';
+import {Link} from "react-router-dom";
 
 
 class Login extends Component {
@@ -57,8 +58,12 @@ class Login extends Component {
                     <FormGroup>
                         <Col sm={12}>
                            <InputGroup>
-                                  <InputGroupAddon>@</InputGroupAddon>
-                                  <Input id="email" name="email" placeholder="email" type="email" value={this.state.email} onChange={this.handleChange}/>
+                                  <InputGroupAddon><i className="fa fa-envelope-o fa-fw"/></InputGroupAddon>
+                                  <Input id="email" name="email" placeholder="email"
+                                         type="email"
+                                         bsSize="lg"
+                                         value={this.state.email}
+                                         onChange={this.handleChange}/>
                            </InputGroup>
                            <FormFeedback style={this.emailHasError()}>Email is incorrect. </FormFeedback>
                         </Col>
@@ -68,7 +73,11 @@ class Login extends Component {
                         <Col sm={12}>
                             <InputGroup>
                                 <InputGroupAddon><i className="fa fa-key"/></InputGroupAddon>
-                                <Input id="password" name="password" placeholder="password" type="password" value={this.state.password} onChange={this.handleChange}/>
+                                <Input id="password" name="password" placeholder="password"
+                                       type="password"
+                                       bsSize="lg"
+                                       value={this.state.password}
+                                       onChange={this.handleChange}/>
                             </InputGroup>
                         </Col>
                     </FormGroup>
@@ -80,11 +89,16 @@ class Login extends Component {
                             <Alert color="danger" className="alert-form" style={this.incorrectUserEmailPass()}>
                                 Incorrect email or password
                             </Alert>
+
                         </Col>
                     </FormGroup>
-
+                    <FormGroup className="below-form-div">
+                        <Col sm={12}>
+                            <Link className="below-form-text" to='/restore-password'>Forgot password?</Link>
+                        </Col>
+                    </FormGroup>
                 </Form>
-                <p className="below-form">Don`t have an account? <a href="/registration">Sign up</a></p>
+                <p className="below-form-text">Don`t have an account? <Link to="/registration">Sign up</Link></p>
             </div>
         )
     }
