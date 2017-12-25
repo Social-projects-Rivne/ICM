@@ -1,20 +1,18 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -29,18 +27,23 @@ public class IssueControllerTest {
     private final static int PAGE_INDEX = 0;
     private final static int PAGE_SIZE = 10;
 
+    private IssueDto issue;
+
     @InjectMocks
     private IssueController issueController;
 
     @Mock
     private IssueService issueService;
 
-    @Test
-    public void testGetIssue() {
-        IssueDto issue = new IssueDto();
+    @Before
+    public void createIssueDto(){
+        issue = new IssueDto();
         issue.setTitle(TEST_TITLE);
         issue.setDescription(TEST_DESCRIPTION);
+    }
 
+    @Test
+    public void testGetIssue() {
         when(issueService.findById(1)).thenReturn(issue);
 
         IssueDto issueResult = issueController.getOne(1);
@@ -76,13 +79,9 @@ public class IssueControllerTest {
 
     @Test
     public void testAddIssue() {
-        IssueDto issueDto = new IssueDto();
-        issueDto.setId(1L);
-        issueDto.setTitle(TEST_TITLE);
-        issueDto.setDescription(TEST_DESCRIPTION);
-        when(issueService.addIssue(issueDto)).thenReturn(issueDto);
+        when(issueService.addIssue(issue)).thenReturn(issue);
 
-        IssueDto issueResult = issueController.addIssue(issueDto);
+        IssueDto issueResult = issueController.addIssue(issue);
 
         assertEquals(TEST_TITLE, issueResult.getTitle());
         assertEquals(TEST_DESCRIPTION, issueResult.getDescription());
@@ -90,10 +89,6 @@ public class IssueControllerTest {
 
     @Test
     public void testEditIssue() {
-        IssueDto issue = new IssueDto();
-        issue.setId(1L);
-        issue.setTitle(TEST_TITLE);
-        issue.setDescription(TEST_DESCRIPTION);
         when(issueService.editIssue(issue)).thenReturn(issue);
 
         IssueDto issueResult = issueController.editIssue(issue);
@@ -104,8 +99,6 @@ public class IssueControllerTest {
 
     @Test
     public void testEditIssueNotFound() {
-        IssueDto issue = new IssueDto();
-        issue.setId(1L);
         when(issueService.editIssue(issue)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {

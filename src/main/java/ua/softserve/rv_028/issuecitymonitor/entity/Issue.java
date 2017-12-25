@@ -66,16 +66,6 @@ public class Issue{
         this.category = category;
     }
 
-    public Issue(IssueDto dto) {
-        this.user = new User(dto.getUserDto());
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
-        this.initialDate = dto.getInitialDate();
-        this.latitude = dto.getLatitude();
-        this.longitude = dto.getLongitude();
-        this.category = dto.getCategory();
-    }
-
     public void setId(Long id) {
         this.id = id;
     }

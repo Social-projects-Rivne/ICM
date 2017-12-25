@@ -18,23 +18,13 @@ public class IssueService {
     private static final Logger LOGGER = Logger.getLogger(IssueService.class.getName());
 
     private IssueDao issueDao;
+    private MapperService mapperService;
 
     @Autowired
-    public IssueService(IssueDao issueDao) {
+    public IssueService(IssueDao issueDao, MapperService mapperService) {
         this.issueDao = issueDao;
+        this.mapperService = mapperService;
     }
-
-    /*public List<IssueDto> findAll() {
-
-        LOGGER.debug("Finding all issues");
-        List<IssueDto> issueDto = new ArrayList<>();
-        for (Issue issue : issueDao.findAllByOrderByIdAsc()) {
-            issueDto.add(new IssueDto(issue));
-        }
-        LOGGER.debug("Finded all issues");
-
-        return issueDto;
-    }*/
 
     public Issue findOne(long id) {
 
@@ -48,8 +38,7 @@ public class IssueService {
 
         Issue issue = findOne(id);
         LOGGER.debug("Finded by id " + issue.toString());
-
-        return new IssueDto(issue);
+        return mapperService.fromEntityToDto(issue);
     }
 
     public IssueDto addIssue(IssueDto issueDto) {
@@ -66,7 +55,7 @@ public class IssueService {
         issueDao.save(issue);
         LOGGER.debug("Added " + issue.toString());
 
-        return new IssueDto(issue);
+        return mapperService.fromEntityToDto(issue);
     }
 
     public IssueDto editIssue(IssueDto issueDto) {
@@ -80,7 +69,7 @@ public class IssueService {
         issueDao.save(issue);
         LOGGER.debug("Updated " + issue.toString());
 
-        return new IssueDto(issue);
+        return mapperService.fromEntityToDto(issue);
     }
 
     public void deleteIssue(long id) {
@@ -92,6 +81,6 @@ public class IssueService {
 
     public Page<IssueDto> findAllByPage(Pageable pageable) {
         Page<Issue> issues = issueDao.findAll(pageable);
-        return issues.map(IssueDto::new);
+        return issues.map(mapperService::fromEntityToDto);
     }
 }

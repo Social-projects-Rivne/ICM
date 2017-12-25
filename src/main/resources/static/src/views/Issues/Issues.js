@@ -11,8 +11,14 @@ class Issues extends Component {
         this.state = {
             issues: [],
             page: 0,
-            size: 10
+            size: 10,
+            step: 1
         };
+
+        this.handleNavFirst = this.handleNavFirst.bind(this);
+        this.handleNavPrev = this.handleNavPrev.bind(this);
+        this.handleNavNext = this.handleNavNext.bind(this);
+        this.handleNavLast = this.handleNavLast.bind(this);
     }
 
     componentWillMount() {
@@ -32,25 +38,27 @@ class Issues extends Component {
             });
     }
 
-    handleNavFirst() {
+    handleNavFirst(e) {
+        e.preventDefault();
         this.setState({page: 0});
         this.onNavigate();
     }
 
-    handleNavPrev() {
-    	this.setState({page: 1});
+    handleNavPrev(e) {
+        e.preventDefault();
+    	this.setState({page: this.state.page - this.state.step});
     	this.onNavigate();
     }
 
     handleNavNext(e) {
-    	e.preventDefault();
-    	this.setState({page: page+1});
+        e.preventDefault();
+    	this.setState({page: this.state.page + this.state.step});
     	this.onNavigate();
     }
 
     handleNavLast(e) {
-    	e.preventDefault();
-    	this.setState({page: page});
+        e.preventDefault();
+    	this.setState({page: this.state.page});
     	this.onNavigate();
     }
 
