@@ -13,8 +13,7 @@ class Issues extends Component {
             page: 0,
             size: 10,
             step: 1
-        };
-
+        }
         this.handleNavFirst = this.handleNavFirst.bind(this);
         this.handleNavPrev = this.handleNavPrev.bind(this);
         this.handleNavNext = this.handleNavNext.bind(this);
@@ -58,8 +57,8 @@ class Issues extends Component {
 
     handleNavLast(e) {
         e.preventDefault();
-    	this.setState({page: this.state.page});
-    	this.onNavigate();
+        this.setState({page: this.state.page});
+        this.onNavigate();
     }
 
     render() {

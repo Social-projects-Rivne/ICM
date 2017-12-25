@@ -65,16 +65,15 @@ public class IssueControllerTest {
     }
 
     @Test
-    public void testGetAllByPage() {
+    public void testGetAllByPage(){
         Page<IssueDto> issueDtoPage = new PageImpl<>(new ArrayList<>());
         when(issueService.findAllByPage(any(Pageable.class))).thenReturn(issueDtoPage);
 
-        Page<IssueDto> allByPageResult = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+        Page<IssueDto> page = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
 
         verify(issueService).findAllByPage(any(Pageable.class));
         verifyNoMoreInteractions(issueService);
-
-        assertEquals(issueDtoPage, allByPageResult);
+        assertEquals(issueDtoPage, page);
     }
 
     @Test
@@ -109,6 +108,7 @@ public class IssueControllerTest {
         }
     }
 
+    //TODO fix tyhis once delete is implemented
     @Test
     public void testDeleteIssue() {
         doNothing().when(issueService).deleteIssue(1); //This is obvious
