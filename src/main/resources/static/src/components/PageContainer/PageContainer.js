@@ -31,7 +31,7 @@ class PageContainer extends Component {
     }
 
     handleFirstPage() {
-        this.changePage(0);
+        this.changePage(1);
     }
 
     handleLastPage() {
@@ -48,8 +48,8 @@ class PageContainer extends Component {
 
     pagination() {
         var items = [];
-        for(var i = (this.state.page - 2 > 0) ? (this.state.page - 2) : 1;
-            i < ((this.state.pagesNum - this.state.page > 2) ? (this.state.page + 2) : this.state.pagesNum) + 1;
+        for(var i = (this.state.page - 3 > 0) ? (this.state.page - 3) : 1;
+            i < ((this.state.pagesNum - this.state.page > 3) ? (this.state.page + 3) : this.state.pagesNum) + 1;
             i++) {
             items.push(i);
         }

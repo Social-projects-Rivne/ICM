@@ -9,8 +9,7 @@ class Issues extends Component {
 
         this.state = {
             issues: "",
-            page: 0,
-            size: 10
+            page: 0
         };
 
         this.handlePageChange = this.handlePageChange.bind(this);
@@ -28,7 +27,7 @@ class Issues extends Component {
 
     makeQuery() {
         var _this = this;
-        axios.get(["/api/issues?page=", this.state.page, "$size=", this.state.size].join(""))
+        axios.get(["/api/issues?page=", this.state.page].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data.content

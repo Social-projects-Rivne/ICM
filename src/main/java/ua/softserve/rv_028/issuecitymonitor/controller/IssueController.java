@@ -30,7 +30,7 @@ public class IssueController {
 
     @GetMapping
     public Page<IssueDto> getAllByPage(@RequestParam(value = "page") int page,
-                                       @RequestParam(value = "size") int size){
+                                       @RequestParam(value = "size", defaultValue = "10") int size){
         LOGGER.debug("GET request for all issues by page");
         return service.findAllByPage(new PageRequest(page, size));
     }
