@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
@@ -37,6 +36,11 @@ public class AuthenticatedUsersController {
             return mapperService.fromEntityToDto((User) userAuth.getPrincipal());
         else
             return new UserDto();
+    }
+
+    @PostMapping(value = "/api/user_setting/new_password")
+    public void updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
+
     }
 }
 
