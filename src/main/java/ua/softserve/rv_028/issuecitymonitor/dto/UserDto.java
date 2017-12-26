@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
@@ -28,12 +27,10 @@ public class UserDto {
         this.password = password;
     }
 
-    public UserDto(long id, UserRole userRole, String registrationDate, String firstName, String lastName,
-                   String password, String email, String phone, boolean userAgreement, UserStatus userStatus,
-                   String deleteDate, String avatarUrl) {
+    public UserDto(long id, UserRole userRole, String firstName, String lastName, String password, String email,
+                   String phone, boolean userAgreement, UserStatus userStatus, String avatarUrl) {
         this.id = id;
         this.userRole = userRole;
-        this.registrationDate = registrationDate;
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = password;
@@ -41,7 +38,6 @@ public class UserDto {
         this.phone = phone;
         this.userAgreement = userAgreement;
         this.userStatus = userStatus;
-        this.deleteDate = deleteDate;
         this.avatarUrl = avatarUrl;
     }
 

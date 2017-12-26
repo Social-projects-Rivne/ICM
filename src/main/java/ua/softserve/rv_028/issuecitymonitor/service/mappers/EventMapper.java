@@ -47,5 +47,6 @@ public class EventMapper extends MapperService<EventDto, Event> {
         entity.setLongitude(dto.getLongitude());
         entity.setEndDate(LocalDateTime.parse(dto.getEndDate(), DATE_FORMAT));
         entity.setCategory(dto.getCategory());
-        return entity;    }
+        return entity;
+    }
 }
