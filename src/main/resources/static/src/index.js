@@ -26,6 +26,7 @@ ReactDOM.render((
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/admin/" name="Home" component={Full}/>
+            <Route exact path="/maps" name="IssueMap" component={IssueMap}/>
             <Route path="/" name="Client" component={Client}/>
         </Switch>
     </BrowserRouter>

@@ -4,7 +4,6 @@ import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
 import Footer from '../../components/Footer/Footer';
 import axios from 'axios';
-import Client from "./containers/Client/Client";
 
 
 export default class SignUp extends Component{
@@ -33,7 +32,6 @@ export default class SignUp extends Component{
                 <div className="app-body">
                     <Container fluid>
                         <Switch>
-                        <Route exact path="/maps" name="IssueMap" component={IssueMap}/>
                         </Switch>
                     </Container>
                 </div>
