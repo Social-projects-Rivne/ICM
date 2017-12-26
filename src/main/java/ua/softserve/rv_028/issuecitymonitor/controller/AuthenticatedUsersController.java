@@ -8,14 +8,21 @@ import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
 import java.util.Collection;
 
 @RestController
 public class AuthenticatedUsersController {
 
-    @Autowired
     private MapperService mapperService;
+    private UserProfileService profileService;
+
+    @Autowired
+    public AuthenticatedUsersController(MapperService mapperService, UserProfileService profileService) {
+        this.mapperService = mapperService;
+        this.profileService = profileService;
+    }
 
     @GetMapping(value = "/api/user-name")
     public String adminName(){
@@ -39,8 +46,9 @@ public class AuthenticatedUsersController {
     }
 
     @PostMapping(value = "/api/user_setting/new_password")
-    public void updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
-
+    public void updatePassword(@RequestParam String email, @RequestParam String oldPassword,
+                               @RequestParam String newPassword){
+        profileService.updatePassword(email, oldPassword, newPassword);
     }
 }
 
