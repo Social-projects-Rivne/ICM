@@ -11,12 +11,36 @@ export default class EditProfile extends Component{
         super(props);
 
         this.state = {
+            firstName: "",
+            lastName: "",
+            phone: "",
+            oldPassword: "",
+            newPassword: "",
+            newPasswordValid: "",
+            confirmNewPassword: "",
+            confirmNewPasswordValid: ""
+        };
 
-        }
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
     }
 
-    static fonts(){
-        return '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+
+    handleChange(event){
+        const name = event.target.name;
+        const value = event.target.value;
+
+        this.setState({[name]: value},
+            () => { this.validateField(name, value) });
+    }
+
+    validateField(fieldName, value){
+
+    }
+
+
+    handleSetNewPasswordBtn(){
+
     }
 
     render(){
@@ -50,6 +74,8 @@ export default class EditProfile extends Component{
                                            placeholder="+380958379474"/>
                             </FormGroup>
 
+                            <Button size='lg'>Update contacts form</Button>
+
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
                             <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
@@ -65,28 +91,44 @@ export default class EditProfile extends Component{
                         <Col sm={8}>
                             <FormGroup>
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
-                                    <Input type="password" name="password" id="password"
+                                    <Input type="password" name="oldPassword" id="oldPassword"
                                            bsSize="lg"
-                                           placeholder="Password"/>
+                                           placeholder="Old Password"
+                                           onChange={this.handleChange}
+                                           value={this.state.value}
+                                    />
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
-                                    <Input type="password" name="password" id="password"
+                                    <Input type="password" name="newPassword" id="newPassword"
                                            bsSize="lg"
-                                           placeholder="Password"/>
+                                           placeholder="Password"
+                                           onChange={this.handleChange}
+                                           value={this.state.value}
+                                    />
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
-                                    <Input type="password" name="password" id="password2"
+                                    <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
                                            bsSize="lg"
-                                           placeholder="Password"/>
+                                           placeholder="Password"
+                                           onChange={this.handleChange}
+                                           value={this.state.value}
+                                    />
                             </FormGroup>
+
+                            <Button size='lg' onClick={this.handleSetNewPasswordBtn}>Set the new password</Button>
                         </Col>
                     </Row>
                 </Col>
             </Container>
         )
+    }
+
+
+    static fonts(){
+        return '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     }
 }
