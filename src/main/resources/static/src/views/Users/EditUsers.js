@@ -44,14 +44,6 @@ class EditUsers extends Component {
                 swal({title: "Something went wrong with data!", text: error, icon: "error"});
             });
 
-
-        axios.get("/api/admin_name")
-                    .then(function(response) {
-                        swal(title:"OK", icon:"success")
-                    })
-                    .catch(function (error) {
-                        swal({title: "Something went wrong with data!", text: error, icon: "error"});
-                    });
     }
 
     handleDateChange(e) {
