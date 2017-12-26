@@ -44,7 +44,7 @@ public class User implements UserDetails{
 	private String password;
 
 	@NotEmpty
-	@Column(name = "email")
+	@Column(name = "email", unique = true)
 	private String username;
 
 	@NotEmpty

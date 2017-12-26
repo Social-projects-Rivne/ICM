@@ -43,6 +43,15 @@ class EditUsers extends Component {
             .catch(function (error) {
                 swal({title: "Something went wrong with data!", text: error, icon: "error"});
             });
+
+
+        axios.get("/api/admin_name")
+                    .then(function(response) {
+                        swal(title:"OK", icon:"success")
+                    })
+                    .catch(function (error) {
+                        swal({title: "Something went wrong with data!", text: error, icon: "error"});
+                    });
     }
 
     handleDateChange(e) {
@@ -77,9 +86,7 @@ class EditUsers extends Component {
         var _this = this;
         axios.put("/api/users/" + this.props.match.params.id, this.state.users)
             .then(function(response) {
-                console.log(response.data.email);
                 swal({title: "Users record saved", icon: "success"});
-                console.log("cookie is:" + document.cookie);
                 if(document.cookie === response.data.email)
                     _this.props.history.push("/registration");
             })
