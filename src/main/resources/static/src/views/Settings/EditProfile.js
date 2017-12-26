@@ -35,7 +35,24 @@ export default class EditProfile extends Component{
     }
 
     validateField(fieldName, value){
+        let newPasswordValid = this.state.newPasswordValid;
+        let confirmNewPasswordValid = this.state.confirmNewPasswordValid;
 
+        switch (fieldName){
+            case 'newPassword':
+                newPasswordValid = value.length >= 3;
+                break;
+            case 'confirmNewPassword':
+                confirmNewPasswordValid = (value === this.state.newPassword);
+                break;
+            default:
+                break;
+        }
+
+        this.setState({
+            newPasswordValid: newPasswordValid,
+            confirmNewPasswordValid: confirmNewPasswordValid
+        });
     }
 
 
@@ -106,6 +123,7 @@ export default class EditProfile extends Component{
                                            placeholder="Password"
                                            onChange={this.handleChange}
                                            value={this.state.value}
+                                           valid={this.checkNewPassword()}
                                     />
                             </FormGroup>
 
@@ -116,6 +134,7 @@ export default class EditProfile extends Component{
                                            placeholder="Password"
                                            onChange={this.handleChange}
                                            value={this.state.value}
+                                           valid={this.checkConfirmPassword()}
                                     />
                             </FormGroup>
 
@@ -125,6 +144,22 @@ export default class EditProfile extends Component{
                 </Col>
             </Container>
         )
+    }
+
+    checkNewPassword(){
+        if (this.state.newPassword === '') {
+            return null;
+        }
+        return this.state.newPasswordValid;
+
+    }
+
+    checkConfirmPassword(){
+        if (this.state.confirmNewPassword === '') {
+            return null;
+        }
+        return this.state.confirmNewPasswordValid;
+
     }
 
 
