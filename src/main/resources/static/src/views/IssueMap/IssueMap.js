@@ -1,30 +1,31 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
-import "../../../node_modules/leaflet/dist/leaflet.css"
+import { compose, withProps } from "recompose"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
 
-const position = [51.505, -0.09]
-export default class IssueMap extends Component {
 
+class IssueMap extends Component {
    render() {
-
+    const MyMapComponent = compose(
+      withProps({
+        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+        loadingElement: <div style={{ height: `100%` }} />,
+        containerElement: <div style={{ height: `800px` }} />,
+        mapElement: <div style={{ height: `100%` }} />,
+      }),
+      withScriptjs,
+      withGoogleMap
+    )((props) =>
+      <GoogleMap
+        defaultZoom={8}
+        defaultCenter={{ lat: -34.397, lng: 150.644 }}
+      >
+      </GoogleMap>
+    )
         return (
-            <Map center={position} zoom={13}>
-
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-                />
-                <Marker position={position}>
-                </Marker>
-            </Map>
-
-
+            <MyMapComponent/>
         )
    }
-
-
 }
 
 
-
-
+export default IssueMap;
