@@ -19,13 +19,17 @@ import java.util.List;
 @Component
 public class UserService {
 
+
+    private MapperService mapper;
+
     private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
     private final  UserDao userDao;
 
     @Autowired
-    public UserService(UserDao userDao){
+    public UserService(UserDao userDao, MapperService mapper){
         this.userDao = userDao;
+        this.mapper = mapper;
     }
 
 
@@ -50,9 +54,9 @@ public class UserService {
 
     public List<UserDto> findAll(){
         List<UserDto> all = new ArrayList<>();
-        for (User users : userDao.findAll()) {
-            if(!users.getIsDeleted() && users.getUserRole() != null)
-            all.add( new UserDto(users));
+        for (User users : userDao.findAllByOrderByIdAsc()) {
+            if(!users.getIsDeleted())
+            all.add(mapper.fromEntityToDto(users));
         }
         LOGGER.debug("Show all users!");
         return all;
@@ -62,31 +66,19 @@ public class UserService {
     public UserDto findByID(long id){
         User user = findOne(id);
         LOGGER.debug("User is finded by id");
-        return new UserDto(user);
+        return mapper.fromEntityToDto(user);
     }
 
-    public UserDto updateUser(UserDto dto)  {
-        User user = userDao.findOne(dto.getId());
-        user.setUserRole(dto.getUserRole());
-        user.setRegistrationDate(dto.getRegistrationDate());
-        user.setFirstName(dto.getFirstName());
-        user.setLastName(dto.getLastName());
-        user.setPassword(dto.getPassword());
-        user.setUserAgreement(dto.isUserAgreement());
-        user.setUserStatus(dto.getUserStatus());
-        user.setDeleteDate(dto.getDeleteDate());
-        user.setAvatarUrl(dto.getAvatarUrl());
-
-
-        LOGGER.debug(String.valueOf(userDao.countByUserRole(UserRole.ADMIN)));
-        LOGGER.debug("Adding user!" + user.toString());
-
-
-        if (userDao.countByUserRole(UserRole.ADMIN) > 1) {
-            userDao.save(new User(dto));
-            LOGGER.debug("Added user" + user.toString());
-            LOGGER.debug(user.toString());
-            return new UserDto(user);
+    public UserDto updateUser(UserDto userDto)  {
+        User user = findOne(userDto.getId());
+        user.setUserRole(userDto.getUserRole());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUserStatus(userDto.getUserStatus());
+        LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
+        if (userDao.countAdmins() > 1) {
+            userDao.save(user);
+            return mapper.fromEntityToDto(user);
         }
         else{
             throw new LastAdminException();
