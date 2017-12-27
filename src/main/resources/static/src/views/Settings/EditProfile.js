@@ -5,6 +5,7 @@ import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
 import Footer from '../../components/Footer/Footer';
 import axios from 'axios';
+import SignUp from "../SignUp";
 
 export default class EditProfile extends Component{
     constructor(props){
@@ -16,9 +17,11 @@ export default class EditProfile extends Component{
             phone: "",
             oldPassword: "",
             newPassword: "",
-            newPasswordValid: "",
+            newPasswordValid: false,
             confirmNewPassword: "",
-            confirmNewPasswordValid: ""
+            confirmNewPasswordValid: false,
+            passwordChangeIsSuccessful: false,
+            passwordChangeIsNotSuccessful: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -41,6 +44,7 @@ export default class EditProfile extends Component{
         switch (fieldName){
             case 'newPassword':
                 newPasswordValid = value.length >= 3;
+                confirmNewPasswordValid = false;
                 break;
             case 'confirmNewPassword':
                 confirmNewPasswordValid = (value === this.state.newPassword);
@@ -57,7 +61,29 @@ export default class EditProfile extends Component{
 
 
     handleSetNewPasswordBtn(){
+        let data = new FormData();
+        data.append('email', 'gefasim@mail.com');
+        data.append('oldPassword', this.state.oldPassword);
+        data.append('newPassword', this.state.newPassword);
 
+        let _this = this;
+        axios.post('/api/userSetting/updatePassword', data)
+            .then(function (response) {
+                _this.setState({passwordChangeIsSuccessful : true});
+                _this.setState({passwordChangeIsNotSuccessful : false});
+                _this.setState({oldPassword : ""});
+                _this.setState({newPassword : ""});
+                _this.setState({confirmNewPassword : ""});
+                console.log('password', response);
+            })
+            .catch(function (error) {
+                console.log('error', error);
+                _this.setState({passwordChangeIsSuccessful : false});
+                _this.setState({passwordChangeIsNotSuccessful : true});
+                _this.setState({oldPassword : ""});
+                _this.setState({newPassword : ""});
+                _this.setState({confirmNewPassword : ""});
+            });
     }
 
     render(){
@@ -138,7 +164,16 @@ export default class EditProfile extends Component{
                                     />
                             </FormGroup>
 
-                            <Button size='lg' onClick={this.handleSetNewPasswordBtn}>Set the new password</Button>
+                            <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColor()}>Set the new password</Button>
+
+
+                            <Alert color="success" className="alert-form" style={EditProfile.visible(this.state.passwordChangeIsSuccessful)}>
+                                Password changed successfully !
+                            </Alert>
+
+                            <Alert color="danger" className="alert-form" style={EditProfile.visible(this.state.passwordChangeIsNotSuccessful)}>
+                                Error
+                            </Alert>
                         </Col>
                     </Row>
                 </Col>
@@ -162,8 +197,26 @@ export default class EditProfile extends Component{
 
     }
 
+    checkPasswordFormValid(){
+        return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;
+    }
+
+    buttonColor(){
+        if (this.checkPasswordFormValid())
+            return "success";
+        else
+            return "secondary"
+    }
 
     static fonts(){
         return '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
+    }
+
+    static visible(isTrue){
+        if (isTrue) {
+            return {display : 'block'};
+        } else {
+            return {display : 'none'};
+        }
     }
 }

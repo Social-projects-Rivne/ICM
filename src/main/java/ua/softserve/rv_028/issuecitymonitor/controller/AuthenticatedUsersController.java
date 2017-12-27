@@ -45,7 +45,7 @@ public class AuthenticatedUsersController {
             return new UserDto();
     }
 
-    @PostMapping(value = "/api/user_setting/new_password")
+    @PostMapping(value = "/api/userSetting/updatePassword")
     public void updatePassword(@RequestParam String email, @RequestParam String oldPassword,
                                @RequestParam String newPassword){
         profileService.updatePassword(email, oldPassword, newPassword);

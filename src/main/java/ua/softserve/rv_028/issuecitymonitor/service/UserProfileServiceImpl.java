@@ -28,10 +28,12 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void updatePassword(String email, String oldPassword, String newPassword) {
         User user = userDao.findUserByUsername(email);
-        checkState(user != null);
-        checkArgument(encoder.matches(oldPassword, user.getPassword()), "Password is different");
-        checkArgument(newPassword.length() < 2, Constants.SHORT_PASSWORD);
+        checkState(user != null, "The user " + email + " not found");
+        checkArgument(encoder.matches(oldPassword, user.getPassword()), "The user " + email
+                + " entered an incorrect password");
+        checkArgument(newPassword.length() >= 2, Constants.SHORT_PASSWORD);
         user.setPassword(encoder.encode(newPassword));
+        userDao.save(user);
         LOGGER.debug("User " + user.getUsername() + " has changed his password");
     }
 }
