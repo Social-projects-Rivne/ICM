@@ -5,9 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
-
-
-// ???
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -65,10 +62,9 @@ public class PetitionController {
 
 
     @PostMapping(path = "/add")
-    public void registerPetition(@RequestBody PetitionDto petitionDto) {
+    public void createPetition(@RequestBody PetitionDto petitionDto) {
 
-
-        petitionService.regPetition(petitionDto);
+        petitionService.addPetition(petitionDto);
     }
 
 }

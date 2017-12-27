@@ -44,13 +44,9 @@ class PetitionAdd extends Component {
         const _this = this;
         axios.post('/api/petitions/add', petition)
             .then(function () {
-                _this.setState({registrationIsSuccessful: true});
-                _this.setState({registrationIsNotSuccessful: false});
                 swal({title: "Petition record saved", icon: "success"})
             })
             .catch(function () {
-                _this.setState({registrationIsSuccessful: false});
-                _this.setState({registrationIsNotSuccessful: true});
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
 

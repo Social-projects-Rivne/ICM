@@ -11,6 +11,7 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 
+
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.text.ParseException;
@@ -30,10 +31,15 @@ public class PetitionServiceImpl implements PetitionService {
 
     private final UserDao userDao;
 
+
+    private MapperService mapperService;
+
+
     @Autowired
-    public PetitionServiceImpl(PetitionDao petitionDao, UserDao userDao){
+    public PetitionServiceImpl(PetitionDao petitionDao, UserDao userDao, MapperService mapperService){
         this.petitionDao = petitionDao;
         this.userDao = userDao;
+        this.mapperService = mapperService;
     }
 
     @Override
@@ -49,7 +55,7 @@ public class PetitionServiceImpl implements PetitionService {
         LOGGER.debug("Finding all petitions");
         List<PetitionDto> petitionDtos = new ArrayList<>();
         for(Petition e : petitionDao.findAllByOrderByIdAsc()){
-            petitionDtos.add(new PetitionDto(e));
+            petitionDtos.add(mapperService.fromEntityToDto(e));
         }
         LOGGER.debug("Found all petitions");
         return petitionDtos;
@@ -60,7 +66,7 @@ public class PetitionServiceImpl implements PetitionService {
         LOGGER.debug("Finding petition by id " + id);
         Petition petition = findOne(id);
         LOGGER.debug("Found " + petition.toString());
-        return new PetitionDto(petition);
+        return mapperService.fromEntityToDto(petition);
     }
 
     @Override
@@ -79,7 +85,7 @@ public class PetitionServiceImpl implements PetitionService {
         LOGGER.debug("Updating " + petition.toString());
         petitionDao.save(petition);
         LOGGER.debug("Updated " + petition.toString());
-        return new PetitionDto(petition);
+        return mapperService.fromEntityToDto(petition);
     }
 
 
@@ -98,7 +104,7 @@ public class PetitionServiceImpl implements PetitionService {
 
 
     @Override
-    public void regPetition(PetitionDto dto) {
+    public void addPetition(PetitionDto dto) {
         try {
 
             Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();

@@ -10,5 +10,5 @@ public interface PetitionService {
     PetitionDto findById(long id);
     PetitionDto update(PetitionDto petitionDto);
 
-    void regPetition(PetitionDto petitionDto);
+    void addPetition(PetitionDto petitionDto);
 }
