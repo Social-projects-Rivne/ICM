@@ -36,4 +36,14 @@ public class UserProfileServiceImpl implements UserProfileService {
         userDao.save(user);
         LOGGER.debug("User " + user.getUsername() + " has changed his password");
     }
+
+    @Override
+    public void updateContactsInfo(String email, String fistName, String lastName, String phone) {
+        User user = userDao.findUserByUsername(email);
+        user.setFirstName(fistName);
+        user.setLastName(lastName);
+        user.setPhone(phone);
+        userDao.save(user);
+        System.out.println(user);
+    }
 }

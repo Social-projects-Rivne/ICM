@@ -50,5 +50,11 @@ public class AuthenticatedUsersController {
                                @RequestParam String newPassword){
         profileService.updatePassword(email, oldPassword, newPassword);
     }
+
+    @PostMapping(value = "/api/userSetting/updateContacts")
+    public void updateContactInfo(@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName,
+                               @RequestParam String phone){
+        profileService.updateContactsInfo(email, firstName, lastName, phone);
+    }
 }
 
