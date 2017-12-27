@@ -69,8 +69,12 @@ public class UserService {
         return new UserDto(user);
     }
 
-    public UserDto updateUser(UserDto dto)  {
-        User user = mapper.fromDtoToCurrentEntity(dto);
+    public UserDto updateUser(UserDto userDto)  {
+        User user = findOne(userDto.getId());
+        user.setUserRole(userDto.getUserRole());
+        user.setFirstName(userDto.getFirstName());
+        user.setLastName(userDto.getLastName());
+        user.setUserStatus(userDto.getUserStatus());
         LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
         if (userDao.countAdmins() > 1) {
             userDao.save(user);

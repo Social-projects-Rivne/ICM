@@ -54,21 +54,6 @@ public class MapperService {
         return user;
     }
 
-    public User fromDtoToCurrentEntity(UserDto userDto){
-        User user = userDao.findOne(userDto.getId());
-        user.setUserRole(userDto.getUserRole());
-        user.setRegistrationDate(userDto.getRegistrationDate());
-        user.setFirstName(userDto.getFirstName());
-        user.setLastName(userDto.getLastName());
-        user.setPassword(userDto.getPassword());
-        user.setPhone(userDto.getPhone());
-        user.setUserAgreement(userDto.isUserAgreement());
-        user.setUserStatus(userDto.getUserStatus());
-        user.setDeleteDate(userDto.getDeleteDate());
-        user.setAvatarUrl(userDto.getAvatarUrl());
-        return user;
-    }
-
     public EventDto fromEntityToDto(Event eventEntity){
         EventDto event = new EventDto();
 
