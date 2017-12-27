@@ -7,12 +7,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,14 +51,15 @@ public class IssueControllerIntegrationTest {
         assertEquals(issue.getDescription(), responseObject.getDescription());
     }
 
-    /*@Test
+    @Test
     public void testGetAllByPage(){
-        ResponseEntity<Page<IssueDto>> responseEntity = testRestTemplate.
-                getForEntity("/api/issues", Page<IssueDto.class>);
+
+        ResponseEntity<? extends Page> responseEntity = testRestTemplate.
+                getForEntity("/api/issues", Page.class);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
         Page<IssueDto> responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
-    }*/
+    }
 
     @Test
     public void testAddIssue(){

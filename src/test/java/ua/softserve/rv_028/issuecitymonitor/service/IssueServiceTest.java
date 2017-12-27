@@ -11,6 +11,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
@@ -91,6 +92,8 @@ public class IssueServiceTest {
     @Test
     public void testAddIssue() {
         IssueDto issueDto = new IssueDto();
+        issueDto.setTitle(TEST_TITLE);
+        issueDto.setDescription(TEST_DESCRIPTION);
         when(mapperService.fromEntityToDto(issueDao.save(issue))).thenReturn(issueDto);
 
         IssueDto issueDtoResult = issueService.addIssue(issueDto);
@@ -100,10 +103,9 @@ public class IssueServiceTest {
 
     @Test
     public void testEditIssue() {
-        Issue issue = issueService.findOne(1L);
         IssueDto issueDto = new IssueDto();
-        issue.setTitle(TEST_TITLE);
-        issue.setDescription(TEST_DESCRIPTION);
+        issueDto.setTitle(TEST_TITLE);
+        issueDto.setDescription(TEST_DESCRIPTION);
         when(mapperService.fromEntityToDto(issueDao.save(issue))).thenReturn(issueDto);
 
         IssueDto issueDtoResult = issueService.editIssue(issueDto);

@@ -29,10 +29,10 @@ public class IssueController {
     }
 
     @GetMapping
-    public Page<IssueDto> getAllByPage(@RequestParam(value = "page") int page,
+    public Page<IssueDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                        @RequestParam(value = "size", defaultValue = "10") int size){
         LOGGER.debug("GET request for all issues by page");
-        return service.findAllByPage(new PageRequest(page, size));
+        return service.findAllByPage(new PageRequest(page-1, size));
     }
 
     @PostMapping

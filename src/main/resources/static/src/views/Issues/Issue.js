@@ -17,6 +17,10 @@ class Issue extends Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({issue: props.issue});
+    }
+
     handleDelete(){
         var _this = this;
         swal({

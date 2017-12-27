@@ -9,7 +9,7 @@ class Issues extends Component {
 
         this.state = {
             issues: "",
-            page: 0
+            page: 1
         };
 
         this.handlePageChange = this.handlePageChange.bind(this);
@@ -30,8 +30,8 @@ class Issues extends Component {
         axios.get(["/api/issues?page=", this.state.page].join(""))
             .then(function(response) {
                 _this.setState({
-                    issues: response.data.content
-                });
+                    issues: response.data
+                }, function() { console.log(response); });
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});

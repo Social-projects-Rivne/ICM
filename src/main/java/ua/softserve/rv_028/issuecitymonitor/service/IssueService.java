@@ -45,7 +45,7 @@ public class IssueService {
 
         LOGGER.debug("Adding issue");
         Issue issue = new Issue();
-        issue.setUser(new User(issueDto.getUserDto()));
+        issue.setUser(mapperService.fromDtoToEntity(issueDto.getUserDto()));
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
         issue.setLongitude(issueDto.getLongitude());

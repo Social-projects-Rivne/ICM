@@ -151,7 +151,7 @@ public class Issue{
     public String toString() {
         return "Issue{" +
                 "id=" + id +
-                ", user=" + user.getId() +
+                ", user=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +
