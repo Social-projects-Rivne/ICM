@@ -56,7 +56,7 @@ public class UserService {
         List<UserDto> all = new ArrayList<>();
         for (User users : userDao.findAllByOrderByIdAsc()) {
             if(!users.getIsDeleted())
-            all.add( new UserDto(users));
+            all.add(mapper.fromEntityToDto(users));
         }
         LOGGER.debug("Show all users!");
         return all;
@@ -66,7 +66,7 @@ public class UserService {
     public UserDto findByID(long id){
         User user = findOne(id);
         LOGGER.debug("User is finded by id");
-        return new UserDto(user);
+        return mapper.fromEntityToDto(user);
     }
 
     public UserDto updateUser(UserDto userDto)  {
@@ -78,7 +78,7 @@ public class UserService {
         LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
         if (userDao.countAdmins() > 1) {
             userDao.save(user);
-            return new UserDto(user);
+            return mapper.fromEntityToDto(user);
         }
         else{
             throw new LastAdminException();
