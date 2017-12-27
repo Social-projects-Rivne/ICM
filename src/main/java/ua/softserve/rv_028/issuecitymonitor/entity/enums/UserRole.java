@@ -30,4 +30,3 @@ public enum UserRole implements GrantedAuthority{
     }
 
 }
-
