@@ -7,5 +7,4 @@ import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import java.util.List;
 
 public interface EventDao extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
-    List<Event> findAllByOrderByIdAsc();
 }

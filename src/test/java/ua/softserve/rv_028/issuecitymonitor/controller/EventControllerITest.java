@@ -19,9 +19,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = IssueCityMonitorApplication.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WebAppConfiguration
-public class EventControllerIntegrationTest {
+public class EventControllerITest {
 
     @Autowired
     private EventDao eventDao;
@@ -36,7 +36,7 @@ public class EventControllerIntegrationTest {
 
     @Before
     public void setup(){
-        event = eventDao.findAllByOrderByIdAsc().get(1);
+        event = eventDao.findAll().get(1);
     }
 
     @Test
@@ -87,5 +87,7 @@ public class EventControllerIntegrationTest {
                 getForEntity("/api/events/-1", EventDto.class);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
     }
+
+
 
 }
