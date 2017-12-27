@@ -20,8 +20,7 @@ export default class EditProfile extends Component{
             newPasswordValid: false,
             confirmNewPassword: "",
             confirmNewPasswordValid: false,
-            passwordChangeIsSuccessful: false,
-            passwordChangeIsNotSuccessful: false
+            responseIsSuccses : null
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -29,6 +28,7 @@ export default class EditProfile extends Component{
     }
 
 
+    // TODO: rename to handleInputChange
     handleChange(event){
         const name = event.target.name;
         const value = event.target.value;
@@ -69,21 +69,22 @@ export default class EditProfile extends Component{
         let _this = this;
         axios.post('/api/userSetting/updatePassword', data)
             .then(function (response) {
-                _this.setState({passwordChangeIsSuccessful : true});
-                _this.setState({passwordChangeIsNotSuccessful : false});
-                _this.setState({oldPassword : ""});
-                _this.setState({newPassword : ""});
-                _this.setState({confirmNewPassword : ""});
                 console.log('password', response);
+                _this.updateAlertState(true);
             })
             .catch(function (error) {
                 console.log('error', error);
-                _this.setState({passwordChangeIsSuccessful : false});
-                _this.setState({passwordChangeIsNotSuccessful : true});
-                _this.setState({oldPassword : ""});
-                _this.setState({newPassword : ""});
-                _this.setState({confirmNewPassword : ""});
+                _this.updateAlertState(false);
             });
+    }
+
+    updateAlertState(responseIsSuccses){
+        this.setState({
+            responseIsSuccses : responseIsSuccses,
+            oldPassword: "",
+            newPassword: "",
+            confirmNewPassword: ""
+        });
     }
 
     render(){
@@ -166,19 +167,33 @@ export default class EditProfile extends Component{
 
                             <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColor()}>Set the new password</Button>
 
-
-                            <Alert color="success" className="alert-form" style={EditProfile.visible(this.state.passwordChangeIsSuccessful)}>
-                                Password changed successfully !
-                            </Alert>
-
-                            <Alert color="danger" className="alert-form" style={EditProfile.visible(this.state.passwordChangeIsNotSuccessful)}>
-                                Error
-                            </Alert>
+                            {this.showAlert(this.state.responseIsSuccses)}
+                            
                         </Col>
                     </Row>
                 </Col>
             </Container>
         )
+    }
+
+    static successAlert(){
+        return  <Alert color="success" className="alert-form">
+                    Password changed successfully ! 
+                </Alert>;
+    }
+
+    static errorAlert(){
+        return  <Alert color="danger" className="alert-form">
+                    Error
+                </Alert>
+    }
+
+    showAlert(response){
+        if(response != null){
+            return response ? EditProfile.successAlert() : EditProfile.errorAlert()
+        } else {
+            return null;                
+        }
     }
 
     checkNewPassword(){

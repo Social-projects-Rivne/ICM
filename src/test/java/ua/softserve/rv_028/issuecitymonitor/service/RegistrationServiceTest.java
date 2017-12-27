@@ -29,6 +29,8 @@ public class RegistrationServiceTest {
 
     private User user;
 
+    // TODO: user --> when(service.findById(1)).thenReturn(event);
+
     @Before
     public void setup(){
         user = userDao.findAll().get(0);
