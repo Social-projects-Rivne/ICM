@@ -20,11 +20,13 @@ export default class EditProfile extends Component{
             newPasswordValid: false,
             confirmNewPassword: "",
             confirmNewPasswordValid: false,
-            responseIsSuccses : null
+            responseIsSuccses : null,
+            contactInfoResponseIsSuccess: null
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
+        this.updateContactsData = this.updateContactsData.bind(this);
     }
 
 
@@ -78,6 +80,23 @@ export default class EditProfile extends Component{
             });
     }
 
+    updateContactsData(){
+        let data =new FoemData();
+        data.append('firstName', this.state.firstName);
+        data.append('lastName', this.state.lastName);
+        data.append('phone', this.state.phone);
+
+        let _this = this;
+        axios.post('/api/userSetting/updateContacts', data)
+            .then(function(response){
+                console.log('contact', response);
+                _this.setState({contactInfoResponseIsSuccess: true});
+            })
+            .catch(function(error){
+                _this.setState({contactInfoResponseIsSuccess: false});
+            });
+    }
+
     updateAlertState(responseIsSuccses){
         this.setState({
             responseIsSuccses : responseIsSuccses,
@@ -119,6 +138,7 @@ export default class EditProfile extends Component{
                             </FormGroup>
 
                             <Button size='lg'>Update contacts form</Button>
+                            {this.showContactAlert(this.state.contactInfoResponseIsSuccess)}
 
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
@@ -167,7 +187,7 @@ export default class EditProfile extends Component{
 
                             <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColor()}>Set the new password</Button>
 
-                            {this.showAlert(this.state.responseIsSuccses)}
+                            {this.showPassAlert(this.state.responseIsSuccses)}
                             
                         </Col>
                     </Row>
@@ -182,15 +202,29 @@ export default class EditProfile extends Component{
                 </Alert>;
     }
 
+    static successContactAlert(){
+        return  <Alert color="success" className="alert-form">
+                    Contacts information changed successfully ! 
+                </Alert>;
+    }
+
     static errorAlert(){
         return  <Alert color="danger" className="alert-form">
                     Error
                 </Alert>
     }
 
-    showAlert(response){
+    showPassAlert(response){
         if(response != null){
             return response ? EditProfile.successAlert() : EditProfile.errorAlert()
+        } else {
+            return null;                
+        }
+    }
+
+    showContactAlert(response){
+        if(response != null){
+            return response ? EditProfile.successContactAlert() : EditProfile.errorAlert()
         } else {
             return null;                
         }
