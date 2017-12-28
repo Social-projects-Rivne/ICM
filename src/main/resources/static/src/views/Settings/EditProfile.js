@@ -14,8 +14,11 @@ export default class EditProfile extends Component{
         this.state = {
             email: "",
             firstName: "",
+            firstNameValid: false,
             lastName: "",
+            lastNameValid: false,
             phone: "",
+            phoneValid: false,
             oldPassword: "",
             newPassword: "",
             newPasswordValid: false,
@@ -35,11 +38,25 @@ export default class EditProfile extends Component{
         axios.get('/api/userDetails').then(function (response) {
             _this.setState({
                 email: response.data.email,
-                firstName: response.data.firstName,
-                lastName: response.data.lastName,
+                firstName: response.data.firstName != null ? response.data.firstName : "",
+                lastName: response.data.lastName != null ? response.data.lastName : "",
                 phone: response.data.phone != null ? response.data.phone : "" 
-            });
+            }, _this.validateContactsFields);
         });
+    }
+
+    validateContactsFields(){
+        EditProfile.isEmpty(this.state.firstName) ? this.setState({firstNameValid: false}) : this.setState({firstNameValid: true});
+        EditProfile.isEmpty(this.state.lastName) ? this.setState({lastNameValid: false}) : this.setState({lastNameValid: true});
+        EditProfile.isEmpty(this.state.phone) ? this.setState({phoneValid: false}) : this.setState({phoneValid: true});
+    }
+
+    static isEmpty(obj){
+        if(obj === null)
+            return true;
+        if(obj.length === 0)
+            return true;    
+        return false;
     }
 
     handleInputChange(event){
@@ -51,10 +68,22 @@ export default class EditProfile extends Component{
     }
 
     validateField(fieldName, value){
+        let firstNameValid = this.state.firstNameValid;
+        let lastNameValid = this.state.lastNameValid;
+        let phoneValid = this.state.phoneValid;
         let newPasswordValid = this.state.newPasswordValid;
         let confirmNewPasswordValid = this.state.confirmNewPasswordValid;
 
         switch (fieldName){
+            case 'firstName':
+                firstNameValid = !EditProfile.isEmpty(value);console.log('FN empty', !EditProfile.isEmpty(value));
+                break;
+            case 'lastName': 
+                lastNameValid = !EditProfile.isEmpty(value);
+                break;
+            case 'phone':
+                phoneValid = !EditProfile.isEmpty(value);
+                break;    
             case 'newPassword':
                 newPasswordValid = value.length >= 3;
                 confirmNewPasswordValid = false;
@@ -67,6 +96,9 @@ export default class EditProfile extends Component{
         }
 
         this.setState({
+            firstNameValid: firstNameValid,
+            lastNameValid : lastNameValid,
+            phoneValid: phoneValid,
             newPasswordValid: newPasswordValid,
             confirmNewPasswordValid: confirmNewPasswordValid
         });
@@ -268,11 +300,11 @@ export default class EditProfile extends Component{
     }
 
     checkPasswordFormValid(){
-        return (this.state.firstName.length >= 2) && (this.state.lastName.length >= 2) && (this.state.phone.length >= 5);
+        return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;        
     }
 
     checkContactsFormValid(){
-        return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;
+        return (this.state.firstName.length >= 2) && (this.state.lastName.length >= 2) && (this.state.phone.length >= 5);
     }
 
     buttonColorPass(){
@@ -283,7 +315,7 @@ export default class EditProfile extends Component{
     }
 
     buttonColorContacts(){
-        if (this.checkPasswordFormValid())
+        if (this.state.firstNameValid && this.state.lastNameValid && this.state.phoneValid)
             return "success";
         else
             return "secondary";
