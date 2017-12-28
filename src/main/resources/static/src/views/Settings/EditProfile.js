@@ -192,6 +192,7 @@ export default class EditProfile extends Component{
 
                             </FormGroup>
 
+                // TODO: look here https://v4-alpha.getbootstrap.com/components/input-group/
                             <FormGroup>
                                 
                             <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
