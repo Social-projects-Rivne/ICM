@@ -11,6 +11,8 @@ import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 public class AuthenticatedUsersController {
@@ -43,6 +45,16 @@ public class AuthenticatedUsersController {
             return mapperService.fromEntityToDto((User) userAuth.getPrincipal());
         else
             return new UserDto();
+    }
+
+    @GetMapping(value = "/api/userDetails")
+    public Map getUserInfo(){
+        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+        if (!userAuth.getName().equals("anonymousUser")) {
+            return profileService.getUserInfo(userAuth.getName());
+        } else {
+            return null;
+        }
     }
 
     @PostMapping(value = "/api/userSetting/updatePassword")

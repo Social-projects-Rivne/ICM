@@ -8,8 +8,10 @@ import ua.softserve.rv_028.issuecitymonitor.Constants;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkState;
 
 @Service
 public class UserProfileServiceImpl implements UserProfileService {
@@ -49,5 +51,17 @@ public class UserProfileServiceImpl implements UserProfileService {
             user.setPhone(phone);
         userDao.save(user);
         LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
+    }
+
+    @Override
+    public Map getUserInfo(String email) {
+        User user = userDao.findUserByUsername(email);
+        checkArgument(user != null, "The user " + email + " not found");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("email", user.getUsername());
+        map.put("firstName", user.getFirstName());
+        map.put("lastName", user.getLastName());
+        map.put("authorities", user.getAuthorities());
+        return map;
     }
 }
