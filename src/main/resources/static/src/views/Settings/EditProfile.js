@@ -23,7 +23,7 @@ export default class EditProfile extends Component{
             confirmNewPasswordValid: false,
             responseIsSuccess : null,
             contactInfoResponseIsSuccess: null
-        };
+         };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
@@ -37,7 +37,7 @@ export default class EditProfile extends Component{
                 email: response.data.email,
                 firstName: response.data.firstName,
                 lastName: response.data.lastName,
-                phone: response.data.phone
+                phone: response.data.phone != null ? response.data.phone : "" 
             });
         });
     }
@@ -72,7 +72,7 @@ export default class EditProfile extends Component{
         });
     }
 
-
+    // TODO: rename to updatePasswordHandlerBtn
     handleSetNewPasswordBtn(){
         let data = new FormData();
         data.append('email', this.state.email);
@@ -90,9 +90,9 @@ export default class EditProfile extends Component{
                 _this.updateAlertState(false);
             });
     }
-
+    // TODO: rename to updateContanctHandlerBtn
     updateContactsData(){
-        let data =new FormData();
+        let data = new FormData();
         data.append('email', this.state.email);
         data.append('firstName', this.state.firstName);
         data.append('lastName', this.state.lastName);
@@ -129,7 +129,7 @@ export default class EditProfile extends Component{
                         <Col sm={8}>
                             <FormGroup>
                                 <Label htmlFor='first-name' style={{fontWeight:'600'}}>First name</Label>
-                                <Input type="text" name="lastName" id="first-name"
+                                <Input type="text" name="firstName" id="firstName"
                                        bsSize="lg"
                                        placeholder="first name"
                                        onChange={this.handleInputChange}
@@ -139,7 +139,7 @@ export default class EditProfile extends Component{
 
                             <FormGroup>
                                 <Label htmlFor='last-name' style={{fontWeight:'600'}}>Last name</Label>
-                                <Input type="text" name="lastName" id="last-name"
+                                <Input type="text" name="lastName" id="lastName"
                                        bsSize="lg"
                                        placeholder="last name"
                                        onChange={this.handleInputChange}
@@ -158,7 +158,7 @@ export default class EditProfile extends Component{
                                 />
                             </FormGroup>
 
-                            <Button size='lg'>Update contacts form</Button>
+                            <Button size='lg' onClick={this.updateContactsData} color={this.buttonColorContacts()}>Update contacts form</Button>
                             {this.showContactAlert(this.state.contactInfoResponseIsSuccess)}
 
                         </Col>
@@ -206,7 +206,7 @@ export default class EditProfile extends Component{
                                 />
                             </FormGroup>
 
-                            <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColor()}>Set the new password</Button>
+                            <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColorPass()}>Set the new password</Button>
 
                             {this.showPassAlert(this.state.responseIsSuccess)}
 
@@ -268,14 +268,25 @@ export default class EditProfile extends Component{
     }
 
     checkPasswordFormValid(){
+        return (this.state.firstName.length >= 2) && (this.state.lastName.length >= 2) && (this.state.phone.length >= 5);
+    }
+
+    checkContactsFormValid(){
         return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;
     }
 
-    buttonColor(){
+    buttonColorPass(){
         if (this.checkPasswordFormValid())
             return "success";
         else
-            return "secondary"
+            return "secondary";
+    }
+
+    buttonColorContacts(){
+        if (this.checkPasswordFormValid())
+            return "success";
+        else
+            return "secondary";
     }
 
     static fonts(){
