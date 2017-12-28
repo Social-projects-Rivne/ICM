@@ -13,15 +13,6 @@ public class PetitionDto {
 
     public PetitionDto() {}
 
-    public PetitionDto(Petition entity) {
-        this.id = entity.getId();
-        this.userDto = new UserDto(entity.getUser());
-        this.title = entity.getTitle();
-        this.description = entity.getDescription();
-        this.initialDate = entity.getInitialDate();
-        this.category = entity.getCategory();
-    }
-
     public PetitionDto(long id, UserDto userDto, String title, String description, String initialDate, PetitionCategory category) {
         this.id = id;
         this.userDto = userDto;

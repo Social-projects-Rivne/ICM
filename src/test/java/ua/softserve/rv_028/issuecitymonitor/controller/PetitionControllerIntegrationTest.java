@@ -11,6 +11,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
+import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -22,6 +23,11 @@ public class PetitionControllerIntegrationTest {
 
     @Autowired
     private PetitionDao petitionDao;
+
+
+    @Autowired
+    private MapperService mapperService;
+
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -48,7 +54,7 @@ public class PetitionControllerIntegrationTest {
     public void testUpdatePetitionSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        PetitionDto petitionDto = new PetitionDto(petition);
+        PetitionDto petitionDto = mapperService.fromEntityToDto(petition);
         petitionDto.setTitle(updatedTitle);
         petitionDto.setDescription(updatedDescription);
 
