@@ -44,7 +44,6 @@ public class User implements UserDetails{
 	private String password;
 
 	@NotEmpty
-	@NaturalId
 	@Column(name = "email", unique = true)
 	private String username;
 
@@ -84,7 +83,10 @@ public class User implements UserDetails{
 
 	public User(UserDto userDto) {
 		this.password = userDto.getPassword();
-		this.username = userDto.getEmail();
+
+		if (this.getUsername() == null)
+			this.username = userDto.getEmail();
+
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
@@ -96,8 +98,8 @@ public class User implements UserDetails{
 	}
 
 	public User(String firstName, String lastName, String password, String username,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
-                String avatarUrl) {
+				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
+				String avatarUrl) {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
@@ -114,10 +116,10 @@ public class User implements UserDetails{
 		this.lastName = lastName;
 		this.username = username;
 		this.password = password;
-        this.userRole = UserRole.USER;
-        this.userStatus = UserStatus.UNCONFIRMED;
-        this.registrationDate = new Date().toString();
-    }
+		this.userRole = UserRole.USER;
+		this.userStatus = UserStatus.UNCONFIRMED;
+		this.registrationDate = new Date().toString();
+	}
 
 	public void setId(long id) {
 		this.id = id;
