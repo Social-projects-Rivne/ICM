@@ -28,7 +28,7 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void updatePassword(String email, String oldPassword, String newPassword) {
         User user = userDao.findUserByUsername(email);
-        checkState(user != null, "The user " + email + " not found");
+        checkArgument(user != null, "The user " + email + " not found");
         checkArgument(encoder.matches(oldPassword, user.getPassword()), "The user " + email
                 + " entered an incorrect password");
         checkArgument(newPassword.length() >= 2, Constants.SHORT_PASSWORD);
@@ -40,10 +40,14 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void updateContactsInfo(String email, String fistName, String lastName, String phone) {
         User user = userDao.findUserByUsername(email);
-        user.setFirstName(fistName);
-        user.setLastName(lastName);
-        user.setPhone(phone);
+        checkArgument(user != null, "The user " + email + " not found");
+        if (fistName != null && !fistName.isEmpty())
+            user.setFirstName(fistName);
+        if (lastName != null && !lastName.isEmpty())
+            user.setLastName(lastName);
+        if (phone != null && !phone.isEmpty())
+            user.setPhone(phone);
         userDao.save(user);
-        System.out.println(user);
+        LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
     }
 }

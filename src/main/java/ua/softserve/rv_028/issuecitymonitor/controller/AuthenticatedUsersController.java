@@ -52,8 +52,8 @@ public class AuthenticatedUsersController {
     }
 
     @PostMapping(value = "/api/userSetting/updateContacts")
-    public void updateContactInfo(@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName,
-                               @RequestParam String phone){
+    public void updateContactInfo(@RequestParam String email, @RequestParam(required = false) String firstName,
+                                  @RequestParam(required = false) String lastName, @RequestParam(required = false) String phone){
         profileService.updateContactsInfo(email, firstName, lastName, phone);
     }
 }
