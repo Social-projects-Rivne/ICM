@@ -1,7 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +20,10 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = IssueCityMonitorApplication.class)
-@WebAppConfiguration
 public class SearchControllerITest {
 
     private static final int PAGE_OFFSET = 1;
@@ -56,8 +52,14 @@ public class SearchControllerITest {
     @Autowired
     private UserDao userDao;
 
-    private static List<Event> events;
-    private static List<Issue> issues;
-    private static List<User> users;
-    
+    private List<Event> events;
+    private List<Issue> issues;
+    private List<User> users;
+
+    @Test
+    public void testFindEventsByCriteria() {
+
+        //TODO
+
+    }
 }

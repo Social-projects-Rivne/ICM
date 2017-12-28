@@ -57,21 +57,21 @@ public class SearchService {
 
     public Page<EventDto> findEventsByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<EventDto> eventDtos = eventDao.findAll(new EventSpecification(queryMap), pageRequest).map(eventMapper::toDto);
+        Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(new EventSpecification(queryMap), pageRequest));
         LOGGER.debug("Events search successful");
         return eventDtos;
     }
 
     public Page<UserDto> findUsersByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<UserDto> userDtos = userDao.findAll(new UserSpecification(queryMap), pageRequest).map(userMapper::toDto);
+        Page<UserDto> userDtos = userMapper.toDtoPage(userDao.findAll(new UserSpecification(queryMap), pageRequest));
         LOGGER.debug("Users search successful");
         return userDtos;
     }
 
     public Page<IssueDto> findIssuesByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<IssueDto> issueDtos = issueDao.findAll(new IssueSpecification(queryMap), pageRequest).map(issueMapper::toDto);
+        Page<IssueDto> issueDtos = issueMapper.toDtoPage(issueDao.findAll(new IssueSpecification(queryMap), pageRequest));
         LOGGER.debug("Issues search successful");
         return issueDtos;
     }

@@ -17,26 +17,28 @@ public class AdviceController {
 
     private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
 
+    //TODO REMOVE this
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalStateException.class)
-    public void handleNotFound(Exception e){
+    public void handleIllegalStateException(Exception e){
         LOGGER.debug(e.getMessage());
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)
-    public void handleSearchWrongAttribute(Exception e) {
+    public void handleIllegalArgumentException(Exception e) {
         LOGGER.debug(e.getMessage());
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_FAIL_REASON)
     @ExceptionHandler(RegistrationException.class)
-    public void registrationError(RegistrationException e){
+    public void handleRegistrationException(RegistrationException e){
         LOGGER.debug(e.getMessage());
     }
 
+
     @ExceptionHandler(RestorePasswordException.class)
-    public void registrationError(RestorePasswordException e, HttpServletResponse response) throws IOException {
+    public void handleRestorePasswordException(RestorePasswordException e, HttpServletResponse response) throws IOException {
         LOGGER.debug(e.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }

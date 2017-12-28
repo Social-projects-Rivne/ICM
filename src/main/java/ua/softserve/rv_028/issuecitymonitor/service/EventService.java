@@ -54,8 +54,12 @@ public class EventService {
         Event event = findOne(eventDto.getId());
         event.setTitle(eventDto.getTitle());
         event.setDescription(eventDto.getDescription());
-        event.setInitialDate(LocalDateTime.parse(eventDto.getInitialDate(), DATE_FORMAT));
-        event.setEndDate(LocalDateTime.parse(eventDto.getEndDate(), DATE_FORMAT));
+        if(eventDto.getInitialDate() != null) {
+            event.setInitialDate(LocalDateTime.parse(eventDto.getInitialDate(), DATE_FORMAT));
+        }
+        if(eventDto.getEndDate() != null) {
+            event.setEndDate(LocalDateTime.parse(eventDto.getEndDate(), DATE_FORMAT));
+        }
         event.setCategory(eventDto.getCategory());
 
         eventDao.save(event);
@@ -66,7 +70,7 @@ public class EventService {
     private Event findOne(long id){
         Event event = eventDao.findOne(id);
         if(event == null){
-            throw new IllegalStateException("event id not found:" + id);
+            throw new IllegalArgumentException("event id not found:" + id);
         }
         return event;
     }

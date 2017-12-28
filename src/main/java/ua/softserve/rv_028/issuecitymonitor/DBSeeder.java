@@ -27,9 +27,7 @@ public class DBSeeder {
     private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
 
     @Autowired
-
-    public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder){
-
+    public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder) {
         this.encoder = encoder;
 
         if (factory.unwrap(SessionFactory.class) == null) {
@@ -48,6 +46,11 @@ public class DBSeeder {
     private void fillDatabase() throws RuntimeException {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
+
+        //Let the root admin to have id (1)
+        User defaultAdmin = new User("Root", "Admin", "gefasim@mail.com", encoder.encode("root"));
+        defaultAdmin.setUserRole(UserRole.ADMIN);
+        session.save(defaultAdmin);
 
         for(int i=0; i < 10 ; i++){
             User user = new User("Tom"+i, "Jerry"+i,encoder.encode(i+""+i+""+i),
@@ -97,9 +100,6 @@ public class DBSeeder {
                 }
             }
         }
-        User user = new User("11", "11", "gefasim@mail.com", encoder.encode("1234"));
-        user.setUserRole(UserRole.ADMIN);
-        session.save(user);
         transaction.commit();
     }
 

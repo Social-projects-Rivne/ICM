@@ -149,7 +149,7 @@ public class Event {
     }
 
     @PreRemove
-    public void delete() {
+    private void delete() {
         this.isDeleted = true;
     }
 

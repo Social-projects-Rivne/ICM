@@ -17,7 +17,9 @@ public class UserMapper extends MapperService<UserDto, User> {
 
         dto.setId(entity.getId());
         dto.setUserRole(entity.getUserRole());
-        //dto.setRegistrationDate(entity.getRegistrationDate().format(DATE_FORMAT));
+        if(entity.getRegistrationDate() != null) {
+            dto.setRegistrationDate(entity.getRegistrationDate().format(DATE_FORMAT));
+        }
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPassword(entity.getPassword());
@@ -25,7 +27,10 @@ public class UserMapper extends MapperService<UserDto, User> {
         dto.setPhone(entity.getPhone());
         dto.setUserAgreement(entity.isUserAgreement());
         dto.setUserStatus(entity.getUserStatus());
-        //dto.setDeleteDate(entity.getDeleteDate().format(DATE_FORMAT));
+
+        if(entity.getDeleteDate() != null) {
+            dto.setDeleteDate(entity.getDeleteDate().format(DATE_FORMAT));
+        }
         dto.setAvatarUrl(entity.getAvatarUrl());
         return dto;
     }
@@ -35,7 +40,9 @@ public class UserMapper extends MapperService<UserDto, User> {
         User entity = new User();
 
         entity.setUserRole(dto.getUserRole());
-        entity.setRegistrationDate(LocalDateTime.parse(dto.getRegistrationDate(), DATE_FORMAT));
+        if(dto.getRegistrationDate() != null) {
+            entity.setRegistrationDate(LocalDateTime.parse(dto.getRegistrationDate(), DATE_FORMAT));
+        }
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setPassword(dto.getPassword());
@@ -43,7 +50,9 @@ public class UserMapper extends MapperService<UserDto, User> {
         entity.setPhone(dto.getPhone());
         entity.setUserAgreement(dto.isUserAgreement());
         entity.setUserStatus(dto.getUserStatus());
-        entity.setDeleteDate(LocalDateTime.parse(dto.getDeleteDate(), DATE_FORMAT));
+        if(dto.getDeleteDate() != null) {
+            entity.setDeleteDate(LocalDateTime.parse(dto.getDeleteDate(), DATE_FORMAT));
+        }
         entity.setAvatarUrl(dto.getAvatarUrl());
         return entity;
     }

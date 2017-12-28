@@ -248,6 +248,12 @@ public class User implements UserDetails{
 	@PreRemove
 	public void delete() {
 		this.isDeleted = true;
+		this.deleteDate = LocalDateTime.now();
+	}
+
+	@PrePersist
+	private void insert() {
+		this.registrationDate = LocalDateTime.now();
 	}
 
 	private static boolean checkUserStatus(UserStatus status) {

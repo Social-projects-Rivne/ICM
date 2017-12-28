@@ -1,27 +1,34 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.List;
+
+import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@WebAppConfiguration
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EventControllerITest {
+
+    private static final int LIST_SIZE = 5;
 
     @Autowired
     private EventDao eventDao;
@@ -33,10 +40,29 @@ public class EventControllerITest {
     private EventMapper eventMapper;
 
     private Event event;
+    private List<Event> events;
 
     @Before
-    public void setup(){
-        event = eventDao.findAll().get(1);
+    public void setUp() {
+        events = eventDao.save(TestUtils.createEventsList(LIST_SIZE));
+        event = events.get(0);
+    }
+
+    //TODO soft delete using other method
+    @After
+    public void tearDown() {
+        eventDao.delete(events);
+    }
+
+    @Test
+    public void testGetEventsByPage() {
+        ResponseEntity<PageImpl> responseEntity = testRestTemplate.getForEntity("/api/events", PageImpl.class);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        PageImpl responseObject = responseEntity.getBody();
+        assertNotNull(responseObject);
+        assertEquals(events.size(), responseObject.getContent().size());
+
+        //TODO page constructor
     }
 
     @Test
