@@ -154,7 +154,7 @@ export default class EditProfile extends Component{
         return(
             <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
                 <Col sm={10}>
-                    <h3 >Profile Settings 2</h3>
+                    <h3 >Profile Settings</h3>
                     <hr className="col-12"/>
                     <Row style={{marginBottom: '40px'}}>
 
@@ -164,6 +164,7 @@ export default class EditProfile extends Component{
                                 <Input type="text" name="firstName" id="firstName"
                                        bsSize="lg"
                                        placeholder="first name"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.firstName}
                                 />
@@ -174,6 +175,7 @@ export default class EditProfile extends Component{
                                 <Input type="text" name="lastName" id="lastName"
                                        bsSize="lg"
                                        placeholder="last name"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.lastName}
                                 />
@@ -185,6 +187,7 @@ export default class EditProfile extends Component{
                                 <Input type="text" name="phone" id="phone"
                                        bsSize="lg"
                                        placeholder="+380123456789"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
                                 />
@@ -211,6 +214,7 @@ export default class EditProfile extends Component{
                                 <Input type="password" name="oldPassword" id="oldPassword"
                                        bsSize="lg"
                                        placeholder="Old Password"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.oldPassword}
                                 />
@@ -221,6 +225,7 @@ export default class EditProfile extends Component{
                                 <Input type="password" name="newPassword" id="newPassword"
                                        bsSize="lg"
                                        placeholder="Password"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.newPassword}
                                        valid={this.checkNewPassword()}
@@ -232,6 +237,7 @@ export default class EditProfile extends Component{
                                 <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
                                        bsSize="lg"
                                        placeholder="Password"
+                                       className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.confirmNewPassword}
                                        valid={this.checkConfirmPassword()}
