@@ -16,6 +16,7 @@ public interface UserDao extends CrudRepository<User, Long> {
     List<User> findAll();
 
     User findUserByUsername(String username);
+
     Long countByUserRole(UserRole userRole);
     default Long countAdmins(){
         return countByUserRole(UserRole.ADMIN);
