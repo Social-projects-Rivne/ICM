@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { compose, withProps } from "recompose"
-import { withScriptjs, withGoogleMap, GoogleMap, Marker } from "react-google-maps"
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
 
@@ -19,7 +19,8 @@ class IssueMap extends Component {
         axios.get("/api/issues")
             .then(function(response) {
                 _this.setState({
-                    issues: response.data
+                    issues: response.data,
+                    isOpen: false
                 });
             })
             .catch(function (error) {
@@ -30,23 +31,29 @@ class IssueMap extends Component {
    render() {
     const MyMapComponent = compose(
       withProps({
-        googleMapURL: "https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=geometry,drawing,places",
+       googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCWeUPkEU7NK94ImWCjXVIMvrO9R3Lz08A&callback=initMap",
         loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `800px` }} />,
+        containerElement: <div style={{ height: `1000px` }} />,
         mapElement: <div style={{ height: `100%` }} />,
       }),
       withScriptjs,
       withGoogleMap
     )((props) =>
       <GoogleMap
-        defaultZoom={8}
-        defaultCenter={{ lat: -34.397, lng: 150.644 }}
+        defaultZoom={15}
+        defaultCenter={{ lat: 	50.619900, lng: 26.251617 }}
       >
           {this.state.issues.map(issues => (
               <Marker
                   key={issues.id}
                   position={{ lat: issues.latitude, lng: issues.longitude }}
-              />
+              >
+              <InfoWindow>
+                      <div>
+                        {"It is marker!"}
+                      </div>
+              </InfoWindow>
+               </Marker>
           ))}
       </GoogleMap>
 
