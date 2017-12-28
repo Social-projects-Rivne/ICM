@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Alert, Label, Col, Button, Row, Form, FormGroup, FormFeedback, Input, InputGroup, InputGroupAddon} from 'reactstrap';
+import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
 import Footer from '../../components/Footer/Footer';
@@ -25,13 +26,22 @@ export default class EditProfile extends Component{
             confirmNewPassword: "",
             confirmNewPasswordValid: false,
             responseIsSuccess : null,
-            contactInfoResponseIsSuccess: null
+            contactInfoResponseIsSuccess: null,
+            dropdownOpen: false
          };
 
         this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
         this.updateContactsData = this.updateContactsData.bind(this);
+
+    this.toggle = this.toggle.bind(this);
     }
+
+    toggle() {
+        this.setState({
+          dropdownOpen: !this.state.dropdownOpen
+        });
+      }
 
     componentWillMount(){
         let _this = this;
@@ -183,14 +193,36 @@ export default class EditProfile extends Component{
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
-                                <Input type="text" name="phone" id="phone"
+                                
+                            <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
+                                <FormGroup row>
+                                
+                                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
+        <DropdownToggle caret>
+          Button Dropdown
+        </DropdownToggle>
+        <DropdownMenu>
+          <DropdownItem header>Header</DropdownItem>
+          <DropdownItem disabled>Action</DropdownItem>
+          <DropdownItem>Another Action</DropdownItem>
+          <DropdownItem divider />
+          <DropdownItem>Another Action</DropdownItem>
+        </DropdownMenu>
+      </ButtonDropdown>
+      
+                                
+            <Col sm={6}>
+                                <Input type="number" name="phone" id="phone"
                                        bsSize="lg"
                                        placeholder="+380123456789"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
                                 />
+
+                       </Col>                                         
+                                </FormGroup>
+                                
                             </FormGroup>
 
                             <Button size='lg' onClick={this.updateContactsData} color={this.buttonColorContacts()}>Update contacts form</Button>
