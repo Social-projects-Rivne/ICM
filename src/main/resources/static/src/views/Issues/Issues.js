@@ -31,7 +31,7 @@ class Issues extends Component {
             .then(function(response) {
                 _this.setState({
                     issues: response.data
-                }, function() { console.log(response); });
+                });
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});

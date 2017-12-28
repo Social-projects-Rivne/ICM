@@ -7,11 +7,15 @@ import Breadcrumb from '../../components/Breadcrumb/';
 import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
-import Events from "../../views/Events/";
+
 import Petitions from "../../views/Petitions/";
+import PetitionEdit from "../../views/Petitions/PetitionEdit";
+import PetitionAdd from "../../views/Petitions/PetitionAdd";
 import Issues from "../../views/Issues/";
 import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
+import EditUsers from "../../views/Users/EditUsers";
+import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";
 import Login from "../../views/Login/Login";
 import axios from "axios/index";
@@ -50,9 +54,12 @@ class Full extends Component {
                 <Route exact path="/admin/events" name="Events" component={Events}/>
                 <Route path="/admin/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route exact path="/admin/petitions" name="Petitions" component={Petitions}/>
+                <Route path="/admin/petitions/:id/edit" name="Petitions" component={PetitionEdit}/>
+                <Route path="/admin/petitions/add" name="PetitionAdd" component={PetitionAdd}/>
                 <Route exact path="/admin/issues" name="Issues" component={Issues}/>
                 <Route path="/admin/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/admin/users" name="Users" component={Users}/>
+                <Route path="/admin/users/:id/edit" name="EditUsers" component = {EditUsers}/>
               </Switch>
             </Container>
           </main>

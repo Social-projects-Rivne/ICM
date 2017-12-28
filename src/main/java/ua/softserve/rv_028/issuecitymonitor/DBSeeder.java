@@ -28,7 +28,7 @@ public class DBSeeder {
     @Autowired
 
     public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder){
-    this.encoder = encoder;
+        this.encoder = encoder;
 
         if (factory.unwrap(SessionFactory.class) == null) {
             throw new NullPointerException("factory is not a hibernate factory");
@@ -95,9 +95,15 @@ public class DBSeeder {
                 }
             }
         }
+
+        User admin = new User("admin", "admin", "admin@mail.com", encoder.encode("12345"));
+        admin.setUserRole(UserRole.ADMIN);
+        session.save(admin);
+
         User user = new User("11", "11", "gefasim@mail.com", encoder.encode("1234"));
         user.setUserRole(UserRole.ADMIN);
         session.save(user);
+
         transaction.commit();
     }
 

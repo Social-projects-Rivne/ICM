@@ -24,7 +24,7 @@ public class IssueControllerTest {
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
     private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("issue not found");
-    private final static int PAGE_INDEX = 0;
+    private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
 
     private IssueDto issue;

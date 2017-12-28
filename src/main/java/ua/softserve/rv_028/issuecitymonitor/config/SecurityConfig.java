@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 /**
  *
@@ -34,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
     /** All possible urls must be here*/
     private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
-            "/settings"};
+            "/settings","/maps"};
 
     @Autowired
     public SecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
