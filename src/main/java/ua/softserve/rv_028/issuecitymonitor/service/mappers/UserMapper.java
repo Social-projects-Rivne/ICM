@@ -17,9 +17,7 @@ public class UserMapper extends MapperService<UserDto, User> {
 
         dto.setId(entity.getId());
         dto.setUserRole(entity.getUserRole());
-        if(entity.getRegistrationDate() != null) {
-            dto.setRegistrationDate(entity.getRegistrationDate().format(DATE_FORMAT));
-        }
+        dto.setRegistrationDate(entity.getRegistrationDate().format(DATE_FORMAT));
         dto.setFirstName(entity.getFirstName());
         dto.setLastName(entity.getLastName());
         dto.setPassword(entity.getPassword());
@@ -40,9 +38,7 @@ public class UserMapper extends MapperService<UserDto, User> {
         User entity = new User();
 
         entity.setUserRole(dto.getUserRole());
-        if(dto.getRegistrationDate() != null) {
-            entity.setRegistrationDate(LocalDateTime.parse(dto.getRegistrationDate(), DATE_FORMAT));
-        }
+        entity.setRegistrationDate(LocalDateTime.parse(dto.getRegistrationDate(), DATE_FORMAT));
         entity.setFirstName(dto.getFirstName());
         entity.setLastName(dto.getLastName());
         entity.setPassword(dto.getPassword());

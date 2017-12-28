@@ -13,10 +13,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import javax.persistence.EntityManagerFactory;
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.Random;
-
-import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Component
 public class DBSeeder {
@@ -24,7 +21,7 @@ public class DBSeeder {
     private SessionFactory sessionFactory;
     private final BCryptPasswordEncoder encoder;
 
-    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class);
 
     @Autowired
     public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder) {
@@ -35,11 +32,11 @@ public class DBSeeder {
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
         try {
-            LOGGER.debug("Seeding database...");
+            LOGGER.info("Seeding database...");
             fillDatabase();
-            LOGGER.debug("Seeding finished");
+            LOGGER.info("Seeding finished");
         } catch (RuntimeException e) {
-            LOGGER.debug("Seeding has been done already. Skipping...");
+            LOGGER.info("Seeding has been done already. Skipping...");
         }
     }
 
@@ -47,7 +44,6 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        //Let the root admin to have id (1)
         User defaultAdmin = new User("Root", "Admin", "gefasim@mail.com", encoder.encode("root"));
         defaultAdmin.setUserRole(UserRole.ADMIN);
         session.save(defaultAdmin);

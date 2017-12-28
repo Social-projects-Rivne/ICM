@@ -1,14 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.domain.Specification;
-import org.springframework.data.jpa.domain.Specifications;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
@@ -17,9 +12,6 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
@@ -27,7 +19,6 @@ import ua.softserve.rv_028.issuecitymonitor.service.specifiation.EventSpecificat
 import ua.softserve.rv_028.issuecitymonitor.service.specifiation.IssueSpecification;
 import ua.softserve.rv_028.issuecitymonitor.service.specifiation.UserSpecification;
 
-import java.util.List;
 import java.util.Map;
 
 @Service

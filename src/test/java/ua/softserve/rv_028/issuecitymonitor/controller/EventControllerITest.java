@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,22 +9,22 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
+import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
+import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -34,17 +36,22 @@ public class EventControllerITest {
     private EventDao eventDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Autowired
     private EventMapper eventMapper;
 
+    private User user;
     private Event event;
     private List<Event> events;
 
     @Before
     public void setUp() {
-        events = eventDao.save(TestUtils.createEventsList(LIST_SIZE));
+        user = userDao.save(TestUtils.createUser(0));
+        events = eventDao.save(TestUtils.createEventsList(user, LIST_SIZE));
         event = events.get(0);
     }
 
@@ -52,16 +59,21 @@ public class EventControllerITest {
     @After
     public void tearDown() {
         eventDao.delete(events);
+        userDao.delete(user);
     }
 
     @Test
     public void testGetEventsByPage() {
-        ResponseEntity<PageImpl> responseEntity = testRestTemplate.getForEntity("/api/events", PageImpl.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        PageImpl responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(events.size(), responseObject.getContent().size());
-
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/events", String.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode content;
+        try {
+            content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            System.out.println(content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         //TODO page constructor
     }
 
@@ -69,7 +81,7 @@ public class EventControllerITest {
     public void testGetEventSuccessfully(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/"+event.getId(), EventDto.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         EventDto responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
         assertEquals(event.getTitle(), responseObject.getTitle());
@@ -111,7 +123,7 @@ public class EventControllerITest {
     public void testEventNotFound(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/-1", EventDto.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
 
