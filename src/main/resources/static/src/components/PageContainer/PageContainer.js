@@ -9,6 +9,7 @@ class PageContainer extends Component {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
             title: this.props.title,
+            button: this.props.button,
             children: this.props.children
         };
 
@@ -22,6 +23,7 @@ class PageContainer extends Component {
             pagesNum: props.pagesNum,
             page: props.page,
             title: props.title,
+            button: props.button,
             children: props.children
         });
     }
@@ -83,7 +85,7 @@ class PageContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>{this.state.title}</CardHeader>
+                            <CardHeader>{this.state.title}, {this.state.button}</CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>

@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,8 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -43,6 +47,21 @@ public class UserControllerIntegrationTest {
         assertNotNull(responseObject);
         assertEquals(user.getFirstName(), responseObject.getFirstName());
         assertEquals(user.getUserStatus(), responseObject.getUserStatus());
+    }
+
+    @Test
+    public void testGetAllByPage(){
+        ResponseEntity<String> responseEntity = testRestTemplate.
+                getForEntity("/api/users", String.class);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode content;
+        try {
+            content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            System.out.println(content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

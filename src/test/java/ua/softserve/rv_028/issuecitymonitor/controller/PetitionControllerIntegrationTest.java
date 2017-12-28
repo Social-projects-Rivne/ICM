@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,6 +14,8 @@ import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+
+import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -48,6 +52,21 @@ public class PetitionControllerIntegrationTest {
         assertNotNull(responseObject);
         assertEquals(petition.getTitle(), responseObject.getTitle());
         assertEquals(petition.getDescription(), responseObject.getDescription());
+    }
+
+    @Test
+    public void testGetAllByPage(){
+        ResponseEntity<String> responseEntity = testRestTemplate.
+                getForEntity("/api/petitions", String.class);
+        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode content;
+        try {
+            content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            System.out.println(content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

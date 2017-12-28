@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
-import {Table} from "reactstrap";
+import {Table, Button} from "reactstrap";
 import Petition from "./Petition";
 import PageContainer from "../../components/PageContainer/PageContainer";
+import {Link} from "react-router-dom";
 
 class PetitionsContainer extends Component {
     constructor(props) {
@@ -15,6 +16,14 @@ class PetitionsContainer extends Component {
 
     handlePageChange(page) {
         this.props.onPageChange(page);
+    }
+
+    addNewPetition() {
+        return(
+        <Link to={"/admin/petitions/add"}>
+            <Button className="pull-right" color="success" size="sm">Add new</Button>
+        </Link>
+        )
     }
 
     componentWillReceiveProps(props) {
@@ -50,7 +59,7 @@ class PetitionsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Petitions list"
+            <PageContainer onPageChange={this.handlePageChange} title="Petitions list" button={this.addNewPetition()}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +17,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
@@ -53,12 +56,17 @@ public class IssueControllerIntegrationTest {
 
     @Test
     public void testGetAllByPage(){
-
-        ResponseEntity<? extends Page> responseEntity = testRestTemplate.
-                getForEntity("/api/issues", Page.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.
+                getForEntity("/api/issues", String.class);
         assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
-        Page<IssueDto> responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode content;
+        try {
+            content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            System.out.println(content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
