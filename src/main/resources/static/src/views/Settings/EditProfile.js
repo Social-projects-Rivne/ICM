@@ -12,6 +12,7 @@ export default class EditProfile extends Component{
         super(props);
 
         this.state = {
+            email: "",
             firstName: "",
             lastName: "",
             phone: "",
@@ -20,18 +21,28 @@ export default class EditProfile extends Component{
             newPasswordValid: false,
             confirmNewPassword: "",
             confirmNewPasswordValid: false,
-            responseIsSuccses : null,
+            responseIsSuccess : null,
             contactInfoResponseIsSuccess: null
         };
 
-        this.handleChange = this.handleChange.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
         this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
         this.updateContactsData = this.updateContactsData.bind(this);
     }
 
+    componentWillMount(){
+        let _this = this;
+        axios.get('/api/userDetails').then(function (response) {
+            _this.setState({
+                email: response.data.email,
+                firstName: response.data.firstName,
+                lastName: response.data.lastName,
+                phone: response.data.phone
+            });
+        });
+    }
 
-    // TODO: rename to handleInputChange
-    handleChange(event){
+    handleInputChange(event){
         const name = event.target.name;
         const value = event.target.value;
 
@@ -64,7 +75,7 @@ export default class EditProfile extends Component{
 
     handleSetNewPasswordBtn(){
         let data = new FormData();
-        data.append('email', 'gefasim@mail.com');
+        data.append('email', this.state.email);
         data.append('oldPassword', this.state.oldPassword);
         data.append('newPassword', this.state.newPassword);
 
@@ -81,7 +92,8 @@ export default class EditProfile extends Component{
     }
 
     updateContactsData(){
-        let data =new FoemData();
+        let data =new FormData();
+        data.append('email', this.state.email);
         data.append('firstName', this.state.firstName);
         data.append('lastName', this.state.lastName);
         data.append('phone', this.state.phone);
@@ -97,9 +109,9 @@ export default class EditProfile extends Component{
             });
     }
 
-    updateAlertState(responseIsSuccses){
+    updateAlertState(responseIsSuccess){
         this.setState({
-            responseIsSuccses : responseIsSuccses,
+            responseIsSuccess : responseIsSuccess,
             oldPassword: "",
             newPassword: "",
             confirmNewPassword: ""
@@ -117,24 +129,33 @@ export default class EditProfile extends Component{
                         <Col sm={8}>
                             <FormGroup>
                                 <Label htmlFor='first-name' style={{fontWeight:'600'}}>First name</Label>
-                                    <Input type="text" name="lastName" id="first-name"
-                                           bsSize="lg"
-                                           placeholder="first name"/>
+                                <Input type="text" name="lastName" id="first-name"
+                                       bsSize="lg"
+                                       placeholder="first name"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.firstName}
+                                />
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='last-name' style={{fontWeight:'600'}}>Last name</Label>
-                                    <Input type="text" name="lastName" id="last-name"
-                                           bsSize="lg"
-                                           placeholder="last name"/>
+                                <Input type="text" name="lastName" id="last-name"
+                                       bsSize="lg"
+                                       placeholder="last name"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.lastName}
+                                />
 
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
-                                    <Input type="text" name="lastName" id="phone"
-                                           bsSize="lg"
-                                           placeholder="+380958379474"/>
+                                <Input type="text" name="phone" id="phone"
+                                       bsSize="lg"
+                                       placeholder="+380123456789"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.phone}
+                                />
                             </FormGroup>
 
                             <Button size='lg'>Update contacts form</Button>
@@ -155,40 +176,40 @@ export default class EditProfile extends Component{
                         <Col sm={8}>
                             <FormGroup>
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
-                                    <Input type="password" name="oldPassword" id="oldPassword"
-                                           bsSize="lg"
-                                           placeholder="Old Password"
-                                           onChange={this.handleChange}
-                                           value={this.state.value}
-                                    />
+                                <Input type="password" name="oldPassword" id="oldPassword"
+                                       bsSize="lg"
+                                       placeholder="Old Password"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.oldPassword}
+                                />
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
-                                    <Input type="password" name="newPassword" id="newPassword"
-                                           bsSize="lg"
-                                           placeholder="Password"
-                                           onChange={this.handleChange}
-                                           value={this.state.value}
-                                           valid={this.checkNewPassword()}
-                                    />
+                                <Input type="password" name="newPassword" id="newPassword"
+                                       bsSize="lg"
+                                       placeholder="Password"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.newPassword}
+                                       valid={this.checkNewPassword()}
+                                />
                             </FormGroup>
 
                             <FormGroup>
                                 <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
-                                    <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
-                                           bsSize="lg"
-                                           placeholder="Password"
-                                           onChange={this.handleChange}
-                                           value={this.state.value}
-                                           valid={this.checkConfirmPassword()}
-                                    />
+                                <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
+                                       bsSize="lg"
+                                       placeholder="Password"
+                                       onChange={this.handleInputChange}
+                                       value={this.state.confirmNewPassword}
+                                       valid={this.checkConfirmPassword()}
+                                />
                             </FormGroup>
 
                             <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColor()}>Set the new password</Button>
 
-                            {this.showPassAlert(this.state.responseIsSuccses)}
-                            
+                            {this.showPassAlert(this.state.responseIsSuccess)}
+
                         </Col>
                     </Row>
                 </Col>
@@ -198,27 +219,27 @@ export default class EditProfile extends Component{
 
     static successAlert(){
         return  <Alert color="success" className="alert-form">
-                    Password changed successfully ! 
-                </Alert>;
+            Password changed successfully !
+        </Alert>;
     }
 
     static successContactAlert(){
         return  <Alert color="success" className="alert-form">
-                    Contacts information changed successfully ! 
-                </Alert>;
+            Contacts information changed successfully !
+        </Alert>;
     }
 
     static errorAlert(){
         return  <Alert color="danger" className="alert-form">
-                    Error
-                </Alert>
+            Error
+        </Alert>
     }
 
     showPassAlert(response){
         if(response != null){
             return response ? EditProfile.successAlert() : EditProfile.errorAlert()
         } else {
-            return null;                
+            return null;
         }
     }
 
@@ -226,7 +247,7 @@ export default class EditProfile extends Component{
         if(response != null){
             return response ? EditProfile.successContactAlert() : EditProfile.errorAlert()
         } else {
-            return null;                
+            return null;
         }
     }
 

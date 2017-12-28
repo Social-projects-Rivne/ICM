@@ -62,6 +62,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         map.put("firstName", user.getFirstName());
         map.put("lastName", user.getLastName());
         map.put("authorities", user.getAuthorities());
+        map.put("phone", user.getPhone());
         return map;
     }
 }
