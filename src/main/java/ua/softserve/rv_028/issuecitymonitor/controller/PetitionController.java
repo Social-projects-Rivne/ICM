@@ -5,12 +5,22 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+import ua.softserve.rv_028.issuecitymonitor.service.PetitionServiceImpl;
+
+
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/petitions")
 public class PetitionController {
+
+
+    @Autowired
+    private PetitionServiceImpl service;
 
     private static final Logger LOGGER = Logger.getLogger(PetitionController.class.getName());
 
@@ -49,4 +59,12 @@ public class PetitionController {
         petitionService.deleteById(id);
         LOGGER.debug("DELETE request successful");
     }
+
+
+    @PostMapping(path = "/add")
+    public void createPetition(@RequestBody PetitionDto petitionDto) {
+
+        petitionService.addPetition(petitionDto);
+    }
+
 }

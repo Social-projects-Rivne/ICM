@@ -27,19 +27,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         this.userDao = userDao;
     }
 
-    /**
-     * This method return UserDetails model for AuthenticationManagerBuilder in Security class
-     *
-     * @param email of table {@link User}
-     * @return UserDetails
-     * @throws UsernameNotFoundException for if any model field is incorrect
-     */
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userDao.findUserByUsername(email);
-        return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                true, true, true,
-                (user.getUserStatus()== UserStatus.ACTIVE || user.getUserStatus() == UserStatus.UNCONFIRMED),
-                UserRole.collectionForRole(user.getUserRole()));
+
+        return userDao.findUserByUsername(email);
     }
 }

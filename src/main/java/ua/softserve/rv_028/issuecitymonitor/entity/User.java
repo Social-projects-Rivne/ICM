@@ -3,11 +3,17 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
+import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +21,7 @@ import java.util.Set;
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
 @Where(clause = "deleted <> 'true'")
-public class User{
+public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue
@@ -29,16 +35,19 @@ public class User{
 	@Column(name = "reg_date")
 	private String registrationDate;
 
+	@NotEmpty
 	@Column(name = "first_name")
 	private String firstName;
 
+	@NotEmpty
 	@Column(name = "password")
 	private String password;
 
-	@NaturalId
+	@NotEmpty
 	@Column(name = "email", unique = true)
 	private String username;
 
+	@NotEmpty
 	@Column(name = "last_name")
 	private String lastName;
 
@@ -74,7 +83,10 @@ public class User{
 
 	public User(UserDto userDto) {
 		this.password = userDto.getPassword();
-		this.username = userDto.getEmail();
+
+		if (this.getUsername() == null)
+			this.username = userDto.getEmail();
+
 		this.registrationDate = userDto.getRegistrationDate();
 		this.firstName = userDto.getFirstName();
 		this.lastName = userDto.getLastName();
@@ -86,8 +98,8 @@ public class User{
 	}
 
 	public User(String firstName, String lastName, String password, String username,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
-                String avatarUrl) {
+				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
+				String avatarUrl) {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
@@ -97,6 +109,16 @@ public class User{
 		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
 		this.avatarUrl = avatarUrl;
+	}
+
+	public User(String firstName, String lastName, String username, String password){
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.userRole = UserRole.USER;
+		this.userStatus = UserStatus.UNCONFIRMED;
+		this.registrationDate = new Date().toString();
 	}
 
 	public void setId(long id) {
@@ -139,6 +161,7 @@ public class User{
 		this.lastName = lastName;
 	}
 
+	@Override
 	public String getPassword() {
 		return this.password;
 	}
@@ -147,12 +170,13 @@ public class User{
 		this.password = password;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
+	@Override
 	public String getUsername() {
 		return this.username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	public String getPhone() {
@@ -211,9 +235,38 @@ public class User{
 		return isDeleted;
 	}
 
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return UserRole.collectionForRole(this.userRole);
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return checkUserStatus(this.getUserStatus());
+	}
+
 	@PreRemove
 	public void delete() {
 		this.isDeleted = true;
+	}
+
+	private static boolean checkUserStatus(UserStatus status) {
+		return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
 	}
 
 	@Override

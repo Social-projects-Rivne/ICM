@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+
 import {Nav, NavbarBrand, NavbarToggler,} from 'reactstrap';
 import HeaderDropdown from './HeaderDropdown';
 
@@ -31,11 +32,12 @@ class Header extends Component {
                 </NavbarToggler>
 
                 <Nav className="ml-auto" navbar>
-                    <HeaderDropdown/>
+                    <HeaderDropdown userAuthorities={this.props.userAuthorities}/>
                 </Nav>
             </header>
         );
     }
+
 }
 
 export default Header;

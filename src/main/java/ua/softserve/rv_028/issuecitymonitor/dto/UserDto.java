@@ -18,8 +18,14 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-
     public UserDto() {}
+
+    public UserDto(String firstName, String lastName, String email, String password){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.password = password;
+    }
 
     public UserDto(User entity) {
         this.id = entity.getId();
@@ -105,7 +111,9 @@ public class UserDto {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
+        if (this.email == null)
         this.email = email;
     }
 

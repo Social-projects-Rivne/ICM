@@ -65,7 +65,6 @@ public class Issue{
         this.longitude = longitude;
         this.category = category;
     }
-
     public Issue(IssueDto dto) {
         this.user = new User(dto.getUserDto());
         this.title = dto.getTitle();
