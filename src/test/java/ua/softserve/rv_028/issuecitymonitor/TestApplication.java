@@ -10,7 +10,9 @@ import org.springframework.scheduling.annotation.EnableAsync;
 @EnableAsync
 @ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DBSeeder.class))
 public class TestApplication {
+    
     public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);
     }
+
 }
