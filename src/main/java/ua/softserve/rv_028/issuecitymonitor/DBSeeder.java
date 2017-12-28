@@ -101,7 +101,7 @@ public class DBSeeder {
     }
 
     private User createAdmin() {
-        User user = new User("admin", "admin", "gefasim@mail.com", encoder.encode("1234"));
+        User user = new User("admin", "admin", "admin@mail.com", encoder.encode("1234"));
         user.setUserRole(UserRole.ADMIN);
         return user;
     }
