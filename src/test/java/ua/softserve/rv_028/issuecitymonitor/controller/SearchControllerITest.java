@@ -82,7 +82,7 @@ public class SearchControllerITest {
     @Test
     public void testFindEventsByCriteria() {
         ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/search/events?size="+
-                PAGE_SIZE+"&page="+PAGE_OFFSET+"&title="+SEARCH_TITLE, String.class);
+                PAGE_SIZE+"&page="+PAGE_OFFSET+"&text="+SEARCH_TITLE, String.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         ObjectMapper objectMapper = new ObjectMapper();
 
@@ -90,7 +90,7 @@ public class SearchControllerITest {
             JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
 
             assertEquals(1, content.size());
-            assertEquals(SEARCH_TITLE, content.path("title").textValue());
+            assertEquals(SEARCH_TITLE, content.findPath("title").textValue());
         } catch (IOException e) {
             e.printStackTrace();
         }
