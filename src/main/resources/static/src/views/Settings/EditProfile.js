@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
-import {Alert, Label, Col, Button, Row, Form, FormGroup, FormFeedback, Input, InputGroup, InputGroupAddon} from 'reactstrap';
+import {
+    Alert, Label, Col, Button, Row, Form, FormGroup, FormFeedback, Input, InputGroup, InputGroupAddon,
+    InputGroupButton
+} from 'reactstrap';
 import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
@@ -26,33 +29,17 @@ export default class EditProfile extends Component{
             confirmNewPassword: "",
             confirmNewPasswordValid: false,
             responseIsSuccess : null,
-            contactInfoResponseIsSuccess: null,
-            dropdownOpen: false
+            contactInfoResponseIsSuccess: null
          };
 
         this.handleInputChange = this.handleInputChange.bind(this);
-        this.handleSetNewPasswordBtn = this.handleSetNewPasswordBtn.bind(this);
-        this.updateContactsData = this.updateContactsData.bind(this);
-
-    this.toggle = this.toggle.bind(this);
+        this.updatePasswordHandlerBtn = this.updatePasswordHandlerBtn.bind(this);
+        this.updateContactsHandlerBtn = this.updateContactsHandlerBtn.bind(this);
     }
 
-    toggle() {
-        this.setState({
-          dropdownOpen: !this.state.dropdownOpen
-        });
-      }
-
     componentWillMount(){
-        let _this = this;
-        axios.get('/api/userDetails').then(function (response) {
-            _this.setState({
-                email: response.data.email,
-                firstName: response.data.firstName != null ? response.data.firstName : "",
-                lastName: response.data.lastName != null ? response.data.lastName : "",
-                phone: response.data.phone != null ? response.data.phone : "" 
-            }, _this.validateContactsFields);
-        });
+        this.setState({email: this.props.user.email, firstName: this.props.user.firstName, lastName: this.props.user.lastName,
+                phone: this.props.user.phone}, this.validateContactsFields);
     }
 
     validateContactsFields(){
@@ -64,9 +51,8 @@ export default class EditProfile extends Component{
     static isEmpty(obj){
         if(obj === null)
             return true;
-        if(obj.length === 0)
-            return true;    
-        return false;
+        return obj.length === 0;
+
     }
 
     handleInputChange(event){
@@ -114,8 +100,7 @@ export default class EditProfile extends Component{
         });
     }
 
-    // TODO: rename to updatePasswordHandlerBtn
-    handleSetNewPasswordBtn(){
+    updatePasswordHandlerBtn(){
         let data = new FormData();
         data.append('email', this.state.email);
         data.append('oldPassword', this.state.oldPassword);
@@ -132,8 +117,8 @@ export default class EditProfile extends Component{
                 _this.updateAlertState(false);
             });
     }
-    // TODO: rename to updateContanctHandlerBtn
-    updateContactsData(){
+
+    updateContactsHandlerBtn(){
         let data = new FormData();
         data.append('email', this.state.email);
         data.append('firstName', this.state.firstName);
@@ -151,15 +136,6 @@ export default class EditProfile extends Component{
             });
     }
 
-    updateAlertState(responseIsSuccess){
-        this.setState({
-            responseIsSuccess : responseIsSuccess,
-            oldPassword: "",
-            newPassword: "",
-            confirmNewPassword: ""
-        });
-    }
-
     render(){
         return(
             <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
@@ -170,7 +146,7 @@ export default class EditProfile extends Component{
 
                         <Col sm={8}>
                             <FormGroup>
-                                <Label htmlFor='first-name' style={{fontWeight:'600'}}>First name</Label>
+                                <Label htmlFor='firstName' style={{fontWeight:'600'}}>First name</Label>
                                 <Input type="text" name="firstName" id="firstName"
                                        bsSize="lg"
                                        placeholder="first name"
@@ -181,7 +157,7 @@ export default class EditProfile extends Component{
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='last-name' style={{fontWeight:'600'}}>Last name</Label>
+                                <Label htmlFor='lastName' style={{fontWeight:'600'}}>Last name</Label>
                                 <Input type="text" name="lastName" id="lastName"
                                        bsSize="lg"
                                        placeholder="last name"
@@ -192,42 +168,19 @@ export default class EditProfile extends Component{
 
                             </FormGroup>
 
-                // TODO: look here https://v4-alpha.getbootstrap.com/components/input-group/
                             <FormGroup>
-                                
-                            <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone</Label>
-                                <FormGroup row>
-                                
-                                <ButtonDropdown isOpen={this.state.dropdownOpen} toggle={this.toggle}>
-        <DropdownToggle caret>
-          Button Dropdown
-        </DropdownToggle>
-        <DropdownMenu>
-          <DropdownItem header>Header</DropdownItem>
-          <DropdownItem disabled>Action</DropdownItem>
-          <DropdownItem>Another Action</DropdownItem>
-          <DropdownItem divider />
-          <DropdownItem>Another Action</DropdownItem>
-        </DropdownMenu>
-      </ButtonDropdown>
-      
-                                
-            <Col sm={6}>
-                                <Input type="number" name="phone" id="phone"
+                                <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone number</Label>
+                                <Input type="text" name="phone" id="phone"
                                        bsSize="lg"
                                        placeholder="+380123456789"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
                                 />
-
-                       </Col>                                         
-                                </FormGroup>
-                                
                             </FormGroup>
 
-                            <Button size='lg' onClick={this.updateContactsData} color={this.buttonColorContacts()}>Update contacts form</Button>
-                            {this.showContactAlert(this.state.contactInfoResponseIsSuccess)}
+                            <Button size='lg' onClick={this.updateContactsHandlerBtn} color={this.buttonColorContacts()}>Update contacts form</Button>
+                            {EditProfile.showContactAlert(this.state.contactInfoResponseIsSuccess)}
 
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
@@ -277,15 +230,24 @@ export default class EditProfile extends Component{
                                 />
                             </FormGroup>
 
-                            <Button size='lg' onClick={this.handleSetNewPasswordBtn} color={this.buttonColorPass()}>Set the new password</Button>
+                            <Button size='lg' onClick={this.updatePasswordHandlerBtn} color={this.buttonColorPass()}>Set the new password</Button>
 
-                            {this.showPassAlert(this.state.responseIsSuccess)}
+                            {EditProfile.showPassAlert(this.state.responseIsSuccess)}
 
                         </Col>
                     </Row>
                 </Col>
             </Container>
         )
+    }
+
+    updateAlertState(responseIsSuccess){
+        this.setState({
+            responseIsSuccess : responseIsSuccess,
+            oldPassword: "",
+            newPassword: "",
+            confirmNewPassword: ""
+        });
     }
 
     static successAlert(){
@@ -306,7 +268,7 @@ export default class EditProfile extends Component{
         </Alert>
     }
 
-    showPassAlert(response){
+    static showPassAlert(response){
         if(response != null){
             return response ? EditProfile.successAlert() : EditProfile.errorAlert()
         } else {
@@ -314,7 +276,7 @@ export default class EditProfile extends Component{
         }
     }
 
-    showContactAlert(response){
+    static showContactAlert(response){
         if(response != null){
             return response ? EditProfile.successContactAlert() : EditProfile.errorAlert()
         } else {

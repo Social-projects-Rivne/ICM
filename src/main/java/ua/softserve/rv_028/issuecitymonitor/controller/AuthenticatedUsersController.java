@@ -50,11 +50,7 @@ public class AuthenticatedUsersController {
     @GetMapping(value = "/api/userDetails")
     public Map getUserInfo(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (!userAuth.getName().equals("anonymousUser")) {
-            return profileService.getUserInfo(userAuth.getName());
-        } else {
-            return null;
-        }
+        return profileService.getUserInfo(userAuth.getName());
     }
 
     @PostMapping(value = "/api/userSetting/updatePassword")

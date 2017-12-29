@@ -12,27 +12,42 @@ export default class Client extends Component{
         super(props);
 
         this.state = {
-            userAuthorities : null
+            user:
+                {
+                    email: "",
+                    firstName: "",
+                    lastName: "",
+                    phone: "",
+                    userAuthorities : null
+                }
+
         }
     }
 
     componentDidMount(){
         const _this = this;
-        axios.get("/api/authority")
-            .then(function(response){
-                _this.setState({userAuthorities: response.data});
-                console.log("authority", response.data)
+        axios.get('/api/userDetails')
+            .then(function (response) {
+                _this.setState( prevState => ({
+                    user: {...prevState.user, email: response.data.email,
+                        firstName: response.data.firstName,
+                        lastName: response.data.lastName,
+                        phone: response.data.phone,
+                        userAuthorities: response.data.authorities
+                    }})
+                );
             })
+            .catch(function () {})
     }
 
     render(){
         return(
             <div className="app">
-                <ClientHeader userAuthorities={this.state.userAuthorities}/>
+                <ClientHeader userAuthorities={this.state.user.userAuthorities}/>
                 <div className="app-body">
                     <Container fluid>
                         <Switch>
-                            <Route path="/settings/profile/" name="Client" component={EditProfile}/>
+                            <Route path="/settings/profile/" name="Client" component={() => (<EditProfile user={this.state.user}/>)}/>
                         </Switch>
                     </Container>
                 </div>

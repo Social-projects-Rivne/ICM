@@ -31,11 +31,18 @@ export default class ClientHeader extends Component {
 
     static renderHeaderDropdown(authorities){
         if(authorities != null){
-            if (!authorities.some(function(auth){return auth.authority === "ROLE_ANONYMOUS"})){
+            if (authorities.some(function(auth){return auth === "USER" || auth === "MODERATOR" || auth === "ADMIN"})){
                 return <ClientHeaderDropdown userAuthorities={authorities}/>
             } else {
-                return <Nav><NavItem className="d-md-down-none"><Link to="/login" className="nav-link-custom">Log in</Link></NavItem> or <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link-custom">Sign up</Link></NavItem></Nav>
+                return ClientHeader.renderLoginHeader()
             }
+        } else {
+            return ClientHeader.renderLoginHeader()
         }
+    }
+
+    static renderLoginHeader(){
+        return <Nav><NavItem className="d-md-down-none"><Link to="/login" className="nav-link-custom">Log in</Link></NavItem>
+            or <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link-custom">Sign up</Link></NavItem></Nav>
     }
 }
