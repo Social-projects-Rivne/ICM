@@ -1,27 +1,20 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class User implements UserDetails{
 
 	@Id
@@ -247,7 +240,6 @@ public class User implements UserDetails{
 
 	@PreRemove
 	public void delete() {
-		this.isDeleted = true;
 		this.deleteDate = LocalDateTime.now();
 	}
 
