@@ -27,10 +27,13 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class EventControllerITest {
 
     private static final int LIST_SIZE = 5;
+
+    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_OFFSET = 1;
 
     @Autowired
     private EventDao eventDao;
@@ -55,7 +58,6 @@ public class EventControllerITest {
         event = events.get(0);
     }
 
-    //TODO soft delete using other method
     @After
     public void tearDown() {
         eventDao.delete(events);
@@ -64,17 +66,16 @@ public class EventControllerITest {
 
     @Test
     public void testGetEventsByPage() {
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/events", String.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/events?size="+PAGE_SIZE+"&page="+PAGE_OFFSET, String.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode content;
+
         try {
-            content = objectMapper.readTree(responseEntity.getBody()).path("content");
-            System.out.println(content.size());
+            JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            assertEquals(PAGE_SIZE, content.size());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        //TODO page constructor
     }
 
     @Test
@@ -102,8 +103,6 @@ public class EventControllerITest {
         HttpEntity<EventDto> httpEntity = new HttpEntity<>(eventDto,httpHeaders);
         ResponseEntity<EventDto> responseEntity = testRestTemplate.exchange("/api/events/"+eventDto.getId(),
                 HttpMethod.PUT, httpEntity, EventDto.class);
-
-        System.out.println(httpEntity.toString());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         EventDto responseObject = responseEntity.getBody();

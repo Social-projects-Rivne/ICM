@@ -7,12 +7,12 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 @SpringBootApplication
+@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+        value = {IssueCityMonitorApplication.class, DBSeeder.class}))
 @EnableAsync
-@ComponentScan(excludeFilters = @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = DBSeeder.class))
 public class TestApplication {
-    
+
     public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);
     }
-
 }

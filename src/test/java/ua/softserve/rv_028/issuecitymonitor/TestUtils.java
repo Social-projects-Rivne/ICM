@@ -39,7 +39,7 @@ public final class TestUtils {
         return IntStream.range(0, size).mapToObj(i -> createIssue(owner, size)).collect(Collectors.toList());
     }
 
-    public static List<User> createUsersList(User owner, int size) {
+    public static List<User> createUsersList(int size) {
         return IntStream.range(0, size).mapToObj(i -> createUser(size)).collect(Collectors.toList());
     }
 }

@@ -1,8 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
@@ -13,8 +10,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
-@SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class Issue{
 
     @Id
@@ -143,11 +138,6 @@ public class Issue{
 
     public boolean getIsDeleted() {
         return isDeleted;
-    }
-
-    @PreRemove
-    public void delete() {
-        this.isDeleted = true;
     }
 
     @Override
