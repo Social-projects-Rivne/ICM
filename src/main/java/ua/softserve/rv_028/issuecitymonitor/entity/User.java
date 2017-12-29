@@ -38,7 +38,6 @@ public class User implements UserDetails{
 	private String password;
 
 	@NotEmpty
-	@NaturalId
 	@Column(name = "email", unique = true)
 	private String username;
 

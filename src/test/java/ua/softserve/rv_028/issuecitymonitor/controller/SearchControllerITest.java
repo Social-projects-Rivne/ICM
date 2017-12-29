@@ -38,6 +38,8 @@ public class SearchControllerITest {
     private static final int PAGE_OFFSET = 1;
     private static final int PAGE_SIZE = 5;
 
+    private static final String SEARCH_TITLE = "Title0";
+
     @Autowired
     private TestRestTemplate testRestTemplate;
 
@@ -79,13 +81,16 @@ public class SearchControllerITest {
 
     @Test
     public void testFindEventsByCriteria() {
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/search/events?size="+PAGE_SIZE+"&page="+PAGE_OFFSET, String.class);
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/search/events?size="+
+                PAGE_SIZE+"&page="+PAGE_OFFSET+"&title="+SEARCH_TITLE, String.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
             JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
-            assertEquals(PAGE_SIZE, content.size());
+
+            assertEquals(1, content.size());
+            assertEquals(SEARCH_TITLE, content.path("title").textValue());
         } catch (IOException e) {
             e.printStackTrace();
         }

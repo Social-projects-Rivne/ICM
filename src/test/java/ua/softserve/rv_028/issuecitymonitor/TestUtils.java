@@ -27,19 +27,19 @@ public final class TestUtils {
 
     public static User createUser(int i) {
         return new User("User"+i, "Jerry"+i,"000",
-                "mail","+380997755331",true,
+                "mail"+i,"+380997755331",true,
                 UserStatus.ACTIVE,UserRole.USER,"url");
     }
 
     public static List<Event> createEventsList(User owner, int size) {
-        return IntStream.range(0, size).mapToObj(i -> createEvent(owner, size)).collect(Collectors.toList());
+        return IntStream.range(0, size).mapToObj(i -> createEvent(owner, i)).collect(Collectors.toList());
     }
 
     public static List<Issue> createIssuesList(User owner, int size) {
-        return IntStream.range(0, size).mapToObj(i -> createIssue(owner, size)).collect(Collectors.toList());
+        return IntStream.range(0, size).mapToObj(i -> createIssue(owner, i)).collect(Collectors.toList());
     }
 
     public static List<User> createUsersList(int size) {
-        return IntStream.range(0, size).mapToObj(i -> createUser(size)).collect(Collectors.toList());
+        return IntStream.range(0, size).mapToObj(TestUtils::createUser).collect(Collectors.toList());
     }
 }
