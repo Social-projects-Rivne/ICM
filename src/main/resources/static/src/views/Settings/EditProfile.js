@@ -1,15 +1,8 @@
 import React, { Component } from 'react';
-import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {
-    Alert, Label, Col, Button, Row, Form, FormGroup, FormFeedback, Input, InputGroup, InputGroupAddon,
-    InputGroupButton
-} from 'reactstrap';
-import { ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
+    Alert, Label, Col, Button, Row, Form, FormGroup, Input} from 'reactstrap';
 import {Container} from 'reactstrap';
-import ClientHeader from '../../components/ClientHeader/ClientHeader'
-import Footer from '../../components/Footer/Footer';
 import axios from 'axios';
-import SignUp from "../SignUp";
 
 export default class EditProfile extends Component{
     constructor(props){
@@ -48,13 +41,6 @@ export default class EditProfile extends Component{
         EditProfile.isEmpty(this.state.phone) ? this.setState({phoneValid: false}) : this.setState({phoneValid: true});
     }
 
-    static isEmpty(obj){
-        if(obj === null)
-            return true;
-        return obj.length === 0;
-
-    }
-
     handleInputChange(event){
         const name = event.target.name;
         const value = event.target.value;
@@ -72,14 +58,14 @@ export default class EditProfile extends Component{
 
         switch (fieldName){
             case 'firstName':
-                firstNameValid = !EditProfile.isEmpty(value);console.log('FN empty', !EditProfile.isEmpty(value));
+                firstNameValid = !EditProfile.isEmpty(value);
                 break;
-            case 'lastName': 
+            case 'lastName':
                 lastNameValid = !EditProfile.isEmpty(value);
                 break;
             case 'phone':
                 phoneValid = !EditProfile.isEmpty(value);
-                break;    
+                break;
             case 'newPassword':
                 newPasswordValid = value.length >= 3;
                 confirmNewPasswordValid = false;
@@ -285,23 +271,15 @@ export default class EditProfile extends Component{
     }
 
     checkNewPassword(){
-        if (this.state.newPassword === '') {
-            return null;
-        }
-        return this.state.newPasswordValid;
-
+        return this.state.newPassword === '' ? null : this.state.newPasswordValid;
     }
 
     checkConfirmPassword(){
-        if (this.state.confirmNewPassword === '') {
-            return null;
-        }
-        return this.state.confirmNewPasswordValid;
-
+        return this.state.confirmNewPassword === '' ? null : this.state.confirmNewPasswordValid;
     }
 
     checkPasswordFormValid(){
-        return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;        
+        return (this.state.oldPassword.length >= 3) && this.state.newPasswordValid && this.state.confirmNewPasswordValid;
     }
 
     checkContactsFormValid(){
@@ -332,5 +310,12 @@ export default class EditProfile extends Component{
         } else {
             return {display : 'none'};
         }
+    }
+
+    static isEmpty(obj){
+        if(obj === null)
+            return true;
+        return obj.length === 0;
+
     }
 }
