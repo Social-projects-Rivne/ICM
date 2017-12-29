@@ -18,8 +18,8 @@ import EditUsers from "../../views/Users/EditUsers";
 import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";
 import Login from "../../views/Login/Login";
-import Page500 from "../../views/Page500/Page500";
 import Page404 from "../../views/Page404/Page404";
+
 import axios from "axios/index";
 
 class Full extends Component {
@@ -52,7 +52,7 @@ class Full extends Component {
             <Breadcrumb />
             <Container fluid>
               <Switch>
-                <Route exact path="/admin/dashboard" name="Dashboard" component={Dashboard}/>
+                <Route exact path="/admin/" name="Dashboard" component={Dashboard}/>
                 <Route exact path="/admin/events" name="Events" component={Events}/>
                 <Route path="/admin/events/:id/edit" name="Events" component={EventEdit}/>
                 <Route exact path="/admin/petitions" name="Petitions" component={Petitions}/>
@@ -62,6 +62,7 @@ class Full extends Component {
                 <Route path="/admin/issues/:id/edit" name="Issues" component={IssueEdit}/>
                 <Route exact path="/admin/users" name="Users" component={Users}/>
                 <Route path="/admin/users/:id/edit" name="EditUsers" component = {EditUsers}/>
+                <Route path="*" component={Page404} />
               </Switch>
             </Container>
           </main>
@@ -71,5 +72,6 @@ class Full extends Component {
     );
   }
 }
+
 
 export default Full;
