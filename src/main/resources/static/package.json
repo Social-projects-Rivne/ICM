@@ -39,13 +39,23 @@
     "chart.js": "2.7.1",
     "font-awesome": "4.7.0",
     "history": "4.7.2",
+<<<<<<< HEAD
+=======
+    "leaflet": "^1.2.0",
+    "lodash": "^4.17.4",
+>>>>>>> afac4e11bc87c5a7724f3c64bfe5d4e66ba37d0d
     "moment": "^2.19.3",
     "qs": "^6.5.1",
     "react": "^15.6.2",
     "react-chartjs-2": "2.6.4",
+<<<<<<< HEAD
     "react-datetime": "^2.11.1",
+=======
+    "react-cookie": "^2.1.2",
+>>>>>>> afac4e11bc87c5a7724f3c64bfe5d4e66ba37d0d
     "react-dom": "^15.6.2",
     "react-input-slider": "^4.0.1",
+    "react-leaflet": "^1.7.8",
     "react-router-dom": "4.2.2",
     "react-transition-group": "2.2.1",
     "reactstrap": "5.0.0-alpha.4",

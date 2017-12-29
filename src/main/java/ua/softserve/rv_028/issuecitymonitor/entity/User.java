@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.NaturalId;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -48,9 +47,6 @@ public class User implements UserDetails{
 	@Column(name = "phone")
 	private String phone;
 
-	@Column(name = "user_agreement")
-	private boolean userAgreement;
-
 	@Column(name = "user_status")
 	@Enumerated(EnumType.ORDINAL)
 	private UserStatus userStatus;
@@ -76,27 +72,17 @@ public class User implements UserDetails{
 	public User() {}
 
 	public User(String firstName, String lastName, String password, String username,
-                String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
-                String avatarUrl) {
+				String phone, UserStatus userStatus, UserRole userRole,
+				String avatarUrl) {
 		this.username = username;
 		this.password = password;
 		this.userRole = userRole;
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
-		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
 		this.avatarUrl = avatarUrl;
 	}
-
-	public User(String firstName, String lastName, String username, String password){
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.password = password;
-        this.userRole = UserRole.USER;
-        this.userStatus = UserStatus.UNCONFIRMED;
-    }
 
 	public void setId(long id) {
 		this.id = id;
@@ -162,14 +148,6 @@ public class User implements UserDetails{
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public boolean isUserAgreement() {
-		return userAgreement;
-	}
-
-	public void setUserAgreement(boolean userAgreement) {
-		this.userAgreement = userAgreement;
 	}
 
 	public UserStatus getUserStatus() {
@@ -261,7 +239,6 @@ public class User implements UserDetails{
 				", lastName='" + lastName + '\'' +
 				", username='" + username + '\'' +
 				", phone='" + phone + '\'' +
-				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +
 				", deleteDate='" + deleteDate + '\'' +
 				", avatarUrl='" + avatarUrl + '\'' +

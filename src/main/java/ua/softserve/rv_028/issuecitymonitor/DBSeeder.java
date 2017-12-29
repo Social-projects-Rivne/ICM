@@ -44,14 +44,15 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        User defaultAdmin = new User("Root", "Admin", "gefasim@mail.com", encoder.encode("root"));
-        defaultAdmin.setUserRole(UserRole.ADMIN);
+        User defaultAdmin = new User("Root", "Admin", encoder.encode("root"), "admin@mail.com", "+380997755331",
+                UserStatus.ACTIVE, UserRole.ADMIN, "http://url.com");
+
         session.save(defaultAdmin);
 
         for(int i=0; i < 10 ; i++){
             User user = new User("Tom"+i, "Jerry"+i,encoder.encode(i+""+i+""+i),
-                    "tom"+i+"@mail.rv.ua","+380997755331",r.nextBoolean(),
-                    randomEnum(UserStatus.class),randomEnum(UserRole.class),"http://url.com"+i);
+                    "tom"+i+"@mail.rv.ua","+380997755331", randomEnum(UserStatus.class),
+                    randomEnum(UserRole.class),"http://url.com"+i);
 
             session.save(user);
 
@@ -101,11 +102,11 @@ public class DBSeeder {
 
     private static final Random r = new Random();
 
-    private LocalDateTime date() {
+    private static LocalDateTime date() {
         return LocalDateTime.now();
     }
 
-    private <T extends Enum<?>> T randomEnum(Class<T> classname) {
+    private static <T extends Enum<?>> T randomEnum(Class<T> classname) {
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
     }

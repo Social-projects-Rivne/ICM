@@ -17,6 +17,7 @@ public class Event {
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
+    @OrderBy
     private long id;
 
     @ManyToOne
@@ -142,16 +143,16 @@ public class Event {
         this.category = category;
     }
 
-    public boolean getIsDeleted() {
-        return isDeleted;
-    }
-
     public Set<EventAttachment> getAttachments() {
         return attachments;
     }
 
     public Set<EventChangeRecord> getChangeRecords() {
         return changeRecords;
+    }
+
+    public boolean getIsDeleted() {
+        return isDeleted;
     }
 
     @Override

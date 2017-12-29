@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ua.softserve.rv_028.issuecitymonitor.Constants;
+import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
 import ua.softserve.rv_028.issuecitymonitor.exception.RestorePasswordException;
 
@@ -16,13 +17,6 @@ import java.io.IOException;
 public class AdviceController {
 
     private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
-
-    //TODO REMOVE this
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(IllegalStateException.class)
-    public void handleIllegalStateException(Exception e){
-        LOGGER.debug(e.getMessage());
-    }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)
@@ -36,11 +30,16 @@ public class AdviceController {
         LOGGER.debug(e.getMessage());
     }
 
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.CHANGE_ROLE_FAIL)
+    @ExceptionHandler(LastAdminException.class)
+    public void editingError(LastAdminException e){
+        LOGGER.error(e.getMessage());
+    }
 
     @ExceptionHandler(RestorePasswordException.class)
     public void handleRestorePasswordException(RestorePasswordException e, HttpServletResponse response) throws IOException {
         LOGGER.debug(e.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
-}
 
+}

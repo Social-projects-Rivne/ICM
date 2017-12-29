@@ -27,8 +27,7 @@ public final class TestUtils {
 
     public static User createUser(int i) {
         return new User("User"+i, "Jerry"+i,"000",
-                "mail"+i,"+380997755331",true,
-                UserStatus.ACTIVE,UserRole.USER,"url");
+                "mail"+i,"+380997755331", UserStatus.ACTIVE,UserRole.USER,"url");
     }
 
     public static List<Event> createEventsList(User owner, int size) {

@@ -17,7 +17,6 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-
     public UserDto() {}
 
     public UserDto(String firstName, String lastName, String email, String password){
@@ -93,7 +92,9 @@ public class UserDto {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
+        if (this.email == null)
         this.email = email;
     }
 
@@ -154,6 +155,4 @@ public class UserDto {
                 ", avatarUrl='" + avatarUrl + '\'' +
                 '}';
     }
-
 }
-
