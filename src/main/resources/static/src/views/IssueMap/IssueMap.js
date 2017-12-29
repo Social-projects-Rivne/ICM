@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { compose, withProps } from "recompose"
 import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
+import Map from './Map';
 
 class IssueMap extends Component {
     constructor(props){
@@ -10,11 +10,16 @@ class IssueMap extends Component {
 
 
         this.state = {
-            issues: []
+            issues: [],
+            width: props.width,
+            height: props.height
         };
+
     }
 
     componentWillMount() {
+        this.setState({height: window.innerHeight + 'px', width: window.innerWidth + 'px'});
+
         var _this = this;
         axios.get("/api/issues")
             .then(function(response) {
@@ -29,39 +34,19 @@ class IssueMap extends Component {
     }
 
    render() {
-    const MyMapComponent = compose(
-      withProps({
-       googleMapURL: "https://maps.googleapis.com/maps/api/js?key=AIzaSyCWeUPkEU7NK94ImWCjXVIMvrO9R3Lz08A&callback=initMap",
-        loadingElement: <div style={{ height: `100%` }} />,
-        containerElement: <div style={{ height: `1000px` }} />,
-        mapElement: <div style={{ height: `100%` }} />,
-      }),
-      withScriptjs,
-      withGoogleMap
-    )((props) =>
-      <GoogleMap
-        defaultZoom={15}
-        defaultCenter={{ lat: 	50.619900, lng: 26.251617 }}
-      >
-          {this.state.issues.map(issues => (
-              <Marker
-                  key={issues.id}
-                  position={{ lat: issues.latitude, lng: issues.longitude }}
-              >
-              <InfoWindow>
-                      <div>
-                        {"It is marker!"}
-                      </div>
-              </InfoWindow>
-               </Marker>
-          ))}
-      </GoogleMap>
 
-    )
-        return (
-            <MyMapComponent/>
-        )
-   }
+   return(
+        <div style={{height: this.state.height, weight: this.state.width}}>
+            <Map
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMDIyzcpoHdvK8MLCUhvrqZDyllGiyrnM &callback=initMap"
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: 100 + '%' }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+
+            />
+        </div>
+   )
+  }
 }
 
 
