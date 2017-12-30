@@ -6,6 +6,7 @@ import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
 import javax.persistence.*;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,6 +19,7 @@ public class Event {
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
+    @OrderBy
     private long id;
 
     @ManyToOne
@@ -156,18 +158,16 @@ public class Event {
         return isDeleted;
     }
 
+    public Set<EventAttachment> getAttachments() {
+        return attachments;
+    }
+
     @PreRemove
     public void delete() {
         this.isDeleted = true;
     }
 
-    public Set<EventAttachment> getAttachments() {
-        return attachments;
-    }
 
-    public Set<EventChangeRecord> getChangeRecords() {
-        return changeRecords;
-    }
 
     @Override
     public String toString() {
