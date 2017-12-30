@@ -64,7 +64,7 @@ export default class EditProfile extends Component{
                 lastNameValid = !EditProfile.isEmpty(value);
                 break;
             case 'phone':
-                phoneValid = !EditProfile.isEmpty(value);
+                phoneValid = (/^(\+)+([\d]{1,4})+([\d]{10})$/i).test(value);
                 break;
             case 'newPassword':
                 newPasswordValid = value.length >= 3;
@@ -162,6 +162,7 @@ export default class EditProfile extends Component{
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
+                                       valid={this.state.phoneValid}
                                 />
                             </FormGroup>
 
