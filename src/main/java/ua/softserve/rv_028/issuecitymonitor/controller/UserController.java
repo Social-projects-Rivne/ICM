@@ -1,18 +1,14 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
-
-
 import org.apache.log4j.Logger;
-
-
 
 @RestController
 @RequestMapping("api/users")
@@ -32,9 +28,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
-        LOG.debug("Get all users.");
-        return new ResponseEntity<Object>(service.findAll(), HttpStatus.OK);
+    public Page<UserDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "size", defaultValue = "10") int size){
+        LOG.debug("GET request for all users by page");
+        return service.findAllByPage(new PageRequest(page-1, size));
     }
 
     @GetMapping("/{id}")

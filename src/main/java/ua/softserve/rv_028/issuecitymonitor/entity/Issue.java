@@ -1,8 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
-import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
@@ -11,14 +8,12 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
-@SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class Issue{
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    private Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -65,21 +60,12 @@ public class Issue{
         this.longitude = longitude;
         this.category = category;
     }
-    public Issue(IssueDto dto) {
-        this.user = new User(dto.getUserDto());
-        this.title = dto.getTitle();
-        this.description = dto.getDescription();
-        this.initialDate = dto.getInitialDate();
-        this.latitude = dto.getLatitude();
-        this.longitude = dto.getLongitude();
-        this.category = dto.getCategory();
-    }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
@@ -151,16 +137,11 @@ public class Issue{
         return isDeleted;
     }
 
-    @PreRemove
-    public void delete() {
-        this.isDeleted = true;
-    }
-
     @Override
     public String toString() {
         return "Issue{" +
                 "id=" + id +
-                ", user=" + user.getId() +
+                ", user=" + user +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

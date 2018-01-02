@@ -1,36 +1,70 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
+import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
+        classes = TestApplication.class)
 public class IssueControllerIntegrationTest {
 
+    private static final int LIST_SIZE = 5;
+    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_OFFSET = 1;
+
     private Issue issue;
+    private List<Issue> issues;
+    private User user;
 
     @Autowired
     private IssueDao issueDao;
+
+    @Autowired
+    private UserDao userDao;
+
+    @Autowired
+    private MapperService mapperService;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Before
     public void setup(){
-        issue = issueDao.findAllByOrderByIdAsc().get(1);
+        user = userDao.save(TestUtils.createUser(0));
+        issues = issueDao.save(TestUtils.createIssuesList(user, LIST_SIZE));
+        issue = issues.get(0);
+    }
+
+    @After
+    public void tearDown() {
+        issueDao.delete(issues);
+        userDao.delete(user);
     }
 
     @Test
@@ -45,10 +79,25 @@ public class IssueControllerIntegrationTest {
     }
 
     @Test
+    public void testGetAllByPage(){
+        ResponseEntity<String> responseEntity = testRestTemplate.
+                getForEntity("/api/issues?size=" + PAGE_SIZE + "&page=" + PAGE_OFFSET, String.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            assertEquals(PAGE_SIZE, content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void testAddIssue(){
         String addTitle = "testAddTitle";
         String addDescription = "testAddDescription";
-        IssueDto issueDto = new IssueDto(issue);
+        IssueDto issueDto = mapperService.fromEntityToDto(issue);
         issueDto.setTitle(addTitle);
         issueDto.setDescription(addDescription);
 
@@ -72,7 +121,7 @@ public class IssueControllerIntegrationTest {
     public void testEditIssue(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        IssueDto issueDto = new IssueDto(issue);
+        IssueDto issueDto = mapperService.fromEntityToDto(issue);
         issueDto.setTitle(updatedTitle);
         issueDto.setDescription(updatedDescription);
 
