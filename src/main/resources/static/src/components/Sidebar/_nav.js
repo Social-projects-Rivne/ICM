@@ -3,7 +3,7 @@ export default {
 
     {
       name: 'Dashboard',
-      url: '/admin/dashboard',
+      url: '/admin/',
       icon: 'icon-home',
 
     },

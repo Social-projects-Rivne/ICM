@@ -18,6 +18,7 @@ import Authorization from "./containers/Authorization/Authorization";
 
 import IssueMap from "./views/IssueMap/IssueMap";
 import Client from "./containers/Client/Client";
+import Page404 from "./views/Page404";
 
 ReactDOM.render((
     <BrowserRouter>
@@ -26,8 +27,10 @@ ReactDOM.render((
             <Route exact path="/registration" name="SignUp" component={Authorization}/>
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/admin/" name="Home" component={Full}/>
-            <Route path="/" name="Client" component={Client}/>
             <Route path="/maps" name="IssueMap" component={IssueMap}/>
+            <Route exact path="/" name="Client" component={Client}/>
+            <Route path="/*" component={Page404} />
+            <Route path="/" name="Client" component={Client}/>
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));

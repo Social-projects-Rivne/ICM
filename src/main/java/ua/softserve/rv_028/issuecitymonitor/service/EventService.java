@@ -18,7 +18,7 @@ import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 @Service
 public class EventService {
 
-    private static final Logger LOGGER = Logger.getLogger(EventService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(EventService.class);
 
     private final EventDao eventDao;
 
@@ -32,7 +32,7 @@ public class EventService {
 
     public Page<EventDto> findAllByPage(int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<EventDto> eventDtos = eventDao.findAll(pageRequest).map(eventMapper::toDto);
+        Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(pageRequest));
         LOGGER.debug("Found all events");
         return eventDtos;
     }
@@ -55,9 +55,14 @@ public class EventService {
         }
         event.setCategory(eventDto.getCategory());
 
-        eventDao.save(event);
+        event = eventDao.save(event);
         LOGGER.debug("Updated " + event.toString());
         return eventMapper.toDto(event);
+    }
+
+    public void deleteById(long id) {
+        eventDao.delete(id);
+        LOGGER.debug("Deleted event " + id);
     }
 
     private Event findOne(long id){
@@ -66,10 +71,5 @@ public class EventService {
             throw new IllegalArgumentException("event id not found:" + id);
         }
         return event;
-    }
-
-    public void deleteById(long id) {
-        eventDao.delete(id);
-        LOGGER.debug("Deleted event " + id);
     }
 }

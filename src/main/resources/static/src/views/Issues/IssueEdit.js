@@ -40,15 +40,15 @@ class IssueEdit extends Component {
     }
 
     handleInitialDateChange(m){
-            this.setState(function(prev) {
-                return {
-                    issue: {
-                        ...prev.issue,
-                        initialDate: m.format("DD/MM/YYYY HH:mm")
-                    }
+        this.setState(function(prev) {
+            return {
+                issue: {
+                    ...prev.issue,
+                    initialDate: m.format("DD/MM/YYYY HH:mm")
                 }
-            });
-        }
+            }
+        });
+    }
 
     handleChange(e) {
         const name = e.target.name;
@@ -116,10 +116,10 @@ class IssueEdit extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <DateTime value={this.state.issue.initialDate} dateFormat="DD/MM/YYYY"
-                                                timeFormat="HH:mm" onChange={this.handleInitialDateChange}
-                                                inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                                                      timeFormat="HH:mm" onChange={this.handleInitialDateChange}
+                                                      inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
-                                        </FormGroup>
+                                    </FormGroup>
 
                                     <FormGroup row>
                                         <Col md="2">
@@ -138,7 +138,7 @@ class IssueEdit extends Component {
                                 </CardBody>
                                 <CardFooter className="text-right">
                                     <Button color="success" onClick={this.handleSave}>
-                                            <i className="fa fa-dot-circle-o"/> Save</Button>
+                                        <i className="fa fa-dot-circle-o"/> Save</Button>
                                     <Button color="primary" onClick={this.handleBack}>
                                         <i className="fa fa-ban"/> Back</Button>
                                 </CardFooter>

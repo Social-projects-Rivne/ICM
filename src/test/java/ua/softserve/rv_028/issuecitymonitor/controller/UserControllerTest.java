@@ -5,9 +5,13 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -15,11 +19,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
-public class UserControllerUnitTest {
+public class UserControllerTest {
 
     private final static String TEST_NAME= "testName";
     private final static UserStatus TEST_STATUS = UserStatus.BANNED;
     private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("user not found");
+    private final static int PAGE_INDEX = 1;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private UserController userController;
@@ -34,7 +40,7 @@ public class UserControllerUnitTest {
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
 
-        when(userService.findByID(1)).thenReturn(userDto);
+        when(userService.findById(1)).thenReturn(userDto);
 
         UserDto dto = userController.getOne(1);
 
@@ -44,7 +50,7 @@ public class UserControllerUnitTest {
 
     @Test
     public void testGetUsersNotFound() {
-        when(userService.findByID(-1)).thenThrow(EXCEPTION_NOT_FOUND);
+        when(userService.findById(-1)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
             userController.getOne(-1);
@@ -54,6 +60,18 @@ public class UserControllerUnitTest {
         }
     }
 
+    @Test
+    public void testGetAllByPage(){
+        Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
+        //TODO
+        //when(userService.findAllByPage(any(Pageable.class))).thenReturn(userDtoPage);
+
+        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        //verify(userService).findAllByPage(any(Pageable.class));
+        //verifyNoMoreInteractions(userService);
+        assertEquals(userDtoPage, page);
+    }
 
     @Test
     public void testEditUser() {
@@ -61,14 +79,14 @@ public class UserControllerUnitTest {
         userDto.setId(1L);
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
-        when(userService.updateUser(userDto)).thenReturn(userDto);
+        when(userService.update(userDto)).thenReturn(userDto);
     }
 
     @Test
     public void testEditUserNotFound() {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
-        when(userService.updateUser(userDto)).thenThrow(EXCEPTION_NOT_FOUND);
+        when(userService.update(userDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
             userController.update(userDto);

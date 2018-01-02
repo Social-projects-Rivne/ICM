@@ -8,8 +8,6 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import java.util.List;
 
 public interface UserDao extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
-
-    List<User> findAllByOrderByIdAsc();
     List<User> findAll();
 
     User findUserByUsername(String username);

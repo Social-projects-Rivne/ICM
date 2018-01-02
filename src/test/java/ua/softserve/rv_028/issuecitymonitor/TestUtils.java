@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public final class TestUtils {
-
     public static final String TITLE = "Title";
     public static final String DESCRIPTION = "Description";
     public static final String USER_FNAME = "User";
@@ -37,6 +36,11 @@ public final class TestUtils {
     public static User createUser(int i) {
         return new User(USER_FNAME + i, USER_LNAME + i,"000",
                 USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.USER, "url");
+    }
+
+    public static User createAdmin(int i) {
+        return new User(USER_FNAME + i, USER_LNAME + i,"000",
+                USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.ADMIN, "url");
     }
 
     public static List<Event> createEventsList(User owner, int size) {

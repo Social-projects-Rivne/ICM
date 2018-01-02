@@ -8,13 +8,26 @@ class Issues extends Component {
         super(props);
 
         this.state = {
-            issues: []
+            issues: "",
+            page: 1
         };
+
+        this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
+        this.makeQuery();
+    }
+
+    handlePageChange(pageNum) {
+        this.setState({page: pageNum}, function() {
+            this.makeQuery();
+        });
+    }
+
+    makeQuery() {
         var _this = this;
-        axios.get("/api/issues")
+        axios.get(["/api/issues?page=", this.state.page].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data
@@ -24,10 +37,9 @@ class Issues extends Component {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
     }
-
     render() {
         return (
-            <IssuesContainer data={this.state.issues}/>
+            <IssuesContainer data={this.state.issues} onPageChange={this.handlePageChange}/>
         )
     }
 }

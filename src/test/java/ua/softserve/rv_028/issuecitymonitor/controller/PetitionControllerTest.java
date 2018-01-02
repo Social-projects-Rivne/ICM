@@ -5,19 +5,27 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
+import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class PetitionControllerUnitTest {
+public class PetitionControllerTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
     private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("petition not found");
+    private final static int PAGE_INDEX = 1;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private PetitionController petitionController;
@@ -49,6 +57,18 @@ public class PetitionControllerUnitTest {
         } catch (IllegalStateException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
+    }
+
+    @Test
+    public void testGetAllByPage(){
+        Page<PetitionDto> petitionDtoPage = new PageImpl<>(new ArrayList<>());
+        //when(petitionService.findAllByPage(any(Pageable.class))).thenReturn(petitionDtoPage);
+        //TODO this
+        Page<PetitionDto> page = petitionController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        //verify(petitionService).findAllByPage(any(Pageable.class));
+        verifyNoMoreInteractions(petitionService);
+        assertEquals(petitionDtoPage, page);
     }
 
     @Test

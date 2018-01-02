@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 public class IssueDto {

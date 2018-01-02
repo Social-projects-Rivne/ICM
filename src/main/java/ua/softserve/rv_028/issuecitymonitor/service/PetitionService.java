@@ -2,6 +2,9 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -13,8 +16,6 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -46,19 +47,10 @@ public class PetitionService {
         }
     }
 
-    public void deleteById(long id) {
-        Petition petition = findOne(id);
-        petitionDao.delete(petition);
-        LOGGER.debug("Deleted " + petition.toString());
-    }
-
-    public List<PetitionDto> findAll() {
-        List<PetitionDto> petitionDtos = new ArrayList<>();
-        for(Petition e : petitionDao.findAll()){
-            petitionDtos.add(petitionMapper.toDto(e));
-        }
-        LOGGER.debug("Found all petitions");
-        return petitionDtos;
+    public Page<PetitionDto> findAllByPage(int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<Petition> petitions = petitionDao.findAll(pageRequest);
+        return petitionMapper.toDtoPage(petitions);
     }
 
     public PetitionDto findById(long id) {
@@ -74,9 +66,16 @@ public class PetitionService {
         petition.setDescription(petitionDto.getDescription());
         petition.setInitialDate(LocalDateTime.parse(petitionDto.getInitialDate(), DATE_FORMAT));
         petition.setCategory(petitionDto.getCategory());
-        petitionDao.save(petition);
+
+        petition = petitionDao.save(petition);
         LOGGER.debug("Updated " + petition.toString());
         return petitionMapper.toDto(petition);
+    }
+
+    public void deleteById(long id) {
+        Petition petition = findOne(id);
+        petitionDao.delete(petition);
+        LOGGER.debug("Deleted " + petition.toString());
     }
 
     private Petition findOne(long id){
