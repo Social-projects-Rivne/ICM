@@ -80,12 +80,6 @@ public class PetitionControllerUnitTest {
     }
 
     @Test
-    public void testDeletePetitionSuccessfully(){
-        doNothing().when(petitionService).deleteById(1); //This is obvious
-        petitionController.delete(1);
-    }
-
-    @Test
     public void testDeletePetitionNotFound(){
         doThrow(EXCEPTION_NOT_FOUND).when(petitionService).deleteById(1);
 

@@ -1,72 +1,59 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
+import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
-
-import org.apache.log4j.Logger;
 import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
-import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-@Component
+@Service
 public class UserService {
 
+    private UserMapper mapper;
 
-    private MapperService mapper;
-
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
     private final  UserDao userDao;
 
     @Autowired
-    public UserService(UserDao userDao, MapperService mapper){
+    public UserService(UserDao userDao, UserMapper mapper){
         this.userDao = userDao;
         this.mapper = mapper;
     }
 
-
     public void deleteById(long id) {
-        User user = findOne(id);
-        if(UserRole.ADMIN != user.getUserRole()){
-            LOGGER.debug("User is deleted");
-            userDao.delete(id);
-        }else
-            throw new UserNotFoundException("Users role is ADMIN, you can't delete ADMIN, try change his role!");
-        LOGGER.debug("user role is " + user.getUserRole() + user.getIsDeleted());
-
+        userDao.delete(id);
+        LOGGER.debug("Deleted user " + id);
     }
-
-
 
     private User findOne(long id){
         User user = userDao.findOne(id);
-        LOGGER.debug("Find one " + user.toString());
+        if(user == null) {
+            throw new IllegalStateException("user id not found: " + id);
+        }
         return user;
     }
 
     public List<UserDto> findAll(){
         List<UserDto> all = new ArrayList<>();
-        for (User users : userDao.findAllByOrderByIdAsc()) {
-            if(!users.getIsDeleted())
-            all.add(mapper.fromEntityToDto(users));
+        for (User user : userDao.findAllByOrderByIdAsc()) {
+            all.add(mapper.toDto(user));
         }
-        LOGGER.debug("Show all users!");
+        LOGGER.debug("Found all users");
         return all;
 
     }
 
     public UserDto findByID(long id){
         User user = findOne(id);
-        LOGGER.debug("User is finded by id");
-        return mapper.fromEntityToDto(user);
+        LOGGER.debug("Found " + user);
+        return mapper.toDto(user);
     }
 
     public UserDto updateUser(UserDto userDto)  {
@@ -75,15 +62,14 @@ public class UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setUserStatus(userDto.getUserStatus());
-        LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
+        LOGGER.debug("Count of Admins in DB " + userDao.countAdmins());
         if (userDao.countAdmins() > 1) {
             userDao.save(user);
-            return mapper.fromEntityToDto(user);
+            return mapper.toDto(user);
         }
         else{
             throw new LastAdminException();
         }
-
     }
 
 

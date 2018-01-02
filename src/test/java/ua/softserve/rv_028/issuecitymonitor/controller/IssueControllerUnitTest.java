@@ -17,7 +17,7 @@ public class IssueControllerUnitTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
-    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("issue not found");
+    private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("issue not found");
 
     @InjectMocks
     private IssueController issueController;
@@ -46,7 +46,7 @@ public class IssueControllerUnitTest {
         try {
             issueController.getOne(-1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -88,7 +88,7 @@ public class IssueControllerUnitTest {
         try {
             issueController.editIssue(issueDto);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -106,7 +106,7 @@ public class IssueControllerUnitTest {
         try {
             issueController.deleteIssue(1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }

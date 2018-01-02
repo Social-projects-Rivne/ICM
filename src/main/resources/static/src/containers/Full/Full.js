@@ -14,7 +14,7 @@ import PetitionAdd from "../../views/Petitions/PetitionAdd";
 import Issues from "../../views/Issues/";
 import IssueEdit from "../../views/Issues/IssueEdit";
 import Users from "../../views/Users/";
-import EditUsers from "../../views/Users/EditUsers";
+import UserEdit from "../../views/Users/UserEdit";
 import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";
 import Search from "../../views/Search/Search";
@@ -50,18 +50,15 @@ class Full extends Component {
               <Switch>
                 <Route exact path="/admin/dashboard" name="Dashboard" component={Dashboard}/>
                 <Route exact path="/admin/events" name="Events" component={Events}/>
-                <Route path="/admin/events/:id/edit" name="Events" component={EventEdit}/>
+                <Route path="/admin/events/:id/edit" name="EventEdit" component={EventEdit}/>
                 <Route exact path="/admin/petitions" name="Petitions" component={Petitions}/>
                 <Route path="/admin/petitions/:id/edit" name="Petitions" component={PetitionEdit}/>
                 <Route path="/admin/petitions/add" name="PetitionAdd" component={PetitionAdd}/>
                 <Route exact path="/admin/issues" name="Issues" component={Issues}/>
-                <Route path="/admin/issues/:id/edit" name="Issues" component={IssueEdit}/>
+                <Route path="/admin/issues/:id/edit" name="IssueEdit" component={IssueEdit}/>
                 <Route exact path="/admin/users" name="Users" component={Users}/>
-<<<<<<< HEAD
                 <Route exact path="/admin/search" name="Search" component={Search}/>
-=======
-                <Route path="/admin/users/:id/edit" name="EditUsers" component = {EditUsers}/>
->>>>>>> afac4e11bc87c5a7724f3c64bfe5d4e66ba37d0d
+                <Route path="/admin/users/:id/edit" name="UserEdit" component = {UserEdit}/>
               </Switch>
             </Container>
           </main>

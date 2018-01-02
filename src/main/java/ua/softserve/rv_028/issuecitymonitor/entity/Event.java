@@ -12,8 +12,6 @@ import java.util.Set;
 @Table(name = "events")
 public class Event {
 
-    //TODO SOFT DELETE
-
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
@@ -159,7 +157,7 @@ public class Event {
     public String toString() {
         return "Event{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +

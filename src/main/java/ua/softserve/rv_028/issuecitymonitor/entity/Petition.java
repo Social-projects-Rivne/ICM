@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
 import javax.persistence.*;
@@ -27,6 +28,7 @@ public class Petition{
     private String description;
 
     @Column(name = "initial_date")
+    @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime initialDate;
 
     @Column(name = "category")

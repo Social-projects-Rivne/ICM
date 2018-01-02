@@ -23,7 +23,6 @@ public class UserMapper extends MapperService<UserDto, User> {
         dto.setPassword(entity.getPassword());
         dto.setEmail(entity.getUsername());
         dto.setPhone(entity.getPhone());
-        dto.setUserAgreement(entity.isUserAgreement());
         dto.setUserStatus(entity.getUserStatus());
 
         if(entity.getDeleteDate() != null) {
@@ -44,7 +43,6 @@ public class UserMapper extends MapperService<UserDto, User> {
         entity.setPassword(dto.getPassword());
         entity.setUsername(dto.getEmail());
         entity.setPhone(dto.getPhone());
-        entity.setUserAgreement(dto.isUserAgreement());
         entity.setUserStatus(dto.getUserStatus());
         if(dto.getDeleteDate() != null) {
             entity.setDeleteDate(LocalDateTime.parse(dto.getDeleteDate(), DATE_FORMAT));

@@ -47,7 +47,6 @@ class User extends Component {
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>User status</th>
-                                        {/*<th>User Agreement</th>*/}
                                         {/*<th>Delete date</th>*/}
                                         {/*<th>IsDeleted</th>*/}
                                     </tr>
@@ -123,7 +122,6 @@ class User extends Component {
                  <td>{this.state.users.email}</td>
                  <td>{this.state.users.phone}</td>
                  <td>{this.state.users.userStatus}</td>
-                 {/*<td>{this.state.users.userAgreement}</td>*/}
                  {/*<td>{this.state.users.deleteDate}</td>*/}
                  {/*<td>{this.state.users.isDeleted}</td>*/}
                  <td>

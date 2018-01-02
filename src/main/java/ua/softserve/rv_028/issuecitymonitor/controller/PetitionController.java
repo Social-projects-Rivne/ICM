@@ -5,12 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import ua.softserve.rv_028.issuecitymonitor.service.PetitionServiceImpl;
-
-
 
 import java.util.List;
 
@@ -18,11 +12,7 @@ import java.util.List;
 @RequestMapping("/api/petitions")
 public class PetitionController {
 
-
-    @Autowired
-    private PetitionServiceImpl service;
-
-    private static final Logger LOGGER = Logger.getLogger(PetitionController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(PetitionController.class);
 
     private final PetitionService petitionService;
 
@@ -40,30 +30,24 @@ public class PetitionController {
     @GetMapping(value = "/{id}")
     public PetitionDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");
-        PetitionDto result = petitionService.findById(id);
-        LOGGER.debug("GET request successful");
-        return result;
+        return petitionService.findById(id);
     }
 
     @PutMapping("/{id}")
     public PetitionDto update(@PathVariable long id, @RequestBody PetitionDto petitionDto){
         LOGGER.debug("PUT request");
-        PetitionDto result = petitionService.update(petitionDto);
-        LOGGER.debug("PUT request successful");
-        return result;
+        return petitionService.update(petitionDto);
     }
 
     @DeleteMapping("/{id}")
     public void delete(@PathVariable long id){
         LOGGER.debug("DELETE request");
         petitionService.deleteById(id);
-        LOGGER.debug("DELETE request successful");
     }
-
 
     @PostMapping(path = "/add")
     public void createPetition(@RequestBody PetitionDto petitionDto) {
-
+        LOGGER.debug("POST request");
         petitionService.addPetition(petitionDto);
     }
 

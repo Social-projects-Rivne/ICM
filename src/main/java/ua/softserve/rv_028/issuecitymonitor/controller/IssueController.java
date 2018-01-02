@@ -12,7 +12,7 @@ import java.util.List;
 @RequestMapping("/api/issues")
 public class IssueController {
 
-    private static final Logger LOGGER = Logger.getLogger(IssueController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IssueController.class);
 
     private IssueService service;
 

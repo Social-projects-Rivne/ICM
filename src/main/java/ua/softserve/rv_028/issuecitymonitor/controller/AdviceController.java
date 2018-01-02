@@ -16,7 +16,7 @@ import java.io.IOException;
 @ControllerAdvice
 public class AdviceController {
 
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(AdviceController.class);
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)

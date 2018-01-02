@@ -12,7 +12,6 @@ import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -29,12 +28,6 @@ public class EventService {
     public EventService(EventDao eventDao, EventMapper eventMapper){
         this.eventDao = eventDao;
         this.eventMapper = eventMapper;
-    }
-
-    public void deleteById(long id) {
-        Event event = findOne(id);
-        eventDao.delete(event);
-        LOGGER.debug("Deleted " + event.toString());
     }
 
     public Page<EventDto> findAllByPage(int pageNumber, int pageSize) {
@@ -73,5 +66,10 @@ public class EventService {
             throw new IllegalArgumentException("event id not found:" + id);
         }
         return event;
+    }
+
+    public void deleteById(long id) {
+        eventDao.delete(id);
+        LOGGER.debug("Deleted event " + id);
     }
 }

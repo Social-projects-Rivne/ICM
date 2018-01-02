@@ -8,26 +8,24 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-//@EnableAutoConfiguration(exclude = {DBSeeder.class})
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class PetitionControllerIntegrationTest {
 
     @Autowired
     private PetitionDao petitionDao;
 
-
     @Autowired
-    private MapperService mapperService;
-
+    private PetitionMapper petitionMapper;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -36,7 +34,7 @@ public class PetitionControllerIntegrationTest {
 
     @Before
     public void setup(){
-        petition = petitionDao.findAllByOrderByIdAsc().get(1);
+        petition = petitionDao.findAll().get(1);
     }
 
     @Test
@@ -54,7 +52,7 @@ public class PetitionControllerIntegrationTest {
     public void testUpdatePetitionSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        PetitionDto petitionDto = mapperService.fromEntityToDto(petition);
+        PetitionDto petitionDto = petitionMapper.toDto(petition);
         petitionDto.setTitle(updatedTitle);
         petitionDto.setDescription(updatedDescription);
 

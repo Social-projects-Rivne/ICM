@@ -34,12 +34,16 @@ public class UserSpecification implements Specification<User> {
                     continue;
                 }
 
-                if (key.equals("fullName")) {
+                if (key.equals("name")) {
                     String[] values = value.split(" ", 2);
 
                     predicates.add(cb.or(
                             cb.like(cb.lower(root.get("firstName")), ("%" + values[0] + "%").toLowerCase()),
                             cb.like(cb.lower(root.get("lastName")), ("%" + values[values.length == 1 ? 0 : 1] + "%").toLowerCase())));
+                    continue;
+                }
+                if (key.equals("email")) {
+                    predicates.add(cb.like(cb.lower(root.get("username")), ("%" + value + "%").toLowerCase()));
                 }
             }
         }

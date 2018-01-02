@@ -1,5 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
+
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
 public class PetitionDto {

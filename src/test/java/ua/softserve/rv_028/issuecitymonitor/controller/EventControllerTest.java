@@ -17,7 +17,7 @@ public class EventControllerTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
-    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("event not found");
+    private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("event not found");
 
     @InjectMocks
     private EventController eventController;
@@ -46,7 +46,7 @@ public class EventControllerTest {
         try {
             eventController.getOne(-1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -74,7 +74,7 @@ public class EventControllerTest {
         try {
             eventController.update(eventDto);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -86,7 +86,7 @@ public class EventControllerTest {
         try {
             eventController.delete(1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }

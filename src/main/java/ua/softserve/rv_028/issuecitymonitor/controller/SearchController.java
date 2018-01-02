@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.SearchService;
 
@@ -18,6 +19,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
+
     private static final Logger LOGGER = Logger.getLogger(SearchController.class);
 
     private final SearchService searchService;
@@ -51,9 +53,11 @@ public class SearchController {
         return searchService.findIssuesByCriteria(queryMap, pageNumber, pageSize);
     }
 
-    /*@GetMapping("/petitions")
-    public List<PetitionDto> searchPetitions(@RequestParam Map<String, String> queryMap) {
+    @GetMapping("/petitions")
+    public Page<PetitionDto> searchPetitions(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
+                                             @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                             @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching petitions by criteria" + queryMap.toString());
-        return searchService.findPetitionsByCriteria(queryMap);
-    }*/
+        return searchService.findPetitionsByCriteria(queryMap, pageNumber, pageSize);
+    }
 }

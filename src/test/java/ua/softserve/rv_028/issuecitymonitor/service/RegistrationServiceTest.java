@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
@@ -14,9 +14,8 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import static org.junit.Assert.assertEquals;
 
-
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = IssueCityMonitorApplication.class)
+@SpringBootTest(classes = TestApplication.class)
 public class RegistrationServiceTest {
 
     @Autowired
