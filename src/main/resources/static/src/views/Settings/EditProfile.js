@@ -135,7 +135,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='firstName' style={{fontWeight:'600'}}>First name</Label>
                                 <Input type="text" name="firstName" id="firstName"
                                        bsSize="lg"
-                                       placeholder="first name"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.firstName}
@@ -146,7 +145,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='lastName' style={{fontWeight:'600'}}>Last name</Label>
                                 <Input type="text" name="lastName" id="lastName"
                                        bsSize="lg"
-                                       placeholder="last name"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.lastName}
@@ -158,7 +156,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone number</Label>
                                 <Input type="text" name="phone" id="phone"
                                        bsSize="lg"
-                                       placeholder="+380123456789"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
@@ -186,7 +183,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
                                 <Input type="password" name="oldPassword" id="oldPassword"
                                        bsSize="lg"
-                                       placeholder="Old Password"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.oldPassword}
@@ -197,7 +193,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
                                 <Input type="password" name="newPassword" id="newPassword"
                                        bsSize="lg"
-                                       placeholder="Password"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.newPassword}
@@ -209,7 +204,6 @@ export default class EditProfile extends Component{
                                 <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
                                 <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
                                        bsSize="lg"
-                                       placeholder="Password"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.confirmNewPassword}
