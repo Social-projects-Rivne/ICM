@@ -27,13 +27,19 @@ class Petitions extends Component {
             })
     }
 
+    handleClick() {
+        alert("ok");
+    }
+
+
+
     render() {
         return (
             <div className="animated fadeIn">
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Petition list <Link to={"/admin/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link>    <Link to={"/admin/petitions/add"}><Button className="pull-right mr-10" color="info" size="sm">PDF</Button></Link></CardHeader>
+                            <CardHeader>Petition list <Link to={"/admin/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link>   <Button className="pull-right mr-10" color="info" size="sm" onClick={this.handleClick}>PDF</Button></CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>
