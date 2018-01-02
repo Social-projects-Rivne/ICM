@@ -63,11 +63,6 @@ public class PetitionServiceImpl implements PetitionService {
 
     @Override
     public PetitionDto update(PetitionDto petitionDto) {
-        try {
-            DATE_FORMAT.parse(petitionDto.getInitialDate());
-        } catch (ParseException e) {
-            throw new IllegalStateException("incorrect date");
-        }
 
         Petition petition = findOne(petitionDto.getId());
         petition.setTitle(petitionDto.getTitle());

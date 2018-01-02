@@ -32,13 +32,8 @@ public class UserService {
     }
 
     public void deleteById(long id) {
-        User user = findOne(id);
-        if(UserRole.ADMIN != user.getUserRole()){
-            LOGGER.debug("User is deleted");
-            userDao.delete(id);
-        }else
-            throw new UserNotFoundException("Users role is ADMIN, you can't delete ADMIN, try change his role!");
-        LOGGER.debug("user role is " + user.getUserRole() + user.getIsDeleted());
+        userDao.delete(id);
+        LOGGER.debug("Deleted user " + id);
     }
 
     private User findOne(long id){
@@ -60,18 +55,17 @@ public class UserService {
 
     public UserDto updateUser(UserDto userDto)  {
         User user = findOne(userDto.getId());
-        user.setUserRole(userDto.getUserRole());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setUserStatus(userDto.getUserStatus());
         LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
-        if (userDao.countAdmins() > 1) {
-            userDao.save(user);
-            return mapper.fromEntityToDto(user);
-        }
-        else{
+        if (userDao.countAdmins() <= 1 && (user.getUserRole() == UserRole.ADMIN) && (userDto.getUserRole() != UserRole.ADMIN)) {
             throw new LastAdminException();
+        } else {
+            user.setUserRole(userDto.getUserRole());
         }
+
+        return mapper.fromEntityToDto(userDao.save(user));
     }
 
 }

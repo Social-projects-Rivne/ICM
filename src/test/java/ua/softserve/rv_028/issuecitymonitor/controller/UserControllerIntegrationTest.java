@@ -16,6 +16,7 @@ import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import java.io.IOException;
@@ -33,7 +34,7 @@ public class UserControllerIntegrationTest {
     private static final int PAGE_SIZE = 5;
     private static final int PAGE_OFFSET = 1;
 
-    private User user;
+    private User user, admin;
     private List<User> users;
 
     @Autowired
@@ -43,14 +44,16 @@ public class UserControllerIntegrationTest {
     private TestRestTemplate testRestTemplate;
 
     @Before
-    public void setup(){
+    public void setup() {
         users = userDao.save(TestUtils.createUsersList(LIST_SIZE));
+        admin = userDao.save(TestUtils.createAdmin(LIST_SIZE + 1));
         user = users.get(0);
     }
 
     @After
     public void tearDown() {
         userDao.delete(users);
+        userDao.delete(admin);
     }
 
     @Test
@@ -83,7 +86,7 @@ public class UserControllerIntegrationTest {
     public void testEditUser(){
         String updatedName = "testUpdateName";
         UserStatus updatedStatus = UserStatus.ACTIVE;
-        UserDto userDto = new UserDto(user);
+        UserDto userDto = new UserDto(admin);
         userDto.setFirstName(updatedName);
         userDto.setUserStatus(updatedStatus);
 
@@ -94,13 +97,26 @@ public class UserControllerIntegrationTest {
         ResponseEntity<UserDto> responseEntity = testRestTemplate.exchange("/api/users/" + userDto.getId(),
                 HttpMethod.PUT, httpEntity, UserDto.class);
 
-        System.out.println(httpEntity.toString());
-
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         UserDto responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
         assertEquals(updatedName, responseObject.getFirstName());
         assertEquals(updatedStatus, responseObject.getUserStatus());
+    }
+
+    @Test
+    public void testEditUser_thenThrowLastAdminException_expectBadRequest(){
+        UserDto userDto = new UserDto(admin);
+        userDto.setUserRole(UserRole.USER);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+
+        HttpEntity<UserDto> httpEntity = new HttpEntity<>(userDto,httpHeaders);
+        ResponseEntity<UserDto> responseEntity = testRestTemplate.exchange("/api/users/" + userDto.getId(),
+                HttpMethod.PUT, httpEntity, UserDto.class);
+
+        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
     }
 
     @Test
