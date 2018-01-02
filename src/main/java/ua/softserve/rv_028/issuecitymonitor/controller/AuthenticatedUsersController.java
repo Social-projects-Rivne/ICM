@@ -5,6 +5,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
@@ -63,6 +64,11 @@ public class AuthenticatedUsersController {
     public void updateContactInfo(@RequestParam String email, @RequestParam(required = false) String firstName,
                                   @RequestParam(required = false) String lastName, @RequestParam(required = false) String phone){
         profileService.updateContactsInfo(email, firstName, lastName, phone);
+    }
+
+    @PostMapping(value = "/api/userSettings/updateLogo")
+    public void updatePortfolioPhoto(@RequestParam MultipartFile photo){
+        profileService.updatePortfolioPhoto(photo);
     }
 }
 
