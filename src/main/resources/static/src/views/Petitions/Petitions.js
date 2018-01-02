@@ -33,7 +33,7 @@ class Petitions extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>Petition list <Link to={"/admin/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link></CardHeader>
+                            <CardHeader>Petition list <Link to={"/admin/petitions/add"}><Button className="pull-right" color="success" size="sm">Add new</Button></Link>    <Link to={"/admin/petitions/add"}><Button className="pull-right mr-10" color="info" size="sm">PDF</Button></Link></CardHeader>
                             <CardBody>
                                 <Table responsive bordered>
                                     <thead>
