@@ -20,6 +20,7 @@ public class AdviceController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalStateException.class)
+
     public void handleNotFound(Exception e) {
         LOGGER.error(e.getMessage());
     }
