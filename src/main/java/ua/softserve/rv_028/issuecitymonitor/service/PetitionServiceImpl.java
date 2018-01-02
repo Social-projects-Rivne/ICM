@@ -3,6 +3,8 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -11,14 +13,11 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 
-
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -31,9 +30,7 @@ public class PetitionServiceImpl implements PetitionService {
 
     private final UserDao userDao;
 
-
     private MapperService mapperService;
-
 
     @Autowired
     public PetitionServiceImpl(PetitionDao petitionDao, UserDao userDao, MapperService mapperService){
@@ -51,14 +48,9 @@ public class PetitionServiceImpl implements PetitionService {
     }
 
     @Override
-    public List<PetitionDto> findAll() {
-        LOGGER.debug("Finding all petitions");
-        List<PetitionDto> petitionDtos = new ArrayList<>();
-        for(Petition e : petitionDao.findAllByOrderByIdAsc()){
-            petitionDtos.add(mapperService.fromEntityToDto(e));
-        }
-        LOGGER.debug("Found all petitions");
-        return petitionDtos;
+    public Page<PetitionDto> findAllByPage(Pageable pageable) {
+        Page<Petition> petitions = petitionDao.findAll(pageable);
+        return petitions.map(mapperService::fromEntityToDto);
     }
 
     @Override
@@ -71,11 +63,6 @@ public class PetitionServiceImpl implements PetitionService {
 
     @Override
     public PetitionDto update(PetitionDto petitionDto) {
-        try {
-            DATE_FORMAT.parse(petitionDto.getInitialDate());
-        } catch (ParseException e) {
-            throw new IllegalStateException("incorrect date");
-        }
 
         Petition petition = findOne(petitionDto.getId());
         petition.setTitle(petitionDto.getTitle());
@@ -88,11 +75,6 @@ public class PetitionServiceImpl implements PetitionService {
         return mapperService.fromEntityToDto(petition);
     }
 
-
-
-
-
-
     private Petition findOne(long id){
         Petition petition = petitionDao.findOne(id);
         if(petition == null){
@@ -100,8 +82,6 @@ public class PetitionServiceImpl implements PetitionService {
         }
         return petition;
     }
-
-
 
     @Override
     public void addPetition(PetitionDto dto) {
@@ -116,7 +96,5 @@ public class PetitionServiceImpl implements PetitionService {
             throw new IllegalArgumentException("Petition add Failed", e);
         }
     }
-
-
 
 }

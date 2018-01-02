@@ -5,7 +5,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 public class IssueDto {
 
-    private long id;
+    private Long id;
     private UserDto userDto;
     private String title;
     private String description;
@@ -14,18 +14,7 @@ public class IssueDto {
     private double longitude;
     private IssueCategory category;
 
-    public IssueDto(Issue entity) {
-        this.id = entity.getId();
-        this.userDto = new UserDto(entity.getUser());
-        this.title = entity.getTitle();
-        this.description = entity.getDescription();
-        this.initialDate = entity.getInitialDate();
-        this.latitude = entity.getLatitude();
-        this.longitude = entity.getLongitude();
-        this.category = entity.getCategory();
-    }
-
-    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate,
+    public IssueDto(Long id, UserDto userDto, String title, String description, String initialDate,
                     double latitude, double longitude, IssueCategory category) {
         this.id = id;
         this.userDto = userDto;
@@ -39,11 +28,11 @@ public class IssueDto {
 
     public IssueDto() {}
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
