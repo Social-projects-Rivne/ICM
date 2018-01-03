@@ -27,7 +27,6 @@ public class IssueController {
     @GetMapping("/{id}")
     public IssueDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");
-        LOGGER.debug("GET request successful");
         return service.findById(id);
     }
 

@@ -117,12 +117,8 @@ public class MapperService {
         IssueLocationDto issueDto = new IssueLocationDto();
 
         issueDto.setId(issueEntity.getId());
-        issueDto.setTitle(issueEntity.getTitle());
-        issueDto.setDescription(issueEntity.getDescription());
         issueDto.setLatitude(issueEntity.getLatitude());
         issueDto.setLongitude(issueEntity.getLongitude());
-        issueDto.setFirstname(issueEntity.getUser().getFirstName());
-        issueDto.setLastname(issueEntity.getUser().getLastName());
         return issueDto;
     }
 
@@ -130,8 +126,6 @@ public class MapperService {
         Issue issue = new Issue();
 
         issue.setId(issueDto.getId());
-        issue.setTitle(issueDto.getTitle());
-        issue.setDescription(issueDto.getDescription());
         issue.setLatitude(issueDto.getLatitude());
         issue.setLongitude(issueDto.getLongitude());
         return issue;
