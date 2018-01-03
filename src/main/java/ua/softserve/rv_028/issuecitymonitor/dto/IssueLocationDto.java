@@ -3,30 +3,30 @@ package ua.softserve.rv_028.issuecitymonitor.dto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
-public class IssueDto {
+public class IssueLocationDto {
 
     private Long id;
-    private UserDto userDto;
     private String title;
     private String description;
-    private String initialDate;
+    private String firstname;
+    private String lastname;
     private double latitude;
     private double longitude;
-    private IssueCategory category;
 
-    public IssueDto(Long id, UserDto userDto, String title, String description, String initialDate,
-                    double latitude, double longitude, IssueCategory category) {
+    public IssueLocationDto() {}
+
+
+    public IssueLocationDto(Long id, UserDto userDto, String title, String description, String initialDate,
+                            double latitude, double longitude, IssueCategory category) {
         this.id = id;
-        this.userDto = userDto;
         this.title = title;
         this.description = description;
-        this.initialDate = initialDate;
         this.latitude = latitude;
         this.longitude = longitude;
-        this.category = category;
+        this.firstname = userDto.getFirstName();
+        this.lastname = userDto.getLastName();
     }
 
-    public IssueDto() {}
 
     public Long getId() {
         return id;
@@ -34,14 +34,6 @@ public class IssueDto {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
     }
 
     public String getTitle() {
@@ -60,14 +52,6 @@ public class IssueDto {
         this.description = description;
     }
 
-    public String getInitialDate() {
-        return initialDate;
-    }
-
-    public void setInitialDate(String initialDate) {
-        this.initialDate = initialDate;
-    }
-
     public double getLatitude() {
         return latitude;
     }
@@ -84,25 +68,30 @@ public class IssueDto {
         this.longitude = longitude;
     }
 
-    public IssueCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(IssueCategory category) {
-        this.category = category;
-    }
-
     @Override
     public String toString() {
         return "IssueDto{" +
-                "id=" + id +
-                ", userDto=" + userDto +
+                "id=" + id + '\'' +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
-                ", initialDate='" + initialDate + '\'' +
                 ", latitude=" + latitude +
                 ", longitude=" + longitude +
-                ", category=" + category +
                 '}';
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+
+    public void setFirstname(String firstname) {
+        this.firstname = firstname;
+    }
+
+    public String getLastname() {
+        return lastname;
+    }
+
+    public void setLastname(String lastname) {
+        this.lastname = lastname;
     }
 }

@@ -20,7 +20,7 @@ class Map extends Component {
         componentWillMount() {
 
             var _this = this;
-            axios.get("/api/issues")
+            axios.get("/api/issues/map")
                 .then(function(response) {
                     _this.setState({
                         issues: response.data,
@@ -30,6 +30,7 @@ class Map extends Component {
                 .catch(function (error) {
                     swal({title: "Something went wrong!", text: error, icon: "error"});
                 });
+
         }
 
    render() {
@@ -46,6 +47,7 @@ class Map extends Component {
                                </Marker>
                 ))}
               </GoogleMap>
+
         )
    }
 }

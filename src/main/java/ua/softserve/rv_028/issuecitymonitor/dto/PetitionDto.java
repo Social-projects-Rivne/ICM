@@ -1,38 +1,32 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
+import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
+public class PetitionDto {
 
-public class IssueDto {
-
-    private Long id;
+    private long id;
     private UserDto userDto;
     private String title;
     private String description;
     private String initialDate;
-    private double latitude;
-    private double longitude;
-    private IssueCategory category;
+    private PetitionCategory category;
 
-    public IssueDto(Long id, UserDto userDto, String title, String description, String initialDate,
-                    double latitude, double longitude, IssueCategory category) {
+    public PetitionDto() {}
+
+    public PetitionDto(long id, UserDto userDto, String title, String description, String initialDate, PetitionCategory category) {
         this.id = id;
         this.userDto = userDto;
         this.title = title;
         this.description = description;
         this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
         this.category = category;
     }
 
-    public IssueDto() {}
-
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -68,40 +62,23 @@ public class IssueDto {
         this.initialDate = initialDate;
     }
 
-    public double getLatitude() {
-        return latitude;
-    }
 
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
-        this.longitude = longitude;
-    }
-
-    public IssueCategory getCategory() {
+    public PetitionCategory getCategory() {
         return category;
     }
 
-    public void setCategory(IssueCategory category) {
+    public void setCategory(PetitionCategory category) {
         this.category = category;
     }
 
     @Override
     public String toString() {
-        return "IssueDto{" +
+        return "PetitionDto{" +
                 "id=" + id +
                 ", userDto=" + userDto +
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", initialDate='" + initialDate + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
                 ", category=" + category +
                 '}';
     }

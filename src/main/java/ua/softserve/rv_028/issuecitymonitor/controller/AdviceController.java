@@ -20,10 +20,11 @@ public class AdviceController {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalStateException.class)
-    public void handleNotFound(Exception e){
-        LOGGER.error(e.getMessage());
-    }
 
+    public void handleNotFound(Exception e) {
+        LOGGER.error(e.getMessage());
+
+    }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_FAIL_REASON)
     @ExceptionHandler(RegistrationException.class)
@@ -44,4 +45,3 @@ public class AdviceController {
     }
 
 }
-

@@ -1,35 +1,39 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import moment from 'moment';
+import {
+    Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
+    Label, Row
+} from "reactstrap";
+import {Link} from "react-router-dom";
 
-class IssueEdit extends Component {
+class PetitionEdit extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            issue: {
+            petition: {
                 id: "",
                 title: "",
                 description: "",
                 initialDate: "",
                 category: ""
             },
-            initialDate: true
+            initialDate: true,
         };
 
-        this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
+        this.handleDateChange = this.handleDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
-        this.handleBack = this.handleBack.bind(this);
     }
 
     componentWillMount() {
         var _this = this;
-        axios.get("/api/issues/"+this.props.match.params.id)
+        axios.get("/api/petitions/"+this.props.match.params.id)
             .then(function(response) {
                 _this.setState({
-                    issue: response.data
+                    petition: response.data
                 })
             })
             .catch(function (error) {
@@ -37,15 +41,19 @@ class IssueEdit extends Component {
             });
     }
 
-    handleInitialDateChange(m){
-        this.setState(function(prev) {
+    handleDateChange(e) {
+        const name = e.target.name;
+        const value = e.target.value;
+
+        this.setState(function (prev) {
             return {
-                issue: {
-                    ...prev.issue,
-                    initialDate: m.format("DD/MM/YYYY HH:mm")
-                }
+                petition: {
+                    ...prev.petition,
+                    [name]: value
+                },
+                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
             }
-        });
+        })
     }
 
     handleChange(e) {
@@ -53,8 +61,8 @@ class IssueEdit extends Component {
         const value = e.target.value;
         this.setState(function(prev) {
             return {
-                issue: {
-                    ...prev.issue,
+                petition: {
+                    ...prev.petition,
                     [name]: value
                 }
             }
@@ -62,16 +70,12 @@ class IssueEdit extends Component {
     }
 
     handleSave(){
-        axios.put("/api/issues/" + this.props.match.params.id, this.state.issue)
+        axios.put("/api/petitions/" + this.props.match.params.id, this.state.petition)
             .then(function (response) {
-                swal({title: "Issue record saved", icon: "success"})
+                swal({title: "Petition record saved", icon: "success"})
             }).catch(function (error) {
             swal({title: "Something went wrong!", text: error, icon: "error"});
         });
-    }
-
-    handleBack() {
-        this.props.history.goBack();
     }
 
     render() {
@@ -82,7 +86,7 @@ class IssueEdit extends Component {
                         <Card>
                             <Form className="form-horizontal">
                                 <CardHeader>
-                                    <strong>Issue {this.state.issue.id} edit form</strong>
+                                    <strong>Petition #{this.state.petition.id} edit form</strong>
                                 </CardHeader>
                                 <CardBody>
 
@@ -91,7 +95,7 @@ class IssueEdit extends Component {
                                             <Label>Title</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input value={this.state.issue.title} onChange={this.handleChange}
+                                            <Input value={this.state.petition.title} onChange={this.handleChange}
                                                    type="text" name="title"
                                                    placeholder="Title"/>
                                         </Col>
@@ -102,7 +106,7 @@ class IssueEdit extends Component {
                                             <Label>Description</Label>
                                         </Col>
                                         <Col xs="12" md="10">
-                                            <Input value={this.state.issue.description} onChange={this.handleChange}
+                                            <Input value={this.state.petition.description} onChange={this.handleChange}
                                                    type="textarea" name="description" rows="9"
                                                    placeholder="Description"/>
                                         </Col>
@@ -113,9 +117,13 @@ class IssueEdit extends Component {
                                             <Label>Initial Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <DateTime value={this.state.issue.initialDate} dateFormat="DD/MM/YYYY"
-                                                      timeFormat="HH:mm" onChange={this.handleInitialDateChange}
-                                                      inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                                            <InputGroup>
+                                                <Input value={this.state.petition.initialDate} type="text"
+                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
+                                                       onChange={this.handleDateChange}/>
+                                                <InputGroupAddon className={this.state.initialDate ?
+                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
+                                            </InputGroup>
                                         </Col>
                                     </FormGroup>
 
@@ -124,7 +132,7 @@ class IssueEdit extends Component {
                                             <Label>Category</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <Input value={this.state.issue.category} onChange={this.handleChange}
+                                            <Input value={this.state.petition.category} onChange={this.handleChange}
                                                    type="select" name="category"
                                                    placeholder="Category">
                                                 <option>CAT1</option>
@@ -133,12 +141,11 @@ class IssueEdit extends Component {
                                             </Input>
                                         </Col>
                                     </FormGroup>
+
                                 </CardBody>
                                 <CardFooter className="text-right">
-                                    <Button color="success" onClick={this.handleSave}>
-                                        <i className="fa fa-dot-circle-o"/> Save</Button>
-                                    <Button color="primary" onClick={this.handleBack}>
-                                        <i className="fa fa-ban"/> Back</Button>
+                                    <Button color="success" onClick={this.handleSave}><i className="fa fa-dot-circle-o"/> Save</Button>
+                                    <Link to="/admin/petitions"><Button color="primary"><i className="fa fa-ban"/> Back</Button></Link>
                                 </CardFooter>
                             </Form>
                         </Card>
@@ -149,4 +156,4 @@ class IssueEdit extends Component {
     }
 }
 
-export default IssueEdit
+export default PetitionEdit

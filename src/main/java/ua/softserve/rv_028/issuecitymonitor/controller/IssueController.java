@@ -2,8 +2,11 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import java.util.List;
@@ -21,17 +24,25 @@ public class IssueController {
         this.service = service;
     }
 
-    @GetMapping
-    public List<IssueDto> getAll(){
-        LOGGER.debug("GET request for all issues");
-        return service.findAll();
-    }
-
     @GetMapping("/{id}")
     public IssueDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");
         LOGGER.debug("GET request successful");
         return service.findById(id);
+    }
+
+    @GetMapping("/map")
+    public List<IssueLocationDto> getAll(){
+        LOGGER.debug("GET request");
+        LOGGER.debug("GET request successful");
+        return service.findAll();
+    }
+
+    @GetMapping
+    public Page<IssueDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
+                                       @RequestParam(value = "size", defaultValue = "10") int size){
+        LOGGER.debug("GET request for all issues by page");
+        return service.findAllByPage(new PageRequest(page-1, size));
     }
 
     @PostMapping
