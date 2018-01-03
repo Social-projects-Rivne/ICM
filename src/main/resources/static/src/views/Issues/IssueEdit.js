@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
+        Label, Row} from "reactstrap";
 
 class IssueEdit extends Component {
     constructor(props) {
@@ -113,9 +114,13 @@ class IssueEdit extends Component {
                                             <Label>Initial Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <DateTime value={this.state.issue.initialDate} dateFormat="DD/MM/YYYY"
-                                                      timeFormat="HH:mm" onChange={this.handleInitialDateChange}
-                                                      inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                                            <InputGroup>
+                                                 <Input value={this.state.issue.initialDate} type="text"
+                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
+                                                       onChange={this.handleDateChange}/>
+                                                 <InputGroupAddon className={this.state.initialDate ?
+                                                       "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
+                                            </InputGroup>
                                         </Col>
                                     </FormGroup>
 

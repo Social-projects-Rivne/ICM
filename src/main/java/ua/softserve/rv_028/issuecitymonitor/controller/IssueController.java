@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
@@ -32,7 +33,7 @@ public class IssueController {
     public Page<IssueDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                        @RequestParam(value = "size", defaultValue = "10") int size){
         LOGGER.debug("GET request for all issues by page");
-        return service.findAllByPage(new PageRequest(page-1, size));
+        return service.findAllByPage(new PageRequest(page-1, size, Sort.Direction.ASC, "id"));
     }
 
     @PostMapping

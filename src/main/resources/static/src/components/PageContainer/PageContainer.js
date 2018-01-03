@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardFooter, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
+import {Card, CardBody, CardFooter, CardHeader, Col, Input, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
 
 class PageContainer extends Component {
     constructor(props) {
@@ -85,7 +85,17 @@ class PageContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>{this.state.title}, {this.state.button}</CardHeader>
+                            <CardHeader>
+                                {this.state.title}
+                                {this.state.button}
+                                <Col md="2">
+                                    <Input type="select" name="sorting"
+                                        placeholder="Sorting">
+                                        <option>ascending order</option>
+                                        <option>descending order</option>
+                                    </Input>
+                                </Col>
+                            </CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>
