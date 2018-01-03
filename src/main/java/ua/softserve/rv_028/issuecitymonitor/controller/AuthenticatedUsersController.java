@@ -11,6 +11,12 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -68,7 +74,7 @@ public class AuthenticatedUsersController {
 
     @PostMapping(value = "/api/userSettings/updateLogo")
     public void updatePortfolioPhoto(@RequestParam MultipartFile photo){
-        profileService.updatePortfolioPhoto(photo);
+        profileService.updatePortfolioPhoto(photo, "admin@mail.com");
     }
 }
 

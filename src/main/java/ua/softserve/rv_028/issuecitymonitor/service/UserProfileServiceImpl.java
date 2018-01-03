@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.method.P;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -11,6 +12,8 @@ import ua.softserve.rv_028.issuecitymonitor.Constants;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
@@ -18,8 +21,10 @@ import java.nio.file.Files;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
@@ -64,20 +69,68 @@ public class UserProfileServiceImpl implements UserProfileService {
         LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
     }
 
+    private final String PATH = "src/main/resources/users/logo/";
+    private final String ORIGINAL_SIZE = "original";
+    private final String MEDIUM_SIZE = "medium";
+
     @Override
-    public void updatePortfolioPhoto(MultipartFile photo){
-        try {
-            Files.createDirectories(Paths.get("src/main/resources/photo"));
-            File file = new File("src/main/resources/photo", photo.getOriginalFilename());
-            System.out.println(file.getAbsolutePath());
+    public void updatePortfolioPhoto(MultipartFile photo, String email){
+        long id = userDao.findUserByUsername(email).getId();
+
+        checkArgument(isImage(photo), "Is not a image");
+
+        System.out.println("createImages:\t" + createImages(id, photo));
+/*        try {
+
+            File temp = new File(photo.getOriginalFilename());
+            String s = Files.probeContentType(temp.toPath());
+            System.out.println(s);
+
+            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(id)));
+            File file = new File(userPhotoPath.toString(), photo.getOriginalFilename());
+
             FileOutputStream out = new FileOutputStream(file);
             out.write(photo.getBytes());
             out.close();
-        } catch (Exception e) {
+
+
+        } catch (IOException e) {
             throw new RuntimeException("FAIL!");
-        }
+        }*/
+
+
+        URL resource = getClass().getClassLoader().getResource("users/logo/1151/original.png");
+        if (resource != null)
+            System.out.println(resource.getPath());
+        else
+            System.out.println("null");
     }
 
+    private String createImages(long userId, MultipartFile photo) {
+        try {
+            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(userId)));
+            File file = new File(userPhotoPath.toString(), ORIGINAL_SIZE);
+
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(photo.getBytes());
+            out.close();
+
+            return file.getAbsolutePath();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private boolean isImage(MultipartFile file){
+        try {
+            InputStream input = file.getInputStream();
+            ImageIO.read(input).getType();
+            return true;
+        } catch (NullPointerException | IOException e) {
+            return false;
+        }
+    }
 
     @Override
     public Map getUserInfo(String email) {
