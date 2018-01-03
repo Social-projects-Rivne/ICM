@@ -5,11 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import sun.misc.IOUtils;
+import sun.nio.ch.IOUtil;
 import ua.softserve.rv_028.issuecitymonitor.Constants;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import java.io.*;
+import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -61,13 +67,17 @@ public class UserProfileServiceImpl implements UserProfileService {
     @Override
     public void updatePortfolioPhoto(MultipartFile photo){
         try {
-            // TODO: https://stackoverflow.com/questions/21063140/saving-file-to-resource-directory-using-spring
-            Path path = Paths.get("src/main/resources/photos", photo.getOriginalFilename());
-            Files.write(path, photo.getBytes());
+            Files.createDirectories(Paths.get("src/main/resources/photo"));
+            File file = new File("src/main/resources/photo", photo.getOriginalFilename());
+            System.out.println(file.getAbsolutePath());
+            FileOutputStream out = new FileOutputStream(file);
+            out.write(photo.getBytes());
+            out.close();
         } catch (Exception e) {
             throw new RuntimeException("FAIL!");
         }
     }
+
 
     @Override
     public Map getUserInfo(String email) {
