@@ -5,8 +5,12 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -18,6 +22,8 @@ public class EventControllerTest {
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
     private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("event not found");
+    private final static int PAGE_INDEX = 1;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private EventController eventController;
@@ -37,6 +43,17 @@ public class EventControllerTest {
 
         assertEquals(TEST_TITLE,dto.getTitle());
         assertEquals(TEST_DESCRIPTION,dto.getDescription());
+    }
+
+    @Test
+    public void testGetAllByPage(){
+        Page<EventDto> eventDtoPage = new PageImpl<>(new ArrayList<>());
+        when(eventService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(eventDtoPage);
+        Page<EventDto> page = eventController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        verify(eventService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
+        verifyNoMoreInteractions(eventService);
+        assertEquals(eventDtoPage, page);
     }
 
     @Test

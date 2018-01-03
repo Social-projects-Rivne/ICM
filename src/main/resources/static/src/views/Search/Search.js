@@ -4,12 +4,14 @@ import {
     Row, Button, InputGroup, InputGroupButton
 } from 'reactstrap';
 import EventsContainer from "../Events/EventsContainer";
+import IssuesContainer from "../Issues/IssuesContainer";
+import PetitionsContainer from "../Petitions/PetitionsContainer";
+import UsersContainer from "../Users/UsersContainer";
 import axios from 'axios';
 import swal from 'sweetalert';
 import qs from 'qs';
 import DateTime from 'react-datetime';
 import 'react-datetime/css/react-datetime.css';
-import IssuesContainer from "../Issues/IssuesContainer";
 
 const text = "text";
 const user = "user";
@@ -17,7 +19,8 @@ const fromDate = "fromDate";
 const toDate = "toDate";
 const radius = "radius";
 const category = "category";
-const fullName = "fullName";
+const name = "name";
+const email = "email";
 
 class Search extends Component {
     constructor(props) {
@@ -39,7 +42,8 @@ class Search extends Component {
                 category: ""
             },
             userQuery: {
-                fullName: this.props.location.query === undefined ? "" : this.props.location.query
+                name: this.props.location.query === undefined ? "" : this.props.location.query,
+                email: ""
             },
             petitionQuery: {
                 text: this.props.location.query === undefined ? "" : this.props.location.query,
@@ -59,14 +63,19 @@ class Search extends Component {
         this.handleEventQueryChange = this.handleEventQueryChange.bind(this);
         this.handleUserQueryChange = this.handleUserQueryChange.bind(this);
         this.handleIssueQueryChange = this.handleIssueQueryChange.bind(this);
+        this.handlePetitionQueryChange = this.handlePetitionQueryChange.bind(this);
 
         this.handleEventFromDateChange = this.handleEventFromDateChange.bind(this);
         this.handleEventToDateChange = this.handleEventToDateChange.bind(this);
         this.handleIssueFromDateChange = this.handleIssueFromDateChange.bind(this);
         this.handleIssueToDateChange = this.handleIssueToDateChange.bind(this);
+        this.handlePetitionFromDateChange = this.handlePetitionFromDateChange.bind(this);
+        this.handlePetitionToDateChange = this.handlePetitionToDateChange.bind(this);
 
+        this.handleUsersPageChange = this.handleUsersPageChange.bind(this);
         this.handleEventsPageChange = this.handleEventsPageChange.bind(this);
         this.handleIssuesPageChange = this.handleIssuesPageChange.bind(this);
+        this.handlePetitionsPageChange = this.handlePetitionsPageChange.bind(this);
 
         this.handleClear = this.handleClear.bind(this);
 
@@ -86,7 +95,7 @@ class Search extends Component {
                 },
                 userQuery: {
                     ...prev.userQuery,
-                    fullName: props.location.query === undefined ? "" : props.location.query
+                    name: props.location.query === undefined ? "" : props.location.query
                 },
                 issueQuery: {
                     ...prev.issueQuery,
@@ -106,7 +115,7 @@ class Search extends Component {
         this.makeQuery("events", this.state.eventQuery);
         this.makeQuery("users", this.state.userQuery);
         this.makeQuery("issues", this.state.issueQuery);
-        //TODO queries
+        this.makeQuery("petitions", this.state.petitionQuery);
     }
 
     makeQuery(type, queryObj) {
@@ -221,6 +230,55 @@ class Search extends Component {
         });
     }
 
+    //Petitions
+    handlePetitionQueryChange(e) {
+        const value = e.target.value;
+        const name = e.target.name;
+        this.setState(function (prev) {
+            return {
+                petitionQuery: {
+                    ...prev.petitionQuery,
+                    [name]: value
+                }
+            }
+        });
+    }
+
+    handlePetitionFromDateChange(m){
+        this.setState(function(prev) {
+            return {
+                petitionQuery: {
+                    ...prev.petitionQuery,
+                    fromDate: m.format("DD/MM/YYYY HH:mm")
+                }
+            }
+        });
+    }
+
+    handlePetitionToDateChange(m){
+        this.setState(function(prev) {
+            return {
+                petitionQuery: {
+                    ...prev.petitionQuery,
+                    toDate: m.format("DD/MM/YYYY HH:mm")
+                }
+            }
+        });
+    }
+
+    handlePetitionsPageChange(pageNum) {
+        this.setState(function(prev) {
+            return {
+                petitionQuery: {
+                    ...prev.petitionQuery,
+                    page: pageNum
+                }
+            }
+        }, function() {
+            this.makeQuery("petitions", this.state.petitionQuery);
+        });
+    }
+
     // Users
     handleUserQueryChange(e) {
         const value = e.target.value;
@@ -232,6 +290,19 @@ class Search extends Component {
                     [name]: value
                 }
             }
+        });
+    }
+
+    handleUsersPageChange(pageNum) {
+        this.setState(function(prev) {
+            return {
+                userQuery: {
+                    ...prev.userQuery,
+                    page: pageNum
+                }
+            }
+        }, function() {
+            this.makeQuery("users", this.state.userQuery);
         });
     }
 
@@ -254,7 +325,8 @@ class Search extends Component {
                     category: ""
                 },
                 userQuery: {
-                    fullName: ""
+                    name: "",
+                    email: ""
                 },
                 petitionQuery: {
                     text: "",
@@ -335,7 +407,7 @@ class Search extends Component {
                                 {this.state.currentTab==="users" ? this.userSearchForm() :
                                     this.state.currentTab==="events" ? this.eventSearchForm() :
                                         this.state.currentTab==="issues" ? this.issueSearchForm() :
-                                            this.state.currentTab==="petitions" ? null :
+                                            this.state.currentTab==="petitions" ? this.petitionSearchForm() :
                                                 null}
                             </CardBody>
                             <CardFooter className="text-right">
@@ -349,10 +421,10 @@ class Search extends Component {
                         </Card>
                     </Col>
                 </Row>
-                {this.state.currentTab==="users" ? null :
+                {this.state.currentTab==="users" ? <UsersContainer data={this.state.users} onPageChange={this.handleUsersPageChange}/> :
                     this.state.currentTab==="events" ? <EventsContainer data={this.state.events} onPageChange={this.handleEventsPageChange}/> :
                         this.state.currentTab==="issues" ? <IssuesContainer data={this.state.issues} onPageChange={this.handleIssuesPageChange}/> :
-                            this.state.currentTab==="petitions" ? null :
+                            this.state.currentTab==="petitions" ? <PetitionsContainer data={this.state.petitions} onPageChange={this.handlePetitionsPageChange}/> :
                                 null}
             </div>
         );
@@ -365,7 +437,15 @@ class Search extends Component {
                     <Label>By name</Label>
                 </Col>
                 <Col xs="12" md="10">
-                    <Input type="text" value={this.state.userQuery.fullName} name={fullName} onChange={this.handleUserQueryChange}/>
+                    <Input type="text" value={this.state.userQuery.name} name={name} onChange={this.handleUserQueryChange}/>
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By email</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.userQuery.email} name={email} onChange={this.handleUserQueryChange}/>
                 </Col>
             </FormGroup>
         </div>);
@@ -465,6 +545,58 @@ class Search extends Component {
                 </Col>
                 <Col xs="12" md="4">
                     <Input type="select" value={this.state.issueQuery.category} name={category} onChange={this.handleIssueQueryChange}>
+                        <option>ANY</option>
+                        <option>CAT1</option>
+                        <option>CAT2</option>
+                        <option>CAT3</option>
+                    </Input>
+                </Col>
+            </FormGroup>
+        </div>);
+    }
+
+    petitionSearchForm(){
+        return (<div>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By text</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.petitionQuery.text} name={text} onChange={this.handlePetitionQueryChange}/>
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>By user</Label>
+                </Col>
+                <Col xs="12" md="10">
+                    <Input type="text" value={this.state.petitionQuery.user} name={user} onChange={this.handlePetitionQueryChange}/>
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>From date</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <DateTime value={this.state.petitionQuery.fromDate} dateFormat="DD/MM/YYYY"
+                              timeFormat={false} onChange={this.handlePetitionFromDateChange}
+                              inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                </Col>
+                <Col md="2">
+                    <Label>To date</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <DateTime value={this.state.petitionQuery.toDate} dateFormat="DD/MM/YYYY"
+                              timeFormat={false} onChange={this.handlePetitionToDateChange}
+                              inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
+                </Col>
+            </FormGroup>
+            <FormGroup row>
+                <Col md="2">
+                    <Label>Category</Label>
+                </Col>
+                <Col xs="12" md="4">
+                    <Input type="select" value={this.state.petitionQuery.category} name={category} onChange={this.handlePetitionQueryChange}>
                         <option>ANY</option>
                         <option>CAT1</option>
                         <option>CAT2</option>

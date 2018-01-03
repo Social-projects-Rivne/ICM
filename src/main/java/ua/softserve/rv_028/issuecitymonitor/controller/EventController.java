@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 
+import static ua.softserve.rv_028.issuecitymonitor.Constants.PAGE_SIZE;
+
 @RestController
 @RequestMapping("/api/events")
 public class EventController {
@@ -22,7 +24,7 @@ public class EventController {
 
     @GetMapping
     public Page<EventDto> getAllByPage(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                       @RequestParam(name = "size", defaultValue = "20") int pageSize) {
+                                       @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize) {
         LOGGER.debug("GET request for all events");
         return eventService.findAllByPage(pageNumber, pageSize);
     }

@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -48,8 +49,8 @@ public class UserControllerITest {
 
     @Before
     public void setup() {
-        users = userDao.save(TestUtils.createUsersList(LIST_SIZE));
-        admin = userDao.save(TestUtils.createAdmin(LIST_SIZE + 1));
+        users = userDao.save(createUsersList(LIST_SIZE));
+        admin = userDao.save(createAdmin(LIST_SIZE + 1));
         user = users.get(0);
     }
 

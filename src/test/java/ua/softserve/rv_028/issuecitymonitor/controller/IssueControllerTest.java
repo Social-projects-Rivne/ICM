@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
@@ -67,11 +66,10 @@ public class IssueControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<IssueDto> issueDtoPage = new PageImpl<>(new ArrayList<>());
-        //when(issueService.findAllByPage(any(Pageable.class))).thenReturn(issueDtoPage);
-        //TODO this
+        when(issueService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(issueDtoPage);
         Page<IssueDto> page = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
 
-        //verify(issueService).findAllByPage(any(Pageable.class));
+        verify(issueService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
         verifyNoMoreInteractions(issueService);
         assertEquals(issueDtoPage, page);
     }

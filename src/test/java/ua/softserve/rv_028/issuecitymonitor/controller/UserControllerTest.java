@@ -15,8 +15,7 @@ import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -63,13 +62,11 @@ public class UserControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
-        //TODO
-        //when(userService.findAllByPage(any(Pageable.class))).thenReturn(userDtoPage);
+        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE)).thenReturn(userDtoPage);
 
         Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
-
-        //verify(userService).findAllByPage(any(Pageable.class));
-        //verifyNoMoreInteractions(userService);
+        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE);
+        verifyNoMoreInteractions(userService);
         assertEquals(userDtoPage, page);
     }
 

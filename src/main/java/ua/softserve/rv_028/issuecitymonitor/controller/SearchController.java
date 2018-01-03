@@ -16,6 +16,8 @@ import ua.softserve.rv_028.issuecitymonitor.service.SearchService;
 import java.util.List;
 import java.util.Map;
 
+import static ua.softserve.rv_028.issuecitymonitor.Constants.PAGE_SIZE;
+
 @RestController
 @RequestMapping("/api/search")
 public class SearchController {
@@ -31,7 +33,7 @@ public class SearchController {
 
     @GetMapping("/events")
     public Page<EventDto> searchEvents(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                       @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                       @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize,
                                        @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching events by criteria" + queryMap.toString());
         return searchService.findEventsByCriteria(queryMap, pageNumber, pageSize);
@@ -39,7 +41,7 @@ public class SearchController {
 
     @GetMapping("/users")
     public Page<UserDto> searchUsers(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                     @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                     @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize,
                                      @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching users by criteria" + queryMap.toString());
         return searchService.findUsersByCriteria(queryMap, pageNumber, pageSize);
@@ -47,7 +49,7 @@ public class SearchController {
 
     @GetMapping("/issues")
     public Page<IssueDto> searchIssues(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                       @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                       @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize,
                                        @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching issues by criteria" + queryMap.toString());
         return searchService.findIssuesByCriteria(queryMap, pageNumber, pageSize);
@@ -55,7 +57,7 @@ public class SearchController {
 
     @GetMapping("/petitions")
     public Page<PetitionDto> searchPetitions(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                             @RequestParam(name = "size", defaultValue = "20") int pageSize,
+                                             @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize,
                                              @RequestParam Map<String, String> queryMap) {
         LOGGER.debug("Searching petitions by criteria" + queryMap.toString());
         return searchService.findPetitionsByCriteria(queryMap, pageNumber, pageSize);

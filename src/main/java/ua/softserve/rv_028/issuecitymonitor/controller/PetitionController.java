@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 
+import static ua.softserve.rv_028.issuecitymonitor.Constants.PAGE_SIZE;
+
 @RestController
 @RequestMapping("/api/petitions")
 public class PetitionController {
@@ -22,7 +24,7 @@ public class PetitionController {
 
     @GetMapping
     public Page<PetitionDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "size", defaultValue = "10") int size){
+                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size){
         LOGGER.debug("GET request for all petitions by page");
         return petitionService.findAllByPage(page, size);
     }

@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
+import static ua.softserve.rv_028.issuecitymonitor.Constants.PAGE_SIZE;
+
 @RestController
 @RequestMapping("api/users")
 public class UserController {
@@ -22,7 +24,7 @@ public class UserController {
     @GetMapping
 
     public Page<UserDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "size", defaultValue = "10") int size){
+                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size){
         LOGGER.debug("GET request for all users by page");
         return service.findAllByPage(page, size);
     }

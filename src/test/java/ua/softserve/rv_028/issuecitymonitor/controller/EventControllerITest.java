@@ -25,6 +25,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -53,8 +54,8 @@ public class EventControllerITest {
 
     @Before
     public void setUp() {
-        user = userDao.save(TestUtils.createUser(0));
-        events = eventDao.save(TestUtils.createEventsList(user, LIST_SIZE));
+        user = userDao.save(createUser(0));
+        events = eventDao.save(createEventsList(user, LIST_SIZE));
         event = events.get(0);
     }
 
