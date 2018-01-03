@@ -76,7 +76,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         System.out.println("createImages:\t" + createImages(id, photo));
 
         try {
-            BufferedImage bufferedImage = createResizedCopy(ImageIO.read(photo.getInputStream()), 250, 250, true);
+            BufferedImage bufferedImage = createResizedCopy(ImageIO.read(photo.getInputStream()), 250, 250);
 
             System.out.println(bufferedImage.getHeight());
 
@@ -118,19 +118,22 @@ public class UserProfileServiceImpl implements UserProfileService {
             System.out.println("null");
     }
 
-    BufferedImage createResizedCopy(Image originalImage,
-                                    int scaledWidth, int scaledHeight,
-                                    boolean preserveAlpha){
-        System.out.println("resizing...");
-        int imageType = preserveAlpha ? BufferedImage.TYPE_INT_RGB : BufferedImage.TYPE_INT_ARGB;
-        BufferedImage scaledBI = new BufferedImage(scaledWidth, scaledHeight, imageType);
-        Graphics2D g = scaledBI.createGraphics();
-        if (preserveAlpha) {
-            g.setComposite(AlphaComposite.Src);
-        }
+    private BufferedImage createResizedCopy(Image originalImage,
+                                    int scaledWidth, int scaledHeight){
+        BufferedImage resizedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
         g.dispose();
-        return scaledBI;
+        g.setComposite(AlphaComposite.Src);
+
+        g.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
+                RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+        g.setRenderingHint(RenderingHints.KEY_RENDERING,
+                RenderingHints.VALUE_RENDER_QUALITY);
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        return resizedImage;
     }
 
     private String createImages(long userId, MultipartFile photo) {
