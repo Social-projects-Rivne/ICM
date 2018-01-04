@@ -1,33 +1,27 @@
 import React, { Component } from 'react';
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet'
+import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "react-google-maps"
+import axios from 'axios';
+import swal from 'sweetalert';
+import Map from './Map';
 
-const position = [51.505, -0.09]
-export default class IssueMap extends Component {
-
+class IssueMap extends Component {
    render() {
 
-       return (
-           <Map center={position} zoom={13}>
-               <TileLayer
-                   url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                   attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
-               />
-               <Marker position={position}>
-                   <Popup>
-       <span>
-         A pretty CSS3 popup.<br />Easily customizable.
-       </span>
-                   </Popup>
-               </Marker>
-           </Map>
+   return(
+        <div className="map-responsive">
+
+            <Map
+                googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMDIyzcpoHdvK8MLCUhvrqZDyllGiyrnM &callback=initMap"
+                loadingElement={<div style={{ height: `100%` }} />}
+                containerElement={<div style={{ height: 100 + '%' }} />}
+                mapElement={<div style={{ height: `100%` }} />}
 
 
-       )
-   }
-
-
+            />
+        </div>
+   )
+  }
 }
 
 
-
-
+export default IssueMap;
