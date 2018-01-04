@@ -9,7 +9,9 @@ export default class EditProfile extends Component{
         super(props);
 
         this.state = {
+            id: null,
             email: "",
+            avatar: "http://www.teequilla.com/images/tq/empty-avatar.png",
             firstName: "",
             firstNameValid: false,
             lastName: "",
@@ -33,12 +35,15 @@ export default class EditProfile extends Component{
     }
 
     componentWillMount(){
-        this.setState({email: this.props.user.email, firstName: this.props.user.firstName, lastName: this.props.user.lastName,
+        this.setState({id: this.props.user.id, email: this.props.user.email, firstName: this.props.user.firstName, lastName: this.props.user.lastName,
                 phone: this.props.user.phone}, this.validateContactsFields);
     }
 
     componentDidMount(){
         document.getElementById('file-input').addEventListener('change', this.clickFile, false);
+        if(this.state.id != null)
+            if(!isNaN(this.state.id))
+                this.setState({avatar: "http://localhost:8080/api/avatar/" + this.state.id});
     }
 
     validateContactsFields(){
@@ -141,14 +146,20 @@ export default class EditProfile extends Component{
         let formData = new FormData();
         formData.append('photo', file);
 
+        let _this = this;
         axios.post('/api/userSettings/updateLogo', formData).then(function (response) {
             console.log('response', response);
+            _this.renderAvatar();
         }).catch(function (error) {
             console.log(error)
         })
-
-
     }
+
+    renderAvatar(){
+        console.log('render', 'adadadadada');
+        this.setState({avatar: "http://localhost:8080asdadads/api/avatar/" + this.state.id})
+    }
+
     render(){
         return(
             <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
@@ -197,7 +208,7 @@ export default class EditProfile extends Component{
                         <Col sm={4} style={{paddingLeft: '60px'}}>
 
                             <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
-                            <div id='profile-photo' className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}></div>
+                            <img src={this.state.avatar} alt="avatar" className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}/>
                             <FormGroup>
                                 <Button onClick={this.aaa} outline color="primary" style={{width:'200px', marginTop: '10px'}} block>Open</Button>
                                 <input id="file-input" type="file" name="name" style={{display: 'none'}}  accept="image/*"/>

@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
@@ -77,9 +74,9 @@ public class AuthenticatedUsersController {
         profileService.updatePortfolioPhoto(photo, userAuth.getName());
     }
 
-    @PostMapping(value = "/api/image", produces = "image/png")
-    public byte[] downloadImage(@RequestParam String photo) throws IOException {
-        return Files.readAllBytes(Paths.get("src/main/resources/users/logo/1151/", photo));
+    @GetMapping(value = "/api/avatar/{id}", produces = "image/png")
+    public byte[] downloadAvatar(@PathVariable(name = "id") String id) throws IOException {
+        return Files.readAllBytes(Paths.get("src/main/resources/users/logo/", id, "medium.png"));
     }
 }
 

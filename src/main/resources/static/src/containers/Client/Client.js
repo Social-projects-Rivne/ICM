@@ -14,6 +14,7 @@ export default class Client extends Component{
         this.state = {
             user:
                 {
+                    id: null,
                     email: "",
                     firstName: "",
                     lastName: "",
@@ -29,7 +30,9 @@ export default class Client extends Component{
         axios.get('/api/userDetails')
             .then(function (response) {
                 _this.setState( prevState => ({
-                    user: {...prevState.user, email: response.data.email,
+                    user: {...prevState.user,
+                        id: response.data.id,
+                        email: response.data.email,
                         firstName: response.data.firstName,
                         lastName: response.data.lastName,
                         phone: response.data.phone,

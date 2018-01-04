@@ -79,6 +79,7 @@ public class UserProfileServiceImpl implements UserProfileService {
         User user = userDao.findUserByUsername(email);
         checkArgument(user != null, "The user " + email + " not found");
         HashMap<String, Object> map = new HashMap<>();
+        map.put("id", user.getId());
         map.put("email", user.getUsername());
         map.put("firstName", user.getFirstName());
         map.put("lastName", user.getLastName());
