@@ -16,7 +16,7 @@ export default class EditProfile extends Component{
             lastName: "",
             lastNameValid: false,
             phone: "",
-            phoneValid: false,
+            phoneValid: null,
             oldPassword: "",
             newPassword: "",
             newPasswordValid: false,
@@ -36,9 +36,16 @@ export default class EditProfile extends Component{
         this.setState({id: this.props.user.id, email: this.props.user.email, firstName: this.props.user.firstName,
             lastName: this.props.user.lastName, phone: this.props.user.phone});
 
-        if(this.props.user.id != null) {
-            if (!isNaN(this.props.user.id))
-                this.setState({avatar: "http://localhost:8080/api/avatar/" + this.props.user.id});
+        let _this = this;
+        const userID = this.props.user.id;
+        if(userID != null) {
+            if (!isNaN(userID)) {
+                axios.get('/api/avatar/' + userID).then(function () {
+                    _this.setState({avatar: "http://localhost:8080/api/avatar/" + userID});
+                }).catch(function () {
+                    _this.setState({avatar: "http://www.teequilla.com/images/tq/empty-avatar.png"});
+                });
+            }
         } else {
             this.setState({avatar: "http://www.teequilla.com/images/tq/empty-avatar.png"});
         }
@@ -115,7 +122,6 @@ export default class EditProfile extends Component{
         let _this = this;
         axios.post('/api/userSetting/updateContacts', data)
             .then(function(response){
-                console.log('contact', response);
                 _this.setState({contactInfoResponseIsSuccess: true});
             })
             .catch(function(error){
@@ -174,11 +180,11 @@ export default class EditProfile extends Component{
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
                             <div className="edit-profile-avatar">
-                            <label htmlFor='profile-photo'>Profile picture</label>
+                            <Label>Profile picture</Label>
                             <img src={this.state.avatar} alt="avatar" className='border-radius' height="200" width="200"/>
-                            <label className="btn btn-primary avatar-upload ">
+                            <Label className="btn btn-primary avatar-upload ">
                                 Upload new picture <Input type="file" onChange={this.uploadAvatar} hidden/>
-                            </label>
+                            </Label>
                             </div>
                         </Col>
                     </Row>

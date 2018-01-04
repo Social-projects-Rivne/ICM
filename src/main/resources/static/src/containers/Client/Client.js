@@ -52,10 +52,10 @@ export default class SignUp extends Component{
                     <Container fluid>
                         <Switch>
                             <Route path="/settings/profile/" name="Client" component={() => (<EditProfile user={this.state.user}/>)}/>
+                            <Route path="/" component={IssueMap}/>
                         </Switch>
                     </Container>
                 </div>
-                <IssueMap/>
                 <Footer />
             </div>
         )

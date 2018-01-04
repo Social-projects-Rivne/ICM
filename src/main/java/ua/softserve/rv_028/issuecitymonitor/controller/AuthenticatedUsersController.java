@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,12 +20,12 @@ import java.util.Map;
 @RestController
 public class AuthenticatedUsersController {
 
-    private MapperService mapperService;
+    private UserMapper userMapper;
     private UserProfileService profileService;
 
     @Autowired
-    public AuthenticatedUsersController(MapperService mapperService, UserProfileService profileService) {
-        this.mapperService = mapperService;
+    public AuthenticatedUsersController(UserMapper userMapper, UserProfileService profileService) {
+        this.userMapper = userMapper;
         this.profileService = profileService;
     }
 
@@ -45,7 +45,7 @@ public class AuthenticatedUsersController {
     public UserDto userDetails(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         if (!userAuth.getName().equals("anonymousUser"))
-            return mapperService.fromEntityToDto((User) userAuth.getPrincipal());
+            return userMapper.toDto((User) userAuth.getPrincipal());
         else
             return new UserDto();
     }
