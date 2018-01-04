@@ -1,59 +1,47 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Component;
-import ua.softserve.rv_028.issuecitymonitor.controller.AdviceController;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
-
-import org.apache.log4j.Logger;
 import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
-import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
-import java.util.ArrayList;
-import java.util.List;
-
-@Component
+@Service
 public class UserService {
 
-    private MapperService mapper;
+    private UserMapper userMapper;
 
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class.getName());
+    private final UserDao userDao;
 
-    private final  UserDao userDao;
+    private static final Logger LOGGER = Logger.getLogger(UserService.class);
 
     @Autowired
-    public UserService(UserDao userDao, MapperService mapper){
+    public UserService(UserDao userDao, UserMapper userMapper){
         this.userDao = userDao;
-        this.mapper = mapper;
+        this.userMapper = userMapper;
     }
 
-    public void deleteById(long id) {
-        userDao.delete(id);
-        LOGGER.debug("Deleted user " + id);
+    public Page<UserDto> findAllByPage(int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<User> users = userDao.findAll(pageRequest);
+        LOGGER.debug("Found all users");
+        return userMapper.toDtoPage(users);
     }
 
-    private User findOne(long id){
-        User user = userDao.findOne(id);
-        LOGGER.debug("Find one " + user.toString());
-        return user;
-    }
-
-    public Page<UserDto> findAllByPage(Pageable pageable) {
-        Page<User> users = userDao.findAll(pageable);
-        return users.map(mapper::fromEntityToDto);
-    }
-
-    public UserDto findByID(long id){
+    public UserDto findById(long id){
         User user = findOne(id);
-        LOGGER.debug("User is finded by id");
-        return mapper.fromEntityToDto(user);
+        LOGGER.debug("Found " + user);
+        return userMapper.toDto(user);
     }
 
-    public UserDto updateUser(UserDto userDto)  {
+    public UserDto update(UserDto userDto)  {
         User user = findOne(userDto.getId());
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
@@ -64,8 +52,22 @@ public class UserService {
         } else {
             user.setUserRole(userDto.getUserRole());
         }
+        user = userDao.save(user);
+        LOGGER.debug("Updated " + user.toString());
+        return userMapper.toDto(user);
+    }
 
-        return mapper.fromEntityToDto(userDao.save(user));
+    public void deleteById(long id) {
+        userDao.delete(id);
+        LOGGER.debug("Deleted user " + id);
+    }
+
+    private User findOne(long id){
+        User user = userDao.findOne(id);
+        if(user == null) {
+            throw new IllegalStateException("user id not found: " + id);
+        }
+        return user;
     }
 
 }

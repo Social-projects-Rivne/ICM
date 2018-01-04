@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
-import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
-        Label, Row} from "reactstrap";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 
 class IssueEdit extends Component {
     constructor(props) {

@@ -7,11 +7,8 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import ua.softserve.rv_028.issuecitymonitor.controller.UserController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
-import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import java.util.ArrayList;
@@ -20,12 +17,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-
 @RunWith(MockitoJUnitRunner.class)
-public class UsersControllerUnitTest {
+public class UserControllerTest {
+
     private final static String TEST_NAME= "testName";
     private final static UserStatus TEST_STATUS = UserStatus.BANNED;
-    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("user not found");
+    private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("user not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
 
@@ -35,34 +32,29 @@ public class UsersControllerUnitTest {
     @Mock
     private UserService userService;
 
-
-
     @Test
-    public void testGetUser() throws UserNotFoundException {
+    public void testGetUser() {
         UserDto userDto = new UserDto();
 
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
 
-
-        when(userService.findByID(1)).thenReturn(userDto);
+        when(userService.findById(1)).thenReturn(userDto);
 
         UserDto dto = userController.getOne(1);
 
         assertEquals(TEST_NAME,dto.getFirstName());
         assertEquals(TEST_STATUS,dto.getUserStatus());
-
-
     }
 
     @Test
-    public void testGetUsersNotFound() throws UserNotFoundException {
-        when(userService.findByID(-1)).thenThrow(EXCEPTION_NOT_FOUND);
+    public void testGetUsersNotFound() {
+        when(userService.findById(-1)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
             userController.getOne(-1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -70,52 +62,45 @@ public class UsersControllerUnitTest {
     @Test
     public void testGetAllByPage(){
         Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
-        when(userService.findAllByPage(any(Pageable.class))).thenReturn(userDtoPage);
+        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE)).thenReturn(userDtoPage);
 
         Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
-
-        verify(userService).findAllByPage(any(Pageable.class));
+        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE);
         verifyNoMoreInteractions(userService);
         assertEquals(userDtoPage, page);
     }
 
     @Test
-    public void testEditUser() throws UserNotFoundException {
+    public void testEditUser() {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
         userDto.setFirstName(TEST_NAME);
         userDto.setUserStatus(TEST_STATUS);
-        when(userService.updateUser(userDto)).thenReturn(userDto);
+        when(userService.update(userDto)).thenReturn(userDto);
     }
 
     @Test
-    public void testEditUserNotFound() throws UserNotFoundException {
+    public void testEditUserNotFound() {
         UserDto userDto = new UserDto();
         userDto.setId(1L);
-        when(userService.updateUser(userDto)).thenThrow(EXCEPTION_NOT_FOUND);
+        when(userService.update(userDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
-            userController.updateForUser(userDto);
+            userController.update(userDto);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
 
     @Test
-    public void testDeleteUser() throws UserNotFoundException {
-        doNothing().when(userService).deleteById(1);
-        userController.deleteUser(1);
-    }
-
-    @Test
-    public void testDeleteUserNotFound() throws UserNotFoundException {
+    public void testDeleteUserNotFound() {
         doThrow(EXCEPTION_NOT_FOUND).when(userService).deleteById(1);
 
         try {
-            userController.deleteUser(1);
+            userController.delete(1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }

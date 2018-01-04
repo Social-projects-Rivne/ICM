@@ -1,8 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +18,7 @@ public class Issue{
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "title")
@@ -26,7 +28,8 @@ public class Issue{
     private String description;
 
     @Column(name = "initial_date")
-    private String initialDate;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime initialDate;
 
     @Column(name = "latitude")
     private double latitude;
@@ -50,7 +53,7 @@ public class Issue{
     public Issue() {
     }
 
-    public Issue(User user, String title, String description, String initialDate, double latitude, double longitude,
+    public Issue(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
                  IssueCategory category) {
         this.user = user;
         this.title = title;
@@ -93,11 +96,11 @@ public class Issue{
         this.description = description;
     }
 
-    public String getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(String initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 

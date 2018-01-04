@@ -1,8 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -26,7 +28,8 @@ public class Petition{
     private String description;
 
     @Column(name = "initial_date")
-    private String initialDate;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime initialDate;
 
     @Column(name = "category")
     private PetitionCategory category;
@@ -43,7 +46,7 @@ public class Petition{
     public Petition() {
     }
 
-    public Petition(User user, String title, String description, String initialDate, PetitionCategory category) {
+    public Petition(User user, String title, String description, LocalDateTime initialDate, PetitionCategory category) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -83,11 +86,11 @@ public class Petition{
         this.description = description;
     }
 
-    public String getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(String initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 
@@ -109,11 +112,6 @@ public class Petition{
 
     public boolean getIsDeleted() {
         return isDeleted;
-    }
-
-    @PreRemove
-    public void delete() {
-        this.isDeleted = true;
     }
 
     @Override

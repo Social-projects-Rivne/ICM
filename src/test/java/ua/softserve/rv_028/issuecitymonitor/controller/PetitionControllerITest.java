@@ -18,18 +18,18 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = TestApplication.class)
-public class PetitionControllerIntegrationTest {
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class PetitionControllerITest {
 
     private static final int LIST_SIZE = 5;
     private static final int PAGE_SIZE = 5;
@@ -43,18 +43,18 @@ public class PetitionControllerIntegrationTest {
     private PetitionDao petitionDao;
 
     @Autowired
-    private UserDao userDao;
+    private PetitionMapper petitionMapper;
 
     @Autowired
-    private MapperService mapperService;
+    private UserDao userDao;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
     @Before
     public void setup(){
-        user = userDao.save(TestUtils.createUser(0));
-        petitions = petitionDao.save(TestUtils.createPetitionsList(user, LIST_SIZE));
+        user = userDao.save(createUser(0));
+        petitions = petitionDao.save(createPetitionsList(user, LIST_SIZE));
         petition = petitions.get(0);
     }
 
@@ -94,7 +94,7 @@ public class PetitionControllerIntegrationTest {
     public void testUpdatePetitionSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        PetitionDto petitionDto = mapperService.fromEntityToDto(petition);
+        PetitionDto petitionDto = petitionMapper.toDto(petition);
         petitionDto.setTitle(updatedTitle);
         petitionDto.setDescription(updatedDescription);
 

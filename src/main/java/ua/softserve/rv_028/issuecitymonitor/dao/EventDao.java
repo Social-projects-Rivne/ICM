@@ -1,10 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.dao;
 
-import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 
-import java.util.List;
-
-public interface EventDao extends PagingAndSortingRepository<Event, Long> {
-    List<Event> findAllByOrderByIdAsc();
+public interface EventDao extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 }
