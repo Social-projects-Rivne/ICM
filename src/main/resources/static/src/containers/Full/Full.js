@@ -1,19 +1,17 @@
 import React, {Component} from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
-import Header from '../../components/Header/';
-import Sidebar from '../../components/Sidebar/';
-import Breadcrumb from '../../components/Breadcrumb/';
-import Footer from '../../components/Footer/';
-
-import Dashboard from '../../views/Dashboard/';
-
-import Petitions from "../../views/Petitions/";
+import Header from '../../components/Header';
+import Sidebar from '../../components/Sidebar';
+import Breadcrumb from '../../components/Breadcrumb';
+import Footer from '../../components/Footer';
+import Dashboard from '../../views/Dashboard';
+import Petitions from "../../views/Petitions";
 import PetitionEdit from "../../views/Petitions/PetitionEdit";
 import PetitionAdd from "../../views/Petitions/PetitionAdd";
-import Issues from "../../views/Issues/";
+import Issues from "../../views/Issues";
 import IssueEdit from "../../views/Issues/IssueEdit";
-import Users from "../../views/Users/";
+import Users from "../../views/Users";
 import EditUsers from "../../views/Users/EditUsers";
 import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";

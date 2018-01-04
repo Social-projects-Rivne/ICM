@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardFooter, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
+import DownloadPDF from "../DownloadPDF/DownloadPDF";
+
 
 class PageContainer extends Component {
     constructor(props) {
@@ -85,7 +87,7 @@ class PageContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>{this.state.title}, {this.state.button}</CardHeader>
+                            <CardHeader>{this.state.title}, {this.state.button} <DownloadPDF/> </CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>
