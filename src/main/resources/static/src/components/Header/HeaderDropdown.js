@@ -55,7 +55,6 @@ class HeaderDropdown extends Component {
         if (authorities != null)
             if (authorities.some(function(auth){return auth === "USER"}))
                 return <DropdownItem tag={Link} to="/"><i className="fa fa-users"/> User Panel</DropdownItem>
-        console.log("aith", authorities);
     }
 }
 

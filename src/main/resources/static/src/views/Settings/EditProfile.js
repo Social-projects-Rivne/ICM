@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import {
-    Alert, Label, Col, Button, Row, Form, FormGroup, Input} from 'reactstrap';
+import { Alert, Label, Col, Button, Row, FormGroup, Input} from 'reactstrap';
 import {Container} from 'reactstrap';
 import axios from 'axios';
 
@@ -30,26 +29,19 @@ export default class EditProfile extends Component{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.updatePasswordHandlerBtn = this.updatePasswordHandlerBtn.bind(this);
         this.updateContactsHandlerBtn = this.updateContactsHandlerBtn.bind(this);
-        this.aaa = this.aaa.bind(this);
-        this.clickFile = this.clickFile.bind(this);
+        this.uploadAvatar = this.uploadAvatar.bind(this);
     }
 
     componentWillMount(){
-        this.setState({id: this.props.user.id, email: this.props.user.email, firstName: this.props.user.firstName, lastName: this.props.user.lastName,
-                phone: this.props.user.phone}, this.validateContactsFields);
-    }
+        this.setState({id: this.props.user.id, email: this.props.user.email, firstName: this.props.user.firstName,
+            lastName: this.props.user.lastName, phone: this.props.user.phone});
 
-    componentDidMount(){
-        document.getElementById('file-input').addEventListener('change', this.clickFile, false);
-        if(this.state.id != null)
-            if(!isNaN(this.state.id))
-                this.setState({avatar: "http://localhost:8080/api/avatar/" + this.state.id});
-    }
-
-    validateContactsFields(){
-        EditProfile.isEmpty(this.state.firstName) ? this.setState({firstNameValid: false}) : this.setState({firstNameValid: true});
-        EditProfile.isEmpty(this.state.lastName) ? this.setState({lastNameValid: false}) : this.setState({lastNameValid: true});
-        EditProfile.isEmpty(this.state.phone) ? this.setState({phoneValid: false}) : this.setState({phoneValid: true});
+        if(this.props.user.id != null) {
+            if (!isNaN(this.props.user.id))
+                this.setState({avatar: "http://localhost:8080/api/avatar/" + this.props.user.id});
+        } else {
+            this.setState({avatar: "http://www.teequilla.com/images/tq/empty-avatar.png"});
+        }
     }
 
     handleInputChange(event){
@@ -106,11 +98,9 @@ export default class EditProfile extends Component{
         let _this = this;
         axios.post('/api/userSetting/updatePassword', data)
             .then(function (response) {
-                console.log('password', response);
                 _this.updateAlertState(true);
             })
             .catch(function (error) {
-                console.log('error', error);
                 _this.updateAlertState(false);
             });
     }
@@ -133,72 +123,49 @@ export default class EditProfile extends Component{
             });
     }
 
-    aaa(){
-        document.getElementById('file-input').click();
-
-    }
-
-    clickFile(evt){
+    uploadAvatar(evt){
         let file = evt.target.files[0];
-        console.log('file', file.name);
-        console.log('file', file);
-
         let formData = new FormData();
         formData.append('photo', file);
 
-        let _this = this;
-        axios.post('/api/userSettings/updateLogo', formData).then(function (response) {
-            console.log('response', response);
-            _this.renderAvatar();
-        }).catch(function (error) {
-            console.log(error)
-        })
-    }
-
-    renderAvatar(){
-        console.log('render', 'adadadadada');
-        this.setState({avatar: "http://localhost:8080asdadads/api/avatar/" + this.state.id})
+        axios.post('/api/userSettings/updateLogo', formData);
     }
 
     render(){
         return(
-            <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
+            <Container className="page-content">
                 <Col sm={10}>
-                    <h3 >Profile Settings</h3>
+                    <h2 className="subhead-heading">Profile Settings</h2>
                     <hr className="col-12"/>
                     <Row style={{marginBottom: '40px'}}>
 
                         <Col sm={8}>
                             <FormGroup>
-                                <Label htmlFor='firstName' style={{fontWeight:'600'}}>First name</Label>
+                                <Label htmlFor='firstName'>First name</Label>
                                 <Input type="text" name="firstName" id="firstName"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
-                                       value={this.state.firstName}
-                                />
+                                       value={this.state.firstName}/>
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='lastName' style={{fontWeight:'600'}}>Last name</Label>
+                                <Label htmlFor='lastName'>Last name</Label>
                                 <Input type="text" name="lastName" id="lastName"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
-                                       value={this.state.lastName}
-                                />
-
+                                       value={this.state.lastName}/>
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='phone' style={{fontWeight:'600'}}>Phone number</Label>
+                                <Label htmlFor='phone'>Phone number</Label>
                                 <Input type="text" name="phone" id="phone"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.phone}
-                                       valid={this.state.phoneValid}
-                                />
+                                       valid={this.checkPhoneValid()}/>
                             </FormGroup>
 
                             <Button size='lg' onClick={this.updateContactsHandlerBtn} color={this.buttonColorContacts()}>Update contacts form</Button>
@@ -206,58 +173,51 @@ export default class EditProfile extends Component{
 
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
-
-                            <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
-                            <img src={this.state.avatar} alt="avatar" className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}/>
-                            <FormGroup>
-                                <Button onClick={this.aaa} outline color="primary" style={{width:'200px', marginTop: '10px'}} block>Open</Button>
-                                <input id="file-input" type="file" name="name" style={{display: 'none'}}  accept="image/*"/>
-                            </FormGroup>
+                            <div className="edit-profile-avatar">
+                            <label htmlFor='profile-photo'>Profile picture</label>
+                            <img src={this.state.avatar} alt="avatar" className='border-radius' height="200" width="200"/>
+                            <label className="btn btn-primary avatar-upload ">
+                                Upload new picture <Input type="file" onChange={this.uploadAvatar} hidden/>
+                            </label>
+                            </div>
                         </Col>
-
                     </Row>
 
-
-                    <h3>Change password</h3>
+                    <h2 className="subhead-heading">Change password</h2>
                     <hr className="col-12"/>
                     <Row>
                         <Col sm={8}>
                             <FormGroup>
-                                <Label htmlFor='password' style={{fontWeight:'600'}}>Old password</Label>
+                                <Label htmlFor='password'>Old password</Label>
                                 <Input type="password" name="oldPassword" id="oldPassword"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
-                                       value={this.state.oldPassword}
-                                />
+                                       value={this.state.oldPassword}/>
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='password' style={{fontWeight:'600'}}>Password</Label>
+                                <Label htmlFor='password'>Password</Label>
                                 <Input type="password" name="newPassword" id="newPassword"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.newPassword}
-                                       valid={this.checkNewPassword()}
-                                />
+                                       valid={this.checkNewPassword()}/>
                             </FormGroup>
 
                             <FormGroup>
-                                <Label htmlFor='password2' style={{fontWeight:'600'}}>Password</Label>
+                                <Label htmlFor='password2'>Password</Label>
                                 <Input type="password" name="confirmNewPassword" id="confirmNewPassword"
                                        bsSize="lg"
                                        className="border-radius"
                                        onChange={this.handleInputChange}
                                        value={this.state.confirmNewPassword}
-                                       valid={this.checkConfirmPassword()}
-                                />
+                                       valid={this.checkConfirmPassword()}/>
                             </FormGroup>
 
                             <Button size='lg' onClick={this.updatePasswordHandlerBtn} color={this.buttonColorPass()}>Set the new password</Button>
-
                             {EditProfile.showPassAlert(this.state.responseIsSuccess)}
-
                         </Col>
                     </Row>
                 </Col>
@@ -308,6 +268,10 @@ export default class EditProfile extends Component{
         }
     }
 
+    checkPhoneValid(){
+        return this.state.phone === '' ? null : this.state.phoneValid;
+    }
+
     checkNewPassword(){
         return this.state.newPassword === '' ? null : this.state.newPasswordValid;
     }
@@ -336,10 +300,6 @@ export default class EditProfile extends Component{
             return "success";
         else
             return "secondary";
-    }
-
-    static fonts(){
-        return '-apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"';
     }
 
     static visible(isTrue){

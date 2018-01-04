@@ -22,7 +22,6 @@ class Login extends Component {
         const value = event.target.value;
         this.setState({[name]: value},
             () => { this.validateField(name, value) });
-        console.log(name, value);
     }
 
     validateField(fieldName, value) {
@@ -119,8 +118,6 @@ class Login extends Component {
 
     incorrectUserEmailPass() {
         if (this.props.history.location.search !== ""){
-            console.log(this.props);
-            console.log(this.props.history.location.search);
             return {display:'block'}
         } else
             return {display:'none'}
