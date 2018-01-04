@@ -26,7 +26,6 @@ class PageContainer extends Component {
             pagesNum: props.pagesNum,
             page: props.page,
             title: props.title,
-            button: props.button,
             children: props.children
         });
     }
@@ -88,7 +87,7 @@ class PageContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card>
-                            <CardHeader>{this.state.title}, {this.state.button} <DownloadPDF page={this.props.name}/> </CardHeader>
+                            <CardHeader>{this.state.title} <DownloadPDF page={this.props.name}/></CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>

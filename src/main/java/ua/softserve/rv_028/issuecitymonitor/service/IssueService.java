@@ -3,98 +3,82 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.checkState;
+import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
 public class IssueService {
 
-    private static final Logger LOGGER = Logger.getLogger(IssueService.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(IssueService.class);
 
     private IssueDao issueDao;
-    private MapperService mapperService;
+
+    private IssueMapper issueMapper;
 
     @Autowired
-    public IssueService(IssueDao issueDao, MapperService mapperService) {
+    public IssueService(IssueDao issueDao, IssueMapper issueMapper) {
         this.issueDao = issueDao;
-        this.mapperService = mapperService;
+        this.issueMapper = issueMapper;
     }
 
-    public Issue findOne(long id) {
+    public IssueDto addIssue(IssueDto issueDto){
+        Issue issue = issueMapper.toEntity(issueDto);
+        LOGGER.debug("Added issue " + issueDto);
+        return issueMapper.toDto(issue);
+    }
 
-        Issue issue = issueDao.findOne(id);
-        checkState(issue != null, "Issue not found");
-        LOGGER.debug("Find one " + issue.toString());
-        return issue;
+    public Page<IssueDto> findAllByPage(int pageNumber, int pageSize) {
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        Page<Issue> issues = issueDao.findAll(pageRequest);
+        LOGGER.debug("Found all issues");
+        return issueMapper.toDtoPage(issues);
     }
 
     public IssueDto findById(long id) {
-
         Issue issue = findOne(id);
-        LOGGER.debug("Finded by id " + issue.toString());
-        return mapperService.fromEntityToDto(issue);
+        LOGGER.debug("Found " + issue.toString());
+        return issueMapper.toDto(issue);
     }
 
-    public IssueDto addIssue(IssueDto issueDto) {
-
-        LOGGER.debug("Adding issue");
-        Issue issue = new Issue();
-        issue.setUser(mapperService.fromDtoToEntity(issueDto.getUserDto()));
-        issue.setTitle(issueDto.getTitle());
-        issue.setDescription(issueDto.getDescription());
-        issue.setLongitude(issueDto.getLongitude());
-        issue.setLatitude(issueDto.getLatitude());
-        issue.setInitialDate(issueDto.getInitialDate());
-        issue.setCategory(issueDto.getCategory());
-        issueDao.save(issue);
-        LOGGER.debug("Added " + issue.toString());
-
-        return mapperService.fromEntityToDto(issue);
-    }
-
-    public IssueDto editIssue(IssueDto issueDto) {
-
-        LOGGER.debug("Edit issue");
+    public IssueDto update(IssueDto issueDto) {
         Issue issue = findOne(issueDto.getId());
         issue.setTitle(issueDto.getTitle());
         issue.setDescription(issueDto.getDescription());
-        issue.setInitialDate(issueDto.getInitialDate());
+        issue.setInitialDate(LocalDateTime.parse(issueDto.getInitialDate(), DATE_FORMAT));
         issue.setCategory(issueDto.getCategory());
-        issueDao.save(issue);
+        issue = issueDao.save(issue);
         LOGGER.debug("Updated " + issue.toString());
-
-        return mapperService.fromEntityToDto(issue);
+        return issueMapper.toDto(issue);
     }
 
-    public void deleteIssue(long id) {
-
-        LOGGER.debug("Deleting issue by id " + id);
+    public void deleteById(long id) {
         issueDao.delete(id);
-        LOGGER.debug("Deleted issue");
+        LOGGER.debug("Deleted issue " + id);
     }
 
-    public List<IssueLocationDto> findAll(){
-        LOGGER.debug("Finding all issues");
-        List<IssueLocationDto> issueLocationDto = new ArrayList<>();
-
-        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
-            issueLocationDto.add(mapperService.fromEntityToMapDto(issue));
+    private Issue findOne(long id) {
+        Issue issue = issueDao.findOne(id);
+        if (issue == null) {
+            throw new IllegalArgumentException("issue id not found:" + id);
         }
-        LOGGER.debug("Finded all issues");
-        return issueLocationDto;
+        return issue;
     }
 
-    public Page<IssueDto> findAllByPage(Pageable pageable) {
-        Page<Issue> issues = issueDao.findAll(pageable);
-        return issues.map(mapperService::fromEntityToDto);
+    public List<IssueLocationDto> findAll() {
+        List<IssueLocationDto> issueLocationDtos = issueMapper.toLocationDtoList(issueDao.findAll());
+        LOGGER.debug("Found all issue locations");
+        return issueLocationDtos;
     }
+
 }

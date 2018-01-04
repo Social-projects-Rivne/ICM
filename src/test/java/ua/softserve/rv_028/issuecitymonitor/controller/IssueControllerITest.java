@@ -9,8 +9,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
@@ -20,19 +18,18 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.MapperService;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = TestApplication.class)
-public class IssueControllerIntegrationTest {
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class IssueControllerITest {
 
     private static final int LIST_SIZE = 5;
     private static final int PAGE_SIZE = 5;
@@ -49,15 +46,15 @@ public class IssueControllerIntegrationTest {
     private UserDao userDao;
 
     @Autowired
-    private MapperService mapperService;
+    private TestRestTemplate testRestTemplate;
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private IssueMapper issueMapper;
 
     @Before
     public void setup(){
-        user = userDao.save(TestUtils.createUser(0));
-        issues = issueDao.save(TestUtils.createIssuesList(user, LIST_SIZE));
+        user = userDao.save(createUser(0));
+        issues = issueDao.save(createIssuesList(user, LIST_SIZE));
         issue = issues.get(0);
     }
 
@@ -105,7 +102,7 @@ public class IssueControllerIntegrationTest {
     public void testAddIssue(){
         String addTitle = "testAddTitle";
         String addDescription = "testAddDescription";
-        IssueDto issueDto = mapperService.fromEntityToDto(issue);
+        IssueDto issueDto = issueMapper.toDto(issue);
         issueDto.setTitle(addTitle);
         issueDto.setDescription(addDescription);
 
@@ -129,7 +126,7 @@ public class IssueControllerIntegrationTest {
     public void testEditIssue(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        IssueDto issueDto = mapperService.fromEntityToDto(issue);
+        IssueDto issueDto = issueMapper.toDto(issue);
         issueDto.setTitle(updatedTitle);
         issueDto.setDescription(updatedDescription);
 

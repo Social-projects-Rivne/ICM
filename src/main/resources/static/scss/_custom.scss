@@ -37,10 +37,8 @@
   margin-top: 2em;
 }
 
-.nav-link{
-    font-weight: bold;
-    margin-right: 10px;
-    margin-left: 10px;
+.form-control-readonly[readonly] {
+  background-color: white;
 }
 
 
