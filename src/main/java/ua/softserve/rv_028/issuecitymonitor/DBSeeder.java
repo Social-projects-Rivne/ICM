@@ -44,7 +44,7 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
-        User defaultAdmin = new User("Root", "Admin", encoder.encode("root"), "admin@mail.com", "+380997755331",
+        User defaultAdmin = new User("Root", "Admin", encoder.encode("1234"), "admin@mail.com", "+380997755331",
                 UserStatus.ACTIVE, UserRole.ADMIN, "http://url.com");
 
         session.save(defaultAdmin);
