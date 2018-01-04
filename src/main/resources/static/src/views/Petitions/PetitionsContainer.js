@@ -59,7 +59,7 @@ class PetitionsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Petitions list" button={this.addNewPetition()}
+            <PageContainer onPageChange={this.handlePageChange} name="petitions" title="Petitions list" button={this.addNewPetition()}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>
