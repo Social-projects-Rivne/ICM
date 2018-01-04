@@ -11,7 +11,6 @@ import org.springframework.scheduling.annotation.EnableAsync;
         value = {IssueCityMonitorApplication.class, DBSeeder.class}))
 @EnableAsync
 public class TestApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(TestApplication.class, args);
     }

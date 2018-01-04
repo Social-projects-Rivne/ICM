@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
+import IssueMap from "../../views/IssueMap/IssueMap";
 import Footer from '../../components/Footer/Footer';
 import EditProfile from '../../views/Settings/EditProfile';
 import axios from 'axios';
 
-export default class Client extends Component{
+export default class SignUp extends Component{
 
     constructor(props) {
         super(props);
@@ -54,6 +55,7 @@ export default class Client extends Component{
                         </Switch>
                     </Container>
                 </div>
+                <IssueMap/>
                 <Footer />
             </div>
         )

@@ -18,17 +18,18 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT,
-        classes = TestApplication.class)
-public class UserControllerIntegrationTest {
+@SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class UserControllerITest {
 
     private static final int LIST_SIZE = 5;
     private static final int PAGE_SIZE = 5;
@@ -38,6 +39,9 @@ public class UserControllerIntegrationTest {
     private List<User> users;
 
     @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
     private UserDao userDao;
 
     @Autowired
@@ -45,8 +49,8 @@ public class UserControllerIntegrationTest {
 
     @Before
     public void setup() {
-        users = userDao.save(TestUtils.createUsersList(LIST_SIZE));
-        admin = userDao.save(TestUtils.createAdmin(LIST_SIZE + 1));
+        users = userDao.save(createUsersList(LIST_SIZE));
+        admin = userDao.save(createAdmin(LIST_SIZE + 1));
         user = users.get(0);
     }
 
@@ -86,7 +90,7 @@ public class UserControllerIntegrationTest {
     public void testEditUser(){
         String updatedName = "testUpdateName";
         UserStatus updatedStatus = UserStatus.ACTIVE;
-        UserDto userDto = new UserDto(admin);
+        UserDto userDto = userMapper.toDto(admin);
         userDto.setFirstName(updatedName);
         userDto.setUserStatus(updatedStatus);
 
@@ -106,7 +110,7 @@ public class UserControllerIntegrationTest {
 
     @Test
     public void testEditUser_thenThrowLastAdminException_expectBadRequest(){
-        UserDto userDto = new UserDto(admin);
+        UserDto userDto = userMapper.toDto(admin);
         userDto.setUserRole(UserRole.USER);
 
         HttpHeaders httpHeaders = new HttpHeaders();

@@ -6,9 +6,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
-import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 /**
  * This class is implemented by the interface {@link UserDetailsService} from Spring Security.

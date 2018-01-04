@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
-import {DropdownItem,DropdownMenu,DropdownToggle,Dropdown} from 'reactstrap';
-import {Link} from "react-router-dom";
+import {Dropdown, DropdownItem, DropdownMenu, DropdownToggle} from 'reactstrap';
 
 class HeaderDropdown extends Component {
 
@@ -52,9 +52,13 @@ class HeaderDropdown extends Component {
     }
 
     static renderUserPanelDropdownItem(authorities) {
-        if (authorities != null)
-            if (authorities.some(function(auth){return auth === "USER"}))
+        if (authorities !== null) {
+            if (authorities.some(function (auth) {
+                    return auth === "USER"
+                })) {
                 return <DropdownItem tag={Link} to="/"><i className="fa fa-users"/> User Panel</DropdownItem>
+            }
+        }
     }
 }
 
