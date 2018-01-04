@@ -8,10 +8,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -65,12 +67,18 @@ public class IssueService {
         LOGGER.debug("Deleted issue " + id);
     }
 
-    private Issue findOne(long id){
+    private Issue findOne(long id) {
         Issue issue = issueDao.findOne(id);
-        if(issue == null) {
+        if (issue == null) {
             throw new IllegalArgumentException("issue id not found:" + id);
         }
         return issue;
+    }
+
+    public List<IssueLocationDto> findAll() {
+        List<IssueLocationDto> issueLocationDtos = issueMapper.toLocationDtoList(issueDao.findAll());
+        LOGGER.debug("Found all issue locations");
+        return issueLocationDtos;
     }
 
 }

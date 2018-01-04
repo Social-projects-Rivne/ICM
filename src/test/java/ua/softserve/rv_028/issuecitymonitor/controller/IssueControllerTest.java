@@ -9,9 +9,11 @@ import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -72,6 +74,17 @@ public class IssueControllerTest {
         verify(issueService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
         verifyNoMoreInteractions(issueService);
         assertEquals(issueDtoPage, page);
+    }
+
+    @Test
+    public void testGetAll(){
+        List<IssueLocationDto> issueDto = new ArrayList<>();
+        when(issueService.findAll()).thenReturn(issueDto);
+
+        List<IssueLocationDto>  issue = issueController.getAll();
+
+        verify(issueService).findAll();
+        assertEquals(issueDto, issue);
     }
 
     @Test
