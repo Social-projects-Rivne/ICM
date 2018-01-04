@@ -37,6 +37,7 @@ class Map extends Component {
         return (
             <GoogleMap
                 defaultZoom={this.state.zoom}
+                defaultMaxZoom = {8}
                 defaultCenter={{ lat: this.state.centlat, lng: this.state.centlng }}
               >
                 {this.state.issues.map(issues => (
