@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 
@@ -86,6 +88,33 @@ public class MapperService {
         return event;
     }
 
+    public IssueDto fromEntityToDto(Issue issueEntity){
+        IssueDto issueDto = new IssueDto();
+
+        issueDto.setId(issueEntity.getId());
+        issueDto.setUserDto(fromEntityToDto(issueEntity.getUser()));
+        issueDto.setTitle(issueEntity.getTitle());
+        issueDto.setDescription(issueEntity.getDescription());
+        issueDto.setInitialDate(issueEntity.getInitialDate());
+        issueDto.setLatitude(issueEntity.getLatitude());
+        issueDto.setLongitude(issueEntity.getLongitude());
+        issueDto.setCategory(issueEntity.getCategory());
+        return issueDto;
+    }
+
+    public Issue fromDtoToEntity(IssueDto issueDto){
+        Issue issue = new Issue();
+
+        issue.setId(issueDto.getId());
+        issue.setUser(fromDtoToEntity(issueDto.getUserDto()));
+        issue.setTitle(issueDto.getTitle());
+        issue.setDescription(issueDto.getDescription());
+        issue.setInitialDate(issueDto.getInitialDate());
+        issue.setLatitude(issueDto.getLatitude());
+        issue.setLongitude(issueDto.getLongitude());
+        issue.setCategory(issueDto.getCategory());
+        return issue;
+    }
 
     public PetitionDto fromEntityToDto(Petition petitionEntity){
         PetitionDto petition = new PetitionDto();
@@ -110,5 +139,4 @@ public class MapperService {
         petition.setCategory(petitionDto.getCategory());
         return petition;
     }
-
 }

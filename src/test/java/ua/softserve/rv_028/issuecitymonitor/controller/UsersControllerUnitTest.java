@@ -5,11 +5,16 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.controller.UserController;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 import ua.softserve.rv_028.issuecitymonitor.exception.UserNotFoundException;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
@@ -21,6 +26,8 @@ public class UsersControllerUnitTest {
     private final static String TEST_NAME= "testName";
     private final static UserStatus TEST_STATUS = UserStatus.BANNED;
     private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("user not found");
+    private final static int PAGE_INDEX = 1;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private UserController userController;
@@ -60,6 +67,17 @@ public class UsersControllerUnitTest {
         }
     }
 
+    @Test
+    public void testGetAllByPage(){
+        Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
+        when(userService.findAllByPage(any(Pageable.class))).thenReturn(userDtoPage);
+
+        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        verify(userService).findAllByPage(any(Pageable.class));
+        verifyNoMoreInteractions(userService);
+        assertEquals(userDtoPage, page);
+    }
 
     @Test
     public void testEditUser() throws UserNotFoundException {

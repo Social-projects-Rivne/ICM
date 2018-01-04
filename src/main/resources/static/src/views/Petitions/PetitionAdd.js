@@ -113,7 +113,7 @@ class PetitionAdd extends Component {
                         <Card>
                             <Form className="form-horizontal">
                                 <CardHeader>
-                                    <strong>Petition #{this.state.petition.id} edit form</strong>
+                                    <strong>Petition add form</strong>
                                 </CardHeader>
                                 <CardBody>
 
