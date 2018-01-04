@@ -7,8 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkState;
 
@@ -77,6 +80,17 @@ public class IssueService {
         LOGGER.debug("Deleting issue by id " + id);
         issueDao.delete(id);
         LOGGER.debug("Deleted issue");
+    }
+
+    public List<IssueLocationDto> findAll(){
+        LOGGER.debug("Finding all issues");
+        List<IssueLocationDto> issueLocationDto = new ArrayList<>();
+
+        for(Issue issue : issueDao.findAllByOrderByIdAsc()){
+            issueLocationDto.add(mapperService.fromEntityToMapDto(issue));
+        }
+        LOGGER.debug("Finded all issues");
+        return issueLocationDto;
     }
 
     public Page<IssueDto> findAllByPage(Pageable pageable) {

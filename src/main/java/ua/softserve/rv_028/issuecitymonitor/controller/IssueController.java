@@ -6,7 +6,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/issues")
@@ -24,8 +27,14 @@ public class IssueController {
     @GetMapping("/{id}")
     public IssueDto getOne(@PathVariable long id){
         LOGGER.debug("GET request");
-        LOGGER.debug("GET request successful");
         return service.findById(id);
+    }
+
+    @GetMapping("/map")
+    public List<IssueLocationDto> getAll(){
+        LOGGER.debug("GET request");
+        LOGGER.debug("GET request successful");
+        return service.findAll();
     }
 
     @GetMapping

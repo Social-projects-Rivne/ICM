@@ -94,6 +94,14 @@ public class IssueControllerIntegrationTest {
     }
 
     @Test
+    public void testGetAll(){
+        ResponseEntity<String> responseEntity = testRestTemplate.
+                getForEntity("/api/issues/map", String.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+
+    }
+
+    @Test
     public void testAddIssue(){
         String addTitle = "testAddTitle";
         String addDescription = "testAddDescription";

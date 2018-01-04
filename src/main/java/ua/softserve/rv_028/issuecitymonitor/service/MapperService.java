@@ -3,10 +3,7 @@ package ua.softserve.rv_028.issuecitymonitor.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
-import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
@@ -115,6 +112,25 @@ public class MapperService {
         issue.setCategory(issueDto.getCategory());
         return issue;
     }
+
+    public IssueLocationDto fromEntityToMapDto(Issue issueEntity){
+        IssueLocationDto issueDto = new IssueLocationDto();
+
+        issueDto.setId(issueEntity.getId());
+        issueDto.setLatitude(issueEntity.getLatitude());
+        issueDto.setLongitude(issueEntity.getLongitude());
+        return issueDto;
+    }
+
+    public Issue fromDtoToEntity(IssueLocationDto issueDto){
+        Issue issue = new Issue();
+
+        issue.setId(issueDto.getId());
+        issue.setLatitude(issueDto.getLatitude());
+        issue.setLongitude(issueDto.getLongitude());
+        return issue;
+    }
+
 
     public PetitionDto fromEntityToDto(Petition petitionEntity){
         PetitionDto petition = new PetitionDto();
