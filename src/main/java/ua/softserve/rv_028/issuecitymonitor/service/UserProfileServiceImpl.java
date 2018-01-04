@@ -28,8 +28,8 @@ public class UserProfileServiceImpl implements UserProfileService {
     private UserDao userDao;
     private BCryptPasswordEncoder encoder;
 
+    private static final String PATH = "src/main/resources/users/logo/";
     private static final Logger LOGGER = Logger.getLogger(UserProfileServiceImpl.class.getName());
-    private final Path rootLocation = Paths.get("photos");
 
     @Autowired
     public UserProfileServiceImpl(UserDao userDao, BCryptPasswordEncoder encoder) {
@@ -63,63 +63,70 @@ public class UserProfileServiceImpl implements UserProfileService {
         LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
     }
 
-    private final String PATH = "src/main/resources/users/logo/";
-    private final String ORIGINAL = "original.png";
-    private final String MEDIUM_SIZE = "medium.png";
-
     @Override
     public void updatePortfolioPhoto(MultipartFile photo, String email){
-        long id = userDao.findUserByUsername(email).getId();
-
+        User user = userDao.findUserByUsername(email);
+        checkArgument(user != null, "User with the following email \'" + email + "\' doesn't not exist");
         checkArgument(isImage(photo), "Is not a image");
 
-        System.out.println("createImages:\t" + createImages(id, photo));
+        long id = user.getId();
+        String avatarUrl = createImages(id, photo);
+        user.setAvatarUrl(avatarUrl);
+    }
 
+    @Override
+    public Map getUserInfo(String email) {
+        User user = userDao.findUserByUsername(email);
+        checkArgument(user != null, "The user " + email + " not found");
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("email", user.getUsername());
+        map.put("firstName", user.getFirstName());
+        map.put("lastName", user.getLastName());
+        map.put("authorities", user.getAuthorities());
+        map.put("phone", user.getPhone());
+        return map;
+    }
+
+    private String createImages(long userId, MultipartFile photo) {
         try {
-            BufferedImage bufferedImage = createResizedCopy(ImageIO.read(photo.getInputStream()), 250, 250);
+            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(userId)));
 
-            System.out.println(bufferedImage.getHeight());
+            File image = new File(userPhotoPath.toString(), "original.png");
+            writeFile(image, photo);
 
-            ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            ImageIO.write(bufferedImage, "png", stream);
-            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(id)));
-            File file = new File(userPhotoPath.toString(), MEDIUM_SIZE);
+            image = new File(userPhotoPath.toString(), "medium.png");
+            writeFile(image, createResizedCopy(ImageIO.read(photo.getInputStream()), 200, 200));
 
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(stream.toByteArray());
-            out.close();
+            image = new File(userPhotoPath.toString(), "small.png");
+            writeFile(image, createResizedCopy(ImageIO.read(photo.getInputStream()), 35, 35));
 
+            return image.getPath();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return null;
+    }
 
-/*        try {
+    private void writeFile(File file, BufferedImage stream) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
+        ImageIO.write(stream,"png", byteArrayOutputStream1);
 
-            File temp = new File(photo.getOriginalFilename());
-            String s = Files.probeContentType(temp.toPath());
-            System.out.println(s);
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(byteArrayOutputStream1.toByteArray());
+        out.close();
+    }
 
-            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(id)));
-            File file = new File(userPhotoPath.toString(), photo.getOriginalFilename());
+    private void writeFile(File file, MultipartFile photo) throws IOException {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(ImageIO.read(photo.getInputStream()),"png", byteArrayOutputStream);
 
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(photo.getBytes());
-            out.close();
-
-
-        } catch (IOException e) {
-            throw new RuntimeException("FAIL!");
-        }*/
-
-        URL resource = getClass().getClassLoader().getResource("users/logo/1151/original.png");
-        if (resource != null)
-            System.out.println(resource.getPath());
-        else
-            System.out.println("null");
+        FileOutputStream out = new FileOutputStream(file);
+        out.write(byteArrayOutputStream.toByteArray());
+        out.close();
     }
 
     private BufferedImage createResizedCopy(Image originalImage,
-                                    int scaledWidth, int scaledHeight){
+                                            int scaledWidth, int scaledHeight){
         BufferedImage resizedImage = new BufferedImage(scaledWidth, scaledHeight, BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = resizedImage.createGraphics();
         g.drawImage(originalImage, 0, 0, scaledWidth, scaledHeight, null);
@@ -136,45 +143,13 @@ public class UserProfileServiceImpl implements UserProfileService {
         return resizedImage;
     }
 
-    private String createImages(long userId, MultipartFile photo) {
-        try {
-            Path userPhotoPath = Files.createDirectories(Paths.get(PATH, String.valueOf(userId)));
-            File file = new File(userPhotoPath.toString(), ORIGINAL);
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            ImageIO.write(ImageIO.read(photo.getInputStream()),"png", byteArrayOutputStream);
-
-            FileOutputStream out = new FileOutputStream(file);
-            out.write(byteArrayOutputStream.toByteArray());
-            out.close();
-
-            return file.getAbsolutePath();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     private boolean isImage(MultipartFile file){
         try {
             InputStream input = file.getInputStream();
-            System.out.println("type:\t" + ImageIO.read(input).getType());
+            ImageIO.read(input).getType();
             return true;
         } catch (NullPointerException | IOException e) {
             return false;
         }
-    }
-
-    @Override
-    public Map getUserInfo(String email) {
-        User user = userDao.findUserByUsername(email);
-        checkArgument(user != null, "The user " + email + " not found");
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("email", user.getUsername());
-        map.put("firstName", user.getFirstName());
-        map.put("lastName", user.getLastName());
-        map.put("authorities", user.getAuthorities());
-        map.put("phone", user.getPhone());
-        return map;
     }
 }

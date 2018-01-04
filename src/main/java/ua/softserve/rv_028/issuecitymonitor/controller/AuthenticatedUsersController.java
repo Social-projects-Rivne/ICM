@@ -73,12 +73,13 @@ public class AuthenticatedUsersController {
 
     @PostMapping(value = "/api/userSettings/updateLogo")
     public void updatePortfolioPhoto(@RequestParam MultipartFile photo){
-        profileService.updatePortfolioPhoto(photo, "admin@mail.com");
+        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+        profileService.updatePortfolioPhoto(photo, userAuth.getName());
     }
 
     @PostMapping(value = "/api/image", produces = "image/png")
-    public byte[] downloadImage(@RequestParam String image) throws IOException {
-        return Files.readAllBytes(Paths.get("src/main/resources/users/logo/1151/", image));
+    public byte[] downloadImage(@RequestParam String photo) throws IOException {
+        return Files.readAllBytes(Paths.get("src/main/resources/users/logo/1151/", photo));
     }
 }
 

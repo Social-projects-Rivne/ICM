@@ -29,6 +29,7 @@ ReactDOM.render((
             <Route path="/admin/" name="Home" component={Full}/>
             <Route path="/maps" name="IssueMap" component={IssueMap}/>
             <Route path="/settings/" name="Client" component={Client}/>
+            <Route exact path="/" name="Client" component={Client}/>
             <Route path="/*" component={Page404} />
             <Route path="/" name="Client" component={Client}/>
         </Switch>

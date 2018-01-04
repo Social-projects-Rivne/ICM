@@ -28,11 +28,17 @@ export default class EditProfile extends Component{
         this.handleInputChange = this.handleInputChange.bind(this);
         this.updatePasswordHandlerBtn = this.updatePasswordHandlerBtn.bind(this);
         this.updateContactsHandlerBtn = this.updateContactsHandlerBtn.bind(this);
+        this.aaa = this.aaa.bind(this);
+        this.clickFile = this.clickFile.bind(this);
     }
 
     componentWillMount(){
         this.setState({email: this.props.user.email, firstName: this.props.user.firstName, lastName: this.props.user.lastName,
                 phone: this.props.user.phone}, this.validateContactsFields);
+    }
+
+    componentDidMount(){
+        document.getElementById('file-input').addEventListener('change', this.clickFile, false);
     }
 
     validateContactsFields(){
@@ -122,6 +128,27 @@ export default class EditProfile extends Component{
             });
     }
 
+    aaa(){
+        document.getElementById('file-input').click();
+
+    }
+
+    clickFile(evt){
+        let file = evt.target.files[0];
+        console.log('file', file.name);
+        console.log('file', file);
+
+        let formData = new FormData();
+        formData.append('photo', file);
+
+        axios.post('/api/userSettings/updateLogo', formData).then(function (response) {
+            console.log('response', response);
+        }).catch(function (error) {
+            console.log(error)
+        })
+
+
+    }
     render(){
         return(
             <Container style={{paddingTop: '30px', fontFamily: EditProfile.fonts()}}>
@@ -168,8 +195,13 @@ export default class EditProfile extends Component{
 
                         </Col>
                         <Col sm={4} style={{paddingLeft: '60px'}}>
+
                             <label htmlFor='profile-photo' style={{fontWeight:'600'}}>Profile picture</label>
                             <div id='profile-photo' className='border-radius' style={{height:'200px', width:'200px', background: '#336fce'}}></div>
+                            <FormGroup>
+                                <Button onClick={this.aaa} outline color="primary" style={{width:'200px', marginTop: '10px'}} block>Open</Button>
+                                <input id="file-input" type="file" name="name" style={{display: 'none'}}  accept="image/*"/>
+                            </FormGroup>
                         </Col>
 
                     </Row>
