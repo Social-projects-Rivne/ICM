@@ -30,16 +30,13 @@ public class UserSpecification implements Specification<User> {
             String key = entry.getKey();
 
             if(!value.isEmpty()) {
-                if(value.replace(" ", "").equals("")) {
-                    continue;
-                }
 
                 if (key.equals("name")) {
-                    String[] values = value.split(" ", 2);
+                    String[] fullName = value.split(" ", 2);
 
                     predicates.add(cb.or(
-                            cb.like(cb.lower(root.get("firstName")), ("%" + values[0] + "%").toLowerCase()),
-                            cb.like(cb.lower(root.get("lastName")), ("%" + values[values.length == 1 ? 0 : 1] + "%").toLowerCase())));
+                            cb.like(cb.lower(root.get("firstName")), ("%" + fullName[0] + "%").toLowerCase()),
+                            cb.like(cb.lower(root.get("lastName")), ("%" + fullName[fullName.length == 1 ? 0 : 1] + "%").toLowerCase())));
                     continue;
                 }
                 if (key.equals("email")) {

@@ -35,9 +35,6 @@ public class IssueSpecification implements Specification<Issue> {
             String key = entry.getKey();
 
             if(!value.isEmpty()) {
-                if(value.replace(" ", "").equals("")) {
-                    continue;
-                }
 
                 if(key.equals("fromDate")) {
                     predicates.add(cb.greaterThanOrEqualTo(root.get("initialDate"),
@@ -52,11 +49,11 @@ public class IssueSpecification implements Specification<Issue> {
                 }
 
                 if(key.equals("user")) {
-                    String[] values = value.split(" ", 2);
+                    String[] fullName = value.split(" ", 2);
 
                     predicates.add(cb.or(
-                            cb.like(cb.lower(root.get("user").get("firstName")), ("%" + values[0] + "%").toLowerCase()),
-                            cb.like(cb.lower(root.get("user").get("lastName")), ("%" + values[values.length == 1 ? 0 : 1] + "%").toLowerCase())));
+                            cb.like(cb.lower(root.get("user").get("firstName")), ("%" + fullName[0] + "%").toLowerCase()),
+                            cb.like(cb.lower(root.get("user").get("lastName")), ("%" + fullName[fullName.length == 1 ? 0 : 1] + "%").toLowerCase())));
                     continue;
                 }
 

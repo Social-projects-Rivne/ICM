@@ -3,7 +3,6 @@ import {Route, Switch} from 'react-router-dom';
 import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
-import Breadcrumb from '../../components/Breadcrumb/';
 import Footer from '../../components/Footer/';
 
 import Dashboard from '../../views/Dashboard/';
@@ -47,7 +46,6 @@ class Full extends Component {
         <div className="app-body">
           <Sidebar {...this.props}/>
           <main className="main">
-            <Breadcrumb />
             <Container fluid>
               <Switch>
                 <Route exact path="/admin/" name="Dashboard" component={Dashboard}/>
