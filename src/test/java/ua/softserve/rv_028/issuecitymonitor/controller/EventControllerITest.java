@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,38 +11,79 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
-import ua.softserve.rv_028.issuecitymonitor.IssueCityMonitorApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
+import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
+
+import java.io.IOException;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = IssueCityMonitorApplication.class)
-@WebAppConfiguration
-public class EventControllerIntegrationTest {
+@SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+public class EventControllerITest {
+
+    private static final int LIST_SIZE = 5;
+
+    private static final int PAGE_SIZE = 2;
+    private static final int PAGE_OFFSET = 1;
 
     @Autowired
     private EventDao eventDao;
 
     @Autowired
+    private UserDao userDao;
+
+    @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private EventMapper eventMapper;
+
+    private User user;
     private Event event;
+    private List<Event> events;
 
     @Before
-    public void setup(){
-        event = eventDao.findAllByOrderByIdAsc().get(1);
+    public void setUp() {
+        user = userDao.save(createUser(0));
+        events = eventDao.save(createEventsList(user, LIST_SIZE));
+        event = events.get(0);
+    }
+
+    @After
+    public void tearDown() {
+        eventDao.delete(events);
+        userDao.delete(user);
+    }
+
+    @Test
+    public void testGetEventsByPage() {
+        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity("/api/events?size="+PAGE_SIZE+"&page="+PAGE_OFFSET, String.class);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
+            assertEquals(PAGE_SIZE, content.size());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test
     public void testGetEventSuccessfully(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/"+event.getId(), EventDto.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.OK);
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         EventDto responseObject = responseEntity.getBody();
         assertNotNull(responseObject);
         assertEquals(event.getTitle(), responseObject.getTitle());
@@ -50,7 +94,7 @@ public class EventControllerIntegrationTest {
     public void testUpdateEventSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
-        EventDto eventDto = new EventDto(event);
+        EventDto eventDto = eventMapper.toDto(event);
         eventDto.setTitle(updatedTitle);
         eventDto.setDescription(updatedDescription);
 
@@ -60,8 +104,6 @@ public class EventControllerIntegrationTest {
         HttpEntity<EventDto> httpEntity = new HttpEntity<>(eventDto,httpHeaders);
         ResponseEntity<EventDto> responseEntity = testRestTemplate.exchange("/api/events/"+eventDto.getId(),
                 HttpMethod.PUT, httpEntity, EventDto.class);
-
-        System.out.println(httpEntity.toString());
 
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
         EventDto responseObject = responseEntity.getBody();
@@ -81,7 +123,9 @@ public class EventControllerIntegrationTest {
     public void testEventNotFound(){
         ResponseEntity<EventDto> responseEntity = testRestTemplate.
                 getForEntity("/api/events/-1", EventDto.class);
-        assertEquals(responseEntity.getStatusCode(), HttpStatus.NOT_FOUND);
+        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
+
+
 
 }

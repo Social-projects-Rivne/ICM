@@ -1,11 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 public class IssueDto {
 
-    private Long id;
+    private long id;
     private UserDto userDto;
     private String title;
     private String description;
@@ -14,7 +13,7 @@ public class IssueDto {
     private double longitude;
     private IssueCategory category;
 
-    public IssueDto(Long id, UserDto userDto, String title, String description, String initialDate,
+    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate,
                     double latitude, double longitude, IssueCategory category) {
         this.id = id;
         this.userDto = userDto;
@@ -28,11 +27,11 @@ public class IssueDto {
 
     public IssueDto() {}
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

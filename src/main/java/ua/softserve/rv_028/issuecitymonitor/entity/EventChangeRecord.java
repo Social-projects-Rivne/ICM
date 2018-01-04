@@ -1,15 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "event_change_records")
-@SQLDelete(sql = "UPDATE event_change_records SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class EventChangeRecord {
 
     @Id
@@ -86,11 +82,6 @@ public class EventChangeRecord {
 
     public boolean getIsDeleted() {
         return isDeleted;
-    }
-
-    @PreRemove
-    public void delete() {
-        this.isDeleted = true;
     }
 
     @Override

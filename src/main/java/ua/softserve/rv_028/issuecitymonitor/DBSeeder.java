@@ -12,10 +12,8 @@ import ua.softserve.rv_028.issuecitymonitor.entity.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import javax.persistence.EntityManagerFactory;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Random;
-
-import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Component
 public class DBSeeder {
@@ -23,11 +21,10 @@ public class DBSeeder {
     private SessionFactory sessionFactory;
     private final BCryptPasswordEncoder encoder;
 
-    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class.getName());
+    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class);
 
     @Autowired
-
-    public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder){
+    public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder) {
         this.encoder = encoder;
 
         if (factory.unwrap(SessionFactory.class) == null) {
@@ -39,7 +36,7 @@ public class DBSeeder {
             fillDatabase();
             LOGGER.info("Seeding finished");
         } catch (RuntimeException e) {
-            LOGGER.error("Seeding has been done already. Skipping...");
+            LOGGER.info("Seeding has been done already. Skipping...");
         }
     }
 
@@ -47,10 +44,15 @@ public class DBSeeder {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
+        User defaultAdmin = new User("Root", "Admin", encoder.encode("1234"), "admin@mail.com", "+380997755331",
+                UserStatus.ACTIVE, UserRole.ADMIN, "http://url.com");
+
+        session.save(defaultAdmin);
+
         for(int i=0; i < 10 ; i++){
             User user = new User("Tom"+i, "Jerry"+i,encoder.encode(i+""+i+""+i),
-                    "tom"+i+"@mail.rv.ua","+380997755331",r.nextBoolean(),
-                    randomEnum(UserStatus.class),randomEnum(UserRole.class),"http://url.com"+i);
+                    "tom"+i+"@mail.rv.ua","+380997755331", randomEnum(UserStatus.class),
+                    randomEnum(UserRole.class),"http://url.com"+i);
 
             session.save(user);
 
@@ -95,25 +97,16 @@ public class DBSeeder {
                 }
             }
         }
-
-        User admin = new User("admin", "admin", "admin@mail.com", encoder.encode("12345"));
-        admin.setUserRole(UserRole.ADMIN);
-        session.save(admin);
-
-        User user = new User("11", "11", "gefasim@mail.com", encoder.encode("1234"));
-        user.setUserRole(UserRole.ADMIN);
-        session.save(user);
-
         transaction.commit();
     }
 
     private static final Random r = new Random();
 
-    private String date() {
-        return DATE_FORMAT.format(new Date());
+    private static LocalDateTime date() {
+        return LocalDateTime.now();
     }
 
-    private <T extends Enum<?>> T randomEnum(Class<T> classname) {
+    private static <T extends Enum<?>> T randomEnum(Class<T> classname) {
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
     }

@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
@@ -25,7 +24,7 @@ public class IssueControllerTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
-    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("issue not found");
+    private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("issue not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
 
@@ -61,7 +60,7 @@ public class IssueControllerTest {
         try {
             issueController.getOne(-1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -69,11 +68,10 @@ public class IssueControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<IssueDto> issueDtoPage = new PageImpl<>(new ArrayList<>());
-        when(issueService.findAllByPage(any(Pageable.class))).thenReturn(issueDtoPage);
-
+        when(issueService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(issueDtoPage);
         Page<IssueDto> page = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
 
-        verify(issueService).findAllByPage(any(Pageable.class));
+        verify(issueService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
         verifyNoMoreInteractions(issueService);
         assertEquals(issueDtoPage, page);
     }
@@ -101,7 +99,7 @@ public class IssueControllerTest {
 
     @Test
     public void testEditIssue() {
-        when(issueService.editIssue(issue)).thenReturn(issue);
+        when(issueService.update(issue)).thenReturn(issue);
 
         IssueDto issueResult = issueController.editIssue(issue);
 
@@ -111,31 +109,24 @@ public class IssueControllerTest {
 
     @Test
     public void testEditIssueNotFound() {
-        when(issueService.editIssue(issue)).thenThrow(EXCEPTION_NOT_FOUND);
+        when(issueService.update(issue)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
             issueController.editIssue(issue);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
 
-    //TODO fix tyhis once delete is implemented
-    @Test
-    public void testDeleteIssue() {
-        doNothing().when(issueService).deleteIssue(1); //This is obvious
-        issueController.deleteIssue(1);
-    }
-
     @Test
     public void testDeleteIssueNotFound() {
-        doThrow(EXCEPTION_NOT_FOUND).when(issueService).deleteIssue(1);
+        doThrow(EXCEPTION_NOT_FOUND).when(issueService).deleteById(1);
 
         try {
             issueController.deleteIssue(1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
