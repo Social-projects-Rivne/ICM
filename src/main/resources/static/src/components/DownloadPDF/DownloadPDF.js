@@ -22,7 +22,7 @@ class DownloadPDF extends Component {
                 swal({title: pageName + " is ready to download", icon: "success"})
             })
             .catch(function () {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
+                swal({title: "Something went wrong !", text: error, icon: "error"});
             });
     }
 
