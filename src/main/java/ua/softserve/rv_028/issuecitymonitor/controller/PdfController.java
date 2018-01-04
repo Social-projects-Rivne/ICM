@@ -20,19 +20,19 @@ public class PdfController {
 
 
     @GetMapping(path = "/petitions")
-    public void createPdPetition() {
+    public void createPdfPetition() {
         LOGGER.info("Petitions request successful");
     }
 
 
     @GetMapping(path = "/events")
-    public void createPdEvents() {
+    public void createPdfEvents() {
         LOGGER.info("Events request successful");
     }
 
 
     @GetMapping(path = "/users")
-    public void createPdUsers() {
+    public void createPdfUsers() {
         LOGGER.info("Users request successful");
     }
 
