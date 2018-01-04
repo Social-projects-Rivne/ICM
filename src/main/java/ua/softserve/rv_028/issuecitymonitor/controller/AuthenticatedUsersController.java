@@ -6,10 +6,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
-import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -20,12 +17,10 @@ import java.util.Map;
 @RestController
 public class AuthenticatedUsersController {
 
-    private UserMapper userMapper;
     private UserProfileService profileService;
 
     @Autowired
-    public AuthenticatedUsersController(UserMapper userMapper, UserProfileService profileService) {
-        this.userMapper = userMapper;
+    public AuthenticatedUsersController(UserProfileService profileService) {
         this.profileService = profileService;
     }
 
@@ -39,15 +34,6 @@ public class AuthenticatedUsersController {
     public Collection<? extends GrantedAuthority> authority(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         return userAuth.getAuthorities();
-    }
-
-    @GetMapping(value = "/api/details")
-    public UserDto userDetails(){
-        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
-        if (!userAuth.getName().equals("anonymousUser"))
-            return userMapper.toDto((User) userAuth.getPrincipal());
-        else
-            return new UserDto();
     }
 
     @GetMapping(value = "/api/userDetails")
