@@ -54,7 +54,7 @@ class UsersContainer extends Component {
 
         render() {
             return (
-                <PageContainer onPageChange={this.handlePageChange} title="Users list"
+                <PageContainer onPageChange={this.handlePageChange} name="users" title="Users list"
                                page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                     {this.table()}
                 </PageContainer>

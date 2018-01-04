@@ -51,7 +51,7 @@ class IssuesContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Issues list"
+            <PageContainer onPageChange={this.handlePageChange} name="issues" title="Issues list"
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>
