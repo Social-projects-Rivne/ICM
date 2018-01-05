@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
 public class User implements UserDetails{
 
 	@Id
@@ -218,6 +220,7 @@ public class User implements UserDetails{
 	@PreRemove
 	public void delete() {
 		this.deleteDate = LocalDateTime.now();
+		this.isDeleted = true;
 	}
 
 	@PrePersist
