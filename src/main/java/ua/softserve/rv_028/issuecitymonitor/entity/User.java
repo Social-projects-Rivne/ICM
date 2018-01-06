@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
 public class User implements UserDetails{
 
 	@Id

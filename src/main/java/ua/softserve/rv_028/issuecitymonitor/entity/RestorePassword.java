@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "restore_password")
-@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
 public class RestorePassword {
 
     @Id

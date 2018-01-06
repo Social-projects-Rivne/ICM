@@ -11,7 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "issues")
-@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
 public class Issue{
 
     @Id
@@ -46,10 +46,10 @@ public class Issue{
     @Column(name = "deleted")
     private boolean isDeleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class, cascade = CascadeType.REMOVE)
     private Set<IssueAttachment> attachments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueChangeRecord.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public Issue() {

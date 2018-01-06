@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "issue_attachments")
-@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@SQLDelete(sql = "UPDATE issue_attachments SET deleted = 'true' WHERE id = ?")
 public class IssueAttachment {
 
     @Id

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "event_change_records")
-@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@SQLDelete(sql = "UPDATE event_change_records SET deleted = 'true' WHERE id = ?")
 public class EventChangeRecord {
 
     @Id
