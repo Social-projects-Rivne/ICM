@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
@@ -12,6 +13,7 @@ import java.util.Set;
 @Entity
 @Table(name = "issues")
 @SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> true")
 public class Issue{
 
     @Id
@@ -45,6 +47,10 @@ public class Issue{
 
     @Column(name = "deleted")
     private boolean isDeleted = false;
+
+    @Column(name = "creation_date")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime creationDate;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class, cascade = CascadeType.REMOVE)
     private Set<IssueAttachment> attachments = new HashSet<>();
@@ -140,6 +146,15 @@ public class Issue{
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @PrePersist
+    private void insert() {
+        this.creationDate = LocalDateTime.now();
     }
 
     @PreRemove

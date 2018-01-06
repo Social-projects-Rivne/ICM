@@ -15,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-@SQLDelete(sql = "UPDATE users SET deleted = 'true' WHERE id = ?")
+@SQLDelete(sql = "UPDATE users SET user_status = '0' WHERE id = ?")
 public class User implements UserDetails{
 
 	@Id
@@ -58,9 +58,6 @@ public class User implements UserDetails{
 
 	@Column(name = "avatar_url")
 	private String avatarUrl;
-
-	@Column(name = "deleted")
-	private boolean isDeleted = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
@@ -188,10 +185,6 @@ public class User implements UserDetails{
 		return petitions;
 	}
 
-	public boolean getIsDeleted() {
-		return isDeleted;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return UserRole.collectionForRole(this.userRole);
@@ -220,7 +213,7 @@ public class User implements UserDetails{
 	@PreRemove
 	public void delete() {
 		this.deleteDate = LocalDateTime.now();
-		this.isDeleted = true;
+		this.userStatus = UserStatus.DELETED;
 	}
 
 	@PrePersist
