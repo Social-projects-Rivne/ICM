@@ -74,7 +74,7 @@ export default class EditProfile extends Component{
                 lastNameValid = !EditProfile.isEmpty(value);
                 break;
             case 'phone':
-                phoneValid = (/^(\+)+([\d]{1,4})+([\d]{10})$/i).test(value);
+                phoneValid = (/^(\+)+([\d]{1,4})([\d]{10})$/i).test(value);
                 break;
             case 'newPassword':
                 newPasswordValid = value.length >= 3;
