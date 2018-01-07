@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ua.softserve.rv_028.issuecitymonitor.Constants;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -26,17 +28,19 @@ public class UserProfileService{
 
     private UserDao userDao;
     private BCryptPasswordEncoder encoder;
+    private UserMapper mapper;
 
     private static final String PATH = "src/main/resources/users/logo/";
     private static final Logger LOGGER = Logger.getLogger(UserProfileService.class.getName());
 
     @Autowired
-    public UserProfileService(UserDao userDao, BCryptPasswordEncoder encoder) {
+    public UserProfileService(UserDao userDao, BCryptPasswordEncoder encoder, UserMapper mapper) {
         this.userDao = userDao;
         this.encoder = encoder;
+        this.mapper = mapper;
     }
 
-    public void updatePassword(String email, String oldPassword, String newPassword) {
+    public UserDto updatePassword(String email, String oldPassword, String newPassword) {
         User user = userDao.findUserByUsername(email);
         checkArgument(user != null, "The user " + email + " not found");
         checkArgument(encoder.matches(oldPassword, user.getPassword()), "The user " + email
@@ -45,9 +49,10 @@ public class UserProfileService{
         user.setPassword(encoder.encode(newPassword));
         userDao.save(user);
         LOGGER.debug("User " + user.getUsername() + " has changed his password");
+        return mapper.toDto(user);
     }
 
-    public void updateContactsInfo(String email, String fistName, String lastName, String phone) {
+    public UserDto updateContactsInfo(String email, String fistName, String lastName, String phone) {
         User user = userDao.findUserByUsername(email);
         checkArgument(user != null, "The user " + email + " not found");
         if (fistName != null && !fistName.isEmpty())
@@ -58,6 +63,7 @@ public class UserProfileService{
             user.setPhone(phone);
         userDao.save(user);
         LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
+        return mapper.toDto(user);
     }
 
     public void updatePortfolioPhoto(MultipartFile photo, String email){

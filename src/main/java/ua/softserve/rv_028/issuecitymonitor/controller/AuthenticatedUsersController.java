@@ -25,13 +25,13 @@ public class AuthenticatedUsersController {
     }
 
     @GetMapping(value = "/api/user-name")
-    public String adminName(){
+    public String getUserName(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         return userAuth.getName();
     }
 
     @GetMapping(value = "/api/authority")
-    public Collection<? extends GrantedAuthority> authority(){
+    public Collection<? extends GrantedAuthority> getUserAuthority(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         return userAuth.getAuthorities();
     }
