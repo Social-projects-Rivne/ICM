@@ -98,7 +98,6 @@ export default class EditProfile extends Component{
 
     updatePasswordHandlerBtn(){
         let data = new FormData();
-        data.append('email', this.state.email);
         data.append('oldPassword', this.state.oldPassword);
         data.append('newPassword', this.state.newPassword);
 
@@ -114,7 +113,6 @@ export default class EditProfile extends Component{
 
     updateContactsHandlerBtn(){
         let data = new FormData();
-        data.append('email', this.state.email);
         data.append('firstName', this.state.firstName);
         data.append('lastName', this.state.lastName);
         data.append('phone', this.state.phone);

@@ -43,15 +43,17 @@ public class AuthenticatedUsersController {
     }
 
     @PostMapping(value = "/api/userSetting/updatePassword")
-    public void updatePassword(@RequestParam String email, @RequestParam String oldPassword,
-                               @RequestParam String newPassword){
-        profileService.updatePassword(email, oldPassword, newPassword);
+    public void updatePassword(@RequestParam String oldPassword, @RequestParam String newPassword){
+        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+        profileService.updatePassword(userAuth.getName(), oldPassword, newPassword);
     }
 
     @PostMapping(value = "/api/userSetting/updateContacts")
-    public void updateContactInfo(@RequestParam String email, @RequestParam(required = false) String firstName,
-                                  @RequestParam(required = false) String lastName, @RequestParam(required = false) String phone){
-        profileService.updateContactsInfo(email, firstName, lastName, phone);
+    public void updateContactInfo(@RequestParam(required = false) String firstName,
+                                  @RequestParam(required = false) String lastName,
+                                  @RequestParam(required = false) String phone){
+        Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
+        profileService.updateContactsInfo(userAuth.getName(), firstName, lastName, phone);
     }
 
     @PostMapping(value = "/api/userSettings/updateLogo")
