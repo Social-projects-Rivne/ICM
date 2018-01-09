@@ -11,7 +11,13 @@ class UsersContainer extends Component {
             data: this.props.data
         };
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageUpdate = this.handlePageUpdate.bind(this);
     }
+
+    handlePageUpdate() {
+        this.props.onPageChange(this.state.data.number + 1);
+    }
+
 
     handlePageChange(page) {
         this.props.onPageChange(page);

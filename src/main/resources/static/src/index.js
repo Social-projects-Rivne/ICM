@@ -28,8 +28,7 @@ ReactDOM.render((
             <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/admin/" name="Home" component={Full}/>
             <Route exact path="/" name="Client" component={Client}/>
-            <Route path="/*" component={Page404} />
-            <Route path="/" name="Client" component={Client}/>
+            <Route path="*" component={Page404} />
         </Switch>
     </BrowserRouter>
 ), document.getElementById('root'));

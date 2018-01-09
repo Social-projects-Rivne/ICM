@@ -30,7 +30,6 @@ hs_err_pid*
 
 /src/main/resources/application.properties
 /src/test/resources/application.properties
-/src/main/resources/static/package-lock.json
 /src/main/resources/static/node_modules/*
 /src/main/resources/static/build/*
 .DS_Store
