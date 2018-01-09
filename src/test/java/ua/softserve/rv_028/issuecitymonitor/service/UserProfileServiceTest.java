@@ -117,7 +117,7 @@ public class UserProfileServiceTest {
     }
 
     @After
-    public void cleanUp(){
+    public void cleanup(){
         dao.deleteAll();
     }
 }

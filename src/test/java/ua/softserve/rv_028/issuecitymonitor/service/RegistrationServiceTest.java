@@ -62,7 +62,7 @@ public class RegistrationServiceTest {
     }
 
     @After
-    public void cleanUp(){
+    public void cleanup(){
         userDao.deleteAll();
     }
 }

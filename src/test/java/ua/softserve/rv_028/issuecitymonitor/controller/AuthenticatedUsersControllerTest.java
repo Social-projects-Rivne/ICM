@@ -12,10 +12,7 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -78,7 +75,7 @@ public class AuthenticatedUsersControllerTest {
         assertArrayEquals(controller.getUserAuthority().toArray(), MOCK_USER_AUTHORITY.toArray());
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @WithAnonymousUser
     public void getUserAuthorityFail(){
         controller.getUserAuthority();
