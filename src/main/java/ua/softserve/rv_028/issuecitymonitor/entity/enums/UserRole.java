@@ -11,10 +11,6 @@ public enum UserRole implements GrantedAuthority{
     MODERATOR,
     USER;
 
-    UserRole(){
-
-    }
-
     @Override
     public String getAuthority() {
         return this.name();

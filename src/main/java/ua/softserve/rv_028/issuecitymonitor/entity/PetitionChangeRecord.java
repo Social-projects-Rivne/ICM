@@ -1,11 +1,13 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
 import javax.persistence.*;
 
 @Table
 @Entity(name = "petition_change_records")
+@SQLDelete(sql = "UPDATE petition_change_records SET deleted = 'true' WHERE id = ?")
 public class PetitionChangeRecord {
 
     @Id
