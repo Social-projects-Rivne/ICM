@@ -74,6 +74,13 @@ public class UserProfileService{
         long id = user.getId();
         String avatarUrl = createImages(id, photo);
         user.setAvatarUrl(avatarUrl);
+        userDao.save(user);
+    }
+
+    public byte[] getAvatar(long id) throws IOException {
+        User user = userDao.findById(id);
+        checkArgument(user != null, "User with the following id \'" + id + "\' doesn't not exist");
+        return Files.readAllBytes(Paths.get(user.getAvatarUrl(), "medium.png"));
     }
 
     public Map getUserInfo(String email) {
@@ -102,12 +109,22 @@ public class UserProfileService{
             image = new File(userPhotoPath.toString(), "small.png");
             writeFile(image, createResizedCopy(ImageIO.read(photo.getInputStream()), 35, 35));
 
-            return image.getPath();
+            return getDirPath(image.getPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    private String getDirPath(String path){
+        String[] strings = path.split("/");
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i <= strings.length - 2; i++){
+            temp.append(strings[i]).append("/");
+        }
+        return temp.toString();
+    }
+
 
     private void writeFile(File file, BufferedImage stream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();

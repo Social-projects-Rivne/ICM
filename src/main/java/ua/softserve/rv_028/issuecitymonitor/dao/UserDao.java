@@ -11,6 +11,7 @@ public interface UserDao extends JpaRepository<User, Long>, JpaSpecificationExec
     List<User> findAll();
 
     User findUserByUsername(String username);
+    User findById(Long id);
 
     Long countByUserRole(UserRole userRole);
     default Long countAdmins(){

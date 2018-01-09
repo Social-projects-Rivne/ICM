@@ -64,7 +64,7 @@ public class AuthenticatedUsersController {
 
     @GetMapping(value = "/api/avatar/{id}", produces = "image/png")
     public byte[] downloadAvatar(@PathVariable(name = "id") String id) throws IOException {
-        return Files.readAllBytes(Paths.get("src/main/resources/users/logo/", id, "medium.png"));
+        return profileService.getAvatar(Long.parseLong(id));
     }
 }
 
