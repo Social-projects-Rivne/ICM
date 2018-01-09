@@ -8,6 +8,7 @@ class PageContainer extends Component {
         this.state = {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
+            sorting: this.props.sorting,
             title: this.props.title,
             children: this.props.children
         };
@@ -21,6 +22,7 @@ class PageContainer extends Component {
         this.setState({
             pagesNum: props.pagesNum,
             page: props.page,
+            sorting: props.sorting,
             title: props.title,
             children: props.children
         });
@@ -87,11 +89,11 @@ class PageContainer extends Component {
                                 {this.state.title}
                                 {this.state.button}
                                 <Col md="2">
-                                    <Input type="select" name="sorting"
-                                        placeholder="Sorting">
-                                        <option>ascending order</option>
-                                        <option>descending order</option>
-                                    </Input>
+                                     <Input type="select" name="sorting"
+                                         placeholder="Sorting">
+                                         <option>ascending order</option>
+                                         <option>descending order</option>
+                                     </Input>
                                 </Col>
                             </CardHeader>
                             <CardBody>
