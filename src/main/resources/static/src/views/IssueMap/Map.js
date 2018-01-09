@@ -42,7 +42,7 @@ class Map extends Component {
                 {this.state.issues.map(issues => (
                               <Marker
                                   key={issues.id}
-                                  position={{ lat: issues.latitude, lng: issues.longitude }}
+                                  position={{ lat: issues.latitude, lng: issues.longitude }}z
                               >
                                </Marker>
                 ))}
