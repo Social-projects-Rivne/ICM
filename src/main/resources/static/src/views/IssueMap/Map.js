@@ -4,50 +4,24 @@ import axios from 'axios';
 import swal from 'sweetalert';
 class Map extends Component {
 
-    constructor(props){
-            super(props);
-
-
-            this.state = {
-                centlat:50.619900,
-                centlng: 26.251617,
-                zoom:5,
-                issues: []
-            };
-
-        }
-
-        componentWillMount() {
-
-            var _this = this;
-            axios.get("/api/issues/map")
-                .then(function(response) {
-                    _this.setState({
-                        issues: response.data,
-                        isOpen: false
-                    });
-                })
-                .catch(function (error) {
-                    swal({title: "Something went wrong!", text: error, icon: "error"});
-                });
-
-        }
-
    render() {
         return (
             <GoogleMap
-                defaultZoom={this.state.zoom}
-                defaultMaxZoom = {8}
-                defaultCenter={{ lat: this.state.centlat, lng: this.state.centlng }}
+                defaultZoom={this.props.zoom}
+                defaultMaxZoom = {this.props.defaultmaxzoom}
+                defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
-                {this.state.issues.map(issues => (
+                {this.props.issues.map(issues => (
+                              console.log(this.props.issues.latitude + " / " + this.props.issues.longitude),
                               <Marker
-                                  key={issues.id}
-                                  position={{ lat: issues.latitude, lng: issues.longitude }}z
+                                  key={this.props.issues.id}
+                                  position={{ lat: this.props.issues.latitude, lng: this.props.issues.longitude}}
+                                  onClick = {console.log(this.props.kl)}
                               >
                                </Marker>
                 ))}
               </GoogleMap>
+
 
         )
    }
