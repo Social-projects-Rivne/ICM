@@ -16,6 +16,7 @@ class IssueMap extends Component {
                 containerElement={<div style={{ height: 100 + '%' }} />}
                 mapElement={<div style={{ height: `100%` }} />}
 
+
             />
         </div>
    )

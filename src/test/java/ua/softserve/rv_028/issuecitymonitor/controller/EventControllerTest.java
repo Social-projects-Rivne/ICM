@@ -5,19 +5,25 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
+
+import java.util.ArrayList;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
-public class EventControllerUnitTest {
+public class EventControllerTest {
 
     private final static String TEST_TITLE = "test";
     private final static String TEST_DESCRIPTION = "testDescription";
-    private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("event not found");
+    private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("event not found");
+    private final static int PAGE_INDEX = 1;
+    private final static int PAGE_SIZE = 10;
 
     @InjectMocks
     private EventController eventController;
@@ -40,13 +46,24 @@ public class EventControllerUnitTest {
     }
 
     @Test
+    public void testGetAllByPage(){
+        Page<EventDto> eventDtoPage = new PageImpl<>(new ArrayList<>());
+        when(eventService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(eventDtoPage);
+        Page<EventDto> page = eventController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+
+        verify(eventService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
+        verifyNoMoreInteractions(eventService);
+        assertEquals(eventDtoPage, page);
+    }
+
+    @Test
     public void testGetEventNotFound() {
         when(eventService.findById(-1)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
             eventController.getOne(-1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }
@@ -59,7 +76,7 @@ public class EventControllerUnitTest {
         eventDto.setDescription(TEST_DESCRIPTION);
         when(eventService.update(eventDto)).thenReturn(eventDto);
 
-        EventDto success = eventController.update(eventDto.getId(),eventDto);
+        EventDto success = eventController.update(eventDto);
 
         assertEquals(TEST_TITLE,success.getTitle());
         assertEquals(TEST_DESCRIPTION,success.getDescription());
@@ -72,17 +89,11 @@ public class EventControllerUnitTest {
         when(eventService.update(eventDto)).thenThrow(EXCEPTION_NOT_FOUND);
 
         try {
-            eventController.update(2,eventDto);
+            eventController.update(eventDto);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
-    }
-
-    @Test
-    public void testDeleteEventSuccessfully(){
-        doNothing().when(eventService).deleteById(1); //This is obvious
-        eventController.delete(1);
     }
 
     @Test
@@ -92,7 +103,7 @@ public class EventControllerUnitTest {
         try {
             eventController.delete(1);
             fail("expected exception was not thrown");
-        } catch (IllegalStateException e) {
+        } catch (IllegalArgumentException e) {
             assertThat(e.getMessage(), is(EXCEPTION_NOT_FOUND.getMessage()));
         }
     }

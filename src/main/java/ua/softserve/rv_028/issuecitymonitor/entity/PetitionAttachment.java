@@ -1,14 +1,12 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "petition_attachments")
 @SQLDelete(sql = "UPDATE petition_attachments SET deleted = 'true' WHERE id = ?")
-@Where(clause = "deleted <> 'true'")
 public class PetitionAttachment {
 
     @Id

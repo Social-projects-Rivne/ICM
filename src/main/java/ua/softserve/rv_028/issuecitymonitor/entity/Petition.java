@@ -1,13 +1,19 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "petitions")
+@SQLDelete(sql = "UPDATE petitions SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> true")
 public class Petition{
 
     @Id
@@ -26,7 +32,8 @@ public class Petition{
     private String description;
 
     @Column(name = "initial_date")
-    private String initialDate;
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime initialDate;
 
     @Column(name = "category")
     private PetitionCategory category;
@@ -34,16 +41,20 @@ public class Petition{
     @Column(name = "deleted")
     private boolean isDeleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionAttachment.class)
+    @Column(name = "creation_date")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime creationDate;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionAttachment.class, cascade = CascadeType.REMOVE)
     private Set<PetitionAttachment> attachments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionChangeRecord.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<PetitionChangeRecord> changeRecords = new HashSet<>();
 
     public Petition() {
     }
 
-    public Petition(User user, String title, String description, String initialDate, PetitionCategory category) {
+    public Petition(User user, String title, String description, LocalDateTime initialDate, PetitionCategory category) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -83,11 +94,11 @@ public class Petition{
         this.description = description;
     }
 
-    public String getInitialDate() {
+    public LocalDateTime getInitialDate() {
         return initialDate;
     }
 
-    public void setInitialDate(String initialDate) {
+    public void setInitialDate(LocalDateTime initialDate) {
         this.initialDate = initialDate;
     }
 
@@ -109,6 +120,15 @@ public class Petition{
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @PrePersist
+    private void insert() {
+        this.creationDate = LocalDateTime.now();
     }
 
     @PreRemove

@@ -1,6 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "restore_password")
@@ -18,22 +22,17 @@ public class RestorePassword {
     @Column(name = "token")
     private String token;
 
-    @Column(name = "expired_date")
-    private String expiredDate;
-
+    @Column(name = "expire_date")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime expireDate;
 
     public RestorePassword() {
     }
 
-    public RestorePassword(User user, String token) {
+    public RestorePassword(User user, String token, LocalDateTime expireDate) {
         this.user = user;
         this.token = token;
-    }
-
-    public RestorePassword(User user, String token, String expiredDate) {
-        this.user = user;
-        this.token = token;
-        this.expiredDate = expiredDate;
+        this.expireDate = expireDate;
     }
 
     public long getId() {
@@ -60,11 +59,21 @@ public class RestorePassword {
         this.token = token;
     }
 
-    public String getExpiredDate() {
-        return expiredDate;
+    public LocalDateTime getExpireDate() {
+        return expireDate;
     }
 
-    public void setExpiredDate(String expiredDate) {
-        this.expiredDate = expiredDate;
+    public void setExpireDate(LocalDateTime expireDate) {
+        this.expireDate = expireDate;
+    }
+
+    @Override
+    public String toString() {
+        return "RestorePassword{" +
+                "id=" + id +
+                ", user=" + user.getId() +
+                ", token='" + token + '\'' +
+                ", expireDate=" + expireDate +
+                '}';
     }
 }

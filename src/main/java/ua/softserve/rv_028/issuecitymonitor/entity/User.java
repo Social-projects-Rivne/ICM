@@ -1,20 +1,21 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Collection;
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET user_status = '0' WHERE id = ?")
 public class User implements UserDetails{
 
 	@Id
@@ -27,7 +28,7 @@ public class User implements UserDetails{
 	private UserRole userRole;
 
 	@Column(name = "reg_date")
-	private String registrationDate;
+	private LocalDateTime registrationDate;
 
 	@NotEmpty
 	@Column(name = "first_name")
@@ -48,21 +49,15 @@ public class User implements UserDetails{
 	@Column(name = "phone")
 	private String phone;
 
-	@Column(name = "user_agreement")
-	private boolean userAgreement;
-
 	@Column(name = "user_status")
 	@Enumerated(EnumType.ORDINAL)
 	private UserStatus userStatus;
 
 	@Column(name = "delete_date")
-	private String deleteDate;
+	private LocalDateTime deleteDate;
 
 	@Column(name = "avatar_url")
 	private String avatarUrl;
-
-	@Column(name = "deleted")
-	private boolean isDeleted = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
@@ -75,24 +70,8 @@ public class User implements UserDetails{
 
 	public User() {}
 
-	public User(UserDto userDto) {
-		this.password = userDto.getPassword();
-
-		if (this.getUsername() == null)
-			this.username = userDto.getEmail();
-
-		this.registrationDate = userDto.getRegistrationDate();
-		this.firstName = userDto.getFirstName();
-		this.lastName = userDto.getLastName();
-		this.phone = userDto.getPhone();
-		this.userAgreement = userDto.isUserAgreement();
-		this.userStatus = userDto.getUserStatus();
-		this.deleteDate = userDto.getDeleteDate();
-		this.avatarUrl = userDto.getAvatarUrl();
-	}
-
 	public User(String firstName, String lastName, String password, String username,
-				String phone, boolean userAgreement, UserStatus userStatus, UserRole userRole,
+				String phone, UserStatus userStatus, UserRole userRole,
 				String avatarUrl) {
 		this.username = username;
 		this.password = password;
@@ -100,19 +79,8 @@ public class User implements UserDetails{
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.phone = phone;
-		this.userAgreement = userAgreement;
 		this.userStatus = userStatus;
 		this.avatarUrl = avatarUrl;
-	}
-
-	public User(String firstName, String lastName, String username, String password){
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.username = username;
-		this.password = password;
-		this.userRole = UserRole.USER;
-		this.userStatus = UserStatus.UNCONFIRMED;
-		this.registrationDate = new Date().toString();
 	}
 
 	public void setId(long id) {
@@ -131,11 +99,11 @@ public class User implements UserDetails{
 		this.userRole = userRole;
 	}
 
-	public String getRegistrationDate() {
+	public LocalDateTime getRegistrationDate() {
 		return registrationDate;
 	}
 
-	public void setRegistrationDate(String registrationDate) {
+	public void setRegistrationDate(LocalDateTime registrationDate) {
 		this.registrationDate = registrationDate;
 	}
 
@@ -181,14 +149,6 @@ public class User implements UserDetails{
 		this.phone = phone;
 	}
 
-	public boolean isUserAgreement() {
-		return userAgreement;
-	}
-
-	public void setUserAgreement(boolean userAgreement) {
-		this.userAgreement = userAgreement;
-	}
-
 	public UserStatus getUserStatus() {
 		return userStatus;
 	}
@@ -197,11 +157,11 @@ public class User implements UserDetails{
 		this.userStatus = userStatus;
 	}
 
-	public String getDeleteDate() {
+	public LocalDateTime getDeleteDate() {
 		return deleteDate;
 	}
 
-	public void setDeleteDate(String deleteDate) {
+	public void setDeleteDate(LocalDateTime deleteDate) {
 		this.deleteDate = deleteDate;
 	}
 
@@ -223,10 +183,6 @@ public class User implements UserDetails{
 
 	public Set<Petition> getPetitions(){
 		return petitions;
-	}
-
-	public boolean getIsDeleted() {
-		return isDeleted;
 	}
 
 	@Override
@@ -254,6 +210,17 @@ public class User implements UserDetails{
 		return checkUserStatus(this.getUserStatus());
 	}
 
+	@PreRemove
+	public void delete() {
+		this.deleteDate = LocalDateTime.now();
+		this.userStatus = UserStatus.DELETED;
+	}
+
+	@PrePersist
+	private void insert() {
+		this.registrationDate = LocalDateTime.now();
+	}
+
 	private static boolean checkUserStatus(UserStatus status) {
 		return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
 	}
@@ -268,7 +235,6 @@ public class User implements UserDetails{
 				", lastName='" + lastName + '\'' +
 				", username='" + username + '\'' +
 				", phone='" + phone + '\'' +
-				", userAgreement=" + userAgreement +
 				", userStatus=" + userStatus +
 				", deleteDate='" + deleteDate + '\'' +
 				", avatarUrl='" + avatarUrl + '\'' +

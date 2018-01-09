@@ -83,7 +83,7 @@ export default class RestorePassword extends Component {
         data.append("email", this.state.email);
 
         let _this = this;
-        axios.post("/api/createOrderRestorePassword", data)
+        axios.post("/api/createResetToken", data)
             .then(function(response){_this.showHiddenForms()})
             .catch(function(error){_this.showHiddenForms()})
     }
