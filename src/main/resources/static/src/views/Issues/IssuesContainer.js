@@ -10,7 +10,12 @@ class IssuesContainer extends Component {
         this.state = {
             data: this.props.data
         };
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+    }
+
+    handleSortChange(sortOrder) {
+        this.props.onPageChange(sortOrder);
     }
 
     handlePageChange(page) {
@@ -51,8 +56,9 @@ class IssuesContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Issues list"
-                           page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
+            <PageContainer onPageChange={this.handleSortChange} onPageChange={this.handlePageChange} title="Issues list"
+                           sortOrder={this.state.data.sort} page={this.state.data.number + 1}
+                           pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>
         )

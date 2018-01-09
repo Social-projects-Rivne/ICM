@@ -9,14 +9,21 @@ class Issues extends Component {
 
         this.state = {
             issues: "",
+            sort: 'asc',
             page: 1
         };
-
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
         this.makeQuery();
+    }
+
+    handleSortChange(sortOrder) {
+        this.setState({sort: sortOrder}, function() {
+            this.makeQuery();
+        });
     }
 
     handlePageChange(pageNum) {
@@ -37,9 +44,11 @@ class Issues extends Component {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
     }
+
     render() {
         return (
-            <IssuesContainer data={this.state.issues} onPageChange={this.handlePageChange}/>
+            <IssuesContainer data={this.state.issues} onPageChange={this.handleSortChange}
+                            onPageChange={this.handlePageChange}/>
         )
     }
 }

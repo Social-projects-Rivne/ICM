@@ -39,7 +39,7 @@ public class IssueService {
     }
 
     public Page<IssueDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "id");
         Page<Issue> issues = issueDao.findAll(pageRequest);
         LOGGER.debug("Found all issues");
         return issueMapper.toDtoPage(issues);

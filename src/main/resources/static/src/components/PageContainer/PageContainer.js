@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardFooter, CardHeader, Col, Input, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
+import {ButtonGroup, Button, Card, CardBody, CardFooter, CardHeader, Col, Input, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
 
 class PageContainer extends Component {
     constructor(props) {
@@ -8,10 +8,12 @@ class PageContainer extends Component {
         this.state = {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
+            sortOrder: this.props.sortOrder,
             title: this.props.title,
             children: this.props.children
         };
-
+        this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
+        this.changeSortByIdDesc = this.changeSortByIdDesc.bind(this);
         this.handleFirstPage = this.handleFirstPage.bind(this);
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handlePage = this.handlePage.bind(this);
@@ -21,9 +23,26 @@ class PageContainer extends Component {
         this.setState({
             pagesNum: props.pagesNum,
             page: props.page,
+            sortOrder: props.sortOrder,
             title: props.title,
             children: props.children
         });
+    }
+
+    changeSortByIdAsc() {
+        if(this.state.sortOrder.descending === true) {
+            this.setState(function() {
+                this.props.onPageChange(this.state.sortOrder.ascending === true);
+            });
+        }
+    }
+
+    changeSortByIdDesc() {
+        if(this.state.sortOrder.ascending === true) {
+            this.setState(function() {
+                this.props.onPageChange(this.state.sortOrder.descending === true);
+            });
+        }
     }
 
     handlePage(i) {
@@ -44,6 +63,15 @@ class PageContainer extends Component {
                 this.props.onPageChange(this.state.page);
             });
         }
+    }
+
+    sorting() {
+        return(
+            <ButtonGroup>
+                <Button color="info" size="sm" onClick={this.changeSortByIdAsc}>ascending order</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByIdDesc}>descending order</Button>
+            </ButtonGroup>
+        )
     }
 
     pagination() {
@@ -85,14 +113,7 @@ class PageContainer extends Component {
                         <Card>
                             <CardHeader>
                                 {this.state.title}
-                                {this.state.button}
-                                <Col md="2">
-                                    <Input type="select" name="sorting"
-                                        placeholder="Sorting">
-                                        <option>ascending order</option>
-                                        <option>descending order</option>
-                                    </Input>
-                                </Col>
+                                {this.sorting()}
                             </CardHeader>
                             <CardBody>
                                 {this.state.children}
