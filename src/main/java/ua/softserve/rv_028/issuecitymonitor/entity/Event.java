@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
@@ -10,6 +12,8 @@ import java.util.Set;
 
 @Entity
 @Table(name = "events")
+@SQLDelete(sql = "UPDATE events SET deleted = 'true' WHERE id = ?")
+@Where(clause = "deleted <> true")
 public class Event {
 
     @Id
@@ -49,10 +53,14 @@ public class Event {
     @Column(name = "deleted")
     private boolean isDeleted = false;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class)
+    @Column(name = "creation_date")
+    @Convert(converter = LocalDateTimeConverter.class)
+    private LocalDateTime creationDate;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class, cascade = CascadeType.REMOVE)
     private Set<EventAttachment> attachments = new HashSet<>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event() {}
@@ -151,6 +159,20 @@ public class Event {
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    public LocalDateTime getCreationDate() {
+        return creationDate;
+    }
+
+    @PrePersist
+    private void insert() {
+        this.creationDate = LocalDateTime.now();
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
     }
 
     @Override

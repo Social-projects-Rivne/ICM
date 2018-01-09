@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
+@SQLDelete(sql = "UPDATE users SET user_status = '0' WHERE id = ?")
 public class User implements UserDetails{
 
 	@Id
@@ -56,9 +58,6 @@ public class User implements UserDetails{
 
 	@Column(name = "avatar_url")
 	private String avatarUrl;
-
-	@Column(name = "deleted")
-	private boolean isDeleted = false;
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
@@ -186,10 +185,6 @@ public class User implements UserDetails{
 		return petitions;
 	}
 
-	public boolean getIsDeleted() {
-		return isDeleted;
-	}
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return UserRole.collectionForRole(this.userRole);
@@ -218,6 +213,7 @@ public class User implements UserDetails{
 	@PreRemove
 	public void delete() {
 		this.deleteDate = LocalDateTime.now();
+		this.userStatus = UserStatus.DELETED;
 	}
 
 	@PrePersist
