@@ -3,6 +3,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "reac
 import axios from 'axios';
 import swal from 'sweetalert';
 import Map from './Map';
+import descriptionIssues from './descriptionIssues';
 
 class IssueMap extends Component {
 
@@ -18,9 +19,6 @@ class IssueMap extends Component {
                     issues: [],
                     point: false
                 };
-
-                this.showMessage = this.showMessage.bind(this);
-
             }
 
             componentWillMount() {
@@ -37,10 +35,6 @@ class IssueMap extends Component {
                         swal({title: "Something went wrong!", text: error, icon: "error"});
                     });
 
-            }
-
-            showMessage(props){
-                this.state.point = true;
             }
 
 

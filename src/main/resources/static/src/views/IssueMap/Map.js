@@ -2,9 +2,35 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-class Map extends Component {
+import descriptionIssues from './descriptionIssues';
 
+function showComponent(props){
+    return <descriptionIssues/>;
+}
+
+class Map extends Component {
+    constructor(props){
+    super(props);
+    this.state={
+        routeid:[]
+    };
+
+    this.showMessage = this.showMessage.bind(this);
+
+    }
+
+    showMessage(){
+        console.log("Call issue with id");
+    }
    render() {
+        console.log(this.state.routeid);
+        var _this = this;
+        setState({
+            routeid: _this.props.issues.id
+        });
+
+        console.log(this.state.routeid);
+
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
@@ -12,16 +38,14 @@ class Map extends Component {
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
                 {this.props.issues.map(issues => (
-                              console.log(this.props.issues.latitude + " / " + this.props.issues.longitude),
                               <Marker
-                                  key={this.props.issues.id}
-                                  position={{ lat: this.props.issues.latitude, lng: this.props.issues.longitude}}
-                                  onClick = {console.log(this.props.kl)}
+                                  key={issues.id}
+                                  position={{ lat: issues.latitude, lng: issues.longitude}}
+                                  onClick = {this.showMessage}
                               >
                                </Marker>
                 ))}
               </GoogleMap>
-
 
         )
    }
