@@ -11,26 +11,33 @@ public class PdfController {
     private static final Logger LOGGER = Logger.getLogger(PetitionController.class.getName());
 
     @GetMapping(path = "/issues")
-    public void createPdfIssues() {
-        LOGGER.info("Issues request successful");
+    private void downloadPdfIssues() {
+        downloadPdf("issues");
     }
 
 
     @GetMapping(path = "/petitions")
-    public void createPdfPetition() {
-        LOGGER.info("Petitions request successful");
+    private void downloadPdfPetitions() {
+        downloadPdf("petitions");
     }
 
 
     @GetMapping(path = "/events")
-    public void createPdfEvents() {
-        LOGGER.info("Events request successful");
+    private void downloadPdfEvents() {
+        downloadPdf("events");
     }
 
 
     @GetMapping(path = "/users")
-    public void createPdfUsers() {
-        LOGGER.info("Users request successful");
+    private void downloadPdfUsers() {
+        downloadPdf("users");
+    }
+
+
+
+    private void downloadPdf(String pdf){
+
+        LOGGER.info(pdf + " request successful!");
     }
 
 }
