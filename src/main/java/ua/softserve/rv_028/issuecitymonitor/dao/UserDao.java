@@ -8,6 +8,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 public interface UserDao extends JpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     User findUserByUsername(String username);
+    User findById(Long id);
 
     Long countByUserRole(UserRole userRole);
     default Long countAdmins(){

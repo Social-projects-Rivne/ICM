@@ -74,6 +74,26 @@ public class UserProfileService{
         long id = user.getId();
         String avatarUrl = createImages(id, photo);
         user.setAvatarUrl(avatarUrl);
+        userDao.save(user);
+    }
+
+    public byte[] getOriginalAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "original.png");
+    }
+
+    public byte[] getMediumAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "medium.png");
+    }
+
+    public byte[] getSmallAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "small.png");
+    }
+
+    private byte[] getAvatarAvatar(long id, String name) throws IOException {
+        User user = userDao.findById(id);
+        checkArgument(user != null, "User with the following id \'" + id + "\' doesn't not exist");
+        checkArgument(!user.getAvatarUrl().contains("http://url.com"));
+        return Files.readAllBytes(Paths.get(user.getAvatarUrl(), name));
     }
 
     public Map getUserInfo(String email) {
@@ -102,12 +122,22 @@ public class UserProfileService{
             image = new File(userPhotoPath.toString(), "small.png");
             writeFile(image, createResizedCopy(ImageIO.read(photo.getInputStream()), 35, 35));
 
-            return image.getPath();
+            return getDirPath(image.getPath());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return null;
     }
+
+    private String getDirPath(String path){
+        String[] strings = path.split("/");
+        StringBuilder temp = new StringBuilder();
+        for (int i = 0; i <= strings.length - 2; i++){
+            temp.append(strings[i]).append("/");
+        }
+        return temp.toString();
+    }
+
 
     private void writeFile(File file, BufferedImage stream) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream1 = new ByteArrayOutputStream();
