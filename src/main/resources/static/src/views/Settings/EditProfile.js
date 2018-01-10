@@ -40,8 +40,9 @@ export default class EditProfile extends Component{
         const userID = this.props.user.id;
         if(userID != null) {
             if (!isNaN(userID)) {
-                axios.get('/api/avatar/' + userID).then(function () {
-                    _this.setState({avatar: "http://localhost:8080/api/avatar/" + userID});
+                axios.get('/api/avatar/medium/' + userID).then(function () {
+                    _this.setState({avatar: "http://localhost:8080/api/avatar/medium/" + userID});
+
                 }).catch(function () {
                     _this.setState({avatar: "http://www.teequilla.com/images/tq/empty-avatar.png"});
                 });

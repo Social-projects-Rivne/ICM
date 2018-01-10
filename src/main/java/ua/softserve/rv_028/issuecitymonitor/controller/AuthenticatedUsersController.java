@@ -62,9 +62,19 @@ public class AuthenticatedUsersController {
         profileService.updatePortfolioPhoto(photo, userAuth.getName());
     }
 
-    @GetMapping(value = "/api/avatar/{id}", produces = "image/png")
+    @GetMapping(value = "/api/avatar/original/{id}", produces = "image/png")
     public byte[] downloadAvatar(@PathVariable(name = "id") String id) throws IOException {
-        return profileService.getAvatar(Long.parseLong(id));
+        return profileService.getOriginalAvatar(Long.parseLong(id));
+    }
+
+    @GetMapping(value = "/api/avatar/small/{id}", produces = "image/png")
+    public byte[] downloadSmallAvatar(@PathVariable(name = "id") String id) throws IOException {
+        return profileService.getSmallAvatar(Long.parseLong(id));
+    }
+
+    @GetMapping(value = "/api/avatar/medium/{id}", produces = "image/png")
+    public byte[] downloadMediumAvatar(@PathVariable(name = "id") String id) throws IOException {
+        return profileService.getMediumAvatar(Long.parseLong(id));
     }
 }
 

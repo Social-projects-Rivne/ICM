@@ -77,10 +77,23 @@ public class UserProfileService{
         userDao.save(user);
     }
 
-    public byte[] getAvatar(long id) throws IOException {
+    public byte[] getOriginalAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "original.png");
+    }
+
+    public byte[] getMediumAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "medium.png");
+    }
+
+    public byte[] getSmallAvatar(long id) throws IOException {
+        return getAvatarAvatar(id, "small.png");
+    }
+
+    private byte[] getAvatarAvatar(long id, String name) throws IOException {
         User user = userDao.findById(id);
         checkArgument(user != null, "User with the following id \'" + id + "\' doesn't not exist");
-        return Files.readAllBytes(Paths.get(user.getAvatarUrl(), "medium.png"));
+        checkArgument(!user.getAvatarUrl().contains("http://url.com"));
+        return Files.readAllBytes(Paths.get(user.getAvatarUrl(), name));
     }
 
     public Map getUserInfo(String email) {
