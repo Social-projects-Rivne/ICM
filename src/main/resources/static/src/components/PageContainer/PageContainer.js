@@ -8,11 +8,7 @@ class PageContainer extends Component {
         this.state = {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
-<<<<<<< HEAD
             sortOrder: this.props.sortOrder,
-=======
-            sorting: this.props.sorting,
->>>>>>> 30007d19d6d9d03664017e5ae7301307ea759cc0
             title: this.props.title,
             children: this.props.children
         };
@@ -27,28 +23,24 @@ class PageContainer extends Component {
         this.setState({
             pagesNum: props.pagesNum,
             page: props.page,
-<<<<<<< HEAD
             sortOrder: props.sortOrder,
-=======
-            sorting: props.sorting,
->>>>>>> 30007d19d6d9d03664017e5ae7301307ea759cc0
             title: props.title,
             children: props.children
         });
     }
 
     changeSortByIdAsc() {
-        if(this.state.sortOrder.descending === true) {
-            this.setState(function() {
-                this.props.onPageChange(this.state.sortOrder.ascending === true);
+        if(this.state.sortOrder.ascending !== true) {
+            this.setState({ascending: true}, function() {
+                this.props.onPageChange(this.state.sortOrder.ascending);
             });
         }
     }
 
     changeSortByIdDesc() {
-        if(this.state.sortOrder.ascending === true) {
-            this.setState(function() {
-                this.props.onPageChange(this.state.sortOrder.descending === true);
+        if(this.state.sortOrder.descending !== true) {
+            this.setState({descending: true}, function() {
+                this.props.onPageChange(this.state.sortOrder.descending);
             });
         }
     }

@@ -9,12 +9,11 @@ class Issues extends Component {
 
         this.state = {
             issues: "",
-            sort: 'asc',
+            sort: "ASC",
             page: 1
         };
         this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
-        this.handlePageSort = this.handlePageSort.bind(this);
     }
 
     componentWillMount() {
@@ -33,15 +32,9 @@ class Issues extends Component {
         });
     }
 
-    handlePageSort(sort) {
-        this.setState(function() {
-            this.makeQuery();
-        });
-    }
-
     makeQuery() {
         var _this = this;
-        axios.get(["/api/issues?page=", this.state.page].join(""))
+        axios.get(["/api/issues?page=", this.state.page, "&sort=", this.state.sort].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data
