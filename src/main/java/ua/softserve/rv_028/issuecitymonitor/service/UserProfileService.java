@@ -15,6 +15,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -78,22 +79,22 @@ public class UserProfileService{
     }
 
     public byte[] getOriginalAvatar(long id) throws IOException {
-        return getAvatarAvatar(id, "original.png");
+        return getAvatar(id, "original.png");
     }
 
     public byte[] getMediumAvatar(long id) throws IOException {
-        return getAvatarAvatar(id, "medium.png");
+        return getAvatar(id, "medium.png");
     }
 
     public byte[] getSmallAvatar(long id) throws IOException {
-        return getAvatarAvatar(id, "small.png");
+        return getAvatar(id, "small.png");
     }
 
-    private byte[] getAvatarAvatar(long id, String name) throws IOException {
+    private byte[] getAvatar(long id, String name) throws IOException {
         User user = userDao.findById(id);
         checkArgument(user != null, "User with the following id \'" + id + "\' doesn't not exist");
-        checkArgument(!user.getAvatarUrl().contains("http://url.com"));
-        return Files.readAllBytes(Paths.get(user.getAvatarUrl(), name));
+        return user.getAvatarUrl() == null ? defaultEmptyAvatar() : user.getAvatarUrl().contains("http://url.com")
+                ? defaultEmptyAvatar() : Files.readAllBytes(Paths.get(user.getAvatarUrl(), name));
     }
 
     public Map getUserInfo(String email) {
@@ -107,6 +108,20 @@ public class UserProfileService{
         map.put("authorities", user.getAuthorities());
         map.put("phone", user.getPhone());
         return map;
+    }
+
+    private byte[] defaultEmptyAvatar() throws IOException {
+        URL url = new URL("http://www.teequilla.com/images/tq/empty-avatar.png");
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+
+        try (InputStream inputStream = url.openStream()) {
+            int n;
+            byte [] buffer = new byte[1024];
+            while (-1 != (n = inputStream.read(buffer))) {
+                output.write(buffer, 0, n);
+            }
+        }
+        return output.toByteArray();
     }
 
     private String createImages(long userId, MultipartFile photo) {
