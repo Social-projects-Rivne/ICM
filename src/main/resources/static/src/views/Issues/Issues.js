@@ -14,6 +14,7 @@ class Issues extends Component {
         };
         this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageSort = this.handlePageSort.bind(this);
     }
 
     componentWillMount() {
@@ -28,6 +29,12 @@ class Issues extends Component {
 
     handlePageChange(pageNum) {
         this.setState({page: pageNum}, function() {
+            this.makeQuery();
+        });
+    }
+
+    handlePageSort(sort) {
+        this.setState(function() {
             this.makeQuery();
         });
     }
