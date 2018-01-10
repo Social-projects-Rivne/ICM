@@ -36,7 +36,6 @@ public class PdfController {
 
 
     private void downloadPdf(String pdf){
-
         LOGGER.info(pdf + " request successful!");
     }
 
