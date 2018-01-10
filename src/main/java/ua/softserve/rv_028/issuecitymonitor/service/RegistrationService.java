@@ -34,7 +34,7 @@ public class RegistrationService {
 
     public boolean isPossibleRegistration(String email) {
         User user = userDao.findUserByUsername(email);
-        return isUserExist(email) && !user.getIsDeleted();
+        return isUserExist(email) && (user.getUserStatus() != UserStatus.DELETED);
     }
 
     public UserDto registrationUser(UserDto dto) {

@@ -1,9 +1,12 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "user_votes")
+@SQLDelete(sql = "UPDATE user_votes SET deleted = 'true' WHERE id = ?")
 public class UserVote {
 
     @Id
@@ -55,6 +58,11 @@ public class UserVote {
 
     public boolean getIsDeleted() {
         return isDeleted;
+    }
+
+    @PreRemove
+    public void delete() {
+        this.isDeleted = true;
     }
 
     @Override
