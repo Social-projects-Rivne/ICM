@@ -36,6 +36,7 @@ class PetitionsContainer extends Component {
     }
 
     table() {
+        let _this = this;
         if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
@@ -52,7 +53,8 @@ class PetitionsContainer extends Component {
                     <tbody>
                     {this.state.data.content.map(function(petition, i) {
                         return (
-                            <Petition key={i} petition={petition}/>);
+                            <Petition key={i} petition={petition} onDelete={_this.handlePageUpdate}/>
+                            );
                         })}
                     </tbody>
                 </Table>

@@ -25,7 +25,9 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import java.io.IOException;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
 
 @RunWith(SpringRunner.class)
@@ -102,9 +104,9 @@ public class SearchControllerITest {
 
     @Test
     public void testFindUsersByCriteria_expectSizeOneAndEquality() {
-        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&name=" + EXPECTED_SEARCH_NAME,
+        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&name=" + EXPECTED_SEARCH_NAME + "&deleted=" + false,
                 "firstName", EXPECTED_SEARCH_NAME);
-        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&email=" + EXPECTED_SEARCH_EMAIL,
+        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&email=" + EXPECTED_SEARCH_EMAIL + "&deleted=" + false,
                 "email", EXPECTED_SEARCH_EMAIL);
     }
 
@@ -117,7 +119,7 @@ public class SearchControllerITest {
             JsonNode content = objectMapper.readTree(responseEntity.getBody()).path("content");
 
             assertEquals(1, content.size());
-            assertEquals(expectedValue, content.findPath(valuePath).textValue());
+            assertThat(content.findPath(valuePath).textValue(), containsString(expectedValue));
         } catch (IOException e) {
             e.printStackTrace();
         }
