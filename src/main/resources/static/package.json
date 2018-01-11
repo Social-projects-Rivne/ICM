@@ -51,6 +51,7 @@
     "react-cookie": "^2.1.2",
     "react-datetime": "^2.11.1",
     "react-dom": "^15.6.2",
+    "react-download-link": "^2.0.0",
     "react-file-download": "^0.3.5",
     "react-google-maps": "^9.4.3",
     "react-input-slider": "^4.0.1",

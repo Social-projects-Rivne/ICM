@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import {Button} from "reactstrap";
-import * as response from "react/lib/ReactDOMFactories";
 
 class DownloadPDF extends Component {
     constructor(props) {
@@ -24,8 +23,6 @@ class DownloadPDF extends Component {
 
         axios.get('/api/pdf/' + pageName)
             .then(function () {
-                const FileDownload = require('react-file-download');
-                FileDownload(response.data, pageName + '.pdf');
                 swal({title: pageName + " is ready to download", icon: "success"})
             })
             .catch(function () {
