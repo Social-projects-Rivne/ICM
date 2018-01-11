@@ -24,9 +24,10 @@ public class UserController {
     @GetMapping
 
     public Page<UserDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size){
+                                      @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size,
+                                      @RequestParam(value = "deleted", defaultValue = "false") boolean isDeleted){
         LOGGER.debug("GET request for all users by page");
-        return service.findAllByPage(page, size);
+        return service.findAllByPage(page, size, isDeleted);
     }
 
     @GetMapping("/{id}")

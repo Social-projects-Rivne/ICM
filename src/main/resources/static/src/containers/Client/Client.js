@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
 import {Container} from 'reactstrap';
+import Login from "../../views/Login/Login";
+import SignUp from "../../views/SignUp/SignUp";
+import RestorePassword from "../../views/RestorePassword/RestorePassword";
 import ClientHeader from '../../components/ClientHeader/ClientHeader'
 import IssueMap from "../../views/IssueMap/IssueMap";
 import Footer from '../../components/Footer/Footer';
 import axios from 'axios';
+import Page404 from "../../views/Page404/Page404";
 
 
-export default class SignUp extends Component{
+export default class Client extends Component{
 
     constructor(props) {
         super(props);
@@ -33,10 +37,14 @@ export default class SignUp extends Component{
                 <div className="app-body">
                     <Container fluid>
                         <Switch>
+                            <Route exact path="/" name="Index" component={IssueMap}/>
+                            <Route exact path="/login" name="Login" component={Login}/>
+                            <Route exact path="/registration" name="SignUp" component={SignUp}/>
+                            <Route exact path="/restore-password" name="RestorePassword" component={RestorePassword}/>
+                            <Route path="/*" component={Page404} />
                         </Switch>
                     </Container>
                 </div>
-                <IssueMap/>
                 <Footer />
             </div>
         )

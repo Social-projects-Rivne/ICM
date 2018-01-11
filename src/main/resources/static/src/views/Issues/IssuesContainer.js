@@ -11,6 +11,11 @@ class IssuesContainer extends Component {
             data: this.props.data
         };
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageUpdate = this.handlePageUpdate.bind(this);
+    }
+
+    handlePageUpdate() {
+        this.props.onPageChange(this.state.data.number + 1);
     }
 
     handlePageChange(page) {
@@ -22,6 +27,7 @@ class IssuesContainer extends Component {
     }
 
     table() {
+        let _this = this;
         if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
@@ -38,7 +44,7 @@ class IssuesContainer extends Component {
                     <tbody>
                     {this.state.data.content.map(function(issue, i) {
                         return (
-                            <Issue key={i} issue={issue}/>
+                            <Issue key={i} issue={issue} onDelete={_this.handlePageUpdate}/>
                         );
                     })}
                     </tbody>

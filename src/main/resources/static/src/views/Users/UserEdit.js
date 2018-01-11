@@ -159,7 +159,6 @@ class EditUsers extends Component {
                                             <Input value={this.state.users.userStatus} onChange={this.handleChange}
                                                    type="select" name="userStatus"
                                                    placeholder="Role">
-                                                <option>DELETED</option>
                                                 <option>BANNED</option>
                                                 <option>ACTIVE</option>
                                                 <option>UNCONFIRMED</option>
