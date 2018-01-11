@@ -55,16 +55,12 @@ export default class Client extends Component{
                 <div className="app-body">
                     <Container fluid>
                         <Switch>
-<<<<<<< HEAD
-                            <Route path="/settings/profile/" name="Client" component={() => (<EditProfile user={this.state.user}/>)}/>
-                            <Route path="/" component={IssueMap}/>
-=======
                             <Route exact path="/" name="Index" component={IssueMap}/>
                             <Route exact path="/login" name="Login" component={Login}/>
                             <Route exact path="/registration" name="SignUp" component={SignUp}/>
                             <Route exact path="/restore-password" name="RestorePassword" component={RestorePassword}/>
+                            <Route exact path="/settings/profile/" name="Client" component={() => (<EditProfile user={this.state.user}/>)}/>
                             <Route path="/*" component={Page404} />
->>>>>>> 770112bf6b352a449e6e3422719e0e7c81c00647
                         </Switch>
                     </Container>
                 </div>
