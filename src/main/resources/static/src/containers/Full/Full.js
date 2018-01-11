@@ -58,6 +58,7 @@ class Full extends Component {
                 <Route exact path="/admin/users" name="Users" component={Users}/>
                 <Route path="/admin/users/:id/edit" name="UserEdit" component = {UserEdit}/>
                 <Route exact path="/admin/search" name="Search" component={Search}/>
+                <Route path="/*" component={Page404} />
               </Switch>
             </Container>
           </main>

@@ -59,8 +59,12 @@ public class UserService {
     }
 
     public void deleteById(long id) {
-        userDao.delete(id);
-        LOGGER.debug("Deleted user " + id);
+        if (userDao.countAdmins() <= 1 && (findOne(id).getUserRole() == UserRole.ADMIN)) {
+            throw new LastAdminException();
+        } else {
+            userDao.delete(id);
+            LOGGER.debug("Deleted user " + id);
+        }
     }
 
     private User findOne(long id){
