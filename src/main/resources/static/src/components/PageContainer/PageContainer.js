@@ -8,41 +8,67 @@ class PageContainer extends Component {
         this.state = {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
-            sortOrder: this.props.sortOrder,
+            sortColumn: this.props.sortColumn,
+            sortDirection: this.props.sortDirection,
             title: this.props.title,
             children: this.props.children
         };
-        this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
-        this.changeSortByIdDesc = this.changeSortByIdDesc.bind(this);
         this.handleFirstPage = this.handleFirstPage.bind(this);
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handlePage = this.handlePage.bind(this);
+        this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
+        this.changeSortByIdDesc = this.changeSortByIdDesc.bind(this);
+        this.changeSortByTitleAsc = this.changeSortByTitleAsc.bind(this);
+        this.changeSortByTitleDesc = this.changeSortByTitleDesc.bind(this);
+        this.changeSortByInitialDateAsc = this.changeSortByInitialDateAsc.bind(this);
+        this.changeSortByInitialDateDesc = this.changeSortByInitialDateDesc.bind(this);
     }
 
     componentWillReceiveProps(props){
         this.setState({
             pagesNum: props.pagesNum,
             page: props.page,
-            sortOrder: props.sortOrder,
+            sortColumn: props.sortColumn,
+            sortDirection: props.sortDirection,
             title: props.title,
             children: props.children
         });
     }
 
-    changeSortByIdAsc() {
-        if(this.state.sortOrder.ascending !== true) {
-            this.setState({ascending: true}, function() {
-                this.props.onPageChange(this.state.sortOrder.ascending);
-            });
-        }
+    changeSortByIdAsc(id, ASC) {
+        this.setState({sortColumn: id, sortDirection: ASC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
     }
 
-    changeSortByIdDesc() {
-        if(this.state.sortOrder.descending !== true) {
-            this.setState({descending: true}, function() {
-                this.props.onPageChange(this.state.sortOrder.descending);
-            });
-        }
+    changeSortByIdDesc(id, DESC) {
+        this.setState({sortColumn: id, sortDirection: DESC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
+    }
+
+    changeSortByTitleAsc(title, ASC) {
+        this.setState({sortColumn: title, sortDirection: ASC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
+    }
+
+    changeSortByTitleDesc(title, DESC) {
+        this.setState({sortColumn: title, sortDirection: DESC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
+    }
+
+    changeSortByInitialDateAsc(initialDate, ASC) {
+        this.setState({sortColumn: initialDate, sortDirection: ASC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
+    }
+
+    changeSortByInitialDateDesc(initialDate, DESC) {
+        this.setState({sortColumn: initialDate, sortDirection: DESC}, function() {
+            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+        });
     }
 
     handlePage(i) {
@@ -68,8 +94,12 @@ class PageContainer extends Component {
     sorting() {
         return(
             <ButtonGroup>
-                <Button color="info" size="sm" onClick={this.changeSortByIdAsc}>ascending order</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByIdDesc}>descending order</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByIdAsc}>Ascending by Id</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByIdDesc}>Descending by Id</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByTitleAsc}>Ascending by Title</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByTitleDesc}>Descending by Title</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByInitialDateAsc}>Ascending by Initial date</Button>
+                <Button color="info" size="sm" onClick={this.changeSortByInitialDateDesc}>Descending by Initial date</Button>
             </ButtonGroup>
         )
     }

@@ -38,8 +38,9 @@ public class IssueService {
         return issueMapper.toDto(issue);
     }
 
-    public Page<IssueDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.DESC, "id");
+    public Page<IssueDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<Issue> issues = issueDao.findAll(pageRequest);
         LOGGER.debug("Found all issues");
         return issueMapper.toDtoPage(issues);

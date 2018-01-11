@@ -14,8 +14,8 @@ class IssuesContainer extends Component {
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
-    handleSortChange(sortOrder) {
-        this.props.onPageChange(sortOrder);
+    handleSortChange(sortColumn, sortDirection) {
+        this.props.onPageChange(sortColumn, sortDirection);
     }
 
     handlePageChange(page) {
@@ -55,10 +55,11 @@ class IssuesContainer extends Component {
     }
 
     render() {
+        console.log(this.state.data);
         return (
-            <PageContainer onPageChange={this.handleSortChange} onPageChange={this.handlePageChange} title="Issues list"
-                           sortOrder={this.state.data.sort.direction} page={this.state.data.number + 1}
-                           pagesNum={this.state.data.totalPages}>
+            <PageContainer onPageChange={this.handlePageChange} onPageChange={this.handleSortChange} title="Issues list"
+                           sortColumn={this.state.data.sort} sortDirection={this.state.data.sort}
+                           page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>
         )

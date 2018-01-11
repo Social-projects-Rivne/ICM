@@ -41,9 +41,11 @@ public class IssueController {
 
     @GetMapping
     public Page<IssueDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size){
+                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size,
+                                       @RequestParam(value = "direction", defaultValue = "ASC") Sort.Direction direction,
+                                       @RequestParam(value = "sort", defaultValue = "id") String sort){
         LOGGER.debug("GET request for all issues by page");
-        return issueService.findAllByPage(page, size);
+        return issueService.findAllByPage(page, size, direction, sort);
     }
 
     @PostMapping
