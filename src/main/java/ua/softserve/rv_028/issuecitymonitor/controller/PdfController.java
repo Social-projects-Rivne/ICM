@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/pdf")
+@RequestMapping("/apis/pdf")
 public class PdfController {
     private static final Logger LOGGER = Logger.getLogger(PetitionController.class.getName());
 
@@ -34,8 +34,6 @@ public class PdfController {
 
 
     private void downloadPdf(String pdf){
-
         LOGGER.info(pdf + " request successful!");
     }
-
 }

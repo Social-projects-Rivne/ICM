@@ -3,10 +3,13 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import {Button} from "reactstrap";
 
+
 class DownloadPDF extends Component {
     constructor(props) {
         super(props);
     }
+
+
 
 
     render() {
@@ -21,8 +24,12 @@ class DownloadPDF extends Component {
 
     onClick(e, pageName) {
 
-        axios.get('/api/pdf/' + pageName)
+        axios.get('/api/pdf/' + pageName + '.pdf')
             .then(function () {
+                const response = {
+                    file: 'http://localhost:8080/api/pdf/' + pageName + '.pdf',
+                };
+                window.open(response.file);
                 swal({title: pageName + " is ready to download", icon: "success"})
             })
             .catch(function () {
