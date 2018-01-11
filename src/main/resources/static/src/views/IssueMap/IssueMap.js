@@ -41,7 +41,10 @@ class IssueMap extends Component {
 
    render() {
 
+
+
    return(
+   <div>
         <div className="map-responsive">
 
             <Map
@@ -57,6 +60,10 @@ class IssueMap extends Component {
                 issues = {this.state.issues}
             />
         </div>
+        <div  className="description" >
+            <descriptionIssues/>
+        </div>
+   </div>
    )
   }
 }
