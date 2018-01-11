@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/pdf")
 public class PdfController {
-
     private static final Logger LOGGER = Logger.getLogger(PetitionController.class.getName());
 
     @GetMapping(path = "/issues")
@@ -32,7 +31,6 @@ public class PdfController {
     private void downloadPdfUsers() {
         downloadPdf("users");
     }
-
 
 
     private void downloadPdf(String pdf){
