@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RestorePasswordServiceTest {
 
-    private static User USER;
+    private static User USER = TestUtils.createUser(0);
 
     @Autowired
     private UserDao userDao;
@@ -38,7 +38,11 @@ public class RestorePasswordServiceTest {
 
     @Before
     public void setup(){
-        USER = userDao.save(TestUtils.createUser(0));
+        User user = userDao.findUserByUsername(USER.getUsername());
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
     }
 
     @Test
@@ -71,6 +75,5 @@ public class RestorePasswordServiceTest {
     @After
     public void cleanup(){
         restorePassDao.deleteAll();
-        userDao.deleteAll();
     }
 }

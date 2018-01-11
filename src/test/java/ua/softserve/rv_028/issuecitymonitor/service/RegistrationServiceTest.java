@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +14,18 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.exception.RegistrationException;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
+import java.util.UUID;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RegistrationServiceTest {
 
-    private static User REGISTERED_USER;
-    private static UserDto NEW_USER;
+    private User REGISTERED_USER = TestUtils.createUser(0);
+    private UserDto NEW_USER = TestUtils.createUserDto(1);
+    private static final String USERNAME = "mock-test@mail.com";
+    private static final String GENERATED_USERNAME = UUID.randomUUID() + "@mail.com";
 
     @Autowired
     private UserDao userDao;
@@ -31,38 +34,38 @@ public class RegistrationServiceTest {
     private UserMapper mapper;
 
     @Autowired
-    private RegistrationService registrationService;
+    private RegistrationService service;
 
     @Before
     public void setup(){
-        REGISTERED_USER = userDao.save(TestUtils.createUser(0));
-        NEW_USER = TestUtils.createUserDto(1);
+        NEW_USER.setEmail(GENERATED_USERNAME);
+        REGISTERED_USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(REGISTERED_USER.getUsername());
+        if (user == null)
+            userDao.save(REGISTERED_USER);
+        else
+            REGISTERED_USER = user;
     }
 
     @Test
     public void userExist(){
-        boolean userExist = registrationService.isPossibleRegistration(REGISTERED_USER.getUsername());
+        boolean userExist = service.isPossibleRegistration(REGISTERED_USER.getUsername());
         assertEquals(true, userExist);
     }
 
     @Test
     public void userExistFalse(){
-        boolean userExist = registrationService.isPossibleRegistration("no-email");
+        boolean userExist = service.isPossibleRegistration("no-email");
         assertEquals(false, userExist);
     }
 
     @Test(expected = RegistrationException.class)
     public void registrationFailUserExist(){
-        registrationService.registrationUser(mapper.toDto(REGISTERED_USER));
+        service.registrationUser(mapper.toDto(REGISTERED_USER));
     }
 
     @Test
     public void registrationUser(){
-        registrationService.registrationUser(NEW_USER);
-    }
-
-    @After
-    public void cleanup(){
-        userDao.deleteAll();
+        service.registrationUser(NEW_USER);
     }
 }

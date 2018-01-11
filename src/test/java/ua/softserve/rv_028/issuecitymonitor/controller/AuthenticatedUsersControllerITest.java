@@ -1,19 +1,16 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
-import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,79 +18,73 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class AuthenticatedUsersControllerITest {
 
-    private static final User USER = TestUtils.createAdmin(0);
-    private static final String newFirstName = "newFirstName";
-    private static final String newLastName = "newLastName";
-    private static final String newPhoneNumber = "+88005553535";
-
+    private static User USER = TestUtils.createAdmin(0);
+    private static final String USERNAME = "mock-test@mail.com";
+    private static final String FIRST_NAME = "FIRST_NAME";
+    private static final String LAST_NAME = "LAST_NAME";
+    private static final String PHONE_NUMBER = "+10123456789";
 
     @Autowired
     private UserDao userDao;
-
-    @Autowired
-    private UserProfileService service;
-
-    @Autowired
-    private TestRestTemplate rest;
 
     @Autowired
     private AuthenticatedUsersController controller;
 
     @Before
     public void setup(){
-        userDao.save(USER);
+        USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(USERNAME);
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
     }
 
     @Test
-    @WithMockUser(username = "mail@mail.ua0")
+    @WithMockUser(username = "mock-test@mail.com")
     public void getUserName(){
         System.out.println(controller.getUserName());
     }
 
     @Test
-    @WithMockUser(username = "mail@mail.ua0")
+    @WithMockUser(username = "mock-test@mail.com")
     public void updateContactInfo(){
         userDao.save(USER);
-        controller.updateContactInfo(newFirstName, newLastName, newPhoneNumber);
+        controller.updateContactInfo(FIRST_NAME, LAST_NAME, PHONE_NUMBER);
 
         User updatedUser = userDao.findUserByUsername(USER.getUsername());
-        assertEquals(newFirstName, updatedUser.getFirstName());
-        assertEquals(newLastName, updatedUser.getLastName());
-        assertEquals(newPhoneNumber, updatedUser.getPhone());
+        assertEquals(FIRST_NAME, updatedUser.getFirstName());
+        assertEquals(LAST_NAME, updatedUser.getLastName());
+        assertEquals(PHONE_NUMBER, updatedUser.getPhone());
     }
 
     @Test
-    @WithMockUser(username = "mail@mail.ua0")
+    @WithMockUser(username = "mock-test@mail.com")
     public void updateFirstName(){
         userDao.save(USER);
-        controller.updateContactInfo(newFirstName, null, null);
+        controller.updateContactInfo(FIRST_NAME, null, null);
 
         User updatedUser = userDao.findUserByUsername(USER.getUsername());
-        assertEquals(newFirstName, updatedUser.getFirstName());
+        assertEquals(FIRST_NAME, updatedUser.getFirstName());
     }
 
     @Test
-    @WithMockUser(username = "mail@mail.ua0")
+    @WithMockUser(username = "mock-test@mail.com")
     public void updateLastName(){
         userDao.save(USER);
-        controller.updateContactInfo(null, newLastName, null);
+        controller.updateContactInfo(null, LAST_NAME, null);
 
         User updatedUser = userDao.findUserByUsername(USER.getUsername());
-        assertEquals(newLastName, updatedUser.getLastName());
+        assertEquals(LAST_NAME, updatedUser.getLastName());
     }
 
     @Test
-    @WithMockUser(username = "mail@mail.ua0")
+    @WithMockUser(username = "mock-test@mail.com")
     public void updatePhoneNumber(){
         userDao.save(USER);
-        controller.updateContactInfo(null, null, newPhoneNumber);
+        controller.updateContactInfo(null, null, PHONE_NUMBER);
 
         User updatedUser = userDao.findUserByUsername(USER.getUsername());
-        assertEquals(newPhoneNumber, updatedUser.getPhone());
-    }
-
-    @After
-    public void cleanup(){
-        userDao.deleteAll();
+        assertEquals(PHONE_NUMBER, updatedUser.getPhone());
     }
 }

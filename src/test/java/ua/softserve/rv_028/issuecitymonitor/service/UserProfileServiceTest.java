@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,9 +10,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 import java.util.Map;
+import java.util.UUID;
 
 import static org.junit.Assert.assertEquals;
 
@@ -21,88 +23,89 @@ import static org.junit.Assert.assertEquals;
 @SpringBootTest(classes = {TestApplication.class}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class UserProfileServiceTest {
 
-    private User USER;
+    private static User USER;
     private static final String USER_PASSWORD = "000";
     private static final String USER_NEW_PASSWORD = "newPassword";
     private static final String INCORRECT_USERNAME = "incorrectUsername";
     private static final String INCORRECT_PASSWORD = "incorrectPassword";
-    private static final String newFirstName = "firstName";
-    private static final String newLastName = "lastName";
-    private static final String newPhone = "+10123456789";
+    private static final String FIRST_NAME = "firstName";
+    private static final String LAST_NAME = "lastName";
+    private static final String PHONE = "+10123456789";
 
     @Autowired
     private BCryptPasswordEncoder encoder;
 
     @Autowired
-    private UserDao dao;
+    private UserDao userDao;
 
     @Autowired
-    private UserProfileService service;
+    private UserProfileService profile;
+
+    @Autowired
+    private RegistrationService registration;
+
+    @Autowired
+    private UserMapper mapper;
 
     @Before
     public void setup(){
-        USER = TestUtils.createUser(1);
-        USER.setPassword(encoder.encode(USER.getPassword()));
-        dao.save(USER);
+        UserDto user = TestUtils.createUserDto(0);
+        user.setEmail(UUID.randomUUID() + "@mail.com");
+        USER = mapper.toEntity(registration.registrationUser(user));
     }
 
     @Test
     public void updatePassword() {
-        service.updatePassword(USER.getUsername(), USER_PASSWORD, USER_NEW_PASSWORD);
-        assertEquals(encoder.matches(USER_NEW_PASSWORD, dao.findUserByUsername(USER.getUsername()).getPassword()), true);
+        profile.updatePassword(USER.getUsername(), USER_PASSWORD, USER_NEW_PASSWORD);
+        assertEquals(encoder.matches(USER_NEW_PASSWORD, userDao.findUserByUsername(USER.getUsername()).getPassword()), true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void updatePasswordFailIncorrectPass(){
-        service.updatePassword(USER.getUsername(), INCORRECT_PASSWORD, USER_NEW_PASSWORD);
+        profile.updatePassword(USER.getUsername(), INCORRECT_PASSWORD, USER_NEW_PASSWORD);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void  updatePasswordFailEmptyPass(){
-        service.updatePassword(USER.getUsername(), "", "");
+        profile.updatePassword(USER.getUsername(), "", "");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void updatePasswordFailNullFields(){
-        service.updatePassword(null, null, null);
+        profile.updatePassword(null, null, null);
     }
 
     @Test
     public void updateContactsInfo(){
-        dao.save(USER);
-        service.updateContactsInfo(USER.getUsername(), newFirstName, newLastName, newPhone);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getFirstName(), newFirstName);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getLastName(), newLastName);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getPhone(), newPhone);
+        profile.updateContactsInfo(USER.getUsername(), FIRST_NAME, LAST_NAME, PHONE);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getFirstName(), FIRST_NAME);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getLastName(), LAST_NAME);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getPhone(), PHONE);
     }
 
     @Test
     public void updateContactsInfoOnlyFirstName(){
-        dao.save(USER);
-        service.updateContactsInfo(USER.getUsername(), newFirstName, null, null);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getFirstName(), newFirstName);
-        System.out.println(dao.findUserByUsername(USER.getUsername()));
+        profile.updateContactsInfo(USER.getUsername(), FIRST_NAME, null, null);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getFirstName(), FIRST_NAME);
+        System.out.println(userDao.findUserByUsername(USER.getUsername()));
 
     }
 
     @Test
     public void updateContactsInfoOnlyLastName(){
-        dao.save(USER);
-        service.updateContactsInfo(USER.getUsername(), null, newLastName, null);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getLastName(), newLastName);
+        profile.updateContactsInfo(USER.getUsername(), null, LAST_NAME, null);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getLastName(), LAST_NAME);
     }
 
     @Test
     public void updateContactsInfoOnlyPhone(){
-        dao.save(USER);
-        service.updateContactsInfo(USER.getUsername(), null, null, newPhone);
-        assertEquals(dao.findUserByUsername(USER.getUsername()).getPhone(), newPhone);
+        profile.updateContactsInfo(USER.getUsername(), null, null, PHONE);
+        assertEquals(userDao.findUserByUsername(USER.getUsername()).getPhone(), PHONE);
     }
 
     @Test
     public void getUserInfo(){
-        dao.save(USER);
-        Map userInfo = service.getUserInfo(USER.getUsername());
+        Map userInfo = profile.getUserInfo(USER.getUsername());
         assertEquals(userInfo.get("email"), USER.getUsername());
         assertEquals(userInfo.get("firstName"), USER.getFirstName());
         assertEquals(userInfo.get("lastName"), USER.getLastName());
@@ -112,12 +115,6 @@ public class UserProfileServiceTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void getUserInfoFailEmptyUsername(){
-        dao.save(USER);
-        service.getUserInfo(INCORRECT_USERNAME);
-    }
-
-    @After
-    public void cleanup(){
-        dao.deleteAll();
+        profile.getUserInfo(INCORRECT_USERNAME);
     }
 }

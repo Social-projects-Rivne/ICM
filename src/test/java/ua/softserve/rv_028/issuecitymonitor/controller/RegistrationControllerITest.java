@@ -1,6 +1,5 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,28 +17,38 @@ import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
+import java.util.UUID;
+
 import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class RegistrationControllerITest {
 
-    private User REGISTERED_USER;
-    private UserDto NEW_USER;
+    private User REGISTERED_USER = TestUtils.createUser(0);
+    private UserDto NEW_USER = TestUtils.createUserDto(1);
+    private static final String USERNAME = "mock-test@mail.com";
+    private static final String GENERATED_USERNAME = UUID.randomUUID() + "@mail.com";
 
     @Autowired
     private UserDao userDao;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserMapper mapper;
 
     @Autowired
-    private TestRestTemplate testRestTemplate;
+    private TestRestTemplate rest;
 
     @Before
     public void setup(){
-        REGISTERED_USER = userDao.save(TestUtils.createUser(0));
-        NEW_USER = TestUtils.createUserDto(1);
+        NEW_USER.setEmail(GENERATED_USERNAME);
+        REGISTERED_USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(REGISTERED_USER.getUsername());
+        if (user == null)
+            userDao.save(REGISTERED_USER);
+        else {
+            REGISTERED_USER = user;
+        }
     }
 
     @Test
@@ -47,7 +56,7 @@ public class RegistrationControllerITest {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<UserDto> request = new HttpEntity<>(NEW_USER, headers);
 
-        ResponseEntity<String> response = testRestTemplate.postForEntity( "/api/registration", request, String.class);
+        ResponseEntity<String> response = rest.postForEntity( "/api/registration", request, String.class);
         assertEquals(HttpStatus.OK, HttpStatus.valueOf(response.getStatusCodeValue()));
 
         User registerUser = userDao.findUserByUsername(NEW_USER.getEmail());
@@ -57,9 +66,9 @@ public class RegistrationControllerITest {
     @Test
     public void registrationFailUserExist(){
         HttpHeaders headers = new HttpHeaders();
-        HttpEntity<UserDto> request = new HttpEntity<>(userMapper.toDto(REGISTERED_USER), headers);
+        HttpEntity<UserDto> request = new HttpEntity<>(mapper.toDto(REGISTERED_USER), headers);
 
-        ResponseEntity<String> response = testRestTemplate.postForEntity( "/api/registration", request, String.class);
+        ResponseEntity<String> response = rest.postForEntity( "/api/registration", request, String.class);
         System.out.println(response.getBody());
         assertEquals(HttpStatus.BAD_REQUEST, HttpStatus.valueOf(response.getStatusCodeValue()));
     }
@@ -68,26 +77,22 @@ public class RegistrationControllerITest {
     public void checkEmail(){
         HttpHeaders headers = new HttpHeaders();
         MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("email", NEW_USER.getEmail());
+        map.add("email", REGISTERED_USER.getUsername());
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        ResponseEntity<Boolean> response = testRestTemplate.postForEntity( "/api/checkEmail", request, Boolean.class);
+        ResponseEntity<Boolean> response = rest.postForEntity( "/api/checkEmail", request, Boolean.class);
         assertEquals(HttpStatus.OK, HttpStatus.valueOf(response.getStatusCodeValue()));
-        assertEquals(false, response.getBody());
+        assertEquals(true, response.getBody());
     }
 
     @Test
     public void checkEmailNewUser(){
         HttpHeaders headers = new HttpHeaders();
         MultiValueMap<String, String> map= new LinkedMultiValueMap<>();
-        map.add("email", REGISTERED_USER.getUsername());
+        String generatedEmail = UUID.randomUUID() + "@mail.com";
+        map.add("email", generatedEmail);
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(map, headers);
-        ResponseEntity<Boolean> response = testRestTemplate.postForEntity( "/api/checkEmail", request, Boolean.class);
+        ResponseEntity<Boolean> response = rest.postForEntity( "/api/checkEmail", request, Boolean.class);
         assertEquals(HttpStatus.OK, HttpStatus.valueOf(response.getStatusCodeValue()));
-        assertEquals(true, response.getBody());
-    }
-
-    @After
-    public void cleanup(){
-        userDao.deleteAll();
+        assertEquals(false, response.getBody());
     }
 }
