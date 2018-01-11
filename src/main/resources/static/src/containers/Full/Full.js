@@ -17,9 +17,8 @@ import UserEdit from "../../views/Users/UserEdit";
 import Events from "../../views/Events/Events"
 import EventEdit from "../../views/Events/EventEdit";
 import Search from "../../views/Search/Search";
-import Login from "../../views/Login/Login";
 import Page404 from "../../views/Page404/Page404";
-import axios from "axios/index";
+import axios from "axios";
 
 class Full extends Component {
 
@@ -59,7 +58,7 @@ class Full extends Component {
                 <Route exact path="/admin/users" name="Users" component={Users}/>
                 <Route path="/admin/users/:id/edit" name="UserEdit" component = {UserEdit}/>
                 <Route exact path="/admin/search" name="Search" component={Search}/>
-                <Route path="*" component={Page404} />
+                <Route path="/*" component={Page404} />
               </Switch>
             </Container>
           </main>

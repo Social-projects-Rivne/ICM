@@ -82,7 +82,7 @@ class PageContainer extends Component {
             <div className="animated fadeIn">
                 <Row>
                     <Col xs="12" lg="12">
-                        <Card>
+                        <Card className="page-container-margin">
                             <CardHeader>{this.state.title}</CardHeader>
                             <CardBody>
                                 {this.state.children}

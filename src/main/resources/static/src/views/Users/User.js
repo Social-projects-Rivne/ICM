@@ -6,21 +6,18 @@ import {Link} from "react-router-dom";
 
 class User extends Component {
 
-
      constructor(props) {
          super(props);
 
          this.state = {
-             user: this.props.user,
-             mounted: true
+             user: this.props.user
          };
          this.handleDelete = this.handleDelete.bind(this);
-
      }
 
      componentWillReceiveProps(props) {
-             this.setState({user: props.user});
-         }
+         this.setState({user: props.user});
+     }
 
      handleDelete(){
          var _this = this;
@@ -35,12 +32,10 @@ class User extends Component {
                  if (willDelete) {
                      axios.delete("/api/users/delete/"+_this.state.user.id)
                          .then(function(response) {
-                             _this.setState({
-                                 mounted: false
-                             });
+                             _this.props.onDelete();
                              swal({title: "User record deleted", icon: "success"});
                          }).catch(function (error) {
-                         swal({title: "Something went wrong!", text: "User has role Admin!", icon: "error"});
+                         swal({title: "Something went wrong!", text: error, icon: "error"});
                      });
                  }
              });
@@ -63,7 +58,7 @@ class User extends Component {
                  </td>
              </tr>
          );
-         return (this.state.mounted === true ? row : null)
+         return (row)
      }
  }
 
