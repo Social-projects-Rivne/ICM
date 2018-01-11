@@ -11,7 +11,17 @@ class PetitionsContainer extends Component {
         this.state = {
             data: this.props.data
         };
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageUpdate = this.handlePageUpdate.bind(this);
+    }
+
+    handlePageUpdate() {
+        this.props.onPageChange(this.state.data.number + 1);
+    }
+
+    handleSortChange(sortDirection) {
+        this.props.onSortChange(sortDirection);
     }
 
     handlePageChange(page) {
@@ -31,6 +41,7 @@ class PetitionsContainer extends Component {
     }
 
     table() {
+        let _this = this;
         if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
@@ -47,7 +58,8 @@ class PetitionsContainer extends Component {
                     <tbody>
                     {this.state.data.content.map(function(petition, i) {
                         return (
-                            <Petition key={i} petition={petition}/>);
+                            <Petition key={i} petition={petition} onDelete={_this.handlePageUpdate}/>
+                            );
                         })}
                     </tbody>
                 </Table>
@@ -59,7 +71,8 @@ class PetitionsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Petitions list"
+            <PageContainer onPageChange={this.handlePageChange} onSortChange={this.handleSortChange} title="Petitions list"
+                           sortDirection={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

@@ -11,7 +11,6 @@ class Event extends Component {
 
         this.state = {
             event: this.props.event,
-            mounted: true
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -34,9 +33,7 @@ class Event extends Component {
                 if (willDelete) {
                     axios.delete("/api/events/"+_this.state.event.id)
                         .then(function(response) {
-                            _this.setState({
-                                mounted: false
-                            });
+                            _this.props.onDelete();
                             swal({title: "Event record deleted", icon: "success"});
                         }).catch(function (error) {
                         swal({title: "Something went wrong!", text: error, icon: "error"});
@@ -61,7 +58,7 @@ class Event extends Component {
                 </td>
             </tr>
         );
-        return (this.state.mounted === true ? row : null)
+        return (row);
     }
 }
 

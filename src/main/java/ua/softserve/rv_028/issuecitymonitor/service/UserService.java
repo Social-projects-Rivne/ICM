@@ -10,6 +10,7 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
@@ -28,9 +29,11 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public Page<UserDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<User> users = userDao.findAll(pageRequest);
+    public Page<UserDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns,
+                                       boolean isDeleted) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
+        Page<User> users = userDao.findAll(isDeleted, pageRequest);
         LOGGER.debug("Found all users");
         return userMapper.toDtoPage(users);
     }
@@ -58,8 +61,12 @@ public class UserService {
     }
 
     public void deleteById(long id) {
-        userDao.delete(id);
-        LOGGER.debug("Deleted user " + id);
+        if (userDao.countAdmins() <= 1 && (findOne(id).getUserRole() == UserRole.ADMIN)) {
+            throw new LastAdminException();
+        } else {
+            userDao.delete(id);
+            LOGGER.debug("Deleted user " + id);
+        }
     }
 
     private User findOne(long id){

@@ -23,12 +23,7 @@ import Page404 from "./views/Page404";
 ReactDOM.render((
     <BrowserRouter>
         <Switch>
-            <Route exact path="/restore-password" name="RestoreEmail" component={Authorization}/>
-            <Route exact path="/registration" name="SignUp" component={Authorization}/>
-            <Route exact path="/login" name="Login" component={Authorization}/>
             <Route path="/admin/" name="Home" component={Full}/>
-            <Route exact path="/" name="Client" component={Client}/>
-            <Route path="/*" component={Page404} />
             <Route path="/" name="Client" component={Client}/>
         </Switch>
     </BrowserRouter>

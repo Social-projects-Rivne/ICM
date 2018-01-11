@@ -3,6 +3,7 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
@@ -24,9 +25,12 @@ public class UserController {
     @GetMapping
 
     public Page<UserDto> getAllByPage(@RequestParam(value = "page", defaultValue = "1") int page,
-                                       @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size){
+                                      @RequestParam(value = "size", defaultValue = (""+PAGE_SIZE)) int size,
+                                      @RequestParam(value = "direction", defaultValue = "ASC") Sort.Direction direction,
+                                      @RequestParam(value = "sort", defaultValue = "id") String sort,
+                                      @RequestParam(value = "deleted", defaultValue = "false") boolean isDeleted){
         LOGGER.debug("GET request for all users by page");
-        return service.findAllByPage(page, size);
+        return service.findAllByPage(page, size, direction, sort, isDeleted);
     }
 
     @GetMapping("/{id}")

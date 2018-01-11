@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserControllerTest {
@@ -25,6 +27,8 @@ public class UserControllerTest {
     private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("user not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
+    private final static Sort.Direction SORT_DIRECTION = ASC;
+    private final static String SORT_COLUMN = "id";
 
     @InjectMocks
     private UserController userController;
@@ -62,10 +66,11 @@ public class UserControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
-        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE)).thenReturn(userDtoPage);
+        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN, false))
+                .thenReturn(userDtoPage);
 
-        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
-        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE);
+        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN, false);
+        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN, false);
         verifyNoMoreInteractions(userService);
         assertEquals(userDtoPage, page);
     }

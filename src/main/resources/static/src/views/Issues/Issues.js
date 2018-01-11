@@ -9,8 +9,8 @@ class Issues extends Component {
 
         this.state = {
             issues: "",
-            direction: "DESC",
-            sort: "initialDate",
+            direction: "ASC",
+            sort: "id",
             page: 1
         };
         this.handleSortChange = this.handleSortChange.bind(this);
@@ -21,8 +21,8 @@ class Issues extends Component {
         this.makeQuery();
     }
 
-    handleSortChange(sortColumn, sortDirection) {
-        this.setState({sort: sortColumn, direction: sortDirection}, function() {
+    handleSortChange(sortDirection) {
+        this.setState({direction: sortDirection}, function() {
             this.makeQuery();
         });
     }
@@ -36,7 +36,7 @@ class Issues extends Component {
     makeQuery() {
         var _this = this;
         axios.get(["/api/issues?page=", this.state.page, "&sort=", this.state.sort,
-                    "&direction=", this.state.direction,].join(""))
+                    "&direction=", this.state.direction].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data

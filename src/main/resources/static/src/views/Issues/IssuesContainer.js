@@ -12,10 +12,15 @@ class IssuesContainer extends Component {
         };
         this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageUpdate = this.handlePageUpdate.bind(this);
     }
 
-    handleSortChange(sortColumn, sortDirection) {
-        this.props.onSortChange(sortColumn, sortDirection);
+    handlePageUpdate() {
+        this.props.onPageChange(this.state.data.number + 1);
+    }
+
+    handleSortChange(sortDirection) {
+        this.props.onSortChange(sortDirection);
     }
 
     handlePageChange(page) {
@@ -27,6 +32,7 @@ class IssuesContainer extends Component {
     }
 
     table() {
+        let _this = this;
         if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
@@ -43,7 +49,7 @@ class IssuesContainer extends Component {
                     <tbody>
                     {this.state.data.content.map(function(issue, i) {
                         return (
-                            <Issue key={i} issue={issue}/>
+                            <Issue key={i} issue={issue} onDelete={_this.handlePageUpdate}/>
                         );
                     })}
                     </tbody>
@@ -55,10 +61,9 @@ class IssuesContainer extends Component {
     }
 
     render() {
-        console.log(this.state.data);
         return (
             <PageContainer onPageChange={this.handlePageChange} onSortChange={this.handleSortChange} title="Issues list"
-                           sortColumn={this.state.data.sort} sortDirection={this.state.data.sort}
+                           sortDirection={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

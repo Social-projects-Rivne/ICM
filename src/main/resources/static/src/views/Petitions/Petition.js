@@ -10,8 +10,7 @@ class Petition extends Component {
         super(props);
 
         this.state = {
-            petition: this.props.petition,
-            mounted: true
+            petition: this.props.petition
         };
 
         this.handleDelete = this.handleDelete.bind(this);
@@ -34,9 +33,7 @@ class Petition extends Component {
                 if (willDelete) {
                     axios.delete("/api/petitions/"+_this.state.petition.id)
                         .then(function(response) {
-                            _this.setState({
-                                mounted: false
-                            });
+                            _this.props.onDelete();
                             swal({title: "Petition record deleted", icon: "success"});
                         }).catch(function (error) {
                         swal({title: "Something went wrong!", text: error, icon: "error"});
@@ -60,7 +57,7 @@ class Petition extends Component {
                     </td>
                 </tr>
             );
-            return (this.state.mounted === true ? row : null)
+            return (row);
         }
 }
 

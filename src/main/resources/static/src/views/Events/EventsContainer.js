@@ -10,8 +10,17 @@ class EventsContainer extends Component {
         this.state = {
             data: this.props.data
         };
-
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
+        this.handlePageUpdate = this.handlePageUpdate.bind(this);
+    }
+
+    handlePageUpdate() {
+        this.props.onPageChange(this.state.data.number + 1);
+    }
+
+    handleSortChange(sortDirection) {
+        this.props.onSortChange(sortDirection);
     }
 
     handlePageChange(page) {
@@ -23,6 +32,7 @@ class EventsContainer extends Component {
     }
 
     table() {
+        let _this = this;
         if(this.state.data !== "" && this.state.data.content.length !== 0) {
             return (
                 <Table responsive bordered>
@@ -40,7 +50,7 @@ class EventsContainer extends Component {
                     <tbody>
                     {this.state.data.content.map(function (event, i) {
                         return (
-                            <Event key={i} event={event}/>
+                            <Event key={i} event={event} onDelete={_this.handlePageUpdate}/>
                         );
                     })}
                     </tbody>
@@ -53,7 +63,8 @@ class EventsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} title="Events list"
+            <PageContainer onPageChange={this.handlePageChange} onSortChange={this.handleSortChange} title="Events list"
+                           sortDirection={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

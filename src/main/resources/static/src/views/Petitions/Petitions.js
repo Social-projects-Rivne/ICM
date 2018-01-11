@@ -9,14 +9,22 @@ class Petitions extends Component {
 
         this.state = {
             petitions: "",
+            direction: "ASC",
+            sort: "id",
             page: 1
         };
-
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
         this.makeQuery();
+    }
+
+    handleSortChange(sortDirection) {
+        this.setState({direction: sortDirection}, function() {
+            this.makeQuery();
+        });
     }
 
     handlePageChange(pageNum) {
@@ -27,7 +35,8 @@ class Petitions extends Component {
 
     makeQuery() {
         var _this = this;
-        axios.get(["/api/petitions?page=", this.state.page].join(""))
+        axios.get(["/api/petitions?page=", this.state.page, "&sort=", this.state.sort,
+            "&direction=", this.state.direction].join(""))
             .then(function(response) {
                 _this.setState({
                     petitions: response.data
@@ -39,7 +48,8 @@ class Petitions extends Component {
     }
     render() {
         return (
-            <PetitionsContainer data={this.state.petitions} onPageChange={this.handlePageChange}/>
+            <PetitionsContainer data={this.state.petitions} onPageChange={this.handlePageChange}
+                                onSortChange={this.handleSortChange}/>
         )
     }
 }

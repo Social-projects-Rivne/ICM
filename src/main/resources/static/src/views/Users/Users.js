@@ -10,15 +10,23 @@ class Users extends Component {
 
         this.state = {
             users: "",
+            direction: "ASC",
+            sort: "id",
             page: 1
         };
-
+        this.handleSortChange = this.handleSortChange.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
+        this.makeQuery();
+    }
+
+    handleSortChange(sortDirection) {
+        this.setState({direction: sortDirection}, function() {
             this.makeQuery();
-        }
+        });
+    }
 
     handlePageChange(pageNum) {
         this.setState({page: pageNum}, function() {
@@ -28,7 +36,8 @@ class Users extends Component {
 
     makeQuery() {
         var _this = this;
-        axios.get(["/api/users?page=", this.state.page].join(""))
+        axios.get(["/api/users?page=", this.state.page, "&sort=", this.state.sort,
+            "&direction=", this.state.direction].join(""))
              .then(function(response) {
                   _this.setState({
                         users: response.data
@@ -41,7 +50,8 @@ class Users extends Component {
 
     render() {
         return (
-           <UsersContainer data={this.state.users} onPageChange={this.handlePageChange}/>
+           <UsersContainer data={this.state.users} onPageChange={this.handlePageChange}
+                           onSortChange={this.handleSortChange}/>
         )
     }
 

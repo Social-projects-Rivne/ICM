@@ -16,12 +16,14 @@ class PageContainer extends Component {
         this.handleFirstPage = this.handleFirstPage.bind(this);
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handlePage = this.handlePage.bind(this);
-        this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
+        this.changeSortAsc = this.changeSortAsc.bind(this);
+        this.changeSortDesc = this.changeSortDesc.bind(this);
+        /*this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
         this.changeSortByIdDesc = this.changeSortByIdDesc.bind(this);
         this.changeSortByTitleAsc = this.changeSortByTitleAsc.bind(this);
         this.changeSortByTitleDesc = this.changeSortByTitleDesc.bind(this);
         this.changeSortByInitialDateAsc = this.changeSortByInitialDateAsc.bind(this);
-        this.changeSortByInitialDateDesc = this.changeSortByInitialDateDesc.bind(this);
+        this.changeSortByInitialDateDesc = this.changeSortByInitialDateDesc.bind(this);*/
     }
 
     componentWillReceiveProps(props){
@@ -35,7 +37,19 @@ class PageContainer extends Component {
         });
     }
 
-    changeSortByIdAsc() {
+    changeSortAsc() {
+        this.setState({sortDirection: "ASC"}, function() {
+            this.props.onSortChange(this.state.sortDirection);
+        });
+    }
+
+    changeSortDesc() {
+        this.setState({sortDirection: "DESC"}, function() {
+            this.props.onSortChange(this.state.sortDirection);
+        });
+    }
+
+    /*changeSortByIdAsc() {
         this.setState({sortColumn: "id", sortDirection: "ASC"}, function() {
             this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
@@ -69,7 +83,7 @@ class PageContainer extends Component {
         this.setState({sortColumn: "initialDate", sortDirection: "DESC"}, function() {
             this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
-    }
+    }*/
 
     handlePage(i) {
         this.changePage(i);
@@ -91,16 +105,40 @@ class PageContainer extends Component {
         }
     }
 
+    handleChange(e) {
+        const name = e.target.name;
+        const value = e.target.value;
+        this.setState(function(prev) {
+            return {
+                children: {
+                    ...prev.children,
+                    [name]: value
+                }
+            }
+        })
+    }
+
     sorting() {
         return(
             <ButtonGroup>
+                <Button color="secondary" size="sm" onClick={this.changeSortAsc}>ASC</Button>
+                <Button color="secondary" size="sm" onClick={this.changeSortDesc}>DESC</Button>
+                <Input value={this.state.children} onChange={this.handleChange}
+                       type="select" name="sorting"
+                       placeholder="Sorting">
+                    <option>ID</option>
+                    <option>Title</option>
+                    <option>Initial date</option>
+                </Input>
+            </ButtonGroup>
+            /*<ButtonGroup>
                 <Button color="info" size="sm" onClick={this.changeSortByIdAsc}>Ascending by Id</Button>
                 <Button color="info" size="sm" onClick={this.changeSortByIdDesc}>Descending by Id</Button>
                 <Button color="info" size="sm" onClick={this.changeSortByTitleAsc}>Ascending by Title</Button>
                 <Button color="info" size="sm" onClick={this.changeSortByTitleDesc}>Descending by Title</Button>
                 <Button color="info" size="sm" onClick={this.changeSortByInitialDateAsc}>Ascending by Initial date</Button>
                 <Button color="info" size="sm" onClick={this.changeSortByInitialDateDesc}>Descending by Initial date</Button>
-            </ButtonGroup>
+            </ButtonGroup>*/
         )
     }
 
@@ -140,7 +178,7 @@ class PageContainer extends Component {
             <div className="animated fadeIn">
                 <Row>
                     <Col xs="12" lg="12">
-                        <Card>
+                        <Card className="page-container-margin">
                             <CardHeader>
                                 {this.state.title}
                                 {this.sorting()}
