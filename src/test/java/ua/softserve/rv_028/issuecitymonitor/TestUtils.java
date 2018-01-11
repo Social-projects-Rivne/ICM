@@ -9,6 +9,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,7 +37,7 @@ public final class TestUtils {
 
     public static User createUser(int i) {
         return new User(USER_FNAME + i, USER_LNAME + i,"000",
-                USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.USER, "url");
+                UUID.randomUUID() + USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.USER, "url");
     }
 
     public static UserDto createUserDto(int i) {
@@ -45,7 +46,7 @@ public final class TestUtils {
 
     public static User createAdmin(int i) {
         return new User(USER_FNAME + i, USER_LNAME + i,"000",
-                USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.ADMIN, "url");
+                UUID.randomUUID() + USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.ADMIN, "url");
     }
 
     public static UserDto createAdminDto(int i) {

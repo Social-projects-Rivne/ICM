@@ -62,10 +62,10 @@ public class UserControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<UserDto> userDtoPage = new PageImpl<>(new ArrayList<>());
-        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE)).thenReturn(userDtoPage);
+        when(userService.findAllByPage(PAGE_INDEX, PAGE_SIZE, false)).thenReturn(userDtoPage);
 
-        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
-        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE);
+        Page<UserDto> page = userController.getAllByPage(PAGE_INDEX, PAGE_SIZE, false);
+        verify(userService).findAllByPage(PAGE_INDEX, PAGE_SIZE, false);
         verifyNoMoreInteractions(userService);
         assertEquals(userDtoPage, page);
     }

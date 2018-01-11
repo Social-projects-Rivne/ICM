@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.service.specifiation;
 
 import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -41,6 +42,10 @@ public class UserSpecification implements Specification<User> {
                 }
                 if (key.equals("email")) {
                     predicates.add(cb.like(cb.lower(root.get("username")), ("%" + value + "%").toLowerCase()));
+                    continue;
+                }
+                if (key.equals("deleted") && value.equals("false")) {
+                    predicates.add(cb.notEqual(root.get("userStatus"), UserStatus.DELETED));
                 }
             }
         }
