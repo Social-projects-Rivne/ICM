@@ -91,7 +91,7 @@ public class UserProfileService{
     }
 
     private byte[] getAvatar(long id, String name) throws IOException {
-        User user = userDao.findById(id);
+        User user = userDao.findOne(id);
         checkArgument(user != null, "User with the following id \'" + id + "\' doesn't not exist");
         return user.getAvatarUrl() == null ? defaultEmptyAvatar() : user.getAvatarUrl().contains("http://url.com")
                 ? defaultEmptyAvatar() : Files.readAllBytes(Paths.get(user.getAvatarUrl(), name));

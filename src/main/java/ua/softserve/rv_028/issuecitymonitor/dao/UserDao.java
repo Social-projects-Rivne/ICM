@@ -15,7 +15,6 @@ public interface UserDao extends JpaRepository<User, Long>, JpaSpecificationExec
     Page<User> findAll(boolean isDeleted, Pageable pageable);
 
     User findUserByUsername(String username);
-    User findById(Long id);
 
     @Query(value = "SELECT COUNT(u) FROM User u WHERE NOT (u.userStatus = '0')")
     long count();
