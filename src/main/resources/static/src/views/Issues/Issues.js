@@ -50,7 +50,7 @@ class Issues extends Component {
     render() {
         return (
             <IssuesContainer data={this.state.issues} onPageChange={this.handlePageChange}
-                            onPageChange={this.handleSortChange}/>
+                            onSortChange={this.handleSortChange}/>
         )
     }
 }

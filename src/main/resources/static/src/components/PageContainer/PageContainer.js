@@ -35,39 +35,39 @@ class PageContainer extends Component {
         });
     }
 
-    changeSortByIdAsc(id, ASC) {
-        this.setState({sortColumn: id, sortDirection: ASC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByIdAsc() {
+        this.setState({sortColumn: "id", sortDirection: "ASC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
-    changeSortByIdDesc(id, DESC) {
-        this.setState({sortColumn: id, sortDirection: DESC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByIdDesc() {
+        this.setState({sortColumn: "id", sortDirection: "DESC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
-    changeSortByTitleAsc(title, ASC) {
-        this.setState({sortColumn: title, sortDirection: ASC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByTitleAsc() {
+        this.setState({sortColumn: "title", sortDirection: "ASC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
-    changeSortByTitleDesc(title, DESC) {
-        this.setState({sortColumn: title, sortDirection: DESC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByTitleDesc() {
+        this.setState({sortColumn: "title", sortDirection: "DESC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
-    changeSortByInitialDateAsc(initialDate, ASC) {
-        this.setState({sortColumn: initialDate, sortDirection: ASC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByInitialDateAsc() {
+        this.setState({sortColumn: "initialDate", sortDirection: "ASC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
-    changeSortByInitialDateDesc(initialDate, DESC) {
-        this.setState({sortColumn: initialDate, sortDirection: DESC}, function() {
-            this.props.onPageChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByInitialDateDesc() {
+        this.setState({sortColumn: "initialDate", sortDirection: "DESC"}, function() {
+            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
         });
     }
 
