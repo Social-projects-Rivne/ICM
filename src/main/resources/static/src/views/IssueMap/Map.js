@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-import descriptionIssues from './descriptionIssues';
+import DescriptionIssue from './DescriptionIssue'
 
 class Map extends Component {
     constructor(props){
@@ -19,7 +19,6 @@ class Map extends Component {
         this.setState({
             desc:true
         });
-        console.log(this.state.desc);
     }
    render() {
         return (
@@ -34,7 +33,13 @@ class Map extends Component {
                                   key={issues.id}
                                   position={{ lat: issues.latitude, lng: issues.longitude}}
                                   onClick = { this.showMessage }
+
                               >
+                              {this.state.desc && <DescriptionIssue
+                              id = {issues.id}
+                              />}
+
+
                                </Marker>
                 ))}
               {this.state.desc}

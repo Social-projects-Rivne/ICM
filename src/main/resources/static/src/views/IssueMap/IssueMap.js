@@ -3,7 +3,7 @@ import { withScriptjs, withGoogleMap, GoogleMap, Marker, InfoWindow } from "reac
 import axios from 'axios';
 import swal from 'sweetalert';
 import Map from './Map';
-import descriptionIssues from './descriptionIssues';
+import DescriptionIssue from './DescriptionIssue'
 
 class IssueMap extends Component {
 
@@ -59,9 +59,6 @@ class IssueMap extends Component {
                 centlat = {this.state.centlat}
                 issues = {this.state.issues}
             />
-        </div>
-        <div  className="description" >
-            <descriptionIssues/>
         </div>
    </div>
    )
