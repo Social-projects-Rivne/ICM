@@ -26,7 +26,7 @@ public class AuthenticatedUsersController {
         this.profileService = profileService;
     }
 
-    @GetMapping(value = "/api/user-name")
+    @GetMapping(value = "/api/userName")
     public String getUserName(){
         Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
         return userAuth.getName();

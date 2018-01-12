@@ -26,7 +26,7 @@ class HeaderDropdown extends Component {
     }
 
     componentDidMount(){
-        axios.get('/api/user-name')
+        axios.get('/api/userName')
             .then(function (response) {
                 document.getElementById('admin-logo').alt = response.data
             });
