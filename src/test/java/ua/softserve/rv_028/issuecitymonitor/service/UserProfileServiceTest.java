@@ -87,8 +87,6 @@ public class UserProfileServiceTest {
     public void updateContactsInfoOnlyFirstName(){
         profile.updateContactsInfo(USER.getUsername(), FIRST_NAME, null, null);
         assertEquals(userDao.findUserByUsername(USER.getUsername()).getFirstName(), FIRST_NAME);
-        System.out.println(userDao.findUserByUsername(USER.getUsername()));
-
     }
 
     @Test

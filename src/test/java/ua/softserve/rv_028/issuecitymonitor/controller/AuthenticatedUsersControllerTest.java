@@ -10,12 +10,14 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
 import java.util.*;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -76,14 +78,9 @@ public class AuthenticatedUsersControllerTest {
     }
 
     @Test
-    @WithAnonymousUser
-    public void getUserAuthorityFail(){
-        controller.getUserAuthority();
-    }
-
-    @Test
-    @WithAnonymousUser
+    @WithMockUser
     public void updatePassword(){
+        when(profileService.updatePassword(anyString(), anyString(), anyString())).thenReturn(new UserDto());
         controller.updatePassword(MOCK_USER_PASSWORD, "newPassword");
     }
 

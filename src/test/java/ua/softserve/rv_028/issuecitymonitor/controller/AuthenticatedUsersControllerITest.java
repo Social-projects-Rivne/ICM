@@ -43,7 +43,7 @@ public class AuthenticatedUsersControllerITest {
     @Test
     @WithMockUser(username = "mock-test@mail.com")
     public void getUserName(){
-        System.out.println(controller.getUserName());
+        assertEquals(USERNAME, controller.getUserName());
     }
 
     @Test

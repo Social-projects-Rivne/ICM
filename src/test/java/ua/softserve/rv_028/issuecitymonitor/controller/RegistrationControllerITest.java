@@ -69,7 +69,6 @@ public class RegistrationControllerITest {
         HttpEntity<UserDto> request = new HttpEntity<>(mapper.toDto(REGISTERED_USER), headers);
 
         ResponseEntity<String> response = rest.postForEntity( "/api/registration", request, String.class);
-        System.out.println(response.getBody());
         assertEquals(HttpStatus.BAD_REQUEST, HttpStatus.valueOf(response.getStatusCodeValue()));
     }
 
