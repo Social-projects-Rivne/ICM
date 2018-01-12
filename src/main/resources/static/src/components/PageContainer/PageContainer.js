@@ -18,12 +18,9 @@ class PageContainer extends Component {
         this.handlePage = this.handlePage.bind(this);
         this.changeSortAsc = this.changeSortAsc.bind(this);
         this.changeSortDesc = this.changeSortDesc.bind(this);
-        /*this.changeSortByIdAsc = this.changeSortByIdAsc.bind(this);
-        this.changeSortByIdDesc = this.changeSortByIdDesc.bind(this);
-        this.changeSortByTitleAsc = this.changeSortByTitleAsc.bind(this);
-        this.changeSortByTitleDesc = this.changeSortByTitleDesc.bind(this);
-        this.changeSortByInitialDateAsc = this.changeSortByInitialDateAsc.bind(this);
-        this.changeSortByInitialDateDesc = this.changeSortByInitialDateDesc.bind(this);*/
+        this.changeSortById = this.changeSortById.bind(this);
+        this.changeSortByTitle = this.changeSortByTitle.bind(this);
+        this.changeSortByInitialDate = this.changeSortByInitialDate.bind(this);
     }
 
     componentWillReceiveProps(props){
@@ -49,41 +46,23 @@ class PageContainer extends Component {
         });
     }
 
-    /*changeSortByIdAsc() {
-        this.setState({sortColumn: "id", sortDirection: "ASC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortById() {
+        this.setState({sortColumn: "id"}, function() {
+            this.props.onSortChange(this.state.sortColumn);
         });
     }
 
-    changeSortByIdDesc() {
-        this.setState({sortColumn: "id", sortDirection: "DESC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByTitle() {
+        this.setState({sortColumn: "title"}, function() {
+            this.props.onSortChange(this.state.sortColumn);
         });
     }
 
-    changeSortByTitleAsc() {
-        this.setState({sortColumn: "title", sortDirection: "ASC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
+    changeSortByInitialDate() {
+        this.setState({sortColumn: "initialDate"}, function() {
+            this.props.onSortChange(this.state.sortColumn);
         });
     }
-
-    changeSortByTitleDesc() {
-        this.setState({sortColumn: "title", sortDirection: "DESC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
-        });
-    }
-
-    changeSortByInitialDateAsc() {
-        this.setState({sortColumn: "initialDate", sortDirection: "ASC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
-        });
-    }
-
-    changeSortByInitialDateDesc() {
-        this.setState({sortColumn: "initialDate", sortDirection: "DESC"}, function() {
-            this.props.onSortChange(this.state.sortColumn, this.state.sortDirection);
-        });
-    }*/
 
     handlePage(i) {
         this.changePage(i);
@@ -131,14 +110,6 @@ class PageContainer extends Component {
                     <option>Initial date</option>
                 </Input>
             </ButtonGroup>
-            /*<ButtonGroup>
-                <Button color="info" size="sm" onClick={this.changeSortByIdAsc}>Ascending by Id</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByIdDesc}>Descending by Id</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByTitleAsc}>Ascending by Title</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByTitleDesc}>Descending by Title</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByInitialDateAsc}>Ascending by Initial date</Button>
-                <Button color="info" size="sm" onClick={this.changeSortByInitialDateDesc}>Descending by Initial date</Button>
-            </ButtonGroup>*/
         )
     }
 
@@ -181,7 +152,9 @@ class PageContainer extends Component {
                         <Card className="page-container-margin">
                             <CardHeader>
                                 {this.state.title}
-                                {this.sorting()}
+                                <div className="pull-right">
+                                    {this.sorting()}
+                                </div>
                             </CardHeader>
                             <CardBody>
                                 {this.state.children}
