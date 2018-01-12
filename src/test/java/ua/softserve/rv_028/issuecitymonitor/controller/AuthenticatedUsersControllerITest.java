@@ -12,6 +12,8 @@ import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
+import java.util.Map;
+
 import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
@@ -86,5 +88,44 @@ public class AuthenticatedUsersControllerITest {
 
         User updatedUser = userDao.findUserByUsername(USER.getUsername());
         assertEquals(PHONE_NUMBER, updatedUser.getPhone());
+    }
+
+    @Test
+    @WithMockUser(username = "mock-test@mail.com")
+    public void updateContactsInfo(){
+        controller.updateContactInfo(FIRST_NAME, LAST_NAME, PHONE_NUMBER);
+        User user = userDao.findUserByUsername(USERNAME);
+        assertEquals(FIRST_NAME, user.getFirstName());
+        assertEquals(LAST_NAME, user.getLastName());
+        assertEquals(PHONE_NUMBER, user.getPhone());
+    }
+
+    @Test
+    @WithMockUser(username = "mock-test@mail.com")
+    public void updateContactsInfoOnlyFirstName(){
+        String newFN = "newFN";
+        controller.updateContactInfo(newFN, null, null);
+        assertEquals(newFN, userDao.findUserByUsername(USER.getUsername()).getFirstName());
+    }
+
+
+    @Test
+    @WithMockUser(username = "mock-test@mail.com")
+    public void updateContactsInfoOnlyPhone(){
+        String newPhone = "+1987654321";
+        controller.updateContactInfo(null, null, newPhone);
+        assertEquals(newPhone, userDao.findUserByUsername(USER.getUsername()).getPhone());
+    }
+
+
+    @Test
+    @WithMockUser(username = "mock-test@mail.com")
+    public void getUserInfo(){
+        Map userInfo = controller.getUserInfo();
+        assertEquals(userInfo.get("email"), USER.getUsername());
+        assertEquals(userInfo.get("firstName"), USER.getFirstName());
+        assertEquals(userInfo.get("lastName"), USER.getLastName());
+        assertEquals(userInfo.get("authorities"), USER.getAuthorities());
+        assertEquals(userInfo.get("phone"), USER.getPhone());
     }
 }
