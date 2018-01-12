@@ -32,5 +32,7 @@ hs_err_pid*
 /src/test/resources/application.properties
 /src/main/resources/static/node_modules/*
 /src/main/resources/static/build/*
+/src/main/resources/users/*
+/src/test/resources/users/*
 .DS_Store
 

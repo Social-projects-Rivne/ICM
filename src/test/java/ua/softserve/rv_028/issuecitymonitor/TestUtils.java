@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor;
 
+import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
@@ -39,9 +40,17 @@ public final class TestUtils {
                 UUID.randomUUID() + USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.USER, "url");
     }
 
+    public static UserDto createUserDto(int i) {
+        return new UserDto(USER_FNAME + i, USER_LNAME + i, USER_EMAIL + i, "000");
+    }
+
     public static User createAdmin(int i) {
         return new User(USER_FNAME + i, USER_LNAME + i,"000",
                 UUID.randomUUID() + USER_EMAIL + i,"+380997755331", UserStatus.ACTIVE, UserRole.ADMIN, "url");
+    }
+
+    public static UserDto createAdminDto(int i) {
+        return new UserDto(USER_FNAME + i, USER_LNAME + i, USER_EMAIL + i, "000");
     }
 
     public static List<Event> createEventsList(User owner, int size) {

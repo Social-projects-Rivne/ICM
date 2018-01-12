@@ -92,9 +92,7 @@ public class UserDto {
         return email;
     }
 
-    public void setEmail(String email)
-    {
-        if (this.email == null)
+    public void setEmail(String email){
         this.email = email;
     }
 
