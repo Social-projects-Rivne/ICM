@@ -77,13 +77,6 @@ public class AuthenticatedUsersControllerTest {
         assertArrayEquals(controller.getUserAuthority().toArray(), MOCK_USER_AUTHORITY.toArray());
     }
 
-    @Test
-    @WithMockUser
-    public void updatePassword(){
-        when(profileService.updatePassword(anyString(), anyString(), anyString())).thenReturn(new UserDto());
-        controller.updatePassword(MOCK_USER_PASSWORD, "newPassword");
-    }
-
     @Test(expected = IllegalArgumentException.class)
     @WithAnonymousUser
     public void updatePasswordFail(){
