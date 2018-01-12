@@ -55,31 +55,55 @@
     bottom: 50px;
 }
 
-.page-content{
-  padding-top: 20px;
-}
 
-label{
-  font-weight: 600;
-}
+.main .container-fluid {
+          padding-top: 30px !important;
 
-.subhead-heading{
-  font-size: 24px;
-  font-weight: normal;
-  -webkit-box-flex: 1;
-  flex: 1 1 auto;
-}
+        }
 
-.edit-profile-avatar{
-  width: 200px;
-}
+          label {
+            font-weight: 600;
+          }
 
-.avatar-upload{
-  width: 100%;
-  margin-top: 16px;
-  font-weight: 600;
-}
+          .subhead-heading {
+            font-size: 24px;
+            font-weight: normal;
+            -webkit-box-flex: 1;
+            flex: 1 1 auto;
+          }
 
-.page-container-margin {
-  margin-top: 2%;
-}
+          .edit-profile-avatar {
+            width: 200px;
+          }
+
+          .avatar-upload {
+            width: 100%;
+            margin-top: 16px;
+            font-weight: 600;
+          }
+
+          .flex-align-center {
+            padding: 10px;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .input-group-addon {
+            padding: 0.7rem 0.75rem;
+            margin-bottom: 0;
+            font-size: 0.875rem;
+            font-weight: normal;
+            line-height: 1.25;
+            color: #3e515b;
+            text-align: center;
+            background-color: #f0f3f5;
+            border: 1px solid #c2cfd6;
+            border-right: 0;
+          }
+
+          .nav .nav-item {
+            min-width: 25px !important;
+          }

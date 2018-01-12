@@ -42,7 +42,10 @@ export default class ClientHeader extends Component {
     }
 
     static renderLoginHeader(){
-        return <Nav><NavItem className="d-md-down-none"><Link to="/login" className="nav-link-custom">Log in</Link></NavItem>
-            or <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link-custom">Sign up</Link></NavItem></Nav>
+        return <Nav>
+            <NavItem className="d-md-down-none"><Link to="/login" className="nav-link-custom">Sign in</Link></NavItem>
+            <NavItem className="d-md-down-none"> or </NavItem>
+            <NavItem className="d-md-down-none"><Link to="/registration" className="nav-link-custom">Sign up</Link></NavItem>
+        </Nav>
     }
 }
