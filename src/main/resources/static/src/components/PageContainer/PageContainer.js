@@ -16,11 +16,8 @@ class PageContainer extends Component {
         this.handleFirstPage = this.handleFirstPage.bind(this);
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handlePage = this.handlePage.bind(this);
-        this.changeSortAsc = this.changeSortAsc.bind(this);
-        this.changeSortDesc = this.changeSortDesc.bind(this);
-        this.changeSortById = this.changeSortById.bind(this);
-        this.changeSortByTitle = this.changeSortByTitle.bind(this);
-        this.changeSortByInitialDate = this.changeSortByInitialDate.bind(this);
+        this.changeSortDirection = this.changeSortDirection.bind(this);
+        this.changeSortColumn = this.changeSortColumn.bind(this);
     }
 
     componentWillReceiveProps(props){
@@ -34,33 +31,15 @@ class PageContainer extends Component {
         });
     }
 
-    changeSortAsc() {
-        this.setState({sortDirection: "ASC"}, function() {
-            this.props.onSortChange(this.state.sortDirection);
+    changeSortDirection(e) {
+        this.setState({sortDirection: e.target.value, sortColumn: this.sortColumn}, function() {
+            this.props.onSortChange(this.state.sortDirection, this.sortColumn);
         });
     }
 
-    changeSortDesc() {
-        this.setState({sortDirection: "DESC"}, function() {
-            this.props.onSortChange(this.state.sortDirection);
-        });
-    }
-
-    changeSortById() {
-        this.setState({sortColumn: "id"}, function() {
-            this.props.onSortChange(this.state.sortColumn);
-        });
-    }
-
-    changeSortByTitle() {
-        this.setState({sortColumn: "title"}, function() {
-            this.props.onSortChange(this.state.sortColumn);
-        });
-    }
-
-    changeSortByInitialDate() {
-        this.setState({sortColumn: "initialDate"}, function() {
-            this.props.onSortChange(this.state.sortColumn);
+    changeSortColumn(e) {
+        this.setState({sortDirection: this.sortDirection, sortColumn: e.target.value}, function() {
+            this.props.onSortChange(this.sortDirection, this.state.sortColumn)
         });
     }
 
@@ -84,30 +63,18 @@ class PageContainer extends Component {
         }
     }
 
-    handleChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-        this.setState(function(prev) {
-            return {
-                children: {
-                    ...prev.children,
-                    [name]: value
-                }
-            }
-        })
-    }
-
     sorting() {
         return(
-            <ButtonGroup>
-                <Button color="secondary" size="sm" onClick={this.changeSortAsc}>ASC</Button>
-                <Button color="secondary" size="sm" onClick={this.changeSortDesc}>DESC</Button>
-                <Input value={this.state.children} onChange={this.handleChange}
-                       type="select" name="sorting"
-                       placeholder="Sorting">
-                    <option>ID</option>
-                    <option>Title</option>
-                    <option>Initial date</option>
+            <ButtonGroup className="indent-for-button">
+                <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="ASC">ASC</Button>
+                <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="DESC">DESC</Button>
+                <Input onChange={this.changeSortColumn}
+                       type="select" name="sortColumn" placeholder="Sorting">
+                    <option value="id">by ID</option>
+                    <option value="title">by Title</option>
+                    <option value="initialDate">by Initial date</option>
+                    <option value="category">by Category</option>
+                    <option value="user">by User</option>
                 </Input>
             </ButtonGroup>
         )

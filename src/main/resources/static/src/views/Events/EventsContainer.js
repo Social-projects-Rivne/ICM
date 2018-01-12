@@ -19,8 +19,8 @@ class EventsContainer extends Component {
         this.props.onPageChange(this.state.data.number + 1);
     }
 
-    handleSortChange(sortDirection) {
-        this.props.onSortChange(sortDirection);
+    handleSortChange(sortDirection, sortColumn) {
+        this.props.onSortChange(sortDirection, sortColumn);
     }
 
     handlePageChange(page) {
@@ -64,7 +64,7 @@ class EventsContainer extends Component {
     render() {
         return (
             <PageContainer onPageChange={this.handlePageChange} onSortChange={this.handleSortChange} title="Events list"
-                           sortDirection={this.state.data.sort}
+                           sortDirection={this.state.data.sort} sortColumn={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

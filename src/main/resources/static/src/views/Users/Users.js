@@ -22,8 +22,8 @@ class Users extends Component {
         this.makeQuery();
     }
 
-    handleSortChange(sortDirection) {
-        this.setState({direction: sortDirection}, function() {
+    handleSortChange(sortDirection, sortColumn) {
+        this.setState({direction: sortDirection, sort: sortColumn}, function() {
             this.makeQuery();
         });
     }

@@ -21,8 +21,8 @@ class Issues extends Component {
         this.makeQuery();
     }
 
-    handleSortChange(sortDirection) {
-        this.setState({direction: sortDirection}, function() {
+    handleSortChange(sortDirection, sortColumn) {
+        this.setState({direction: sortDirection, sort: sortColumn}, function() {
             this.makeQuery();
         });
     }
@@ -35,8 +35,8 @@ class Issues extends Component {
 
     makeQuery() {
         var _this = this;
-        axios.get(["/api/issues?page=", this.state.page, "&sort=", this.state.sort,
-                    "&direction=", this.state.direction].join(""))
+        axios.get(["/api/issues?page=", this.state.page, "&direction=", this.state.direction,
+                    "&sort=", this.state.sort].join(""))
             .then(function(response) {
                 _this.setState({
                     issues: response.data
