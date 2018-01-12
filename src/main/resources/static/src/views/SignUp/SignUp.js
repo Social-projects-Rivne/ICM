@@ -17,7 +17,7 @@ export default class SignUp extends React.Component {
             confirmPassValid : false,
             firstName : "",
             lastName : "",
-            btnColor : "secondary",
+            btnColor : "success",
             alertColor: "primary",
             registrationIsSuccessful: false,
             registrationIsNotSuccessful: false
