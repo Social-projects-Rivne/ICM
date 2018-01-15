@@ -25,7 +25,7 @@ public class RegistrationService {
 
     @Autowired
     public RegistrationService(UserMapper userMapper, UserDao userDao, EmailService emailService,
-                                   BCryptPasswordEncoder passwordEncoder) {
+                               BCryptPasswordEncoder passwordEncoder) {
         this.userMapper = userMapper;
         this.userDao = userDao;
         this.emailService = emailService;
