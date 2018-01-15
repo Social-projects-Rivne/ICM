@@ -32,14 +32,14 @@ class PageContainer extends Component {
     }
 
     changeSortDirection(e) {
-        this.setState({sortDirection: e.target.value, sortColumn: this.sortColumn}, function() {
-            this.props.onSortChange(this.state.sortDirection, this.sortColumn);
+        this.setState({sortDirection: e.target.value}, function() {
+            this.props.onSortChangeDirection(this.state.sortDirection);
         });
     }
 
     changeSortColumn(e) {
-        this.setState({sortDirection: this.sortDirection, sortColumn: e.target.value}, function() {
-            this.props.onSortChange(this.sortDirection, this.state.sortColumn)
+        this.setState({sortColumn: e.target.value}, function() {
+            this.props.onSortChangeColumn(this.state.sortColumn)
         });
     }
 

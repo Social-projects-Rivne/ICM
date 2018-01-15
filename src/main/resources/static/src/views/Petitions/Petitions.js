@@ -13,7 +13,8 @@ class Petitions extends Component {
             sort: "id",
             page: 1
         };
-        this.handleSortChange = this.handleSortChange.bind(this);
+        this.handleSortChangeDirection = this.handleSortChangeDirection.bind(this);
+        this.handleSortChangeColumn = this.handleSortChangeColumn.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
@@ -21,8 +22,14 @@ class Petitions extends Component {
         this.makeQuery();
     }
 
-    handleSortChange(sortDirection, sortColumn) {
-        this.setState({direction: sortDirection, sort: sortColumn}, function() {
+    handleSortChangeDirection(sortDirection) {
+        this.setState({direction: sortDirection}, function() {
+            this.makeQuery();
+        });
+    }
+
+    handleSortChangeColumn(sortColumn) {
+        this.setState({sort: sortColumn}, function() {
             this.makeQuery();
         });
     }
@@ -49,7 +56,8 @@ class Petitions extends Component {
     render() {
         return (
             <PetitionsContainer data={this.state.petitions} onPageChange={this.handlePageChange}
-                                onSortChange={this.handleSortChange}/>
+                                onSortChangeDirection={this.handleSortChangeDirection}
+                                onSortChangeColumn={this.handleSortChangeColumn}/>
         )
     }
 }
