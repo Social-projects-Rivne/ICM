@@ -81,9 +81,19 @@ export default class SignUp extends React.Component {
                 break;
             case 'password':
                 passwordValid = value.length >= 3;
+                if (this.state.confirmPass !== ""){
+                    if (value === this.state.confirmPass){
+                        passwordValid = true;
+                        confirmPassValid = true;
+                    } else {
+                        passwordValid = false;
+                        confirmPassValid = false;
+                    }
+                }
                 break;
             case 'confirmPass':
-                confirmPassValid = (value === this.state.password);
+                confirmPassValid = (value.length >= 3 && value === this.state.password);
+                passwordValid = (value === this.state.password);
                 break;
             default:
                 break;
