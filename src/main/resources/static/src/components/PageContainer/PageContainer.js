@@ -70,11 +70,17 @@ class PageContainer extends Component {
                 <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="DESC">DESC</Button>
                 <Input onChange={this.changeSortColumn}
                        type="select" name="sortColumn" placeholder="Sorting">
-                    <option value="id">by ID</option>
-                    <option value="title">by Title</option>
-                    <option value="initialDate">by Initial date</option>
-                    <option value="category">by Category</option>
-                    <option value="user">by User</option>
+                        <option value="id">by ID</option>
+                        <option value="title">by Title</option>
+                        <option value="initialDate">by Initial date</option>
+                        <option value="category">by Category</option>
+                        <option value="user">by User</option>
+                        <option value="userRole">by Role</option>
+                        <option value="firstName">by First name</option>
+                        <option value="lastName">by Last name</option>
+                        <option value="username">by Email</option>
+                        <option value="phone">by Phone</option>
+                        <option value="userStatus">by User status</option>
                 </Input>
             </ButtonGroup>
         )

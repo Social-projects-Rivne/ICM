@@ -10,7 +10,8 @@ class UsersContainer extends Component {
         this.state = {
             data: this.props.data
         };
-        this.handleSortChange = this.handleSortChange.bind(this);
+        this.handleSortChangeDirection = this.handleSortChangeDirection.bind(this);
+        this.handleSortChangeColumn = this.handleSortChangeColumn.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handlePageUpdate = this.handlePageUpdate.bind(this);
     }
@@ -19,8 +20,12 @@ class UsersContainer extends Component {
         this.props.onPageChange(this.state.data.number + 1);
     }
 
-    handleSortChange(sortDirection, sortColumn) {
-        this.props.onSortChange(sortDirection, sortColumn);
+    handleSortChangeDirection(sortDirection) {
+        this.props.onSortChangeDirection(sortDirection);
+    }
+
+    handleSortChangeColumn(sortColumn) {
+        this.props.onSortChangeColumn(sortColumn);
     }
     
     handlePageChange(page) {
@@ -65,7 +70,8 @@ class UsersContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} onSortChange={this.handleSortChange} title="Users list"
+            <PageContainer onPageChange={this.handlePageChange} onSortChangeDirection={this.handleSortChangeDirection}
+                           onSortChangeColumn={this.handleSortChangeColumn} title="Users list"
                            sortDirection={this.state.data.sort} sortColumn={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
