@@ -14,6 +14,8 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
 public class RestorePasswordService  {
 
@@ -60,6 +62,7 @@ public class RestorePasswordService  {
         if (token == null || token.isEmpty())
             throw new RestorePasswordException("User \'" + email + "\' wrote empty token");
 
+        checkNotNull(restorePasswordDao.findByUser(userEntity));
         if (!restorePasswordDao.findByUser(userEntity).getToken().equals(token))
             throw new RestorePasswordException("User \'" + email + "\' wrote incorrect token");
 

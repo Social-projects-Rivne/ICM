@@ -25,7 +25,7 @@ class ClientHeaderDropdown extends Component {
         return (
             <Dropdown nav isOpen={this.state.dropdownOpen} toggle={this.toggle}>
                 <DropdownToggle nav>
-                    <img src={'https://www.shareicon.net/data/128x128/2016/09/07/827169_man_512x512.png'} className="img-avatar "  alt="admin@bootstrapmaster.com"/>
+                    <img src={'https://www.shareicon.net/data/128x128/2016/09/07/827169_man_512x512.png'} className="img-avatar " alt="admin@bootstrapmaster.com"/>
                 </DropdownToggle>
 
                 <DropdownMenu right>
@@ -33,7 +33,7 @@ class ClientHeaderDropdown extends Component {
 
                     {ClientHeaderDropdown.renderAdminDropdownItem(this.props.userAuthorities)}
                     <DropdownItem><i className="fa fa-user"/> Profile</DropdownItem>
-                    <DropdownItem><i className="fa fa-wrench"/> Settings</DropdownItem>
+                    <DropdownItem tag={Link} to="/settings/profile/"><i className="fa fa-wrench"/> Settings</DropdownItem>
                     <DropdownItem divider/>
                     <DropdownItem onClick={ClientHeaderDropdown.handleLogoutClick}><i className="fa fa-lock"/> Logout </DropdownItem>
                 </DropdownMenu>

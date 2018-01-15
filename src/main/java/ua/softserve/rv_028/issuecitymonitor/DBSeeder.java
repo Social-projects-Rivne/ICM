@@ -97,6 +97,7 @@ public class DBSeeder {
                 }
             }
         }
+
         transaction.commit();
     }
 

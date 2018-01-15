@@ -25,7 +25,6 @@ class Authorization extends Component{
         axios.get("/api/authority")
             .then(function(response){
                 _this.setState({userAuthorities: response.data});
-                console.log("authority", response.data)
             })
     }
 
