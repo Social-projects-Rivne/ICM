@@ -37,7 +37,7 @@ public class User implements UserDetails{
 
 	@NotEmpty
 	@Column(name = "password")
-	@Pattern(regexp = "\\w{3,}")
+	@Pattern(regexp = "^.{3,}$")
 	private String password;
 
 	@NotEmpty
