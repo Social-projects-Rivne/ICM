@@ -73,14 +73,12 @@
 
   ul {
     display: table;
-    width: 100%;
     padding: 0;
     margin: 0;
     table-layout: fixed;
 
     li {
       display: table-cell;
-      padding: 0 $card-spacer-x;
       text-align: center;
     }
   }

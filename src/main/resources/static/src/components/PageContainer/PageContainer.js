@@ -91,7 +91,7 @@ class PageContainer extends Component {
                             <CardBody>
                                 {this.state.children}
                             </CardBody>
-                            <CardFooter>
+                            <CardFooter className="flex-align-center">
                                 {this.pagination()}
                             </CardFooter>
                         </Card>
