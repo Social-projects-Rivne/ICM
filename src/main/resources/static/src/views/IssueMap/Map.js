@@ -9,45 +9,49 @@ class Map extends Component {
     super(props);
     this.state={
         desc : false,
+        point : [],
     };
 
     this.showMessage = this.showMessage.bind(this);
 
     }
 
-    showMessage(){
+    showMessage(e){
         this.setState({
-            desc:true
+            desc:true,
         });
+        console.log(e.target.key);
     }
    render() {
+        const issues = this.props.issues
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
                 defaultMaxZoom = {this.props.defaultmaxzoom}
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
+                {issues.forEach( (marker,i,issues) => (
 
-                {this.props.issues.map(issues => (
-                              <Marker
-                                  key={issues.id}
-                                  position={{ lat: issues.latitude, lng: issues.longitude}}
-                                  onClick = { this.showMessage }
+                    <Marker
+                       key={i}
+                       position={{ lat: marker.latitude, lng: marker.longitude}}
+                       onClick = { this.showMessage }
 
-                              >
-                              {this.state.desc && <DescriptionIssue
-                              id = {issues.id}
-                              />}
+                    >
 
 
-                               </Marker>
+
+                    </Marker>
+
+
                 ))}
-              {this.state.desc}
-              </GoogleMap>
 
+                </GoogleMap>
         )
    }
 }
+
+
 
 
 export default withScriptjs(withGoogleMap(Map));
