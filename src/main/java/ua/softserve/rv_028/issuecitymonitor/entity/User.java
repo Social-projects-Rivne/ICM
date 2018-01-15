@@ -50,6 +50,7 @@ public class User implements UserDetails{
 	private String lastName;
 
 	@Column(name = "phone")
+	@Pattern(regexp = "^(\\+)+([\\d]{1,4})([\\d]{10})$")
 	private String phone;
 
 	@Column(name = "user_status")
