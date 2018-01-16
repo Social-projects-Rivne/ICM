@@ -30,8 +30,9 @@ public class EventService {
         this.eventMapper = eventMapper;
     }
 
-    public Page<EventDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+    public Page<EventDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(pageRequest));
         LOGGER.debug("Found all events");
         return eventDtos;

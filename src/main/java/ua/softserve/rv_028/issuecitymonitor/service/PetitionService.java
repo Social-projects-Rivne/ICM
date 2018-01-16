@@ -47,8 +47,9 @@ public class PetitionService {
         }
     }
 
-    public Page<PetitionDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+    public Page<PetitionDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<Petition> petitions = petitionDao.findAll(pageRequest);
         return petitionMapper.toDtoPage(petitions);
     }

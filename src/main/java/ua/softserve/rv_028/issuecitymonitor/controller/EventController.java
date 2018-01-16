@@ -3,6 +3,7 @@ package ua.softserve.rv_028.issuecitymonitor.controller;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
@@ -24,9 +25,11 @@ public class EventController {
 
     @GetMapping
     public Page<EventDto> getAllByPage(@RequestParam(name = "page", defaultValue = "1") int pageNumber,
-                                       @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize) {
+                                       @RequestParam(name = "size", defaultValue = (""+PAGE_SIZE)) int pageSize,
+                                       @RequestParam(value = "direction", defaultValue = "ASC") Sort.Direction direction,
+                                       @RequestParam(value = "sort", defaultValue = "id") String sort) {
         LOGGER.debug("GET request for all events");
-        return eventService.findAllByPage(pageNumber, pageSize);
+        return eventService.findAllByPage(pageNumber, pageSize, direction, sort);
     }
 
     @GetMapping(value = "/{id}")
