@@ -8,6 +8,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -36,10 +37,12 @@ public class User implements UserDetails{
 
 	@NotEmpty
 	@Column(name = "password")
+	@Pattern(regexp = "^.{3,}$")
 	private String password;
 
 	@NotEmpty
 	@Column(name = "email", unique = true)
+	@Pattern(regexp = "^([\\w.%+-]+)@([\\w-]+\\.)+([\\w]{2,})$")
 	private String username;
 
 	@NotEmpty
@@ -47,6 +50,7 @@ public class User implements UserDetails{
 	private String lastName;
 
 	@Column(name = "phone")
+	@Pattern(regexp = "^(\\+)+([\\d]{1,4})([\\d]{10})$")
 	private String phone;
 
 	@Column(name = "user_status")
