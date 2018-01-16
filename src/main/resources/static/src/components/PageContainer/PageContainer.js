@@ -78,17 +78,17 @@ class PageContainer extends Component {
                         <option value="user">by User</option>
                     </Input> :
                     this.state.title === "Users list" ?
-                    <Input onChange={this.changeSortColumn}
-                       type="select" name="sortColumnForUser" placeholder="Sorting">
-                        <option value="id">by ID</option>
-                        <option value="userRole">by Role</option>
-                        <option value="firstName">by First name</option>
-                        <option value="lastName">by Last name</option>
-                        <option value="username">by Email</option>
-                        <option value="phone">by Phone</option>
-                        <option value="userStatus">by User status</option>
-                    </Input> :
-                    null}
+                        <Input onChange={this.changeSortColumn}
+                            type="select" name="sortColumnForUser" placeholder="Sorting">
+                                <option value="id">by ID</option>
+                                <option value="userRole">by Role</option>
+                                <option value="firstName">by First name</option>
+                                <option value="lastName">by Last name</option>
+                                <option value="username">by Email</option>
+                                <option value="phone">by Phone</option>
+                                <option value="userStatus">by User status</option>
+                        </Input> :
+                        null}
             </ButtonGroup>
         )
     }
