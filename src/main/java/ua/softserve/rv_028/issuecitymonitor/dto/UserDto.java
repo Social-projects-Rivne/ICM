@@ -1,14 +1,13 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
 public class UserDto {
 
     private long id;
@@ -45,21 +44,4 @@ public class UserDto {
         this.avatarUrl = avatarUrl;
     }
 
-    @Override
-    public String toString() {
-        return "UserDto{" +
-                "id=" + id +
-                ", userRole=" + userRole +
-                ", registrationDate='" + registrationDate + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", phone='" + phone + '\'' +
-                ", userAgreement=" + userAgreement +
-                ", userStatus=" + userStatus +
-                ", deleteDate='" + deleteDate + '\'' +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                '}';
-    }
 }

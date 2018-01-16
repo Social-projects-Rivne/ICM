@@ -1,13 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
-@NoArgsConstructor
-@Getter
-@Setter
+@Data
 public class IssueDto {
 
     private long id;
@@ -19,29 +15,4 @@ public class IssueDto {
     private double longitude;
     private IssueCategory category;
 
-    public IssueDto(long id, UserDto userDto, String title, String description, String initialDate,
-                    double latitude, double longitude, IssueCategory category) {
-        this.id = id;
-        this.userDto = userDto;
-        this.title = title;
-        this.description = description;
-        this.initialDate = initialDate;
-        this.latitude = latitude;
-        this.longitude = longitude;
-        this.category = category;
-    }
-
-    @Override
-    public String toString() {
-        return "IssueDto{" +
-                "id=" + id +
-                ", userDto=" + userDto +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", initialDate='" + initialDate + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", category=" + category +
-                '}';
-    }
 }
