@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import org.hibernate.annotations.SQLDelete;
+import lombok.Getter;
+import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 
 import javax.persistence.*;
@@ -8,6 +9,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "restore_password")
+@Getter
+@Setter
 public class RestorePassword {
 
     @Id
@@ -32,38 +35,6 @@ public class RestorePassword {
     public RestorePassword(User user, String token, LocalDateTime expireDate) {
         this.user = user;
         this.token = token;
-        this.expireDate = expireDate;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    public LocalDateTime getExpireDate() {
-        return expireDate;
-    }
-
-    public void setExpireDate(LocalDateTime expireDate) {
         this.expireDate = expireDate;
     }
 

@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -16,6 +19,8 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET user_status = '0' WHERE id = ?")
+@Getter
+@Setter
 public class User implements UserDetails{
 
 	@Id
@@ -59,12 +64,15 @@ public class User implements UserDetails{
 	@Column(name = "avatar_url")
 	private String avatarUrl;
 
+	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
 	private Set<Issue> issues = new HashSet<>();
 
+	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Event.class)
 	private Set<Event> events = new HashSet<>();
 
+	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
 	private Set<Petition> petitions = new HashSet<>();
 
@@ -81,108 +89,6 @@ public class User implements UserDetails{
 		this.phone = phone;
 		this.userStatus = userStatus;
 		this.avatarUrl = avatarUrl;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
-
-	public long getId() {
-		return id;
-	}
-
-	public UserRole getUserRole() {
-		return userRole;
-	}
-
-	public void setUserRole(UserRole userRole) {
-		this.userRole = userRole;
-	}
-
-	public LocalDateTime getRegistrationDate() {
-		return registrationDate;
-	}
-
-	public void setRegistrationDate(LocalDateTime registrationDate) {
-		this.registrationDate = registrationDate;
-	}
-
-	public String getFirstName() {
-		return firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	@Override
-	public String getPassword() {
-		return this.password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	@Override
-	public String getUsername() {
-		return this.username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public UserStatus getUserStatus() {
-		return userStatus;
-	}
-
-	public void setUserStatus(UserStatus userStatus) {
-		this.userStatus = userStatus;
-	}
-
-	public LocalDateTime getDeleteDate() {
-		return deleteDate;
-	}
-
-	public void setDeleteDate(LocalDateTime deleteDate) {
-		this.deleteDate = deleteDate;
-	}
-
-	public String getAvatarUrl() {
-		return avatarUrl;
-	}
-
-	public void setAvatarUrl(String avatarUrl) {
-		this.avatarUrl = avatarUrl;
-	}
-
-	public Set<Issue> getIssues(){
-		return issues;
-	}
-
-	public Set<Event> getEvents(){
-		return events;
-	}
-
-	public Set<Petition> getPetitions(){
-		return petitions;
 	}
 
 	@Override

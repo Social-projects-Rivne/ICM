@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
@@ -7,6 +10,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "issue_attachments")
 @SQLDelete(sql = "UPDATE issue_attachments SET deleted = 'true' WHERE id = ?")
+@Getter
+@Setter
 public class IssueAttachment {
 
     @Id
@@ -26,6 +31,7 @@ public class IssueAttachment {
     private String attachmentUrl;
 
     @Column(name = "deleted")
+    @Setter(AccessLevel.NONE)
     private boolean isDeleted = false;
 
     public IssueAttachment() {}
@@ -34,42 +40,6 @@ public class IssueAttachment {
         this.issue = issue;
         this.user = user;
         this.attachmentUrl = attachmentUrl;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public Issue getIssue() {
-        return issue;
-    }
-
-    public void setIssue(Issue issue) {
-        this.issue = issue;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getAttachmentUrl() {
-        return attachmentUrl;
-    }
-
-    public void setAttachmentUrl(String attachmentUrl) {
-        this.attachmentUrl = attachmentUrl;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
     }
 
     @PreRemove

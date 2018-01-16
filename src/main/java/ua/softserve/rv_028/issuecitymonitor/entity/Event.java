@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
@@ -55,15 +56,19 @@ public class Event {
     private EventCategory category;
 
     @Column(name = "deleted")
+    @Setter(AccessLevel.NONE)
     private boolean isDeleted = false;
 
     @Column(name = "creation_date")
+    @Setter(AccessLevel.NONE)
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime creationDate;
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class, cascade = CascadeType.REMOVE)
     private Set<EventAttachment> attachments = new HashSet<>();
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<EventChangeRecord> changeRecords = new HashSet<>();
 

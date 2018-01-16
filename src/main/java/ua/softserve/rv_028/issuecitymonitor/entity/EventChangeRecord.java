@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
@@ -8,6 +11,8 @@ import javax.persistence.*;
 @Entity
 @Table(name = "event_change_records")
 @SQLDelete(sql = "UPDATE event_change_records SET deleted = 'true' WHERE id = ?")
+@Getter
+@Setter
 public class EventChangeRecord {
 
     @Id
@@ -31,6 +36,7 @@ public class EventChangeRecord {
     private String message;
 
     @Column(name = "deleted")
+    @Setter(AccessLevel.NONE)
     private boolean isDeleted = false;
 
     public EventChangeRecord() {}
@@ -40,50 +46,6 @@ public class EventChangeRecord {
         this.changeRecordStatus = changeRecordStatus;
         this.user = user;
         this.message = message;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
-    }
-
-    public ChangeRecordStatus getChangeRecordStatus() {
-        return changeRecordStatus;
-    }
-
-    public void setChangeRecordStatus(ChangeRecordStatus changeRecordStatus) {
-        this.changeRecordStatus = changeRecordStatus;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
     }
 
     @PreRemove

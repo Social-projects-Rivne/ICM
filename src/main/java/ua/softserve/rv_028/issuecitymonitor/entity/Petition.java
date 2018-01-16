@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
@@ -14,6 +17,8 @@ import java.util.Set;
 @Table(name = "petitions")
 @SQLDelete(sql = "UPDATE petitions SET deleted = 'true' WHERE id = ?")
 @Where(clause = "deleted <> true")
+@Getter
+@Setter
 public class Petition{
 
     @Id
@@ -39,15 +44,19 @@ public class Petition{
     private PetitionCategory category;
 
     @Column(name = "deleted")
+    @Setter(AccessLevel.NONE)
     private boolean isDeleted = false;
 
     @Column(name = "creation_date")
+    @Setter(AccessLevel.NONE)
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime creationDate;
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionAttachment.class, cascade = CascadeType.REMOVE)
     private Set<PetitionAttachment> attachments = new HashSet<>();
 
+    @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<PetitionChangeRecord> changeRecords = new HashSet<>();
 
@@ -60,70 +69,6 @@ public class Petition{
         this.description = description;
         this.initialDate = initialDate;
         this.category = category;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public LocalDateTime getInitialDate() {
-        return initialDate;
-    }
-
-    public void setInitialDate(LocalDateTime initialDate) {
-        this.initialDate = initialDate;
-    }
-
-    public PetitionCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(PetitionCategory category) {
-        this.category = category;
-    }
-
-    public Set<PetitionAttachment> getAttachments() {
-        return attachments;
-    }
-
-    public Set<PetitionChangeRecord> getChangeRecords() {
-        return changeRecords;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
     }
 
     @PrePersist

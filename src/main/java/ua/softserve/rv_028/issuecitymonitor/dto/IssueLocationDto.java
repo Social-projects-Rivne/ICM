@@ -1,8 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
+import lombok.Getter;
+import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
+@Getter
+@Setter
 public class IssueLocationDto {
 
     private Long id;
@@ -16,31 +19,6 @@ public class IssueLocationDto {
                             double latitude, double longitude, IssueCategory category) {
         this.id = id;
         this.latitude = latitude;
-        this.longitude = longitude;
-    }
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public double getLatitude() {
-        return latitude;
-    }
-
-    public void setLatitude(double latitude) {
-        this.latitude = latitude;
-    }
-
-    public double getLongitude() {
-        return longitude;
-    }
-
-    public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 

@@ -1,7 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
+@Getter
+@Setter
 public class PetitionDto {
 
     private long id;
@@ -19,55 +23,6 @@ public class PetitionDto {
         this.title = title;
         this.description = description;
         this.initialDate = initialDate;
-        this.category = category;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public UserDto getUserDto() {
-        return userDto;
-    }
-
-    public void setUserDto(UserDto userDto) {
-        this.userDto = userDto;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getInitialDate() {
-        return initialDate;
-    }
-
-    public void setInitialDate(String initialDate) {
-        this.initialDate = initialDate;
-    }
-
-
-    public PetitionCategory getCategory() {
-        return category;
-    }
-
-    public void setCategory(PetitionCategory category) {
         this.category = category;
     }
 
