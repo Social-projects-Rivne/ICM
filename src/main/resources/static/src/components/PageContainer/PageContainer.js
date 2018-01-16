@@ -68,20 +68,27 @@ class PageContainer extends Component {
             <ButtonGroup className="indent-for-button">
                 <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="ASC">ASC</Button>
                 <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="DESC">DESC</Button>
-                <Input onChange={this.changeSortColumn}
+                {this.state.title !== "Users list" ?
+                    <Input onChange={this.changeSortColumn}
                        type="select" name="sortColumn" placeholder="Sorting">
                         <option value="id">by ID</option>
                         <option value="title">by Title</option>
                         <option value="initialDate">by Initial date</option>
                         <option value="category">by Category</option>
                         <option value="user">by User</option>
+                    </Input> :
+                    this.state.title === "Users list" ?
+                    <Input onChange={this.changeSortColumn}
+                       type="select" name="sortColumnForUser" placeholder="Sorting">
+                        <option value="id">by ID</option>
                         <option value="userRole">by Role</option>
                         <option value="firstName">by First name</option>
                         <option value="lastName">by Last name</option>
                         <option value="username">by Email</option>
                         <option value="phone">by Phone</option>
                         <option value="userStatus">by User status</option>
-                </Input>
+                    </Input> :
+                    null}
             </ButtonGroup>
         )
     }
