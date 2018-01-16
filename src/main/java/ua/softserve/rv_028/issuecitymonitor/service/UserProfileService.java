@@ -62,8 +62,12 @@ public class UserProfileService{
             user.setLastName(lastName);
         if (phone != null && !phone.isEmpty())
             user.setPhone(phone);
-        userDao.save(user);
-        LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
+        try {
+            userDao.save(user);
+            LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
+        } catch (Exception e){
+            throw new IllegalArgumentException("User " + user.getUsername() + " has wrote incorrect data");
+        }
         return mapper.toDto(user);
     }
 

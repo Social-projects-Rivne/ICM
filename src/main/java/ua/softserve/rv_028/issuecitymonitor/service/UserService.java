@@ -29,8 +29,10 @@ public class UserService {
         this.userMapper = userMapper;
     }
 
-    public Page<UserDto> findAllByPage(int pageNumber, int pageSize, boolean isDeleted) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+    public Page<UserDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns,
+                                       boolean isDeleted) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<User> users = userDao.findAll(isDeleted, pageRequest);
         LOGGER.debug("Found all users");
         return userMapper.toDtoPage(users);
