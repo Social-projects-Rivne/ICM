@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "issue_change_records")
 @SQLDelete(sql = "UPDATE issue_change_records SET deleted = 'true' WHERE id = ?")
+@NoArgsConstructor
 @Getter
 @Setter
 public class IssueChangeRecord {
@@ -38,8 +40,6 @@ public class IssueChangeRecord {
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
     private boolean isDeleted = false;
-
-    public IssueChangeRecord() {}
 
     public IssueChangeRecord(Issue issue, ChangeRecordStatus changeRecordStatus, User user, String message) {
         this.issue = issue;

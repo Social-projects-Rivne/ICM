@@ -1,9 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class EventDto {
@@ -17,8 +19,6 @@ public class EventDto {
     private double longitude;
     private String endDate;
     private EventCategory category;
-
-    public EventDto() {}
 
     public EventDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude,
                     double longitude, String endDate, EventCategory category) {

@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
@@ -17,6 +18,7 @@ import java.util.Set;
 @Table(name = "issues")
 @SQLDelete(sql = "UPDATE issues SET deleted = 'true' WHERE id = ?")
 @Where(clause = "deleted <> true")
+@NoArgsConstructor
 @Getter
 @Setter
 public class Issue{
@@ -66,9 +68,6 @@ public class Issue{
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueChangeRecord.class, cascade = CascadeType.REMOVE)
     private Set<IssueChangeRecord> changeRecords = new HashSet<>();
-
-    public Issue() {
-    }
 
     public Issue(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
                  IssueCategory category) {

@@ -2,6 +2,7 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -19,6 +20,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET user_status = '0' WHERE id = ?")
+@NoArgsConstructor
 @Getter
 @Setter
 public class User implements UserDetails{
@@ -75,8 +77,6 @@ public class User implements UserDetails{
 	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
 	private Set<Petition> petitions = new HashSet<>();
-
-	public User() {}
 
 	public User(String firstName, String lastName, String password, String username,
 				String phone, UserStatus userStatus, UserRole userRole,

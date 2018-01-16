@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "restore_password")
+@NoArgsConstructor
 @Getter
 @Setter
 public class RestorePassword {
@@ -28,9 +30,6 @@ public class RestorePassword {
     @Column(name = "expire_date")
     @Convert(converter = LocalDateTimeConverter.class)
     private LocalDateTime expireDate;
-
-    public RestorePassword() {
-    }
 
     public RestorePassword(User user, String token, LocalDateTime expireDate) {
         this.user = user;

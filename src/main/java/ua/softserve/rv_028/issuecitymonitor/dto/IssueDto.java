@@ -1,9 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class IssueDto {
@@ -28,8 +30,6 @@ public class IssueDto {
         this.longitude = longitude;
         this.category = category;
     }
-
-    public IssueDto() {}
 
     @Override
     public String toString() {

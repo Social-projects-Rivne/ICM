@@ -1,9 +1,11 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PetitionCategory;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class PetitionDto {
@@ -14,8 +16,6 @@ public class PetitionDto {
     private String description;
     private String initialDate;
     private PetitionCategory category;
-
-    public PetitionDto() {}
 
     public PetitionDto(long id, UserDto userDto, String title, String description, String initialDate, PetitionCategory category) {
         this.id = id;

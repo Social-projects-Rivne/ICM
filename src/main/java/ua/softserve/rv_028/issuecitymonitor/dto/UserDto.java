@@ -1,10 +1,12 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
+@NoArgsConstructor
 @Getter
 @Setter
 public class UserDto {
@@ -21,7 +23,6 @@ public class UserDto {
     private UserStatus userStatus;
     private String deleteDate;
     private String avatarUrl;
-    public UserDto() {}
 
     public UserDto(String firstName, String lastName, String email, String password){
         this.firstName = firstName;
