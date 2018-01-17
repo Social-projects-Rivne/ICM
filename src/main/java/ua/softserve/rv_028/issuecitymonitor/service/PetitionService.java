@@ -1,7 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -20,28 +23,23 @@ import java.time.LocalDateTime;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PetitionService {
 
-    private static final Logger LOGGER = LogManager.getLogger(PetitionService.class);
+    PetitionDao petitionDao;
 
-    private final PetitionDao petitionDao;
+    UserDao userDao;
 
-    private final UserDao userDao;
-
-    private PetitionMapper petitionMapper;
-
-    public PetitionService(PetitionDao petitionDao, UserDao userDao, PetitionMapper petitionMapper){
-        this.petitionDao = petitionDao;
-        this.userDao = userDao;
-        this.petitionMapper = petitionMapper;
-    }
+    PetitionMapper petitionMapper;
 
     public void addPetition(PetitionDto dto) {
         try {
             Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
             User user = userDao.findUserByUsername(userAuth.getName());
             petitionDao.save(new Petition(user, dto.getTitle(), dto.getDescription(), LocalDateTime.parse(dto.getInitialDate(), DATE_FORMAT), dto.getCategory()));
-            LOGGER.debug("Added petition");
+            log.debug("Added petition");
         } catch (RuntimeException e){
             throw new IllegalArgumentException("petition add failed", e);
         }
@@ -56,7 +54,7 @@ public class PetitionService {
 
     public PetitionDto findById(long id) {
         Petition petition = findOne(id);
-        LOGGER.debug("Found " + petition.toString());
+        log.debug("Found " + petition.toString());
         return petitionMapper.toDto(petition);
     }
 
@@ -69,14 +67,14 @@ public class PetitionService {
         petition.setCategory(petitionDto.getCategory());
 
         petition = petitionDao.save(petition);
-        LOGGER.debug("Updated " + petition.toString());
+        log.debug("Updated " + petition.toString());
         return petitionMapper.toDto(petition);
     }
 
     public void deleteById(long id) {
         Petition petition = findOne(id);
         petitionDao.delete(petition);
-        LOGGER.debug("Deleted " + petition.toString());
+        log.debug("Deleted " + petition.toString());
     }
 
     private Petition findOne(long id){

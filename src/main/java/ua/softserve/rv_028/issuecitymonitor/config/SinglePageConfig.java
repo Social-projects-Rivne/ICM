@@ -1,5 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.config;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -26,11 +28,12 @@ public class SinglePageConfig extends WebMvcConfigurerAdapter {
                 .addResolver(new PushStateResourceResolver());
     }
 
+    @FieldDefaults(level = AccessLevel.PRIVATE)
     private class PushStateResourceResolver implements ResourceResolver {
-        private Resource index = new ClassPathResource("/static/index.html");
-        private List<String> handledExtensions = Arrays.asList("html", "js", "json", "csv", "css", "png", "svg", "eot",
+        Resource index = new ClassPathResource("/static/index.html");
+        List<String> handledExtensions = Arrays.asList("html", "js", "json", "csv", "css", "png", "svg", "eot",
                 "ttf", "woff", "woff2", "appcache", "jpg", "jpeg", "gif", "ico");
-        private List<String> ignoredPaths = Collections.singletonList("api");
+        List<String> ignoredPaths = Collections.singletonList("api");
 
         @Override
         public Resource resolveResource(HttpServletRequest request, String requestPath, List<? extends Resource> locations, ResourceResolverChain chain) {

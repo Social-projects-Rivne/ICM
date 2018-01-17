@@ -1,5 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
@@ -7,57 +12,32 @@ import javax.persistence.*;
 @Entity
 @Table(name = "user_votes")
 @SQLDelete(sql = "UPDATE user_votes SET deleted = 'true' WHERE id = ?")
+@NoArgsConstructor
+@Getter
+@Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserVote {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @ManyToOne
     @JoinColumn(name = "petition_id")
-    private Petition petition;
+    Petition petition;
 
     @Column(name = "deleted")
-    private boolean isDeleted = false;
-
-    public UserVote() {}
+    @Setter(AccessLevel.NONE)
+    boolean isDeleted = false;
 
     public UserVote(User user, Petition petition) {
         this.user = user;
         this.petition = petition;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public Petition getPetition() {
-        return petition;
-    }
-
-    public void setPetition(Petition petition) {
-        this.petition = petition;
-    }
-
-    public boolean getIsDeleted() {
-        return isDeleted;
     }
 
     @PreRemove

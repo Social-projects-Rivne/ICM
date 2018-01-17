@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,59 +29,46 @@ import ua.softserve.rv_028.issuecitymonitor.service.specifiation.UserSpecificati
 import java.util.Map;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SearchService {
 
-    private final static Logger LOGGER = Logger.getLogger(SearchService.class);
+    EventDao eventDao;
+    UserDao userDao;
+    IssueDao issueDao;
+    PetitionDao petitionDao;
 
-    private final EventDao eventDao;
-    private final UserDao userDao;
-    private final IssueDao issueDao;
-    private final PetitionDao petitionDao;
-
-    private final UserMapper userMapper;
-    private final EventMapper eventMapper;
-    private final IssueMapper issueMapper;
-    private final PetitionMapper petitionMapper;
-
-    @Autowired
-    public SearchService(EventDao eventDao, UserMapper userMapper, UserDao userDao, IssueDao issueDao,
-                         PetitionDao petitionDao, EventMapper eventMapper, IssueMapper issueMapper,
-                         PetitionMapper petitionMapper) {
-        this.eventDao = eventDao;
-        this.userMapper = userMapper;
-        this.userDao = userDao;
-        this.issueDao = issueDao;
-        this.petitionDao = petitionDao;
-        this.eventMapper = eventMapper;
-        this.issueMapper = issueMapper;
-        this.petitionMapper = petitionMapper;
-    }
+    UserMapper userMapper;
+    EventMapper eventMapper;
+    IssueMapper issueMapper;
+    PetitionMapper petitionMapper;
 
     public Page<EventDto> findEventsByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
         Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(new EventSpecification(queryMap), pageRequest));
-        LOGGER.debug("Events search successful");
+        log.debug("Events search successful");
         return eventDtos;
     }
 
     public Page<UserDto> findUsersByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
         Page<UserDto> userDtos = userMapper.toDtoPage(userDao.findAll(new UserSpecification(queryMap), pageRequest));
-        LOGGER.debug("Users search successful");
+        log.debug("Users search successful");
         return userDtos;
     }
 
     public Page<IssueDto> findIssuesByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
         Page<IssueDto> issueDtos = issueMapper.toDtoPage(issueDao.findAll(new IssueSpecification(queryMap), pageRequest));
-        LOGGER.debug("Issues search successful");
+        log.debug("Issues search successful");
         return issueDtos;
     }
 
     public Page<PetitionDto> findPetitionsByCriteria(Map<String, String> queryMap, int pageNumber, int pageSize) {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
         Page<PetitionDto> petitionDtos = petitionMapper.toDtoPage(petitionDao.findAll(new PetitionSpecification(queryMap), pageRequest));
-        LOGGER.debug("Petitions search successful");
+        log.debug("Petitions search successful");
         return petitionDtos;
     }
 }
