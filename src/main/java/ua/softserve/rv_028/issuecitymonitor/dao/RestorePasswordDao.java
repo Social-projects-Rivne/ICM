@@ -12,4 +12,5 @@ public interface RestorePasswordDao extends CrudRepository<RestorePassword, Long
     List<RestorePassword> findAll();
     void deleteByUser(User user);
     RestorePassword findByUser(User user);
+    RestorePassword findByToken(String token);
 }

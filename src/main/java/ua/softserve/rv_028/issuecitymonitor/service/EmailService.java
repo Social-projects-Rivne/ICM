@@ -67,9 +67,10 @@ public class EmailService {
         }
     }
 
+    private static final String RESTORE_PASSWORD_URL = "http://localhost:8080/restore/password/";
     private String templateRestorePassword(String firstName, String lastName, String token){
         return "<html><body><p>Dear " + firstName + " " + lastName + ".</p><p>Someone has requested a link to change your password. " +
-                "You can do this through the link below.</p>" + "<a>" + token + "</a></body></html>";
+                "You can do this through the link below.</p>" + "<a>" + RESTORE_PASSWORD_URL + token + "</a></body></html>";
     }
 
     private String templateGreeting(String firstName, String lastName){

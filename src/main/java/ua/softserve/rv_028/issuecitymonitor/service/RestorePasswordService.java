@@ -1,5 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import com.google.common.base.Preconditions;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -48,6 +49,20 @@ public class RestorePasswordService  {
         emailService.sendRestorePasswordEmail(userMapper.toDto(user), token);
 
         LOGGER.debug("User " + email + " has requested password reset");
+    }
+
+    public void checkTokenIsExist(String token){
+        // TODO: throw 404 exception if token isn`t valid
+        checkNotNull(restorePasswordDao.findByToken(token));
+    }
+
+    public void restorePassword(String token, String password){
+        checkTokenIsExist(token);
+        RestorePassword request = restorePasswordDao.findByToken(token);
+        User user = userDao.findUserByUsername(request.getUser().getUsername());
+        user.setPassword(passwordEncoder.encode(password));
+        userDao.save(user);
+        LOGGER.debug("User " + user.getUsername() + " has updated his password");
     }
 
     public void setNewPasswordForUser(String email, String password, String token) {
