@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {Link, Switch, Route, Redirect} from 'react-router-dom';
-import {Container} from 'reactstrap';
+import {Button, Container} from 'reactstrap';
 import Login from "../../views/Login/Login";
 import SignUp from "../../views/SignUp/SignUp";
 import RestorePassword from "../../views/RestorePassword/RestorePassword";
@@ -26,8 +26,10 @@ export default class Client extends Component{
                     phone: "",
                     userAuthorities : null
                 }
+        };
 
-        }
+        this.temp = this.temp.bind(this);
+        this.randomNotification = this.randomNotification.bind(this);
     }
 
     componentDidMount(){
@@ -48,6 +50,20 @@ export default class Client extends Component{
             .catch(function () {})
     }
 
+    temp(){
+        Notification.requestPermission().then(function(permission) { console.log('permission', permission); });
+    }
+
+    randomNotification() {
+        const options = {
+            body: "Body push",
+            icon: 'https://material.io/icons/static/images/icons-180x180.png',
+        };
+
+        const n = new Notification('Title says', options);
+        setTimeout(n.close.bind(n), 4000);
+    }
+
     render(){
         return(
             <div className="app">
@@ -64,6 +80,8 @@ export default class Client extends Component{
                         </Switch>
                     </Container>
                 </div>
+                <Button onClick={this.temp}>Prepare Push</Button>
+                <Button onClick={this.randomNotification}>Make Push</Button>
                 <Footer />
             </div>
         )
