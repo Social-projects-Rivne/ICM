@@ -21,7 +21,12 @@ class Map extends Component {
 
 
     }
+    onClick(e, issuesID){
+        this.setState({
+            desc: !this.state.desc,
+        });
 
+    }
 
 
 
@@ -33,8 +38,17 @@ class Map extends Component {
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
                 {this.props.issues.map(issues => (
-                    <MarkerComponent/>
+//                    <MarkerComponent issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
+            <Marker
+                key={issues.id}
+                position={{ lat: issues.latitude, lng: issues.longitude }}
+                onClick={(e) => this.onClick(e, issues.id)}
 
+            >
+            {this.state.desc&& <DescriptionIssue id = {issues.id}/>}
+
+
+            </Marker>
                 ))}
                 </GoogleMap>
         )
@@ -44,22 +58,30 @@ class Map extends Component {
 class MarkerComponent extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            id: this.props.issuesID,
+            latitude: this.props.issuesLat,
+            longitude: this.props.issuesLng,
+            descriptionFlag: false,
+        }
         this.showMessage = this.showMessage.bind(this);
     }
 
     showMessage(){
-        console.log('bind id');
+        this.setState({
+            descriptionFlag: !this.state.descriptionFlag,
+        });
 
     }
     render(){
         return(
             <Marker
-                key={1}
-                position={{ lat: 1, lng: 1 }}
+                key={this.state.id}
+                position={{ lat: this.state.latitude, lng: this.state.longitude }}
                 onClick = { this.showMessage }
 
             >
-
+            {this.state.descriptionFlag && <DescriptionIssue id = {this.state.id}/>}
 
 
             </Marker>
