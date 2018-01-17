@@ -52,7 +52,7 @@ class Map extends Component {
                 ))}
                 </GoogleMap>
         )
-   }
+
 }
 
 class MarkerComponent extends Component{
