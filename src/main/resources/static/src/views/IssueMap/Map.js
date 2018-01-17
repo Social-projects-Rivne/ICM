@@ -10,48 +10,63 @@ class Map extends Component {
     this.state={
         desc : false,
         point : [],
+        issues: null,
     };
-
-    this.showMessage = this.showMessage.bind(this);
-
     }
 
-    showMessage(e){
+    componentWillMount(){
         this.setState({
-            desc:true,
+            issues: this.props.issues,
         });
-        console.log(e.target.key);
+
+
     }
+
+
+
+
    render() {
-        const issues = this.props.issues
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
                 defaultMaxZoom = {this.props.defaultmaxzoom}
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
-                {issues.forEach( (marker,i,issues) => (
-
-                    <Marker
-                       key={i}
-                       position={{ lat: marker.latitude, lng: marker.longitude}}
-                       onClick = { this.showMessage }
-
-                    >
-
-
-
-                    </Marker>
-
+                {this.props.issues.map(issues => (
+                    <MarkerComponent/>
 
                 ))}
-
                 </GoogleMap>
         )
    }
 }
 
+class MarkerComponent extends Component{
+    constructor(props){
+        super(props);
+        this.showMessage = this.showMessage.bind(this);
+    }
 
+    showMessage(){
+        console.log('bind id');
+
+    }
+    render(){
+        return(
+            <Marker
+                key={1}
+                position={{ lat: 1, lng: 1 }}
+                onClick = { this.showMessage }
+
+            >
+
+
+
+            </Marker>
+
+        )
+    }
+}
 
 
 export default withScriptjs(withGoogleMap(Map));
