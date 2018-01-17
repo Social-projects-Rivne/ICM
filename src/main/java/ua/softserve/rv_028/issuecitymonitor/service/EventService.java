@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,31 +19,26 @@ import java.time.LocalDateTime;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EventService {
 
-    private static final Logger LOGGER = Logger.getLogger(EventService.class);
+    EventDao eventDao;
 
-    private final EventDao eventDao;
-
-    private final EventMapper eventMapper;
-
-    @Autowired
-    public EventService(EventDao eventDao, EventMapper eventMapper){
-        this.eventDao = eventDao;
-        this.eventMapper = eventMapper;
-    }
+    EventMapper eventMapper;
 
     public Page<EventDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
         String[] columnArray = columns.split(",");
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(pageRequest));
-        LOGGER.debug("Found all events");
+        log.debug("Found all events");
         return eventDtos;
     }
 
     public EventDto findById(long id) {
         Event event = findOne(id);
-        LOGGER.debug("Found " + event.toString());
+        log.debug("Found " + event.toString());
         return eventMapper.toDto(event);
     }
 
@@ -57,13 +55,13 @@ public class EventService {
         event.setCategory(eventDto.getCategory());
 
         event = eventDao.save(event);
-        LOGGER.debug("Updated " + event.toString());
+        log.debug("Updated " + event.toString());
         return eventMapper.toDto(event);
     }
 
     public void deleteById(long id) {
         eventDao.delete(id);
-        LOGGER.debug("Deleted event " + id);
+        log.debug("Deleted event " + id);
     }
 
     private Event findOne(long id){

@@ -1,9 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
@@ -21,58 +19,60 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Event {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
     @OrderBy
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Column(name = "title")
-    private String title;
+    String title;
 
     @Column(name = "description")
-    private String description;
+    String description;
 
     @Column(name = "initial_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime initialDate;
+    LocalDateTime initialDate;
 
     @Column(name = "latitude")
-    private double latitude;
+    double latitude;
 
     @Column(name = "longitude")
-    private double longitude;
+    double longitude;
 
     @Column(name = "end_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime endDate;
+    LocalDateTime endDate;
 
     @Column(name = "category")
     @Enumerated(EnumType.ORDINAL)
-    private EventCategory category;
+    EventCategory category;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     @Column(name = "creation_date")
     @Setter(AccessLevel.NONE)
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime creationDate;
+    LocalDateTime creationDate;
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventAttachment.class, cascade = CascadeType.REMOVE)
-    private Set<EventAttachment> attachments = new HashSet<>();
+    Set<EventAttachment> attachments = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "event", targetEntity = EventChangeRecord.class, cascade = CascadeType.REMOVE)
-    private Set<EventChangeRecord> changeRecords = new HashSet<>();
+    Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
                  LocalDateTime endDate, EventCategory category) {
@@ -96,18 +96,4 @@ public class Event {
         this.isDeleted = true;
     }
 
-    @Override
-    public String toString() {
-        return "Event{" +
-                "id=" + id +
-                ", user=" + user.getId() +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", initialDate='" + initialDate + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", endDate='" + endDate + '\'' +
-                ", category=" + category +
-                '}';
-    }
 }

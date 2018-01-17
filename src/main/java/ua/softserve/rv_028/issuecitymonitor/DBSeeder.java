@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -16,12 +19,12 @@ import java.time.LocalDateTime;
 import java.util.Random;
 
 @Component
+@Log4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class DBSeeder {
 
-    private SessionFactory sessionFactory;
-    private final BCryptPasswordEncoder encoder;
-
-    private static final Logger LOGGER = LogManager.getLogger(DBSeeder.class);
+    SessionFactory sessionFactory;
+    final BCryptPasswordEncoder encoder;
 
     @Autowired
     public DBSeeder(EntityManagerFactory factory, BCryptPasswordEncoder encoder) {
@@ -32,11 +35,11 @@ public class DBSeeder {
         }
         sessionFactory = factory.unwrap(SessionFactory.class);
         try {
-            LOGGER.info("Seeding database...");
+            log.info("Seeding database...");
             fillDatabase();
-            LOGGER.info("Seeding finished");
+            log.info("Seeding finished");
         } catch (RuntimeException e) {
-            LOGGER.info("Seeding has been done already. Skipping...");
+            log.info("Seeding has been done already. Skipping...");
         }
     }
 

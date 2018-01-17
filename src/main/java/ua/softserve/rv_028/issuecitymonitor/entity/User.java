@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,63 +25,64 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class User implements UserDetails{
 
 	@Id
 	@GeneratedValue
 	@Column(name = "id", unique = true)
-	private long id;
+	long id;
 
 	@Column(name = "userRole")
 	@Enumerated(EnumType.ORDINAL)
-	private UserRole userRole;
+	UserRole userRole;
 
 	@Column(name = "reg_date")
-	private LocalDateTime registrationDate;
+	LocalDateTime registrationDate;
 
 	@NotEmpty
 	@Column(name = "first_name")
-	private String firstName;
+	String firstName;
 
 	@NotEmpty
 	@Column(name = "password")
 	@Pattern(regexp = "^.{3,}$")
-	private String password;
+	String password;
 
 	@NotEmpty
 	@Column(name = "email", unique = true)
 	@Pattern(regexp = "^([\\w.%+-]+)@([\\w-]+\\.)+([\\w]{2,})$")
-	private String username;
+	String username;
 
 	@NotEmpty
 	@Column(name = "last_name")
-	private String lastName;
+	String lastName;
 
 	@Column(name = "phone")
 	@Pattern(regexp = "^(\\+)+([\\d]{1,4})([\\d]{10})$")
-	private String phone;
+	String phone;
 
 	@Column(name = "user_status")
 	@Enumerated(EnumType.ORDINAL)
-	private UserStatus userStatus;
+	UserStatus userStatus;
 
 	@Column(name = "delete_date")
-	private LocalDateTime deleteDate;
+	LocalDateTime deleteDate;
 
 	@Column(name = "avatar_url")
-	private String avatarUrl;
+	String avatarUrl;
 
 	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
-	private Set<Issue> issues = new HashSet<>();
+	Set<Issue> issues = new HashSet<>();
 
 	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Event.class)
-	private Set<Event> events = new HashSet<>();
+	Set<Event> events = new HashSet<>();
 
 	@Setter(AccessLevel.NONE)
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
-	private Set<Petition> petitions = new HashSet<>();
+	Set<Petition> petitions = new HashSet<>();
 
 	public User(String firstName, String lastName, String password, String username,
 				String phone, UserStatus userStatus, UserRole userRole,

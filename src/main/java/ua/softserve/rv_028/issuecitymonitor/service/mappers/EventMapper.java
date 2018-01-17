@@ -1,26 +1,23 @@
 package ua.softserve.rv_028.issuecitymonitor.service.mappers;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
 
 import java.time.LocalDateTime;
-import java.util.IllegalFormatException;
-import java.util.Optional;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class EventMapper extends MapperService<EventDto, Event> {
 
-    private final UserMapper userMapper;
-
-    @Autowired
-    public EventMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    UserMapper userMapper;
 
     @Override
     public EventDto toDto(Event entity) {

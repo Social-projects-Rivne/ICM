@@ -1,18 +1,20 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
 @Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class IssueDto {
 
-    private long id;
-    private UserDto userDto;
-    private String title;
-    private String description;
-    private String initialDate;
-    private double latitude;
-    private double longitude;
-    private IssueCategory category;
+    long id;
+    UserDto userDto;
+    String title;
+    String description;
+    String initialDate;
+    double latitude;
+    double longitude;
+    IssueCategory category;
 
 }

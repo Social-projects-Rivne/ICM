@@ -1,9 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
@@ -21,46 +19,48 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Petition{
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @Column(name = "title")
-    private String title;
+    String title;
 
     @Column(name = "description")
-    private String description;
+    String description;
 
     @Column(name = "initial_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime initialDate;
+    LocalDateTime initialDate;
 
     @Column(name = "category")
-    private PetitionCategory category;
+    PetitionCategory category;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     @Column(name = "creation_date")
     @Setter(AccessLevel.NONE)
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime creationDate;
+    LocalDateTime creationDate;
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionAttachment.class, cascade = CascadeType.REMOVE)
-    private Set<PetitionAttachment> attachments = new HashSet<>();
+    Set<PetitionAttachment> attachments = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "petition", targetEntity = PetitionChangeRecord.class, cascade = CascadeType.REMOVE)
-    private Set<PetitionChangeRecord> changeRecords = new HashSet<>();
+    Set<PetitionChangeRecord> changeRecords = new HashSet<>();
 
     public Petition(User user, String title, String description, LocalDateTime initialDate, PetitionCategory category) {
         this.user = user;
@@ -80,15 +80,4 @@ public class Petition{
         this.isDeleted = true;
     }
 
-    @Override
-    public String toString() {
-        return "Petition{" +
-                "id=" + id +
-                ", user=" + user.getId() +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", initialDate='" + initialDate + '\'' +
-                ", category=" + category +
-                '}';
-    }
 }

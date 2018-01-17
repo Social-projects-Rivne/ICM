@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
 import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
@@ -8,20 +9,21 @@ import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 @Getter
 @Setter
 @ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserDto {
 
-    private long id;
-    private UserRole userRole;
-    private String registrationDate;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String email;
-    private String phone;
-    private boolean userAgreement;
-    private UserStatus userStatus;
-    private String deleteDate;
-    private String avatarUrl;
+    long id;
+    UserRole userRole;
+    String registrationDate;
+    String firstName;
+    String lastName;
+    String password;
+    String email;
+    String phone;
+    boolean userAgreement;
+    UserStatus userStatus;
+    String deleteDate;
+    String avatarUrl;
 
     public UserDto(String firstName, String lastName, String email, String password){
         this.firstName = firstName;

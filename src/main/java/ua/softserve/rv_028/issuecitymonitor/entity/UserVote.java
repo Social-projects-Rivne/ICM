@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
@@ -14,24 +15,25 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserVote {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @ManyToOne
     @JoinColumn(name = "petition_id")
-    private Petition petition;
+    Petition petition;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     public UserVote(User user, Petition petition) {
         this.user = user;

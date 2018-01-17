@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 
 import javax.persistence.*;
@@ -14,27 +15,28 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventAttachment {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "event_id")
-    private Event event;
+    Event event;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @Column(name = "attachment_url")
-    private String attachmentUrl;
+    String attachmentUrl;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     public EventAttachment(Event event, User user, String attachmentUrl) {
         this.event = event;

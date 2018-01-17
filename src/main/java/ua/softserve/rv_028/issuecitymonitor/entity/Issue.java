@@ -1,9 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
@@ -21,53 +19,55 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Issue{
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private Long id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    User user;
 
     @Column(name = "title")
-    private String title;
+    String title;
 
     @Column(name = "description")
-    private String description;
+    String description;
 
     @Column(name = "initial_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime initialDate;
+    LocalDateTime initialDate;
 
     @Column(name = "latitude")
-    private double latitude;
+    double latitude;
 
     @Column(name = "longitude")
-    private double longitude;
+    double longitude;
 
     @Column(name = "category")
     @Enumerated(EnumType.ORDINAL)
-    private IssueCategory category;
+    IssueCategory category;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     @Column(name = "creation_date")
     @Setter(AccessLevel.NONE)
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime creationDate;
+    LocalDateTime creationDate;
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueAttachment.class, cascade = CascadeType.REMOVE)
-    private Set<IssueAttachment> attachments = new HashSet<>();
+    Set<IssueAttachment> attachments = new HashSet<>();
 
     @Setter(AccessLevel.NONE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "issue", targetEntity = IssueChangeRecord.class, cascade = CascadeType.REMOVE)
-    private Set<IssueChangeRecord> changeRecords = new HashSet<>();
+    Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public Issue(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
                  IssueCategory category) {
@@ -90,17 +90,4 @@ public class Issue{
         this.isDeleted = true;
     }
 
-    @Override
-    public String toString() {
-        return "Issue{" +
-                "id=" + id +
-                ", user=" + user +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", initialDate='" + initialDate + '\'' +
-                ", latitude=" + latitude +
-                ", longitude=" + longitude +
-                ", category=" + category +
-                '}';
-    }
 }

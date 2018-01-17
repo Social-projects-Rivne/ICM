@@ -1,8 +1,10 @@
 package ua.softserve.rv_028.issuecitymonitor.entity;
 
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 
 import javax.persistence.*;
@@ -13,23 +15,24 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class RestorePassword {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private long id;
+    long id;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @Column(name = "token")
-    private String token;
+    String token;
 
     @Column(name = "expire_date")
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime expireDate;
+    LocalDateTime expireDate;
 
     public RestorePassword(User user, String token, LocalDateTime expireDate) {
         this.user = user;

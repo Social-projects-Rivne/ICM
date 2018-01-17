@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.config;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -26,23 +29,17 @@ import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    private final UserDetailsServiceImpl userDetailsService;
+    UserDetailsServiceImpl userDetailsService;
 
-    private final BCryptPasswordEncoder passwordEncoder;
+    BCryptPasswordEncoder passwordEncoder;
 
     /** All possible urls must be here*/
-    private final String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
+    String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
             "/settings","/maps"};
-
-    @Autowired
-    public SecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder passwordEncoder) {
-        this.userDetailsService = userDetailsService;
-        this.passwordEncoder = passwordEncoder;
-    }
-
-
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

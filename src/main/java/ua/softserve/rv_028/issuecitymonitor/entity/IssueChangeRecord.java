@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.ChangeRecordStatus;
 
@@ -15,31 +16,32 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class IssueChangeRecord {
 
     @Id
     @GeneratedValue
     @Column(name = "id", unique = true)
-    private Long id;
+    Long id;
 
     @ManyToOne
     @JoinColumn(name = "issue_id")
-    private Issue issue;
+    Issue issue;
 
     @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
-    private ChangeRecordStatus changeRecordStatus;
+    ChangeRecordStatus changeRecordStatus;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    User user;
 
     @Column(name = "message")
-    private String message;
+    String message;
 
     @Column(name = "deleted")
     @Setter(AccessLevel.NONE)
-    private boolean isDeleted = false;
+    boolean isDeleted = false;
 
     public IssueChangeRecord(Issue issue, ChangeRecordStatus changeRecordStatus, User user, String message) {
         this.issue = issue;
