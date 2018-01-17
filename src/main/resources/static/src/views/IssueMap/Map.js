@@ -38,22 +38,17 @@ class Map extends Component {
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
                 {this.props.issues.map(issues => (
-//                    <MarkerComponent issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
-            <Marker
-                key={issues.id}
-                position={{ lat: issues.latitude, lng: issues.longitude }}
-                onClick={(e) => this.onClick(e, issues.id)}
-
-            >
-            {this.state.desc&& <DescriptionIssue id = {issues.id}/>}
-
-
-            </Marker>
+                    <MarkerComponent issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
                 ))}
                 </GoogleMap>
         )
 
+    }
 }
+
+
+
+
 
 class MarkerComponent extends Component{
     constructor(props){
@@ -63,14 +58,25 @@ class MarkerComponent extends Component{
             latitude: this.props.issuesLat,
             longitude: this.props.issuesLng,
             descriptionFlag: false,
+            issue: null,
         }
         this.showMessage = this.showMessage.bind(this);
     }
 
     showMessage(){
-        this.setState({
-            descriptionFlag: !this.state.descriptionFlag,
-        });
+            var _this = this;
+            axios.get("/api/issues/" + this.state.id)
+            .then(function(response) {
+                _this.setState({
+                    issue: response.data
+                });
+                swal({title: "asdasd", text: response});
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+            console.log('issue',this.state.issue);
+
 
     }
     render(){
@@ -80,12 +86,7 @@ class MarkerComponent extends Component{
                 position={{ lat: this.state.latitude, lng: this.state.longitude }}
                 onClick = { this.showMessage }
 
-            >
-            {this.state.descriptionFlag && <DescriptionIssue id = {this.state.id}/>}
-
-
-            </Marker>
-
+            />
         )
     }
 }
