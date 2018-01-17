@@ -22,7 +22,7 @@ class PetitionEdit extends Component {
             initialDate: true,
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -40,19 +40,15 @@ class PetitionEdit extends Component {
             });
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
+    handleInitialDateChange(m){
+        this.setState(function(prev) {
             return {
                 petition: {
                     ...prev.petition,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
+                    initialDate: m.format("DD/MM/YYYY HH:mm")
+                }
             }
-        })
+        });
     }
 
     handleChange(e) {

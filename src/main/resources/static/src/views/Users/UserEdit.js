@@ -25,7 +25,7 @@ class EditUsers extends Component {
             registrationDate: true,
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleRegistrationDateChange = this.handleRegistrationDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -44,19 +44,15 @@ class EditUsers extends Component {
 
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
+    handleRegistrationDateChange(m){
+        this.setState(function(prev) {
             return {
                 users: {
                     ...prev.users,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
+                    registrationDate: m.format("DD/MM/YYYY HH:mm")
+                }
             }
-        })
+        });
     }
 
     handleChange(e) {
@@ -125,7 +121,7 @@ class EditUsers extends Component {
                                         </Col>
                                         <Col xs="12" md="4">
                                             <DateTime value={this.state.users.registrationDate} dateFormat="DD/MM/YYYY"
-                                             timeFormat="HH:mm" onChange={this.handleInitialDateChange}
+                                             timeFormat="HH:mm" onChange={this.handleRegistrationDateChange}
                                              inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                     </FormGroup>
