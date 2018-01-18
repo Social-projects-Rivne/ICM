@@ -9,18 +9,11 @@ class DownloadPDF extends Component {
         super(props);
     }
 
-
-
-
     render() {
         return (
             <Button className="pull-right mr-10" color="info" size="sm" type="button" onClick={(e) => this.onClick(e, this.props.page)}>PDF</Button>
     );
     }
-
-
-
-
 
     onClick(e, pageName) {
 

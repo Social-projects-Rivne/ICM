@@ -13,6 +13,12 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import ua.softserve.rv_028.issuecitymonitor.controller.IssueController;
+import ua.softserve.rv_028.issuecitymonitor.controller.PetitionController;
+import ua.softserve.rv_028.issuecitymonitor.controller.EventController;
+import ua.softserve.rv_028.issuecitymonitor.controller.UserController;
+
+
 @RestController
 @RequestMapping("/apis/pdf")
 public class Client {
