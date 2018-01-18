@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(MockitoJUnitRunner.class)
 public class PetitionControllerTest {
@@ -24,6 +26,8 @@ public class PetitionControllerTest {
     private final static IllegalStateException EXCEPTION_NOT_FOUND = new IllegalStateException("petition not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
+    private final static Sort.Direction SORT_DIRECTION = ASC;
+    private final static String SORT_COLUMN = "id";
 
     @InjectMocks
     private PetitionController petitionController;
@@ -60,10 +64,10 @@ public class PetitionControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<PetitionDto> petitionDtoPage = new PageImpl<>(new ArrayList<>());
-        when(petitionService.findAllByPage(PAGE_INDEX, PAGE_SIZE)).thenReturn(petitionDtoPage);
-        Page<PetitionDto> page = petitionController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+        when(petitionService.findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN)).thenReturn(petitionDtoPage);
+        Page<PetitionDto> page = petitionController.getAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
 
-        verify(petitionService).findAllByPage(PAGE_INDEX, PAGE_SIZE);
+        verify(petitionService).findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
         verifyNoMoreInteractions(petitionService);
         assertEquals(petitionDtoPage, page);
     }

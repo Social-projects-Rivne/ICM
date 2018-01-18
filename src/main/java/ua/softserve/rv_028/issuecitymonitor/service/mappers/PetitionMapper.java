@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.service.mappers;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
@@ -10,14 +13,11 @@ import java.time.LocalDateTime;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class PetitionMapper extends MapperService<PetitionDto, Petition>{
 
-    private final UserMapper userMapper;
-
-    @Autowired
-    public PetitionMapper(UserMapper userMapper) {
-        this.userMapper = userMapper;
-    }
+    UserMapper userMapper;
 
     @Override
     public PetitionDto toDto(Petition entity) {

@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {Card, CardBody, CardFooter, CardHeader, Col, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
+import {ButtonGroup, Button, Card, CardBody, CardFooter, CardHeader, Col, Input, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
 import DownloadPDF from "../DownloadPDF/DownloadPDF";
-
 
 class PageContainer extends Component {
     constructor(props) {
@@ -10,23 +9,40 @@ class PageContainer extends Component {
         this.state = {
             pagesNum: this.props.pagesNum,
             page: this.props.page,
+            sortColumn: this.props.sortColumn,
+            sortDirection: this.props.sortDirection,
             title: this.props.title,
-            name: this.props.name,
             button: this.props.button,
             children: this.props.children
         };
-
         this.handleFirstPage = this.handleFirstPage.bind(this);
         this.handleLastPage = this.handleLastPage.bind(this);
         this.handlePage = this.handlePage.bind(this);
+        this.changeSortDirection = this.changeSortDirection.bind(this);
+        this.changeSortColumn = this.changeSortColumn.bind(this);
     }
 
     componentWillReceiveProps(props){
         this.setState({
             pagesNum: props.pagesNum,
             page: props.page,
+            sortColumn: props.sortColumn,
+            sortDirection: props.sortDirection,
             title: props.title,
-            children: props.children
+            children: props.children,
+            button: props.button
+        });
+    }
+
+    changeSortDirection(e) {
+        this.setState({sortDirection: e.target.value}, function() {
+            this.props.onSortChangeDirection(this.state.sortDirection);
+        });
+    }
+
+    changeSortColumn(e) {
+        this.setState({sortColumn: e.target.value}, function() {
+            this.props.onSortChangeColumn(this.state.sortColumn)
         });
     }
 
@@ -48,6 +64,36 @@ class PageContainer extends Component {
                 this.props.onPageChange(this.state.page);
             });
         }
+    }
+
+    sorting() {
+        return(
+            <ButtonGroup className="indent-for-button">
+                <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="ASC">ASC</Button>
+                <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="DESC">DESC</Button>
+                {this.state.title !== "Users list" ?
+                    <Input onChange={this.changeSortColumn}
+                           type="select" name="sortColumn" placeholder="Sorting">
+                        <option value="id">by ID</option>
+                        <option value="title">by Title</option>
+                        <option value="initialDate">by Initial date</option>
+                        <option value="category">by Category</option>
+                        <option value="user">by User</option>
+                    </Input> :
+                    this.state.title === "Users list" ?
+                        <Input onChange={this.changeSortColumn}
+                               type="select" name="sortColumnForUser" placeholder="Sorting">
+                            <option value="id">by ID</option>
+                            <option value="userRole">by Role</option>
+                            <option value="firstName">by First name</option>
+                            <option value="lastName">by Last name</option>
+                            <option value="username">by Email</option>
+                            <option value="phone">by Phone</option>
+                            <option value="userStatus">by User status</option>
+                        </Input> :
+                        null}
+            </ButtonGroup>
+        )
     }
 
     pagination() {
@@ -86,8 +132,13 @@ class PageContainer extends Component {
             <div className="animated fadeIn">
                 <Row>
                     <Col xs="12" lg="12">
-                        <Card>
-                            <CardHeader>{this.state.title} <DownloadPDF page={this.props.name}/></CardHeader>
+                        <Card className="page-container-margin">
+                            <CardHeader className="indent-for-button">
+                                {this.state.title} {this.state.button}
+                                <div className="pull-right">
+                                    {this.sorting()}
+                                </div>
+                                <DownloadPDF page={this.props.name}/></CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>

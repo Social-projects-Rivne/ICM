@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
@@ -18,6 +19,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IssueControllerTest {
@@ -27,6 +29,8 @@ public class IssueControllerTest {
     private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("issue not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
+    private final static Sort.Direction SORT_DIRECTION = ASC;
+    private final static String SORT_COLUMN = "id";
 
     private IssueDto issue;
 
@@ -68,10 +72,10 @@ public class IssueControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<IssueDto> issueDtoPage = new PageImpl<>(new ArrayList<>());
-        when(issueService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(issueDtoPage);
-        Page<IssueDto> page = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+        when(issueService.findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN)).thenReturn(issueDtoPage);
+        Page<IssueDto> page = issueController.getAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
 
-        verify(issueService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
+        verify(issueService).findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
         verifyNoMoreInteractions(issueService);
         assertEquals(issueDtoPage, page);
     }

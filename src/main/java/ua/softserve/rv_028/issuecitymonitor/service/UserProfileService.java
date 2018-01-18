@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -25,21 +28,16 @@ import java.util.Map;
 import static com.google.common.base.Preconditions.checkArgument;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserProfileService{
 
-    private UserDao userDao;
-    private BCryptPasswordEncoder encoder;
-    private UserMapper mapper;
+    UserDao userDao;
+    BCryptPasswordEncoder encoder;
+    UserMapper mapper;
 
-    private static final String PATH = "src/main/resources/users/logo/";
-    private static final Logger LOGGER = Logger.getLogger(UserProfileService.class.getName());
-
-    @Autowired
-    public UserProfileService(UserDao userDao, BCryptPasswordEncoder encoder, UserMapper mapper) {
-        this.userDao = userDao;
-        this.encoder = encoder;
-        this.mapper = mapper;
-    }
+    static final String PATH = "src/main/resources/users/logo/";
 
     public UserDto updatePassword(String email, String oldPassword, String newPassword) {
         User user = userDao.findUserByUsername(email);
@@ -49,7 +47,7 @@ public class UserProfileService{
         checkArgument(newPassword.length() >= 2, Constants.SHORT_PASSWORD);
         user.setPassword(encoder.encode(newPassword));
         userDao.save(user);
-        LOGGER.debug("User " + user.getUsername() + " has changed his password");
+        log.debug("User " + user.getUsername() + " has changed his password");
         return mapper.toDto(user);
     }
 
@@ -62,8 +60,12 @@ public class UserProfileService{
             user.setLastName(lastName);
         if (phone != null && !phone.isEmpty())
             user.setPhone(phone);
-        userDao.save(user);
-        LOGGER.debug("User " + user.getUsername() + " has changed his contacts form");
+        try {
+            userDao.save(user);
+            log.debug("User " + user.getUsername() + " has changed his contacts form");
+        } catch (Exception e){
+            throw new IllegalArgumentException("User " + user.getUsername() + " has wrote incorrect data");
+        }
         return mapper.toDto(user);
     }
 

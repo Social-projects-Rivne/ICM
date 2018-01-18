@@ -2,55 +2,78 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
+import Issue from "../Issues/Issue";
+
 class Map extends Component {
-
     constructor(props){
-            super(props);
+        super(props);
+        this.state={
+        desc : false,
+        point : [],
+        issues: null,
+        };
+    }
 
-
-            this.state = {
-                centlat:50.619900,
-                centlng: 26.251617,
-                zoom:5,
-                issues: []
-            };
-
-        }
-
-        componentWillMount() {
-
-            var _this = this;
-            axios.get("/api/issues/map")
-                .then(function(response) {
-                    _this.setState({
-                        issues: response.data,
-                        isOpen: false
-                    });
-                })
-                .catch(function (error) {
-                    swal({title: "Something went wrong!", text: error, icon: "error"});
-                });
-
-        }
+    componentWillMount(){
+        this.setState({
+            issues: this.props.issues,
+        });
+    }
 
    render() {
         return (
             <GoogleMap
-                defaultZoom={this.state.zoom}
-                defaultMaxZoom = {8}
-                defaultCenter={{ lat: this.state.centlat, lng: this.state.centlng }}
+                defaultZoom={this.props.zoom}
+                defaultMaxZoom = {this.props.defaultmaxzoom}
+                defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
-                {this.state.issues.map(issues => (
-                              <Marker
-                                  key={issues.id}
-                                  position={{ lat: issues.latitude, lng: issues.longitude }}
-                              >
-                               </Marker>
+                {this.props.issues.map(issues => (
+                    <IssueMarker issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
                 ))}
-              </GoogleMap>
-
+                </GoogleMap>
         )
-   }
+    }
+}
+
+class IssueMarker extends Component{
+    constructor(props){
+        super(props);
+        this.state = {
+            id: this.props.issuesID,
+            latitude: this.props.issuesLat,
+            longitude: this.props.issuesLng,
+            descriptionFlag: false,
+            issue: "" ,
+        };
+        this.showMessage = this.showMessage.bind(this);
+    }
+
+    showMessage(){
+            const _this = this;
+            axios.get("/api/issues/" + this.state.id)
+            .then(function(response) {
+                _this.setState({
+                    issue: response.data
+                });
+                swal({title: response.data.title, text: " Name: " + response.data.userDto.firstName+"  " +
+                    response.data.userDto.lastName + "\n" + "Description: \n " + response.data.description +
+                     "\n" + "Initial Date: " + response.data.initialDate});
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+
+    }
+
+    render(){
+        return(
+            <Marker
+                key={this.state.id}
+                position={{ lat: this.state.latitude, lng: this.state.longitude }}
+                onClick = { this.showMessage }
+            />
+        )
+    }
 }
 
 

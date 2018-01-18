@@ -11,12 +11,23 @@ class PetitionsContainer extends Component {
         this.state = {
             data: this.props.data
         };
+        this.handleSortChangeDirection = this.handleSortChangeDirection.bind(this);
+        this.handleSortChangeColumn = this.handleSortChangeColumn.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
         this.handlePageUpdate = this.handlePageUpdate.bind(this);
+        this.addNewPetition = this.addNewPetition.bind(this);
     }
 
     handlePageUpdate() {
         this.props.onPageChange(this.state.data.number + 1);
+    }
+
+    handleSortChangeDirection(sortDirection) {
+        this.props.onSortChangeDirection(sortDirection);
+    }
+
+    handleSortChangeColumn(sortColumn) {
+        this.props.onSortChangeColumn(sortColumn);
     }
 
     handlePageChange(page) {
@@ -26,7 +37,7 @@ class PetitionsContainer extends Component {
     addNewPetition() {
         return(
         <Link to={"/admin/petitions/add"}>
-            <Button className="pull-right" color="success" size="sm">Add new</Button>
+            <Button className="pull-right" color="success" size="sm" classname="indent">Add new</Button>
         </Link>
         )
     }
@@ -66,7 +77,9 @@ class PetitionsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} name="petitions" title="Petitions list" button={this.addNewPetition()}
+            <PageContainer onPageChange={this.handlePageChange} name="petitions" onSortChangeDirection={this.handleSortChangeDirection}
+                           onSortChangeColumn={this.handleSortChangeColumn} title="Petitions list" button={this.addNewPetition()}
+                           sortDirection={this.state.data.sort} sortColumn={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>
                 {this.table()}
             </PageContainer>

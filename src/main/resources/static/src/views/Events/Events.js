@@ -9,14 +9,29 @@ class Events extends Component {
 
         this.state = {
             events: "",
+            direction: "ASC",
+            sort: "id",
             page: 1
         };
-
+        this.handleSortChangeDirection = this.handleSortChangeDirection.bind(this);
+        this.handleSortChangeColumn = this.handleSortChangeColumn.bind(this);
         this.handlePageChange = this.handlePageChange.bind(this);
     }
 
     componentWillMount() {
         this.makeQuery();
+    }
+
+    handleSortChangeDirection(sortDirection) {
+        this.setState({direction: sortDirection}, function() {
+            this.makeQuery();
+        });
+    }
+
+    handleSortChangeColumn(sortColumn) {
+        this.setState({sort: sortColumn}, function() {
+            this.makeQuery();
+        });
     }
 
     handlePageChange(pageNum) {
@@ -27,7 +42,8 @@ class Events extends Component {
 
     makeQuery() {
         var _this = this;
-        axios.get(["/api/events?page=",this.state.page].join(""))
+        axios.get(["/api/events?page=", this.state.page, "&sort=", this.state.sort,
+            "&direction=", this.state.direction].join(""))
             .then(function(response) {
                 _this.setState({
                     events: response.data
@@ -40,7 +56,9 @@ class Events extends Component {
 
     render() {
         return (
-            <EventsContainer data={this.state.events} onPageChange={this.handlePageChange}/>
+            <EventsContainer data={this.state.events} onPageChange={this.handlePageChange}
+                             onSortChangeDirection={this.handleSortChangeDirection}
+                             onSortChangeColumn={this.handleSortChangeColumn}/>
         )
     }
 }

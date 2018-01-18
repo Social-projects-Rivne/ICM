@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,15 +18,11 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
  * @author      gefasim
  */
 @Service
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserDao userDao;
-
-    @Autowired
-    public UserDetailsServiceImpl(UserDao userDao) {
-        this.userDao = userDao;
-    }
-
+    UserDao userDao;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {

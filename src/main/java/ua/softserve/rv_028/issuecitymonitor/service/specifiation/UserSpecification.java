@@ -1,5 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.service.specifiation;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.jpa.domain.Specification;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
@@ -12,13 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserSpecification implements Specification<User> {
 
-    private final Map<String, String> queryMap;
-
-    public UserSpecification(Map<String, String> queryMap){
-        this.queryMap = queryMap;
-    }
+    Map<String, String> queryMap;
 
     @Override
     public Predicate toPredicate(Root<User> root, CriteriaQuery<?> query, CriteriaBuilder cb) {

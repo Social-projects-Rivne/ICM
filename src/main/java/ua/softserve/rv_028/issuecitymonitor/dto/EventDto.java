@@ -1,19 +1,24 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.EventCategory;
 
+@Data
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EventDto {
 
-    private long id;
-    private UserDto userDto;
-    private String title;
-    private String description;
-    private String initialDate;
-    private double latitude;
-    private double longitude;
-    private String endDate;
-    private EventCategory category;
+    long id;
+    UserDto userDto;
+    String title;
+    String description;
+    String initialDate;
+    double latitude;
+    double longitude;
+    String endDate;
+    EventCategory category;
 
+<<<<<<< HEAD
     public EventDto() {}
 
     public EventDto(long id, UserDto userDto, String title, String description, String initialDate, double latitude,
@@ -116,3 +121,6 @@ public class EventDto {
                 '}';
     }
 }
+=======
+}
+>>>>>>> afe7edc3b261b97c0c8701d924fe2958e621d506
