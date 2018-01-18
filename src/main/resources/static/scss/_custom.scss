@@ -50,13 +50,30 @@
     bottom: 50px;
 }
 
-.description{
-    border: 2px solid;
-    z-index:999;
-    top: 55px;
-    left:0;
-    width:250px;
-    bottom: 50px;
-    position:absolute;
+.swal-modal {
+  background-color: white;
+}
 
+.swal-title {
+  margin: 0px;
+  font-size: 24px;
+  box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.21);
+  margin-bottom: 20px;
+}
+
+.swal-text {
+  background-color: white;
+  padding: 10px;
+  display: block;
+  margin: 10px;
+  text-align: left;
+  font-size: 16px;
+  font-style: italic;
+}
+
+.swal-footer{
+  border-top: 1px solid rgba(0, 0, 0, 0.21);
+  margin-top: 32px;
+  padding: 10px;
+  overflow: hidden;
 }

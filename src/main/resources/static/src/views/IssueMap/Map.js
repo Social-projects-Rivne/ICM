@@ -2,33 +2,23 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-import DescriptionIssue from './DescriptionIssue'
+import Issue from "../Issues/Issue";
 
 class Map extends Component {
     constructor(props){
-    super(props);
-    this.state={
+        super(props);
+        this.state={
         desc : false,
         point : [],
         issues: null,
-    };
+        };
     }
 
     componentWillMount(){
         this.setState({
             issues: this.props.issues,
         });
-
-
     }
-    onClick(e, issuesID){
-        this.setState({
-            desc: !this.state.desc,
-        });
-
-    }
-
-
 
    render() {
         return (
@@ -38,19 +28,14 @@ class Map extends Component {
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
                 {this.props.issues.map(issues => (
-                    <MarkerComponent issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
+                    <IssueMarker issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
                 ))}
                 </GoogleMap>
         )
-
     }
 }
 
-
-
-
-
-class MarkerComponent extends Component{
+class IssueMarker extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -58,34 +43,34 @@ class MarkerComponent extends Component{
             latitude: this.props.issuesLat,
             longitude: this.props.issuesLng,
             descriptionFlag: false,
-            issue: null,
-        }
+            issue: "" ,
+        };
         this.showMessage = this.showMessage.bind(this);
     }
 
     showMessage(){
-            var _this = this;
+            const _this = this;
             axios.get("/api/issues/" + this.state.id)
             .then(function(response) {
                 _this.setState({
                     issue: response.data
                 });
-                swal({title: "asdasd", text: response});
+                swal({title: response.data.title, text: " Name: " + response.data.userDto.firstName+"  " +
+                    response.data.userDto.lastName + "\n" + "Description: \n " + response.data.description +
+                     "\n" + "Initial Date: " + response.data.initialDate});
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
-            console.log('issue',this.state.issue);
-
 
     }
+
     render(){
         return(
             <Marker
                 key={this.state.id}
                 position={{ lat: this.state.latitude, lng: this.state.longitude }}
                 onClick = { this.showMessage }
-
             />
         )
     }
