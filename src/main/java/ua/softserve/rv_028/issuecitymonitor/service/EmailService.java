@@ -1,6 +1,8 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -11,15 +13,15 @@ import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 
 @Service
+@Log4j
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class EmailService {
 
-    private static final Logger LOGGER = Logger.getLogger(EmailService.class);
+    String receiverEmail;
+    String emailSubject;
+    String emailText;
 
-    private String receiverEmail;
-    private String emailSubject;
-    private String emailText;
-
-    private JavaMailSender emailSender;
+    JavaMailSender emailSender;
 
     @Autowired
     public EmailService(JavaMailSender emailSender) {
@@ -60,10 +62,10 @@ public class EmailService {
         };
 
         try {
-            LOGGER.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
+            log.info("Sending " + emailSubject + " email to " + receiverEmail + " ...");
             emailSender.send(message);
         } catch (MailAuthenticationException e){
-            LOGGER.error(e);
+            log.error(e);
         }
     }
 

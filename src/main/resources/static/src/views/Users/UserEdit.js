@@ -2,12 +2,10 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-import {
-    Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
-    Label, Row
-} from "reactstrap";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 import {Link} from "react-router-dom";
-
 
 class EditUsers extends Component {
     constructor(props) {
@@ -27,7 +25,7 @@ class EditUsers extends Component {
             registrationDate: true,
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleRegistrationDateChange = this.handleRegistrationDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -46,19 +44,15 @@ class EditUsers extends Component {
 
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
+    handleRegistrationDateChange(m){
+        this.setState(function(prev) {
             return {
                 users: {
                     ...prev.users,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
+                    registrationDate: m.format("DD/MM/YYYY HH:mm")
+                }
             }
-        })
+        });
     }
 
     handleChange(e) {
@@ -126,13 +120,9 @@ class EditUsers extends Component {
                                             <Label>Registration Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <InputGroup>
-                                                <Input value={this.state.users.registrationDate} type="text"
-                                                       name="registrationDate" placeholder="DD/MM/YYYY hh:mm"
-                                                       onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.registrationDate ?
-                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
-                                            </InputGroup>
+                                            <DateTime value={this.state.users.registrationDate} dateFormat="DD/MM/YYYY"
+                                             timeFormat="HH:mm" onChange={this.handleRegistrationDateChange}
+                                             inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                     </FormGroup>
 
@@ -159,7 +149,6 @@ class EditUsers extends Component {
                                             <Input value={this.state.users.userStatus} onChange={this.handleChange}
                                                    type="select" name="userStatus"
                                                    placeholder="Role">
-                                                <option>DELETED</option>
                                                 <option>BANNED</option>
                                                 <option>ACTIVE</option>
                                                 <option>UNCONFIRMED</option>

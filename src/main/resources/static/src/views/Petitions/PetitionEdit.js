@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import swal from 'sweetalert';
 import moment from 'moment';
-import {
-    Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, InputGroup, InputGroupAddon,
-    Label, Row
-} from "reactstrap";
+import {Button, Card, CardBody, CardFooter, CardHeader, Col, Form, FormGroup, Input, Label, Row} from "reactstrap";
+import DateTime from 'react-datetime';
+import 'react-datetime/css/react-datetime.css';
 import {Link} from "react-router-dom";
 
 class PetitionEdit extends Component {
@@ -23,7 +22,7 @@ class PetitionEdit extends Component {
             initialDate: true,
         };
 
-        this.handleDateChange = this.handleDateChange.bind(this);
+        this.handleInitialDateChange = this.handleInitialDateChange.bind(this);
         this.handleSave = this.handleSave.bind(this);
         this.handleChange = this.handleChange.bind(this);
     }
@@ -41,19 +40,15 @@ class PetitionEdit extends Component {
             });
     }
 
-    handleDateChange(e) {
-        const name = e.target.name;
-        const value = e.target.value;
-
-        this.setState(function (prev) {
+    handleInitialDateChange(m){
+        this.setState(function(prev) {
             return {
                 petition: {
                     ...prev.petition,
-                    [name]: value
-                },
-                [name]: moment(value, "DD/MM/YYYY HH:mm", true).isValid()
+                    initialDate: m.format("DD/MM/YYYY HH:mm")
+                }
             }
-        })
+        });
     }
 
     handleChange(e) {
@@ -117,13 +112,9 @@ class PetitionEdit extends Component {
                                             <Label>Initial Date</Label>
                                         </Col>
                                         <Col xs="12" md="4">
-                                            <InputGroup>
-                                                <Input value={this.state.petition.initialDate} type="text"
-                                                       name="initialDate" placeholder="DD/MM/YYYY hh:mm"
-                                                       onChange={this.handleDateChange}/>
-                                                <InputGroupAddon className={this.state.initialDate ?
-                                                    "fa fa-calendar-check-o" : "fa fa-calendar-times-o"}/>
-                                            </InputGroup>
+                                            <DateTime value={this.state.petition.initialDate} dateFormat="DD/MM/YYYY"
+                                            timeFormat="HH:mm" onChange={this.handleInitialDateChange}
+                                            inputProps={{readOnly: true, className: "form-control form-control-readonly"}} />
                                         </Col>
                                     </FormGroup>
 

@@ -7,6 +7,7 @@ import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Sort;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static org.springframework.data.domain.Sort.Direction.ASC;
 
 @RunWith(MockitoJUnitRunner.class)
 public class EventControllerTest {
@@ -24,6 +26,8 @@ public class EventControllerTest {
     private final static IllegalArgumentException EXCEPTION_NOT_FOUND = new IllegalArgumentException("event not found");
     private final static int PAGE_INDEX = 1;
     private final static int PAGE_SIZE = 10;
+    private final static Sort.Direction SORT_DIRECTION = ASC;
+    private final static String SORT_COLUMN = "id";
 
     @InjectMocks
     private EventController eventController;
@@ -48,10 +52,10 @@ public class EventControllerTest {
     @Test
     public void testGetAllByPage(){
         Page<EventDto> eventDtoPage = new PageImpl<>(new ArrayList<>());
-        when(eventService.findAllByPage(PAGE_INDEX,PAGE_SIZE)).thenReturn(eventDtoPage);
-        Page<EventDto> page = eventController.getAllByPage(PAGE_INDEX, PAGE_SIZE);
+        when(eventService.findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN)).thenReturn(eventDtoPage);
+        Page<EventDto> page = eventController.getAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
 
-        verify(eventService).findAllByPage(PAGE_INDEX,PAGE_SIZE);
+        verify(eventService).findAllByPage(PAGE_INDEX, PAGE_SIZE, SORT_DIRECTION, SORT_COLUMN);
         verifyNoMoreInteractions(eventService);
         assertEquals(eventDtoPage, page);
     }

@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,26 +17,19 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static com.google.common.base.Preconditions.checkNotNull;
+
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class RestorePasswordService  {
 
-    private static final Logger LOGGER = Logger.getLogger(RestorePasswordService.class);
-
-    private UserDao userDao;
-    private RestorePasswordDao restorePasswordDao;
-    private EmailService emailService;
-    private UserMapper userMapper;
-    private BCryptPasswordEncoder passwordEncoder;
-
-    @Autowired
-    public RestorePasswordService(UserDao userDao, RestorePasswordDao restorePasswordDao, EmailService emailService,
-                                      UserMapper userMapper, BCryptPasswordEncoder encoder) {
-        this.userDao = userDao;
-        this.restorePasswordDao = restorePasswordDao;
-        this.emailService = emailService;
-        this.userMapper = userMapper;
-        this.passwordEncoder = encoder;
-    }
+    UserDao userDao;
+    RestorePasswordDao restorePasswordDao;
+    EmailService emailService;
+    UserMapper userMapper;
+    BCryptPasswordEncoder passwordEncoder;
 
     public void createResetToken(String email) {
         User user = userDao.findUserByUsername(email);
@@ -45,7 +41,7 @@ public class RestorePasswordService  {
         restorePasswordDao.save(new RestorePassword(user, token, LocalDateTime.now()));
         emailService.sendRestorePasswordEmail(userMapper.toDto(user), token);
 
-        LOGGER.debug("User " + email + " has requested password reset");
+        log.debug("User " + email + " has requested password reset");
     }
 
     public void setNewPasswordForUser(String email, String password, String token) {
@@ -60,11 +56,12 @@ public class RestorePasswordService  {
         if (token == null || token.isEmpty())
             throw new RestorePasswordException("User \'" + email + "\' wrote empty token");
 
+        checkNotNull(restorePasswordDao.findByUser(userEntity));
         if (!restorePasswordDao.findByUser(userEntity).getToken().equals(token))
             throw new RestorePasswordException("User \'" + email + "\' wrote incorrect token");
 
         userEntity.setPassword(passwordEncoder.encode(password));
         userDao.save(userEntity);
-        LOGGER.debug("User " + email + " has updated his password");
+        log.debug("User " + email + " has updated his password");
     }
 }

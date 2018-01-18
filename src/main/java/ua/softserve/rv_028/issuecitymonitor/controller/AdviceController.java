@@ -1,6 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
-import org.apache.log4j.Logger;
+import lombok.extern.log4j.Log4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,31 +14,30 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @ControllerAdvice
+@Log4j
 public class AdviceController {
-
-    private static final Logger LOGGER = Logger.getLogger(AdviceController.class);
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(IllegalArgumentException.class)
     public void handleIllegalArgumentException(Exception e) {
-        LOGGER.debug(e.getMessage());
+        log.debug(e.getMessage());
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.REGISTRATION_FAIL_REASON)
     @ExceptionHandler(RegistrationException.class)
     public void handleRegistrationException(RegistrationException e){
-        LOGGER.debug(e.getMessage());
+        log.debug(e.getMessage());
     }
 
     @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = Constants.CHANGE_ROLE_FAIL)
     @ExceptionHandler(LastAdminException.class)
     public void editingError(LastAdminException e){
-        LOGGER.error(e.getMessage());
+        log.error(e.getMessage());
     }
 
     @ExceptionHandler(RestorePasswordException.class)
     public void handleRestorePasswordException(RestorePasswordException e, HttpServletResponse response) throws IOException {
-        LOGGER.debug(e.getMessage());
+        log.debug(e.getMessage());
         response.sendError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
     }
 

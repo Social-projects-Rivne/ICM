@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,36 +21,32 @@ import java.util.List;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class IssueService {
 
-    private static final Logger LOGGER = Logger.getLogger(IssueService.class);
+    IssueDao issueDao;
 
-    private IssueDao issueDao;
-
-    private IssueMapper issueMapper;
-
-    @Autowired
-    public IssueService(IssueDao issueDao, IssueMapper issueMapper) {
-        this.issueDao = issueDao;
-        this.issueMapper = issueMapper;
-    }
+    IssueMapper issueMapper;
 
     public IssueDto addIssue(IssueDto issueDto){
         Issue issue = issueMapper.toEntity(issueDto);
-        LOGGER.debug("Added issue " + issueDto);
+        log.debug("Added issue " + issueDto);
         return issueMapper.toDto(issue);
     }
 
-    public Page<IssueDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
+    public Page<IssueDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<Issue> issues = issueDao.findAll(pageRequest);
-        LOGGER.debug("Found all issues");
+        log.debug("Found all issues");
         return issueMapper.toDtoPage(issues);
     }
 
     public IssueDto findById(long id) {
         Issue issue = findOne(id);
-        LOGGER.debug("Found " + issue.toString());
+        log.debug("Found " + issue.toString());
         return issueMapper.toDto(issue);
     }
 
@@ -58,13 +57,13 @@ public class IssueService {
         issue.setInitialDate(LocalDateTime.parse(issueDto.getInitialDate(), DATE_FORMAT));
         issue.setCategory(issueDto.getCategory());
         issue = issueDao.save(issue);
-        LOGGER.debug("Updated " + issue.toString());
+        log.debug("Updated " + issue.toString());
         return issueMapper.toDto(issue);
     }
 
     public void deleteById(long id) {
         issueDao.delete(id);
-        LOGGER.debug("Deleted issue " + id);
+        log.debug("Deleted issue " + id);
     }
 
     private Issue findOne(long id) {
@@ -77,7 +76,7 @@ public class IssueService {
 
     public List<IssueLocationDto> findAll() {
         List<IssueLocationDto> issueLocationDtos = issueMapper.toLocationDtoList(issueDao.findAll());
-        LOGGER.debug("Found all issue locations");
+        log.debug("Found all issue locations");
         return issueLocationDtos;
     }
 

@@ -17,7 +17,7 @@ export default class SignUp extends React.Component {
             confirmPassValid : false,
             firstName : "",
             lastName : "",
-            btnColor : "secondary",
+            btnColor : "success",
             alertColor: "primary",
             registrationIsSuccessful: false,
             registrationIsNotSuccessful: false
@@ -81,9 +81,19 @@ export default class SignUp extends React.Component {
                 break;
             case 'password':
                 passwordValid = value.length >= 3;
+                if (this.state.confirmPass !== ""){
+                    if (value === this.state.confirmPass){
+                        passwordValid = true;
+                        confirmPassValid = true;
+                    } else {
+                        passwordValid = false;
+                        confirmPassValid = false;
+                    }
+                }
                 break;
             case 'confirmPass':
-                confirmPassValid = (value === this.state.password);
+                confirmPassValid = (value.length >= 3 && value === this.state.password);
+                passwordValid = (value === this.state.password);
                 break;
             default:
                 break;
@@ -92,7 +102,7 @@ export default class SignUp extends React.Component {
             emailValid: emailValid,
             passwordValid: passwordValid,
             confirmPassValid: confirmPassValid
-        }, this.validateForm);
+        });
 
         if(emailValid && passwordValid && confirmPassValid && this.checkFirstName() && this.checkLastName()){
             this.setState({btnColor : "success"});
@@ -208,51 +218,27 @@ export default class SignUp extends React.Component {
     }
 
     checkFirstName(){
-        if (this.state.firstName === "") {
-            return null;
-        }
-        return this.state.firstName.trim().length > 1;
-
+        return this.state.firstName === "" ? null : this.state.firstName.trim().length > 1;
     }
 
     checkLastName(){
-        if (this.state.lastName === "") {
-            return null;
-        }
-        return this.state.lastName.trim().length > 1;
-
+        return this.state.lastName === "" ? null : this.state.lastName.trim().length > 1;
     }
 
 
     checkEmail(){
-        if (this.state.email === '') {
-            return null;
-        }
-        return this.state.emailValid && !this.state.emailIsUsed;
+        return this.state.email === '' ? null : this.state.emailValid && !this.state.emailIsUsed;
     }
 
     checkPassword(){
-        if (this.state.password === '') {
-            return null;
-        }
-        return this.state.passwordValid;
-
+        return this.state.password === '' ? null : this.state.passwordValid;
     }
 
     checkConfirmPassword(){
-        if (this.state.confirmPass === '') {
-            return null;
-        }
-        return this.state.confirmPassValid;
-
+        return this.state.confirmPass === '' ? null : this.state.confirmPassValid;
     }
 
-
     static visible(isTrue){
-        if (isTrue) {
-            return {display : 'block'};
-        } else {
-            return {display : 'none'};
-        }
+        return isTrue ? {display: 'block'} : {display: 'none'};
     }
 }

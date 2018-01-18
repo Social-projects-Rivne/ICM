@@ -1,6 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import org.apache.log4j.Logger;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -14,30 +17,27 @@ import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 
 @Service
+@Log4j
+@AllArgsConstructor(onConstructor = @__(@Autowired))
+@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 public class UserService {
 
-    private UserMapper userMapper;
+    UserMapper userMapper;
 
-    private final UserDao userDao;
+    UserDao userDao;
 
-    private static final Logger LOGGER = Logger.getLogger(UserService.class);
-
-    @Autowired
-    public UserService(UserDao userDao, UserMapper userMapper){
-        this.userDao = userDao;
-        this.userMapper = userMapper;
-    }
-
-    public Page<UserDto> findAllByPage(int pageNumber, int pageSize) {
-        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, Sort.Direction.ASC, "id");
-        Page<User> users = userDao.findAll(pageRequest);
-        LOGGER.debug("Found all users");
+    public Page<UserDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns,
+                                       boolean isDeleted) {
+        String[] columnArray = columns.split(",");
+        PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
+        Page<User> users = userDao.findAll(isDeleted, pageRequest);
+        log.debug("Found all users");
         return userMapper.toDtoPage(users);
     }
 
     public UserDto findById(long id){
         User user = findOne(id);
-        LOGGER.debug("Found " + user);
+        log.debug("Found " + user);
         return userMapper.toDto(user);
     }
 
@@ -46,20 +46,24 @@ public class UserService {
         user.setFirstName(userDto.getFirstName());
         user.setLastName(userDto.getLastName());
         user.setUserStatus(userDto.getUserStatus());
-        LOGGER.debug("Count of Admins in DB" + userDao.countAdmins());
+        log.debug("Count of Admins in DB" + userDao.countAdmins());
         if (userDao.countAdmins() <= 1 && (user.getUserRole() == UserRole.ADMIN) && (userDto.getUserRole() != UserRole.ADMIN)) {
             throw new LastAdminException();
         } else {
             user.setUserRole(userDto.getUserRole());
         }
         user = userDao.save(user);
-        LOGGER.debug("Updated " + user.toString());
+        log.debug("Updated " + user.toString());
         return userMapper.toDto(user);
     }
 
     public void deleteById(long id) {
-        userDao.delete(id);
-        LOGGER.debug("Deleted user " + id);
+        if (userDao.countAdmins() <= 1 && (findOne(id).getUserRole() == UserRole.ADMIN)) {
+            throw new LastAdminException();
+        } else {
+            userDao.delete(id);
+            log.debug("Deleted user " + id);
+        }
     }
 
     private User findOne(long id){
