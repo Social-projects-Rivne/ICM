@@ -17,25 +17,27 @@ import com.itextpdf.text.pdf.PdfPTable;
  * This is to create a PDF file.
  */
 public class PDFCreator {
-    private final static String[] HEADER_ARRAY = {"№", "Title", "Description", "Category", "User ID", "Initial Date"};
-    public final static Font SMALL_BOLD = new Font(Font.FontFamily.TIMES_ROMAN, 8,
-            Font.BOLD);
-    public final static Font NORMAL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 8,
-            Font.NORMAL);
+    private final static String[] HEADER_ARRAY = {"#", "Note ID", "Title", "Description", "Category", "User ID", "Initial Date"};
+    public final static Font SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
+    public final static Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
+    public final static Font TITILE_FONT = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
+
     public static void addMetaData(Document document, String sqlXMLFileName) {
-        document.addTitle("Sample Report");
+        document.addTitle("PDF Report | ICM");
         document.addSubject("Using iText");
         document.addAuthor("SoftServe Academy");
     }
+
     public static void addContent(Document document, List<DataObject> dataObjList) throws DocumentException {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
         createReportTable(paragraph, dataObjList);
         document.add(paragraph);
     }
+
     private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
             throws BadElementException {
-        PdfPTable table = new PdfPTable(6);
+        PdfPTable table = new PdfPTable(7);
         table.setWidthPercentage(100);
         paragraph.add(new Chunk("Report Table: ", SMALL_BOLD));
         if(null == dataObjList){
@@ -45,10 +47,13 @@ public class PDFCreator {
         addHeaderInTable(HEADER_ARRAY, table);
         int count = 1;
         for(DataObject dataObject : dataObjList){
-            addToTable(table, String.valueOf(count)+".");
-            addToTable(table, dataObject.getTitile());
-            addToTable(table, dataObject.getIncome());
-            addToTable(table, dataObject.getYear());
+            addToTable(table, String.valueOf(count));
+            addToTable(table, dataObject.getNoteID());
+            addToTable(table, dataObject.getTitle());
+            addToTable(table, dataObject.getDesc());
+            addToTable(table, dataObject.getCat());
+            addToTable(table, dataObject.getUserID());
+            addToTable(table, dataObject.getDate());
             count++;
         }
         paragraph.add(table);
@@ -57,8 +62,7 @@ public class PDFCreator {
     public static void addTitlePage(Document document, String title) throws DocumentException {
         Paragraph preface = new Paragraph();
         addEmptyLine(preface, 1);
-        preface.add(new Phrase("Test Report: ", NORMAL_FONT));
-        preface.add(new Phrase(title, PDFCreator.NORMAL_FONT));
+        preface.add(new Phrase(title, PDFCreator.TITILE_FONT));
         addEmptyLine(preface, 1);
         preface.add(new Phrase("Date: ", PDFCreator.SMALL_BOLD));
         preface.add(new Phrase(new Date().toString(), PDFCreator.NORMAL_FONT));

@@ -3,25 +3,52 @@ package ua.softserve.rv_028.issuecitymonitor.controller.PDF;
 
 public class DataObject {
 
-    private String year;
-    private String income;
+    private String noteID;
     private String title;
-    public String getYear() {
-        return year;
+    private String desc;
+    private String cat;
+    private String userID;
+    private String date;
+
+    public String getNoteID() {
+        return noteID;
     }
-    public void setYear(String year) {
-        this.year = year;
+    public void setNoteID(String noteID) {
+        this.noteID = noteID;
     }
-    public String getIncome() {
-        return income;
-    }
-    public void setIncome(String income) {
-        this.income = income;
-    }
-    public String getTitile() {
+
+    public String getTitle() {
         return title;
     }
-    public void setTitile(String title) {
+    public void setTitle(String title) {
         this.title = title;
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+    public void setDesc(String desc) {
+        this.desc = desc;
+    }
+
+    public String getCat() {
+        return cat;
+    }
+    public void setCat(String cat) {
+        this.cat = cat;
+    }
+
+    public String getUserID() {
+        return userID;
+    }
+    public void setUserID(String userID) {
+        this.userID = userID;
+    }
+
+    public String getDate() {
+        return date;
+    }
+    public void setDate(String date) {
+        this.date = date;
     }
 }
