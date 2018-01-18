@@ -37,8 +37,12 @@ public class PDFCreator {
 
     private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
             throws BadElementException {
-        PdfPTable table = new PdfPTable(7);
+
+        float[] columnWidths = {2, 2, 5, 5, 3, 3, 3};
+        PdfPTable table = new PdfPTable(columnWidths);
         table.setWidthPercentage(100);
+        table.getDefaultCell().setUseAscender(true);
+        table.getDefaultCell().setUseDescender(true);
         paragraph.add(new Chunk("Report Table: ", SMALL_BOLD));
         if(null == dataObjList){
             paragraph.add(new Chunk("No data to display."));
@@ -84,7 +88,7 @@ public class PDFCreator {
         PdfPCell c1 = null;
         for(String header : headerArray) {
             c1 = new PdfPCell(new Phrase(header, PDFCreator.SMALL_BOLD));
-            c1.setBackgroundColor(BaseColor.GREEN);
+            c1.setBackgroundColor(BaseColor.LIGHT_GRAY);
             c1.setHorizontalAlignment(Element.ALIGN_CENTER);
             table.addCell(c1);
         }
