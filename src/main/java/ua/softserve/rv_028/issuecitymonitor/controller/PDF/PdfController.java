@@ -1,4 +1,4 @@
-package ua.softserve.rv_028.issuecitymonitor.controller;
+package ua.softserve.rv_028.issuecitymonitor.controller.PDF;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
@@ -7,6 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfWriter;
+import ua.softserve.rv_028.issuecitymonitor.controller.PetitionController;
+
 import java.io.FileOutputStream;
 
 @RestController
@@ -59,11 +61,11 @@ public class PdfController {
             document.add(p2);
         }
         catch(Exception e){
-            System.out.println(e);
+           // System.out.println(e);
         }
         document.close();
 
 
-        LOGGER.info(pdfName + " request successful! my TEST");
+        LOGGER.debug(pdfName + " request successful!");
     }
 }

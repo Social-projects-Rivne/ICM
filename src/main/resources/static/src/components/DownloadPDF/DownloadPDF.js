@@ -24,7 +24,7 @@ class DownloadPDF extends Component {
 
     onClick(e, pageName) {
 
-        axios.get('/api/pdf/' + pageName + '.pdf')
+        axios.get('/apis/pdf/' + pageName + '.pdf')
             .then(function () {
                 const response = {
                     file: 'http://localhost:8080/api/pdf/' + pageName + '.pdf',

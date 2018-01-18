@@ -1,4 +1,4 @@
-package ua.softserve.rv_028.issuecitymonitor.controller;
+package ua.softserve.rv_028.issuecitymonitor.controller.PDF;
 
 import java.io.FileInputStream;
 import java.io.FileReader;
