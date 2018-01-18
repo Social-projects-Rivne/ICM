@@ -31,7 +31,6 @@ public class PdfDownloadController {
     @RequestMapping(value = "/pdf/{fileName:.+}", method = RequestMethod.GET, produces = "application/pdf")
     public ResponseEntity<InputStreamResource> download(@PathVariable("fileName") String fileName) throws IOException {
         FileReader pdfFile = new FileReader(downloadPath + fileName);
-        System.out.println(pdfFile.read());
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.parseMediaType("application/pdf"));
         headers.add("Access-Control-Allow-Origin", "*");
