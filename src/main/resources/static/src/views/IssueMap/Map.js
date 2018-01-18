@@ -55,9 +55,6 @@ class IssueMarker extends Component{
                 _this.setState({
                     issue: response.data
                 });
-                swal({title: response.data.title, text: " Name: " + response.data.userDto.firstName+"  " +
-                    response.data.userDto.lastName + "\n" + "Description: \n " + response.data.description +
-                     "\n" + "Initial Date: " + response.data.initialDate});
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
