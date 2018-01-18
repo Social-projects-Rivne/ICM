@@ -5,7 +5,7 @@ public class DataObject {
 
     private String year;
     private String income;
-    private String comanyName;
+    private String title;
     public String getYear() {
         return year;
     }
@@ -18,10 +18,10 @@ public class DataObject {
     public void setIncome(String income) {
         this.income = income;
     }
-    public String getComanyName() {
-        return comanyName;
+    public String getTitile() {
+        return title;
     }
-    public void setComanyName(String comanyName) {
-        this.comanyName = comanyName;
+    public void setTitile(String title) {
+        this.title = title;
     }
 }

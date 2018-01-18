@@ -81,13 +81,17 @@ public class Client {
     public static List<DataObject> getDataObjectList(){
         List<DataObject> dataObjList = new ArrayList<DataObject>();
         DataObject d1 = new DataObject();
-        d1.setComanyName("Petition 1");
+        d1.setTitile("Petition 1");
         d1.setIncome("20000");
         d1.setYear("2017");
+        d1.setYear("1");
+        d1.setYear("2");
         DataObject d2 = new DataObject();
-        d2.setComanyName("Petition 2");
+        d2.setTitile("Petition 2");
         d2.setIncome("30000");
         d2.setYear("2017");
+        d2.setYear("1");
+        d2.setYear("2");
         dataObjList.add(d1);
         dataObjList.add(d2);
         return dataObjList;

@@ -17,7 +17,7 @@ import com.itextpdf.text.pdf.PdfPTable;
  * This is to create a PDF file.
  */
 public class PDFCreator {
-    private final static String[] HEADER_ARRAY = {"S.No.", "CompanyName", "Income", "Year"};
+    private final static String[] HEADER_ARRAY = {"№", "Title", "Description", "Category", "User ID", "Initial Date"};
     public final static Font SMALL_BOLD = new Font(Font.FontFamily.TIMES_ROMAN, 8,
             Font.BOLD);
     public final static Font NORMAL_FONT = new Font(Font.FontFamily.TIMES_ROMAN, 8,
@@ -25,7 +25,7 @@ public class PDFCreator {
     public static void addMetaData(Document document, String sqlXMLFileName) {
         document.addTitle("Sample Report");
         document.addSubject("Using iText");
-        document.addAuthor("Arun");
+        document.addAuthor("SoftServe Academy");
     }
     public static void addContent(Document document, List<DataObject> dataObjList) throws DocumentException {
         Paragraph paragraph = new Paragraph();
@@ -35,9 +35,9 @@ public class PDFCreator {
     }
     private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
             throws BadElementException {
-        PdfPTable table = new PdfPTable(4);
+        PdfPTable table = new PdfPTable(6);
         table.setWidthPercentage(100);
-        paragraph.add(new Chunk("Report Table :- ", SMALL_BOLD));
+        paragraph.add(new Chunk("Report Table: ", SMALL_BOLD));
         if(null == dataObjList){
             paragraph.add(new Chunk("No data to display."));
             return;
@@ -46,7 +46,7 @@ public class PDFCreator {
         int count = 1;
         for(DataObject dataObject : dataObjList){
             addToTable(table, String.valueOf(count)+".");
-            addToTable(table, dataObject.getComanyName());
+            addToTable(table, dataObject.getTitile());
             addToTable(table, dataObject.getIncome());
             addToTable(table, dataObject.getYear());
             count++;
