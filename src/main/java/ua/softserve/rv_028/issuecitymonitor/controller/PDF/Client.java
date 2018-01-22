@@ -96,38 +96,52 @@ public class Client {
 
     public List<DataObject> getDataObjectList(String pdfName){
 
-        System.out.println(pdfName);
 
         List<DataObject> dataObjList = new ArrayList<DataObject>();
 
-        DataObject[] d = new DataObject[100];
-
-        for(int i = 0; i < 100; i++){
-            d[i] = new DataObject();
-            d[i].setNoteID("1");
-            d[i].setTitle("Petition name 1");
-            d[i].setDesc("desc 1");
-            d[i].setCat("cat 1");
-            d[i].setUserID("1");
-            d[i].setDate("2017");
-
-            dataObjList.add(d[i]);
-        }
 
         if (pdfName.equals("issues")){
 
-            List<IssueDto> test = issueService.findAllForPDF();
-            for(IssueDto item : test){
-                System.out.println(item);
+            List<IssueDto> dataList = issueService.findAllForPDF();
+            DataObject[] d = new DataObject[dataList.size()];
+
+            for (int i = 0; i < dataList.size(); i++)
+            {
+                int j = dataList.size() - i - 1;
+
+                d[j] = new DataObject();
+                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
+                d[j].setTitle(dataList.get(j).getTitle());
+                d[j].setDesc(dataList.get(j).getDescription());
+               // d[j].setCat(dataList.get(j).getCategory());
+                d[j].setCat("test");
+                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
+                d[j].setDate(dataList.get(j).getInitialDate());
+
+                dataObjList.add(d[j]);
             }
 
         }
 
         else if (pdfName.equals("events")){
 
-            List<EventDto> test = eventService.findAllForPDF();
-            for(EventDto item : test){
-                System.out.println(item);
+            List<EventDto> dataList = eventService.findAllForPDF();
+            DataObject[] d = new DataObject[dataList.size()];
+
+            for (int i = 0; i < dataList.size(); i++)
+            {
+                int j = dataList.size() - i - 1;
+
+                d[j] = new DataObject();
+                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
+                d[j].setTitle(dataList.get(j).getTitle());
+                d[j].setDesc(dataList.get(j).getDescription());
+                // d[j].setCat(dataList.get(j).getCategory());
+                d[j].setCat("test");
+                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
+                d[j].setDate(dataList.get(j).getInitialDate());
+
+                dataObjList.add(d[j]);
             }
 
         }
@@ -135,9 +149,23 @@ public class Client {
 
         else if (pdfName.equals("petitions")){
 
-            List<PetitionDto> test = petitionService.findAllForPDF();
-            for(PetitionDto item : test){
-                System.out.println(item);
+            List<PetitionDto> dataList = petitionService.findAllForPDF();
+            DataObject[] d = new DataObject[dataList.size()];
+
+            for (int i = 0; i < dataList.size(); i++)
+            {
+                int j = dataList.size() - i - 1;
+
+                d[j] = new DataObject();
+                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
+                d[j].setTitle(dataList.get(j).getTitle());
+                d[j].setDesc(dataList.get(j).getDescription());
+                // d[j].setCat(dataList.get(j).getCategory());
+                d[j].setCat("test");
+                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
+                d[j].setDate(dataList.get(j).getInitialDate());
+
+                dataObjList.add(d[j]);
             }
 
         }
