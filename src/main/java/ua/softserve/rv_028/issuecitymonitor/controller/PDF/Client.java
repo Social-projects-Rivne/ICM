@@ -2,21 +2,23 @@ package ua.softserve.rv_028.issuecitymonitor.controller.PDF;
 
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.RestController;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.pdf.PdfWriter;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
+import ua.softserve.rv_028.issuecitymonitor.service.EventService;
+import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
+import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
-
-import ua.softserve.rv_028.issuecitymonitor.controller.IssueController;
-import ua.softserve.rv_028.issuecitymonitor.controller.PetitionController;
-import ua.softserve.rv_028.issuecitymonitor.controller.EventController;
-import ua.softserve.rv_028.issuecitymonitor.controller.UserController;
 
 
 @RestController
@@ -24,7 +26,15 @@ import ua.softserve.rv_028.issuecitymonitor.controller.UserController;
 public class Client {
 
 
-    public static void main(String...args){
+    private final IssueService issueService;
+    private final EventService eventService;
+    private final PetitionService petitionService;
+
+    @Autowired
+    Client(IssueService issueService, EventService eventService, PetitionService petitionService){
+        this.issueService = issueService;
+        this.eventService = eventService;
+        this.petitionService = petitionService;
     }
 
 
@@ -58,7 +68,7 @@ public class Client {
 
     private void createPdf(String pdfName){
 
-        List<DataObject> dataObjList = getDataObjectList();
+        List<DataObject> dataObjList = getDataObjectList(pdfName);
         Document document = null;
         try {
             //Document is not auto-closable hence need to close it separately
@@ -84,28 +94,53 @@ public class Client {
         }
     }
 
-    public static List<DataObject> getDataObjectList(){
+    public List<DataObject> getDataObjectList(String pdfName){
+
+        System.out.println(pdfName);
 
         List<DataObject> dataObjList = new ArrayList<DataObject>();
 
-        DataObject d1 = new DataObject();
-        d1.setNoteID("1");
-        d1.setTitle("Petition name 1");
-        d1.setDesc("desc 1");
-        d1.setCat("cat 1");
-        d1.setUserID("1");
-        d1.setDate("2017");
+        DataObject[] d = new DataObject[100];
 
-        DataObject d2 = new DataObject();
-        d2.setNoteID("2");
-        d2.setTitle("Petition name 1");
-        d2.setDesc("desc 2");
-        d2.setCat("cat 1");
-        d2.setUserID("2");
-        d2.setDate("2018");
+        for(int i = 0; i < 100; i++){
+            d[i] = new DataObject();
+            d[i].setNoteID("1");
+            d[i].setTitle("Petition name 1");
+            d[i].setDesc("desc 1");
+            d[i].setCat("cat 1");
+            d[i].setUserID("1");
+            d[i].setDate("2017");
 
-        dataObjList.add(d1);
-        dataObjList.add(d2);
+            dataObjList.add(d[i]);
+        }
+
+        if (pdfName.equals("issues")){
+
+            List<IssueDto> test = issueService.findAllForPDF();
+            for(IssueDto item : test){
+                System.out.println(item);
+            }
+
+        }
+
+        else if (pdfName.equals("events")){
+
+            List<EventDto> test = eventService.findAllForPDF();
+            for(EventDto item : test){
+                System.out.println(item);
+            }
+
+        }
+
+
+        else if (pdfName.equals("petitions")){
+
+            List<PetitionDto> test = petitionService.findAllForPDF();
+            for(PetitionDto item : test){
+                System.out.println(item);
+            }
+
+        }
 
 
         return dataObjList;

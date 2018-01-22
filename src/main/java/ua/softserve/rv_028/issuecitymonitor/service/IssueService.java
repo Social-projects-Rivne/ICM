@@ -44,6 +44,14 @@ public class IssueService {
         return issueMapper.toDtoPage(issues);
     }
 
+
+    public List<IssueDto> findAllForPDF() {
+        List<Issue> issues = issueDao.findAll();
+        log.debug("Found all issues");
+        return issueMapper.toDtoList(issues);
+    }
+
+
     public IssueDto findById(long id) {
         Issue issue = findOne(id);
         log.debug("Found " + issue.toString());

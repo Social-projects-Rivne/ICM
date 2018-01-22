@@ -19,6 +19,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -50,6 +51,12 @@ public class PetitionService {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<Petition> petitions = petitionDao.findAll(pageRequest);
         return petitionMapper.toDtoPage(petitions);
+    }
+
+    public List<PetitionDto> findAllForPDF() {
+        List<Petition> petitions = petitionDao.findAll();
+        log.debug("Found all issues");
+        return petitionMapper.toDtoList(petitions);
     }
 
     public PetitionDto findById(long id) {

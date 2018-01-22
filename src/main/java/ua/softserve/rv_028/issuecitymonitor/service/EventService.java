@@ -15,6 +15,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -34,6 +35,12 @@ public class EventService {
         Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(pageRequest));
         log.debug("Found all events");
         return eventDtos;
+    }
+
+    public List<EventDto> findAllForPDF() {
+        List<Event> events = eventDao.findAll();
+        log.debug("Found all issues");
+        return eventMapper.toDtoList(events);
     }
 
     public EventDto findById(long id) {
