@@ -113,8 +113,7 @@ public class Client {
                 d[j].setNoteID(Long.toString(dataList.get(j).getId()));
                 d[j].setTitle(dataList.get(j).getTitle());
                 d[j].setDesc(dataList.get(j).getDescription());
-               // d[j].setCat(dataList.get(j).getCategory());
-                d[j].setCat("test");
+                d[j].setCat(dataList.get(j).getCategory().toString());
                 d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
                 d[j].setDate(dataList.get(j).getInitialDate());
 
@@ -136,8 +135,7 @@ public class Client {
                 d[j].setNoteID(Long.toString(dataList.get(j).getId()));
                 d[j].setTitle(dataList.get(j).getTitle());
                 d[j].setDesc(dataList.get(j).getDescription());
-                // d[j].setCat(dataList.get(j).getCategory());
-                d[j].setCat("test");
+                d[j].setCat(dataList.get(j).getCategory().toString());
                 d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
                 d[j].setDate(dataList.get(j).getInitialDate());
 
@@ -160,8 +158,7 @@ public class Client {
                 d[j].setNoteID(Long.toString(dataList.get(j).getId()));
                 d[j].setTitle(dataList.get(j).getTitle());
                 d[j].setDesc(dataList.get(j).getDescription());
-                // d[j].setCat(dataList.get(j).getCategory());
-                d[j].setCat("test");
+                d[j].setCat(dataList.get(j).getCategory().toString());
                 d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
                 d[j].setDate(dataList.get(j).getInitialDate());
 
