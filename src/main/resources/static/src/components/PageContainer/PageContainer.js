@@ -11,6 +11,7 @@ class PageContainer extends Component {
             sortColumn: this.props.sortColumn,
             sortDirection: this.props.sortDirection,
             title: this.props.title,
+            button: this.props.button,
             children: this.props.children
         };
         this.handleFirstPage = this.handleFirstPage.bind(this);
@@ -27,7 +28,8 @@ class PageContainer extends Component {
             sortColumn: props.sortColumn,
             sortDirection: props.sortDirection,
             title: props.title,
-            children: props.children
+            children: props.children,
+            button: props.button
         });
     }
 
@@ -130,8 +132,8 @@ class PageContainer extends Component {
                 <Row>
                     <Col xs="12" lg="12">
                         <Card className="page-container-margin">
-                            <CardHeader>
-                                {this.state.title}
+                            <CardHeader className="indent-for-button">
+                                {this.state.title} {this.state.button}
                                 <div className="pull-right">
                                     {this.sorting()}
                                 </div>
