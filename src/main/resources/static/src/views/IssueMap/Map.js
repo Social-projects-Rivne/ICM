@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
+import IssueMarker from './IssueMarker'
 
 
 class Map extends Component {
@@ -46,24 +47,5 @@ class Map extends Component {
     }
 }
 
-class IssueMarker extends Component{
-
-    constructor(props){
-        super(props);
-    }
-
-    render(){
-        console.log("Working!" + this.props.ID);
-        return(
-            <div className = "issue_marker">
-                <h1>Hello issues + {this.props.ID}!</h1>
-
-            </div>
-        )
-
-    }
-
-
-}
 
 export default withScriptjs(withGoogleMap(Map));
