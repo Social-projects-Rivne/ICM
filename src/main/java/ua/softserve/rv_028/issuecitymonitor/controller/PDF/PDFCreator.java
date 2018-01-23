@@ -18,6 +18,7 @@ import com.itextpdf.text.pdf.PdfPTable;
  */
 public class PDFCreator {
     private final static String[] HEADER_ARRAY = {"#", "Note ID", "Title", "Description", "Category", "User ID", "Initial Date"};
+    private final static String[] HEADER_ARRAY_USER = {"#", "USER ID", "First name", "Last name", "Phone", "User Role", "Reg Date"};
     public final static Font SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
     public final static Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
     public final static Font TITILE_FONT = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
@@ -28,14 +29,14 @@ public class PDFCreator {
         document.addAuthor("SoftServe Academy");
     }
 
-    public static void addContent(Document document, List<DataObject> dataObjList) throws DocumentException {
+    public static void addContent(Document document, List<DataObject> dataObjList, String pdfName) throws DocumentException {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
-        createReportTable(paragraph, dataObjList);
+        createReportTable(paragraph, dataObjList, pdfName);
         document.add(paragraph);
     }
 
-    private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
+    private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList, String pdfName)
             throws BadElementException {
 
         float[] columnWidths = {2, 2, 5, 5, 3, 3, 3};
@@ -48,7 +49,13 @@ public class PDFCreator {
             paragraph.add(new Chunk("No data to display."));
             return;
         }
+
+        if (pdfName.equals("users")){
+            addHeaderInTable(HEADER_ARRAY_USER, table);
+        }
+        else {
         addHeaderInTable(HEADER_ARRAY, table);
+        }
         int count = 1;
         for(DataObject dataObject : dataObjList){
             addToTable(table, String.valueOf(count));
