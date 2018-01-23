@@ -18,7 +18,7 @@ import com.itextpdf.text.pdf.PdfPTable;
  */
 public class PDFCreator {
     private final static String[] HEADER_ARRAY = {"#", "Note ID", "Title", "Description", "Category", "User ID", "Initial Date"};
-    private final static String[] HEADER_ARRAY_USER = {"#", "USER ID", "First name", "Last name", "Phone", "User Role", "Reg Date"};
+    private final static String[] HEADER_ARRAY_USER = {"#", "USER ID", "First name", "Last name", "Phone", "Email", "User Role", "Reg Date"};
     public final static Font SMALL_BOLD = new Font(Font.FontFamily.HELVETICA, 12, Font.BOLD);
     public final static Font NORMAL_FONT = new Font(Font.FontFamily.HELVETICA, 12, Font.NORMAL);
     public final static Font TITILE_FONT = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
@@ -32,30 +32,37 @@ public class PDFCreator {
     public static void addContent(Document document, List<DataObject> dataObjList, String pdfName) throws DocumentException {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
-        createReportTable(paragraph, dataObjList, pdfName);
+
+        if(pdfName.equals("users")){
+            createReportTableUser(paragraph, dataObjList);
+        }
+
+        else {
+            createReportTable(paragraph, dataObjList);
+        }
+
+
         document.add(paragraph);
     }
 
-    private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList, String pdfName)
+    private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
             throws BadElementException {
 
-        float[] columnWidths = {2, 2, 5, 5, 3, 3, 3};
+        float[] columnWidths = {1, 1, 2, 2, 4, 4, 3};
+
         PdfPTable table = new PdfPTable(columnWidths);
         table.setWidthPercentage(100);
         table.getDefaultCell().setUseAscender(true);
         table.getDefaultCell().setUseDescender(true);
         paragraph.add(new Chunk("Report Table: ", SMALL_BOLD));
+
         if(null == dataObjList){
             paragraph.add(new Chunk("No data to display."));
             return;
         }
 
-        if (pdfName.equals("users")){
-            addHeaderInTable(HEADER_ARRAY_USER, table);
-        }
-        else {
         addHeaderInTable(HEADER_ARRAY, table);
-        }
+
         int count = 1;
         for(DataObject dataObject : dataObjList){
             addToTable(table, String.valueOf(count));
@@ -69,6 +76,42 @@ public class PDFCreator {
         }
         paragraph.add(table);
     }
+
+
+    private static void createReportTableUser(Paragraph paragraph, List<DataObject> dataObjList)
+            throws BadElementException {
+
+        float[] columnWidths = {1, 2, 2, 2, 4, 4, 3, 3};
+
+        PdfPTable table = new PdfPTable(columnWidths);
+        table.setWidthPercentage(100);
+        table.getDefaultCell().setUseAscender(true);
+        table.getDefaultCell().setUseDescender(true);
+        paragraph.add(new Chunk("Report Table: ", SMALL_BOLD));
+
+        if(null == dataObjList){
+            paragraph.add(new Chunk("No data to display."));
+            return;
+        }
+
+        addHeaderInTable(HEADER_ARRAY_USER, table);
+
+        int count = 1;
+        for(DataObject dataObject : dataObjList){
+            addToTable(table, String.valueOf(count));
+            addToTable(table, dataObject.getNoteID());
+            addToTable(table, dataObject.getTitle());
+            addToTable(table, dataObject.getDesc());
+            addToTable(table, dataObject.getCat());
+            addToTable(table, dataObject.getEmail());
+            addToTable(table, dataObject.getUserID());
+            addToTable(table, dataObject.getDate());
+            count++;
+        }
+        paragraph.add(table);
+    }
+
+
     /** Helper methods start here **/
     public static void addTitlePage(Document document, String title) throws DocumentException {
         Paragraph preface = new Paragraph();
@@ -114,4 +157,5 @@ public class PDFCreator {
         addEmptyLine(paragraph, 1);
         return paragraph;
     }
+
 }

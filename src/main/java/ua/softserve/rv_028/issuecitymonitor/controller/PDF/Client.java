@@ -186,6 +186,7 @@ public class Client {
                 d[j].setTitle(dataList.get(j).getFirstName());
                 d[j].setDesc(dataList.get(j).getLastName());
                 d[j].setCat(dataList.get(j).getPhone());
+                d[j].setEmail(dataList.get(j).getEmail());
                 d[j].setUserID(dataList.get(j).getUserRole().toString());
                 d[j].setDate(dataList.get(j).getRegistrationDate());
 
