@@ -15,6 +15,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
+import java.util.List;
 
 @Service
 @Log4j
@@ -33,6 +34,12 @@ public class UserService {
         Page<User> users = userDao.findAll(isDeleted, pageRequest);
         log.debug("Found all users");
         return userMapper.toDtoPage(users);
+    }
+
+    public List<UserDto> findAllForPDF() {
+        List<User> users = userDao.findAll();
+        log.debug("Found all issues");
+        return userMapper.toDtoList(users);
     }
 
     public UserDto findById(long id){
