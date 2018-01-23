@@ -9,6 +9,7 @@ public class DataObject {
     private String cat;
     private String userID;
     private String date;
+    private String email;
 
     public String getNoteID() {
         return noteID;
@@ -50,5 +51,12 @@ public class DataObject {
     }
     public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
