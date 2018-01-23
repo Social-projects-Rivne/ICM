@@ -3,7 +3,7 @@ import axios from 'axios';
 import swal from 'sweetalert';
 import Map from './Map';
 
-class IssueMap extends Component {
+class RenderMapComponent extends Component {
 
     constructor(props){
                 super(props);
@@ -27,9 +27,7 @@ class IssueMap extends Component {
                             issues: response.data,
                         });
                     })
-                    .catch(function (error) {
-                        swal({title: "Something went wrong!", text: error, icon: "error"});
-                    });
+
 
             }
 
@@ -54,4 +52,4 @@ class IssueMap extends Component {
   }
 }
 
-export default IssueMap;
+export default RenderMapComponent;
