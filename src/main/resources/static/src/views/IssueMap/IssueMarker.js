@@ -9,7 +9,7 @@ class IssueMarker extends Component{
         super(props);
 
         this.state = {
-            issue: {
+            response: {
                 id: "",
                 title: "",
                 description: "",
@@ -21,20 +21,22 @@ class IssueMarker extends Component{
 
     }
 
+
     componentWillMount() {
         var _this = this;
         axios.get("/api/issues/" + this.props.ID)
             .then(function(response) {
                 _this.setState({
-                    issue: response.data
+                    response: response.data
                 })
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
 }
+
     render(){
-        console.log("issues: ", this.state.issues);
+        console.log("issues1: ", this.state.response);
         return(
             <div className = "issue_marker" >
              <div className="card">
