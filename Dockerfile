@@ -1,10 +1,6 @@
-FROM openjdk:8
-MAINTAINER rv-028Java
-RUN apt-get update
-RUN apt-get install -y maven
-COPY pom.xml /usr/local/pom.xml
-COPY src /usr/local/src
-WORKDIR COPY /usr/local
-RUN mvn package
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "ICM.jar"]
+FROM openjdk:8-jdk-alpine
+VOLUME /tmp
+ARG JAR_FILE
+ADD target/issue-city-monitor-0.0.1-SNAPSHOT.jar issue-city-monitor.jar
+EXPOSE 8085
+ENTRYPOINT ["java","-jar","issue-city-monitor.jar"]
