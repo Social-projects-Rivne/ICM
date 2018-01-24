@@ -1,0 +1,17 @@
+version: '2'
+services:
+    db:
+        container_name: sample_db
+        image: postgres:10
+        volumes:
+            - sample_db:/var/lib/postgresql/data
+        environment:
+            - POSTGRES_PASSWORD=12345
+            - POSTGRES_USER=postgres
+            - POSTGRES_DB=postgres
+            - PGDATA=/var/lib/postgresql/data/pgdata
+        ports:
+            - 5432:5432
+
+volumes:
+    sample_db: {}
