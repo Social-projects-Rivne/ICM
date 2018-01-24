@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-import IssueMarker from './IssueMarker'
+
 
 
 class Map extends Component {
@@ -45,6 +45,84 @@ class Map extends Component {
                 </GoogleMap>
         )
     }
+}
+
+class IssueMarker extends Component{
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            ID: this.props.ID,
+            display: "issue_marker",
+            response: {
+                id: "",
+                title: "",
+                description: "",
+                initialDate: "",
+                category: ""
+            },
+            initialDate: true
+        };
+
+    }
+
+    componentWillMount() {
+        var _this = this;
+        axios.get("/api/issues/" + this.state.ID)
+            .then(function(response) {
+                _this.setState({
+                    response: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+}
+
+    componentWillReceiveProps(nextProps) {
+        var _this = this;
+
+        axios.get("/api/issues/" + nextProps.ID)
+            .then(function(response) {
+                _this.setState({
+                    response: response.data,
+                    display: "issue_marker",
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+}
+
+    onClick(e){
+        this.setState({
+            display: "issue_marker_v1"
+        });
+    }
+
+    render(){
+        console.log("this.props.ID : ",this.props.ID, this.state.display);
+        return(
+            <div className = {this.state.display}>
+             <div className="card">
+               <div className="card-header">
+                    {this.state.response.title}
+               </div>
+               <div className="card-body">
+                 <h4 className="card-title">{this.state.response.description}</h4>
+                 <p className="card-text">Comments:</p>
+                 <button className="btn btn-primary" onClick = {(e)=>this.onClick(e)}>
+                    Close
+                 </button>
+               </div>
+             </div>
+            </div>
+        )
+
+    }
+
+
 }
 
 
