@@ -107,15 +107,33 @@ class IssueMarker extends Component{
             <div className = {this.state.display}>
              <div className="card">
                <div className="card-header">
-                    {this.state.response.title}
+                    <div className="title-card">
+                        {this.state.response.title}
+                    </div>
+
+                    <button className="btn btn-primary close-button" onClick = {(e)=>this.onClick(e)}>
+                        Close
+                    </button>
+
                </div>
+
+               <div className="card-img">
+                    <img/>
+               </div>
+
                <div className="card-body">
-                 <h4 className="card-title">{this.state.response.description}</h4>
-                 <p className="card-text">Comments:</p>
-                 <button className="btn btn-primary" onClick = {(e)=>this.onClick(e)}>
-                    Close
-                 </button>
+
+                 <div className="description-card">
+                    <p>Description:</p>
+                    {this.state.response.description}
+                 </div>
+
+                 <div className="comments-card">
+                    <p>Comments:</p>
+                 </div>
+
                </div>
+
              </div>
             </div>
         )
