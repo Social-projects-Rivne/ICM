@@ -162,9 +162,10 @@ header button{
 .description-card{
     font-size: 14px;
     width: 300px;
-    height: 30px;
+    height: 400px;
     left: 50px;
     position:absolute;
+    background-color: gray;
 }
 
 .title-card{
@@ -180,7 +181,7 @@ header button{
 }
 
 .card-body{
-    height: 400px;
+    height: 100%;
 }
 
 .card-header{

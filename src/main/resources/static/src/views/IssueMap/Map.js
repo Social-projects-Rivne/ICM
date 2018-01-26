@@ -118,14 +118,16 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                    <img/>
+                    <img />
                </div>
 
                <div className="card-body">
 
                  <div className="description-card">
-                    <p>Description:</p>
-                    {this.state.response.description}
+                     <label for="comment">Description:</label>
+                     <textarea disabled="true"  rows="5" id="comment">
+                        {this.state.response.description}
+                     </textarea>
                  </div>
 
                  <div className="comments-card">
