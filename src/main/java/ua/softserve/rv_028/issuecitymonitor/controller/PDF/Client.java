@@ -74,20 +74,20 @@ public class Client {
     private void createPdf(PdfTypes pdfName) {
 
         List<DataObject> dataObjList = getDataObjectList(pdfName);
-        writePdf(pdfName.getName(), dataObjList);
+        writePdf(pdfName, dataObjList);
     }
 
-    private void writePdf(String pdfName, List<DataObject> dataObjList) {
+    private void writePdf(PdfTypes pdfName, List<DataObject> dataObjList) {
         Document document = null;
         try {
             //Document is not auto-closable hence need to close it separately
             document = new Document(PageSize.A4);
             PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(downloadPath + pdfName + PDF_EXTENSION));
             HeaderFooter event = new HeaderFooter();
-            event.setHeader(pdfName);
+            event.setHeader(pdfName.getName());
             writer.setPageEvent(event);
             document.open();
-            PDFCreator.addMetaData(document, pdfName);
+            PDFCreator.addMetaData(document);
             PDFCreator.addTitlePage(document, pdfName);
             PDFCreator.addContent(document, dataObjList, pdfName);
         } catch (DocumentException | FileNotFoundException e) {
