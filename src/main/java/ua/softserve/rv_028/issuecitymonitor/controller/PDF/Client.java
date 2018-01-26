@@ -9,10 +9,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
+import static ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -20,7 +22,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ua.softserve.rv_028.issuecitymonitor.controller.PDF.Client.PdfTypes.*;
 
 
 @RestController
@@ -121,18 +122,7 @@ public class Client {
 
     }
 
-    enum PdfTypes {
-        ISSUES,
-        EVENTS,
-        PETITIONS,
-        USERS;
 
-        String getName() {
-            return this.name().toLowerCase();
-        }
-
-
-    }
 
 
 }
