@@ -1,6 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor.dto;
 
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.Data;
 import lombok.experimental.FieldDefaults;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 

@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserStatus;
 
@@ -26,130 +27,181 @@ import java.util.Set;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class User implements UserDetails{
+public class User implements UserDetails, PdfWritable {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id", unique = true)
-	long id;
+    @Id
+    @GeneratedValue
+    @Column(name = "id", unique = true)
+    Long id;
 
-	@Column(name = "userRole")
-	@Enumerated(EnumType.ORDINAL)
-	UserRole userRole;
+    @Column(name = "userRole")
+    @Enumerated(EnumType.ORDINAL)
+    UserRole userRole;
 
-	@Column(name = "reg_date")
-	LocalDateTime registrationDate;
+    @Column(name = "reg_date")
+    LocalDateTime registrationDate;
 
-	@NotEmpty
-	@Column(name = "first_name")
-	String firstName;
+    @NotEmpty
+    @Column(name = "first_name")
+    String firstName;
 
-	@NotEmpty
-	@Column(name = "password")
-	@Pattern(regexp = "^.{3,}$")
-	String password;
+    @NotEmpty
+    @Column(name = "password")
+    @Pattern(regexp = "^.{3,}$")
+    String password;
 
-	@NotEmpty
-	@Column(name = "email", unique = true)
-	@Pattern(regexp = "^([\\w.%+-]+)@([\\w-]+\\.)+([\\w]{2,})$")
-	String username;
+    @NotEmpty
+    @Column(name = "email", unique = true)
+    @Pattern(regexp = "^([\\w.%+-]+)@([\\w-]+\\.)+([\\w]{2,})$")
+    String username;
 
-	@NotEmpty
-	@Column(name = "last_name")
-	String lastName;
+    @NotEmpty
+    @Column(name = "last_name")
+    String lastName;
 
-	@Column(name = "phone")
-	@Pattern(regexp = "^(\\+)+([\\d]{1,4})([\\d]{10})$")
-	String phone;
+    @Column(name = "phone")
+    @Pattern(regexp = "^(\\+)+([\\d]{1,4})([\\d]{10})$")
+    String phone;
 
-	@Column(name = "user_status")
-	@Enumerated(EnumType.ORDINAL)
-	UserStatus userStatus;
+    @Column(name = "user_status")
+    @Enumerated(EnumType.ORDINAL)
+    UserStatus userStatus;
 
-	@Column(name = "delete_date")
-	LocalDateTime deleteDate;
+    @Column(name = "delete_date")
+    LocalDateTime deleteDate;
 
-	@Column(name = "avatar_url")
-	String avatarUrl;
+    @Column(name = "avatar_url")
+    String avatarUrl;
 
-	@Setter(AccessLevel.NONE)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
-	Set<Issue> issues = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Issue.class)
+    Set<Issue> issues = new HashSet<>();
 
-	@Setter(AccessLevel.NONE)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Event.class)
-	Set<Event> events = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Event.class)
+    Set<Event> events = new HashSet<>();
 
-	@Setter(AccessLevel.NONE)
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
-	Set<Petition> petitions = new HashSet<>();
+    @Setter(AccessLevel.NONE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", targetEntity = Petition.class)
+    Set<Petition> petitions = new HashSet<>();
 
-	public User(String firstName, String lastName, String password, String username,
-				String phone, UserStatus userStatus, UserRole userRole,
-				String avatarUrl) {
-		this.username = username;
-		this.password = password;
-		this.userRole = userRole;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.phone = phone;
-		this.userStatus = userStatus;
-		this.avatarUrl = avatarUrl;
-	}
+    public User(String firstName, String lastName, String password, String username,
+                String phone, UserStatus userStatus, UserRole userRole,
+                String avatarUrl) {
+        this.username = username;
+        this.password = password;
+        this.userRole = userRole;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.userStatus = userStatus;
+        this.avatarUrl = avatarUrl;
+    }
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return UserRole.collectionForRole(this.userRole);
-	}
+    private static boolean checkUserStatus(UserStatus status) {
+        return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return UserRole.collectionForRole(this.userRole);
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return checkUserStatus(this.getUserStatus());
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
 
-	@PreRemove
-	public void delete() {
-		this.deleteDate = LocalDateTime.now();
-		this.userStatus = UserStatus.DELETED;
-	}
+    @Override
+    public boolean isEnabled() {
+        return checkUserStatus(this.getUserStatus());
+    }
 
-	@PrePersist
-	private void insert() {
-		this.registrationDate = LocalDateTime.now();
-	}
+    @PreRemove
+    public void delete() {
+        this.deleteDate = LocalDateTime.now();
+        this.userStatus = UserStatus.DELETED;
+    }
 
-	private static boolean checkUserStatus(UserStatus status) {
-		return status == UserStatus.ACTIVE || status == UserStatus.UNCONFIRMED;
-	}
+    @PrePersist
+    private void insert() {
+        this.registrationDate = LocalDateTime.now();
+    }
 
-	@Override
-	public String toString() {
-		return "User{" +
-				"id=" + id +
-				", userRole=" + userRole +
-				", registrationDate='" + registrationDate + '\'' +
-				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", username='" + username + '\'' +
-				", phone='" + phone + '\'' +
-				", userStatus=" + userStatus +
-				", deleteDate='" + deleteDate + '\'' +
-				", avatarUrl='" + avatarUrl + '\'' +
-				'}';
-	}
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", userRole=" + userRole +
+                ", registrationDate='" + registrationDate + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", username='" + username + '\'' +
+                ", phone='" + phone + '\'' +
+                ", userStatus=" + userStatus +
+                ", deleteDate='" + deleteDate + '\'' +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                '}';
+    }
+
+    @Override
+    public String getTitle() {
+        return firstName;
+    }
+
+    @Override
+    public String getDescription() {
+        return lastName;
+    }
+
+    @Override
+    public String getCat() {
+        return phone;
+    }
+
+    @Override
+    public User getUserDto() {
+        return null;
+    }
+
+    @Override
+    public LocalDateTime getInitialDate() {
+        return registrationDate;
+    }
+
+    @Override
+    public String getMail() {
+        return username;
+    }
+
+	/*   case USERS:
+
+                List<UserDto> dataList = userService.findAllForPDF();
+                DataObject[] d = new DataObject[dataList.size()];
+
+                for (int i = 0; i < dataList.size(); i++) {
+                    int j = dataList.size() - i - 1;
+
+                    d[j] = new DataObject();
+                    d[j].setNoteID(Long.toString(dataList.get(j).getId()));
+                    d[j].setTitle(dataList.get(j).getFirstName());
+                    d[j].setDesc(dataList.get(j).getLastName());
+                    d[j].setCat(dataList.get(j).getPhone());
+                    d[j].setEmail(dataList.get(j).getEmail());
+                    d[j].setUserID(dataList.get(j).getUserRole().toString());
+                    d[j].setDate(dataList.get(j).getRegistrationDate());
+
+                    dataObjList.add(d[j]);
+                }
+                break;*/
 }

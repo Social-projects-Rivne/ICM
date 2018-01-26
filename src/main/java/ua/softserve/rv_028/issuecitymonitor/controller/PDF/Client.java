@@ -1,17 +1,14 @@
 package ua.softserve.rv_028.issuecitymonitor.controller.PDF;
 
+import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
+import com.itextpdf.text.pdf.PdfWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.pdf.PdfWriter;
-import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
@@ -21,6 +18,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static ua.softserve.rv_028.issuecitymonitor.controller.PDF.Client.PdfTypes.*;
 
 
 @RestController
@@ -34,7 +34,7 @@ public class Client {
     private final UserService userService;
 
     @Autowired
-    Client(IssueService issueService, EventService eventService, PetitionService petitionService, UserService userService){
+    Client(IssueService issueService, EventService eventService, PetitionService petitionService, UserService userService) {
         this.issueService = issueService;
         this.eventService = eventService;
         this.petitionService = petitionService;
@@ -44,25 +44,25 @@ public class Client {
 
     @GetMapping(path = "/issues")
     private void createPdfIssues() {
-        createPdf("issues");
+        createPdf(ISSUES);
     }
 
 
     @GetMapping(path = "/petitions")
     private void createPdfPetitions() {
-        createPdf("petitions");
+        createPdf(PETITIONS);
     }
 
 
     @GetMapping(path = "/events")
     private void createPdfEvents() {
-        createPdf("events");
+        createPdf(EVENTS);
     }
 
 
     @GetMapping(path = "/users")
     private void createPdfUsers() {
-        createPdf("users");
+        createPdf(USERS);
     }
 
 
@@ -70,9 +70,13 @@ public class Client {
     private String downloadPath;
     private static final String PDF_EXTENSION = ".pdf";
 
-    private void createPdf(String pdfName){
+    private void createPdf(PdfTypes pdfName) {
 
         List<DataObject> dataObjList = getDataObjectList(pdfName);
+        writePdf(pdfName.getName(), dataObjList);
+    }
+
+    private void writePdf(String pdfName, List<DataObject> dataObjList) {
         Document document = null;
         try {
             //Document is not auto-closable hence need to close it separately
@@ -85,118 +89,50 @@ public class Client {
             PDFCreator.addMetaData(document, pdfName);
             PDFCreator.addTitlePage(document, pdfName);
             PDFCreator.addContent(document, dataObjList, pdfName);
-        }
-        catch (DocumentException | FileNotFoundException e) {
+        } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
             System.out.println("FileNotFoundException occurs.." + e.getMessage());
-        }
-
-        finally{
-            if(null != document){
+        } finally {
+            if (null != document) {
                 document.close();
             }
         }
     }
 
-    public List<DataObject> getDataObjectList(String pdfName){
+    public List<DataObject> getDataObjectList(PdfTypes pdfName) {
 
-
-        List<DataObject> dataObjList = new ArrayList<DataObject>();
-
-
-        if (pdfName.equals("issues")){
-
-            List<IssueDto> dataList = issueService.findAllForPDF();
-            DataObject[] d = new DataObject[dataList.size()];
-
-            for (int i = 0; i < dataList.size(); i++)
-            {
-                int j = dataList.size() - i - 1;
-
-                d[j] = new DataObject();
-                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
-                d[j].setTitle(dataList.get(j).getTitle());
-                d[j].setDesc(dataList.get(j).getDescription());
-                d[j].setCat(dataList.get(j).getCategory().toString());
-                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
-                d[j].setDate(dataList.get(j).getInitialDate());
-
-                dataObjList.add(d[j]);
-            }
-
+        List<PdfWritable> dataList = new ArrayList<>();
+        switch (pdfName) {
+            case ISSUES:
+                dataList = issueService.findAllForPDF();
+                break;
+            case EVENTS:
+                dataList = eventService.findAllForPDF();
+                break;
+            case PETITIONS:
+                dataList = petitionService.findAllForPDF();
+                break;
+            case USERS:
+                dataList = userService.findAllForPDF();
+                break;
         }
 
-        else if (pdfName.equals("events")){
+        return dataList.stream().map(DataObject::new).collect(Collectors.toList());
 
-            List<EventDto> dataList = eventService.findAllForPDF();
-            DataObject[] d = new DataObject[dataList.size()];
-
-            for (int i = 0; i < dataList.size(); i++)
-            {
-                int j = dataList.size() - i - 1;
-
-                d[j] = new DataObject();
-                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
-                d[j].setTitle(dataList.get(j).getTitle());
-                d[j].setDesc(dataList.get(j).getDescription());
-                d[j].setCat(dataList.get(j).getCategory().toString());
-                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
-                d[j].setDate(dataList.get(j).getInitialDate());
-
-                dataObjList.add(d[j]);
-            }
-
-        }
-
-
-        else if (pdfName.equals("petitions")){
-
-            List<PetitionDto> dataList = petitionService.findAllForPDF();
-            DataObject[] d = new DataObject[dataList.size()];
-
-            for (int i = 0; i < dataList.size(); i++)
-            {
-                int j = dataList.size() - i - 1;
-
-                d[j] = new DataObject();
-                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
-                d[j].setTitle(dataList.get(j).getTitle());
-                d[j].setDesc(dataList.get(j).getDescription());
-                d[j].setCat(dataList.get(j).getCategory().toString());
-                d[j].setUserID(Long.toString(dataList.get(j).getUserDto().getId()));
-                d[j].setDate(dataList.get(j).getInitialDate());
-
-                dataObjList.add(d[j]);
-            }
-
-        }
-
-
-        else if (pdfName.equals("users")){
-
-            List<UserDto> dataList = userService.findAllForPDF();
-            DataObject[] d = new DataObject[dataList.size()];
-
-            for (int i = 0; i < dataList.size(); i++)
-            {
-                int j = dataList.size() - i - 1;
-
-                d[j] = new DataObject();
-                d[j].setNoteID(Long.toString(dataList.get(j).getId()));
-                d[j].setTitle(dataList.get(j).getFirstName());
-                d[j].setDesc(dataList.get(j).getLastName());
-                d[j].setCat(dataList.get(j).getPhone());
-                d[j].setEmail(dataList.get(j).getEmail());
-                d[j].setUserID(dataList.get(j).getUserRole().toString());
-                d[j].setDate(dataList.get(j).getRegistrationDate());
-
-                dataObjList.add(d[j]);
-            }
-
-        }
-
-
-        return dataObjList;
     }
+
+    enum PdfTypes {
+        ISSUES,
+        EVENTS,
+        PETITIONS,
+        USERS;
+
+        String getName() {
+            return this.name().toLowerCase();
+        }
+
+
+    }
+
 
 }

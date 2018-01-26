@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
@@ -17,6 +18,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -37,10 +39,10 @@ public class EventService {
         return eventDtos;
     }
 
-    public List<EventDto> findAllForPDF() {
+    public List<PdfWritable> findAllForPDF() {
         List<Event> events = eventDao.findAll();
         log.debug("Found all issues");
-        return eventMapper.toDtoList(events);
+        return events.stream().map(is -> (PdfWritable) is).collect(toList());
     }
 
     public EventDto findById(long id) {

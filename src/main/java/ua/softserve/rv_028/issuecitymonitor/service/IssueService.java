@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
@@ -18,6 +19,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -30,7 +32,7 @@ public class IssueService {
 
     IssueMapper issueMapper;
 
-    public IssueDto addIssue(IssueDto issueDto){
+    public IssueDto addIssue(IssueDto issueDto) {
         Issue issue = issueMapper.toEntity(issueDto);
         log.debug("Added issue " + issueDto);
         return issueMapper.toDto(issue);
@@ -45,10 +47,10 @@ public class IssueService {
     }
 
 
-    public List<IssueDto> findAllForPDF() {
+    public List<PdfWritable> findAllForPDF() {
         List<Issue> issues = issueDao.findAll();
         log.debug("Found all issues");
-        return issueMapper.toDtoList(issues);
+        return issues.stream().map(is -> (PdfWritable) is).collect(toList());
     }
 
 

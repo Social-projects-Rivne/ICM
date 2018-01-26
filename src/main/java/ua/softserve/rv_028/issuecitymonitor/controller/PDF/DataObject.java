@@ -11,6 +11,15 @@ public class DataObject {
     private String date;
     private String email;
 
+    public DataObject(PdfWritable writable) {
+        this.setNoteID(Long.toString(writable.getId()));
+        this.setTitle(writable.getTitle());
+        this.setDesc(writable.getDescription());
+        this.setCat(writable.getCat());
+        this.setUserID(Long.toString(writable.getUserDto().getId()));
+        this.setDate(writable.getInitialDate().toString());
+    }
+
     public String getNoteID() {
         return noteID;
     }
