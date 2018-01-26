@@ -62,7 +62,8 @@ class IssueMarker extends Component{
                 initialDate: "",
                 category: ""
             },
-            initialDate: true
+            initialDate: true,
+            imagePath: "../../scss/Images/"
         };
 
     }
@@ -108,7 +109,7 @@ class IssueMarker extends Component{
              <div className="card">
                <div className="card-header">
                     <div className="title-card">
-                        {this.state.response.title}
+                        <h1>{this.state.response.title}</h1>
                     </div>
 
                     <button className="btn btn-primary close-button" onClick = {(e)=>this.onClick(e)}>
@@ -118,20 +119,22 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                    <img />
+                    <img className=" response-img img" src= {this.state.imagePath + this.state.response.photo + ".jpg"}
+                    alt = {this.state.response.title + "photo"}
+                    />
                </div>
 
                <div className="card-body">
 
                  <div className="description-card">
-                     <label for="comment">Description:</label>
-                     <textarea disabled="true"  rows="5" id="comment">
-                        {this.state.response.description}
-                     </textarea>
+                     <label for="comment"><h3>Description:</h3></label>
+                     <textarea readOnly className="card-textarea"
+                      value = {this.state.response.description}
+                      />
                  </div>
 
                  <div className="comments-card">
-                    <p>Comments:</p>
+                    <p><h3>Comments:</h3></p>
                  </div>
 
                </div>
