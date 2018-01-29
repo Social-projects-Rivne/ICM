@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
@@ -63,4 +64,12 @@ public class IssueController {
         log.debug("DELETE request");
         issueService.deleteById(id);
     }
+
+    @GetMapping("/img")
+    public String getPath(){
+        log.debug("GET request");
+        return issueService.getPathToImg();
+    }
+
+
 }

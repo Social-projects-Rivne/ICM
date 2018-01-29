@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-
+import IssueMarker from "./IssueMarker"
 
 
 class Map extends Component {
@@ -11,14 +11,21 @@ class Map extends Component {
         this.state={
         desc : false,
         point : null,
-        issues: null,
+        imagePath: [],
         };
     }
 
     componentWillMount(){
-        this.setState({
-            issues: this.props.issues,
-        });
+        var _this = this;
+        axios.get("/api/issues/img")
+            .then(function(response) {
+                _this.setState({
+                    imagePath: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
     }
 
     onClick(e,ID){
@@ -29,6 +36,7 @@ class Map extends Component {
     }
 
    render() {
+   console.log("this img path", this.state.imagePath);
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
@@ -37,115 +45,14 @@ class Map extends Component {
               >
               {this.props.issues.map(issues => (
                 <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
-                  onClick={(e)=>this.onClick(e,issues.id)}
+                    onClick={(e)=>this.onClick(e,issues.id)}
                   >
                 </Marker>
               ))}
-              {this.state.desc && <IssueMarker ID = {this.state.point}/>}
+              {this.state.desc && <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>}
                 </GoogleMap>
         )
     }
-}
-
-class IssueMarker extends Component{
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            ID: this.props.ID,
-            display: "issue_marker",
-            response: {
-                id: "",
-                title: "",
-                description: "",
-                initialDate: "",
-                category: ""
-            },
-            initialDate: true,
-            imagePath: "../../scss/Images/"
-        };
-
-    }
-
-    componentWillMount() {
-        var _this = this;
-        axios.get("/api/issues/" + this.state.ID)
-            .then(function(response) {
-                _this.setState({
-                    response: response.data
-                })
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            });
-}
-
-    componentWillReceiveProps(nextProps) {
-        var _this = this;
-
-        axios.get("/api/issues/" + nextProps.ID)
-            .then(function(response) {
-                _this.setState({
-                    response: response.data,
-                    display: "issue_marker",
-                })
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            });
-}
-
-    onClick(e){
-        this.setState({
-            display: "issue_marker_v1"
-        });
-    }
-
-    render(){
-        console.log("this.props.ID : ",this.props.ID, this.state.display);
-        return(
-            <div className = {this.state.display}>
-             <div className="card">
-               <div className="card-header">
-                    <div className="title-card">
-                        <h1>{this.state.response.title}</h1>
-                    </div>
-
-                    <button className="btn btn-primary close-button" onClick = {(e)=>this.onClick(e)}>
-                        Close
-                    </button>
-
-               </div>
-
-               <div className="card-img">
-                    <img className=" response-img img" src= {this.state.imagePath + this.state.response.photo + ".jpg"}
-                    alt = {this.state.response.title + "photo"}
-                    />
-               </div>
-
-               <div className="card-body">
-
-                 <div className="description-card">
-                     <label for="comment"><h3>Description:</h3></label>
-                     <textarea readOnly className="card-textarea"
-                      value = {this.state.response.description}
-                      />
-                 </div>
-
-                 <div className="comments-card">
-                    <p><h3>Comments:</h3></p>
-                 </div>
-
-               </div>
-
-             </div>
-            </div>
-        )
-
-    }
-
-
 }
 
 

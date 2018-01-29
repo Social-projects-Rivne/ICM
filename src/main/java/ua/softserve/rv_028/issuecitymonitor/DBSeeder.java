@@ -70,7 +70,7 @@ public class DBSeeder {
 
                 Issue issue = new Issue(user, "title" + a + "" + i, "desc" + a + "" + i, date(),
                         r.nextDouble(), r.nextDouble(), randomEnum(IssueCategory.class),
-                        "first_img");
+                        "first_img.jpg");
                 session.save(issue);
 
                 for (int j = 0; j < 5; j++) {
