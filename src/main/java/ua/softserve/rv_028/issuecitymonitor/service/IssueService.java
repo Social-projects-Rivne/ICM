@@ -80,4 +80,10 @@ public class IssueService {
         return issueLocationDtos;
     }
 
+    public String getPathToImg() {
+
+        String downloadPath = "../../scss/Images/";
+        log.debug("Found path" + downloadPath);
+        return downloadPath;
+    }
 }

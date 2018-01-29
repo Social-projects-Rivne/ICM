@@ -151,16 +151,6 @@ header button{
 
 }
 
-.comments-card{
-    font-size: 14px;
-    right: 50px;
-    position:absolute;
-    height: 300px;
-    width: 300px;
-    background-color: gray;
-
-}
-
 .description-card{
     font-size: 14px;
     width: 300px;
@@ -198,11 +188,31 @@ header button{
     max-height: 300px;
 }
 
-.card-textarea{
-    height: 255px;
-    width:100%;
+.card-text{
+    height: 300px;
+    display: block;
+    border: 1px solid #c2cfd6;
+    overflow-y: scroll;
 }
 
 .card{
     height: 100%;
+}
+
+.comments-card{
+    font-size: 14px;
+    right: 50px;
+    position:absolute;
+    height: 300px;
+    width: 300px;
+    background-color: green;
+
+}
+
+.comments{
+        position:absolute;
+        height: 300px;
+        width: 300px;
+        background-color: gray;
+        border: 1px solid #c2cfd6;
 }
