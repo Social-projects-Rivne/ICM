@@ -17,6 +17,7 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.CommentIssueMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -41,5 +42,11 @@ public class CommentIssueService {
                 LocalDateTime.parse(commentIssueDto.getInitialDate(), DATE_FORMAT)));
         log.debug("Create comment for issue");
         return commentIssueMapper.toDto(commentIssue);
+    }
+
+    public List<CommentIssueDto> findAllComment(){
+        List<CommentIssue> listCommentIssue = commentIssueDao.findAll();
+        log.debug("All comments for issue");
+        return commentIssueMapper.toDtoList(listCommentIssue);
     }
 }

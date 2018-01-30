@@ -8,6 +8,8 @@ import ua.softserve.rv_028.issuecitymonitor.dto.CommentIssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.service.CommentIssueService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/issues/comment")
 @Log4j
@@ -15,6 +17,12 @@ import ua.softserve.rv_028.issuecitymonitor.service.CommentIssueService;
 public class CommentIssueController {
 
     CommentIssueService commentIssueService;
+
+    @GetMapping
+    public List<CommentIssueDto> listComment(){
+        log.debug("get list comments for issue");
+        return commentIssueService.findAllComment();
+    }
 
     @PostMapping
     public CommentIssueDto createComment(@RequestBody CommentIssueDto comment, @RequestBody IssueDto issue){
