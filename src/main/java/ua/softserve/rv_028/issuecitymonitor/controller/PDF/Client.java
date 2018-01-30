@@ -10,11 +10,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes;
+import static ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes.*;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
-import static ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes.*;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -72,7 +72,6 @@ public class Client {
     private static final String PDF_EXTENSION = ".pdf";
 
     private void createPdf(PdfTypes pdfName) {
-
         List<DataObject> dataObjList = getDataObjectList(pdfName);
         writePdf(pdfName, dataObjList);
     }

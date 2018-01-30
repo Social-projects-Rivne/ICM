@@ -10,5 +10,16 @@ public enum PdfTypes {
         return this.name().toLowerCase();
     }
 
+    public Boolean getNameUsers() {
+
+        if(this.name().equals("USERS")) {
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
 
 }

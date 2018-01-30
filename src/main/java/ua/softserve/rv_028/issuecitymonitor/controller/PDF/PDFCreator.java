@@ -14,6 +14,7 @@ import com.itextpdf.text.Phrase;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes;
+import static ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes.*;
 
 /**
  * This is to create a PDF file.
@@ -35,7 +36,12 @@ public class PDFCreator {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
 
-        if((pdfName.toString()).equals("USERS")){
+//        System.out.println(pdfName);
+//        System.out.println(pdfName.getName());
+//        System.out.println(pdfName.getNameUsers());
+
+        if(pdfName.getNameUsers()){
+            System.out.println("OKOKOKOKOK");
             createReportTableUser(paragraph, dataObjList);
         }
 
