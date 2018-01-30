@@ -2,12 +2,9 @@ package ua.softserve.rv_028.issuecitymonitor.entity;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.apache.tomcat.jni.Local;
+import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -19,10 +16,16 @@ import java.time.LocalDateTime;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Comment {
 
+    @Id
+    @GeneratedValue
     @Column(name = "id", unique = true)
     Long id;
 
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "issue_id")
+    Issue issue;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     User user;
 
@@ -30,5 +33,13 @@ public class Comment {
     String body;
 
     @Column(name = "initial_date")
+    @Convert(converter = LocalDateTimeConverter.class)
     LocalDateTime initialDate;
+
+    public Comment(Issue issue, User user, String body, LocalDateTime initialDate){
+        this.issue = issue;
+        this.user = user;
+        this.body = body;
+        this.initialDate = initialDate;
+    }
 }
