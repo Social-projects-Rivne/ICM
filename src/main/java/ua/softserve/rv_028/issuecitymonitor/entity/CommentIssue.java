@@ -8,13 +8,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "comments")
+@Table(name = "comments_issues")
 @NoArgsConstructor
 @Getter
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Comment {
+public class CommentIssue {
 
     @Id
     @GeneratedValue
@@ -36,7 +36,7 @@ public class Comment {
     @Convert(converter = LocalDateTimeConverter.class)
     LocalDateTime initialDate;
 
-    public Comment(Issue issue, User user, String body, LocalDateTime initialDate){
+    public CommentIssue(Issue issue, User user, String body, LocalDateTime initialDate){
         this.issue = issue;
         this.user = user;
         this.body = body;

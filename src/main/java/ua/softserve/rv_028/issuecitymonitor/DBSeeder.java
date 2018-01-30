@@ -3,8 +3,6 @@ package ua.softserve.rv_028.issuecitymonitor;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -73,6 +71,10 @@ public class DBSeeder {
                 session.save(issue);
 
                 for (int j = 0; j < 5; j++) {
+
+                    CommentIssue comment = new CommentIssue(issue, user, "body" + j + "" + a + "" + i, date());
+                    session.save(comment);
+
                     EventAttachment eventAttachment = new EventAttachment(event, user, "url" + j + "" + a + "" + i);
                     session.save(eventAttachment);
 

@@ -4,20 +4,21 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ua.softserve.rv_028.issuecitymonitor.entity.CommentIssue;
-import ua.softserve.rv_028.issuecitymonitor.service.CommentService;
+import ua.softserve.rv_028.issuecitymonitor.dto.CommentIssueDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
+import ua.softserve.rv_028.issuecitymonitor.service.CommentIssueService;
 
 @RestController
 @RequestMapping("/api/issues/comment")
 @Log4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
-public class CommentController {
+public class CommentIssueController {
 
-    CommentService commentService;
+    CommentIssueService commentIssueService;
 
     @PostMapping
-    public CommentIssue createComment(@RequestBody CommentIssue comment){
+    public CommentIssueDto createComment(@RequestBody CommentIssueDto comment, @RequestBody IssueDto issue){
         log.debug("create comment");
-        return commentService.createComment(comment);
+        return commentIssueService.createComment(comment, issue);
     }
 }
