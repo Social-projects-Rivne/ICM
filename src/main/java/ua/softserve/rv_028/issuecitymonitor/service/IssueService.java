@@ -82,11 +82,11 @@ public class IssueService {
         return issueLocationDtos;
     }
 
-    private String pathForImg ="../../scss/Images/";
-
     public String getPathToImg() {
 
-        log.debug("Found path" + pathForImg);
-        return pathForImg;
+        String downloadPath = "../../scss/Images/";
+        log.debug("Found path" + downloadPath);
+        return downloadPath;
+
     }
 }
