@@ -3,7 +3,7 @@ import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
 import IssueMarker from "./IssueMarker"
-
+const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 class Map extends Component {
     constructor(props){
@@ -43,12 +43,18 @@ class Map extends Component {
                 defaultMaxZoom = {this.props.defaultmaxzoom}
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
-              {this.props.issues.map(issues => (
-                <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
-                    onClick={(e)=>this.onClick(e,issues.id)}
-                  >
-                </Marker>
-              ))}
+              <MarkerClusterer
+                 averageCenter
+                 enableRetinaIcons
+                 gridSize={100}
+              >
+                  {this.props.issues.map(issues => (
+                    <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
+                        onClick={(e)=>this.onClick(e,issues.id)}
+                      >
+                    </Marker>
+                  ))}
+              </MarkerClusterer>
               {this.state.desc && <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>}
                 </GoogleMap>
         )
