@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-import IssueMarker from "./IssueMarker"
+import IssueMarker from "./Markers/IssueMarker"
+import EventsMarker from "./Markers/EventsMarker"
 const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 class Map extends Component {
@@ -50,6 +51,12 @@ class Map extends Component {
                   {this.props.issues.map(issues => (
                     <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
                         onClick={(e)=>this.onClick(e,issues.id)}
+                      >
+                    </Marker>
+                  ))}
+
+                  {this.props.events.map(events => (
+                    <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
                       >
                     </Marker>
                   ))}

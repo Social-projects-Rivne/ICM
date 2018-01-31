@@ -39,6 +39,9 @@ public class Event {
     @Column(name = "description")
     String description;
 
+    @Column(name="photo")
+    String photo;
+
     @Column(name = "initial_date")
     @Convert(converter = LocalDateTimeConverter.class)
     LocalDateTime initialDate;
@@ -75,7 +78,7 @@ public class Event {
     Set<EventChangeRecord> changeRecords = new HashSet<>();
 
     public Event(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
-                 LocalDateTime endDate, EventCategory category) {
+                 LocalDateTime endDate, EventCategory category,String photo) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -84,6 +87,7 @@ public class Event {
         this.longitude = longitude;
         this.endDate = endDate;
         this.category = category;
+        this.photo = photo;
     }
 
     @PrePersist

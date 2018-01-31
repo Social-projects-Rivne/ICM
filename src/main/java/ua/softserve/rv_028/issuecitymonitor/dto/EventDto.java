@@ -13,6 +13,7 @@ public class EventDto {
     String title;
     String description;
     String initialDate;
+    String photo;
     double latitude;
     double longitude;
     String endDate;

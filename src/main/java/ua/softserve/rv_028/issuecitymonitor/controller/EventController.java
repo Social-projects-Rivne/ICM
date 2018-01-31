@@ -9,7 +9,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventLocationDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.service.EventService;
+
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.PAGE_SIZE;
 
@@ -47,5 +51,12 @@ public class EventController {
     public void delete(@PathVariable long id) {
         log.debug("DELETE request");
         eventService.deleteById(id);
+    }
+
+
+    @GetMapping("/map")
+    public List<EventLocationDto> getAll(){
+        log.debug("GET request");
+        return eventService.findAll();
     }
 }

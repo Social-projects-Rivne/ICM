@@ -6,9 +6,14 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventLocationDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
+import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -32,6 +37,19 @@ public class EventMapper extends MapperService<EventDto, Event> {
         dto.setLongitude(entity.getLongitude());
         dto.setEndDate(entity.getEndDate().format(DATE_FORMAT));
         dto.setCategory(entity.getCategory());
+        return dto;
+    }
+
+    public List<EventLocationDto> toLocationDtoList(List<Event> events) {
+        return events.stream().map(this::toLocationDto).collect(Collectors.toList());
+    }
+
+    public EventLocationDto toLocationDto(Event entity) {
+        EventLocationDto dto = new EventLocationDto();
+
+        dto.setId(entity.getId());
+        dto.setLatitude(entity.getLatitude());
+        dto.setLongitude(entity.getLongitude());
         return dto;
     }
 

@@ -14,7 +14,8 @@ class RenderMapComponent extends Component {
                     centlng: 26.251617,
                     zoom:7,
                     defaultmaxzoom:10,
-                    issues: []
+                    issues: [],
+                    events: []
                 };
             }
 
@@ -26,6 +27,13 @@ class RenderMapComponent extends Component {
                         _this.setState({
                             issues: response.data,
                         });
+                    })
+
+                axios.get("/api/events/map")
+                    .then(function(response){
+                        _this.setState({
+                            events: response.data
+                        })
                     })
 
 
@@ -45,6 +53,7 @@ class RenderMapComponent extends Component {
                 centlng = {this.state.centlng}
                 centlat = {this.state.centlat}
                 issues = {this.state.issues}
+                events = {this.state.events}
             />
         </div>
    </div>

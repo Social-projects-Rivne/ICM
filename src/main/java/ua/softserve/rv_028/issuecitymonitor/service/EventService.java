@@ -11,10 +11,13 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.EventLocationDto;
+import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
@@ -71,4 +74,11 @@ public class EventService {
         }
         return event;
     }
+
+    public List<EventLocationDto> findAll() {
+        List<EventLocationDto> eventLocationDtos = eventMapper.toLocationDtoList(eventDao.findAll());
+        log.debug("Found all issue locations");
+        return eventLocationDtos;
+    }
+
 }

@@ -61,7 +61,7 @@ public class DBSeeder {
 
             for (int a = 0; a < 3; a++) {
                 Event event = new Event(user, "Title" + a + "" + i, "description" + a + "" + i, date(),
-                        r.nextDouble(), r.nextDouble(), date(), randomEnum(EventCategory.class));
+                        r.nextDouble() + 2, r.nextDouble() + 2, date(), randomEnum(EventCategory.class),"first_img.jpg");
                 session.save(event);
 
                 Petition petition = new Petition(user, "Title" + a + "" + i, "descript" + a + "" + i, date(),
