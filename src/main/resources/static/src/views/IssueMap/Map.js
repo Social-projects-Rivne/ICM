@@ -36,7 +36,6 @@ class Map extends Component {
     }
 
    render() {
-   console.log("this img path", this.state.imagePath);
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
