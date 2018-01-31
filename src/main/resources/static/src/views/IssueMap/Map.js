@@ -17,7 +17,7 @@ class Map extends Component {
 
     componentWillMount(){
         var _this = this;
-        axios.get("/api/issues/img")
+        axios.get("/api/map/img")
             .then(function(response) {
                 _this.setState({
                     imagePath: response.data
