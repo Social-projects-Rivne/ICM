@@ -17,7 +17,7 @@ class Map extends Component {
 
     componentWillMount(){
         var _this = this;
-        axios.get("/api/issues/img")
+        axios.get("/api/map/img")
             .then(function(response) {
                 _this.setState({
                     imagePath: response.data
@@ -36,7 +36,6 @@ class Map extends Component {
     }
 
    render() {
-   console.log("this img path", this.state.imagePath);
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
