@@ -27,7 +27,7 @@ public final class TestUtils {
 
     public static Issue createIssue(User owner, int i) {
         return new Issue(owner, TITLE + i, DESCRIPTION + i, LocalDateTime.now(),
-                0.0, 0.0, IssueCategory.CAT1);
+                0.0, 0.0, IssueCategory.CAT1, "first_img");
     }
 
     public static Petition createPetition(User owner, int i) {

@@ -1,10 +1,9 @@
 package ua.softserve.rv_028.issuecitymonitor.service;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,13 +21,12 @@ import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
 @Log4j
-@AllArgsConstructor(onConstructor = @__(@Autowired))
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class IssueService {
 
-    IssueDao issueDao;
+    private final IssueDao issueDao;
 
-    IssueMapper issueMapper;
+    private final IssueMapper issueMapper;
 
     public IssueDto addIssue(IssueDto issueDto){
         Issue issue = issueMapper.toEntity(issueDto);
@@ -79,5 +77,4 @@ public class IssueService {
         log.debug("Found all issue locations");
         return issueLocationDtos;
     }
-
 }

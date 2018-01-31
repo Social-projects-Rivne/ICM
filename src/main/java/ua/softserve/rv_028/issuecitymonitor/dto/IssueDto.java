@@ -13,6 +13,7 @@ public class IssueDto {
     String title;
     String description;
     String initialDate;
+    String photo;
     double latitude;
     double longitude;
     IssueCategory category;

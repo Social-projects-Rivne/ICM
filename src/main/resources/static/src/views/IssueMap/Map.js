@@ -2,21 +2,36 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
-import Issue from "../Issues/Issue";
+import IssueMarker from "./IssueMarker"
+const { MarkerClusterer } = require("react-google-maps/lib/components/addons/MarkerClusterer");
 
 class Map extends Component {
     constructor(props){
         super(props);
         this.state={
         desc : false,
-        point : [],
-        issues: null,
+        point : null,
+        imagePath: [],
         };
     }
 
     componentWillMount(){
+        var _this = this;
+        axios.get("/api/map/img")
+            .then(function(response) {
+                _this.setState({
+                    imagePath: response.data
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+    }
+
+    onClick(e,ID){
         this.setState({
-            issues: this.props.issues,
+            desc: true,
+            point: ID,
         });
     }
 
@@ -27,51 +42,20 @@ class Map extends Component {
                 defaultMaxZoom = {this.props.defaultmaxzoom}
                 defaultCenter={{ lat: this.props.centlat, lng: this.props.centlng }}
               >
-                {this.props.issues.map(issues => (
-                    <IssueMarker issuesID = {issues.id} issuesLat={issues.latitude} issuesLng={issues.longitude} />
-                ))}
+              <MarkerClusterer
+                 averageCenter
+                 enableRetinaIcons
+                 gridSize={100}
+              >
+                  {this.props.issues.map(issues => (
+                    <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
+                        onClick={(e)=>this.onClick(e,issues.id)}
+                      >
+                    </Marker>
+                  ))}
+              </MarkerClusterer>
+              {this.state.desc && <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>}
                 </GoogleMap>
-        )
-    }
-}
-
-class IssueMarker extends Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            id: this.props.issuesID,
-            latitude: this.props.issuesLat,
-            longitude: this.props.issuesLng,
-            descriptionFlag: false,
-            issue: "" ,
-        };
-        this.showMessage = this.showMessage.bind(this);
-    }
-
-    showMessage(){
-            const _this = this;
-            axios.get("/api/issues/" + this.state.id)
-            .then(function(response) {
-                _this.setState({
-                    issue: response.data
-                });
-                swal({title: response.data.title, text: " Name: " + response.data.userDto.firstName+"  " +
-                    response.data.userDto.lastName + "\n" + "Description: \n " + response.data.description +
-                     "\n" + "Initial Date: " + response.data.initialDate});
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            });
-
-    }
-
-    render(){
-        return(
-            <Marker
-                key={this.state.id}
-                position={{ lat: this.state.latitude, lng: this.state.longitude }}
-                onClick = { this.showMessage }
-            />
         )
     }
 }
