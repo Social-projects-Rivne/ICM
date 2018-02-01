@@ -59,8 +59,7 @@ class IssueMarker extends Component{
 
     render(){
         return(
-            <div className = {this.state.display}>
-             <div className="card">
+               <div className = {this.state.display}>
                <div className="card-header">
                     <div className="title-card">
                         <h1>{this.state.response.title}</h1>
@@ -95,7 +94,6 @@ class IssueMarker extends Component{
                </div>
 
              </div>
-            </div>
         )
 
     }
