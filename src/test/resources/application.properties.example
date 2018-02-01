@@ -19,3 +19,8 @@ spring.mail.username=<YOUR EMAIL>
 spring.mail.password=<YOUR PASSWORD>
 spring.mail.properties.mail.smtp.auth=true
 spring.mail.properties.mail.smtp.starttls.enable=true
+
+spring.http.multipart.max-file-size=16MB
+spring.http.multipart.max-request-size=16MB
+
+value.from.file =../../scss/Images/
