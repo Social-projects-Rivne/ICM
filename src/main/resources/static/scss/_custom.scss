@@ -146,11 +146,6 @@ header button{
     display: none;
 }
 
-.card-text{
-    font-size: 32px;
-
-}
-
 .description-card{
     font-size: 14px;
     width: 300px;
@@ -168,10 +163,6 @@ header button{
     right: 20px;
     position: absolute;
     top: 20px;
-}
-
-.card-body{
-    height: 300px;
 }
 
 .card-header{
@@ -193,10 +184,6 @@ header button{
     display: block;
     border: 1px solid #c2cfd6;
     overflow-y: scroll;
-}
-
-.card{
-    height: 100%;
 }
 
 .comments-card{
