@@ -36,12 +36,9 @@ public class PDFCreator {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
 
-//        System.out.println(pdfName);
-//        System.out.println(pdfName.getName());
-//        System.out.println(pdfName.getNameUsers());
+        System.out.println(pdfName.getName());
 
         if(pdfName.getNameUsers()){
-            System.out.println("OKOKOKOKOK");
             createReportTableUser(paragraph, dataObjList);
         }
 
@@ -56,7 +53,7 @@ public class PDFCreator {
     private static void createReportTable(Paragraph paragraph, List<DataObject> dataObjList)
             throws BadElementException {
 
-        float[] columnWidths = {1, 1, 2, 2, 4, 4, 3};
+        float[] columnWidths = {1, 1, 3, 3, 2, 2, 4};
 
         PdfPTable table = new PdfPTable(columnWidths);
         table.setWidthPercentage(100);
@@ -110,10 +107,10 @@ public class PDFCreator {
             addToTable(table, dataObject.getNoteID());
             addToTable(table, dataObject.getTitle());
             addToTable(table, dataObject.getDesc());
-            addToTable(table, dataObject.getCat());
+            addToTable(table, dataObject.getPhone());
             addToTable(table, dataObject.getEmail());
-            addToTable(table, dataObject.getUserID());
-            addToTable(table, dataObject.getDate());
+            addToTable(table, dataObject.getRole());
+            addToTable(table, dataObject.getRegDate());
             count++;
         }
         paragraph.add(table);

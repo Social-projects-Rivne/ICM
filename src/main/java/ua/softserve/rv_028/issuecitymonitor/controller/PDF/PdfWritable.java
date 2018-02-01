@@ -17,5 +17,11 @@ public interface PdfWritable {
 
     LocalDateTime getInitialDate();
 
+    LocalDateTime getRegDate();
+
     String getMail();
+
+    String getPhone();
+
+    String getRole();
 }

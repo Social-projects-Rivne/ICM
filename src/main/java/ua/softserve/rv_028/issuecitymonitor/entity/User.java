@@ -165,17 +165,12 @@ public class User implements UserDetails, PdfWritable {
     }
 
     @Override
-    public String getCat() {
-        return phone;
-    }
-
-    @Override
     public User getUserDto() {
         return null;
     }
 
     @Override
-    public LocalDateTime getInitialDate() {
+    public LocalDateTime getRegDate() {
         return registrationDate;
     }
 
@@ -184,24 +179,23 @@ public class User implements UserDetails, PdfWritable {
         return username;
     }
 
-	/*   case USERS:
+    @Override
+    public String getPhone() {
+        return phone;
+    }
 
-                List<UserDto> dataList = userService.findAllForPDF();
-                DataObject[] d = new DataObject[dataList.size()];
+    @Override
+    public String getCat() {
+        return null;
+    }
 
-                for (int i = 0; i < dataList.size(); i++) {
-                    int j = dataList.size() - i - 1;
+    @Override
+    public LocalDateTime getInitialDate() {
+        return null;
+    }
 
-                    d[j] = new DataObject();
-                    d[j].setNoteID(Long.toString(dataList.get(j).getId()));
-                    d[j].setTitle(dataList.get(j).getFirstName());
-                    d[j].setDesc(dataList.get(j).getLastName());
-                    d[j].setCat(dataList.get(j).getPhone());
-                    d[j].setEmail(dataList.get(j).getEmail());
-                    d[j].setUserID(dataList.get(j).getUserRole().toString());
-                    d[j].setDate(dataList.get(j).getRegistrationDate());
-
-                    dataObjList.add(d[j]);
-                }
-                break;*/
+    @Override
+    public String getRole() {
+        return userRole.toString();
+    }
 }
