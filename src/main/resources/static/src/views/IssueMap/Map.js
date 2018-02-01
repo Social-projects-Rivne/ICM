@@ -29,14 +29,16 @@ class Map extends Component {
             });
     }
 
-    onClick(e,ID){
+    onClick(e,ID,type){
         this.setState({
             desc: true,
             point: ID,
+            type: type,
         });
     }
 
    render() {
+
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
@@ -50,18 +52,24 @@ class Map extends Component {
               >
                   {this.props.issues.map(issues => (
                     <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
-                        onClick={(e)=>this.onClick(e,issues.id)}
+                        onClick={(e)=>this.onClick(e,issues.id,"issue")}
                       >
                     </Marker>
                   ))}
 
                   {this.props.events.map(events => (
                     <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
+                      onClick={(e)=>this.onClick(e,events.id,"event")}
                       >
                     </Marker>
                   ))}
               </MarkerClusterer>
-              {this.state.desc && <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>}
+              {(this.state.type = "issue" && this.state.desc) &&
+                <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>
+
+               (this.state.type == "event" && this.state.desc) &&
+                <EventsMarker ID = {this.state.point} />
+                }
                 </GoogleMap>
         )
     }
