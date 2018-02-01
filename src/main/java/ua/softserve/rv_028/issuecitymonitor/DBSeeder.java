@@ -67,7 +67,8 @@ public class DBSeeder {
                 session.save(petition);
 
                 Issue issue = new Issue(user, "title" + a + "" + i, "desc" + a + "" + i, date(),
-                        r.nextDouble(), r.nextDouble(), randomEnum(IssueCategory.class));
+                        r.nextDouble(), r.nextDouble(), randomEnum(IssueCategory.class),
+                        "first_img.jpg");
                 session.save(issue);
 
                 for (int j = 0; j < 5; j++) {
