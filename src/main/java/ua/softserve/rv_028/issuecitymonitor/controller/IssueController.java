@@ -63,4 +63,5 @@ public class IssueController {
         log.debug("DELETE request");
         issueService.deleteById(id);
     }
+
 }

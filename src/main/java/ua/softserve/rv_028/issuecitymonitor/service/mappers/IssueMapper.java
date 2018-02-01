@@ -34,6 +34,7 @@ public class IssueMapper extends MapperService<IssueDto, Issue> {
         dto.setLatitude(entity.getLatitude());
         dto.setLongitude(entity.getLongitude());
         dto.setCategory(entity.getCategory());
+        dto.setPhoto(entity.getPhoto());
         return dto;
     }
 

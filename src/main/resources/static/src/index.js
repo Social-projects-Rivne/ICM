@@ -16,7 +16,6 @@ import '../scss/core/_dropdown-menu-right.scss'
 import Full from './containers/Full';
 import Authorization from "./containers/Authorization/Authorization";
 
-import IssueMap from "./views/IssueMap/IssueMap";
 import Client from "./containers/Client/Client";
 import Page404 from "./views/Page404";
 

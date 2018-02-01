@@ -49,6 +49,9 @@ public class Issue implements PdfWritable {
     @Column(name = "longitude")
     double longitude;
 
+    @Column(name = "photo")
+    String photo;
+
     @Column(name = "category")
     @Enumerated(EnumType.ORDINAL)
     IssueCategory category;
@@ -71,7 +74,7 @@ public class Issue implements PdfWritable {
     Set<IssueChangeRecord> changeRecords = new HashSet<>();
 
     public Issue(User user, String title, String description, LocalDateTime initialDate, double latitude, double longitude,
-                 IssueCategory category) {
+                 IssueCategory category, String photo) {
         this.user = user;
         this.title = title;
         this.description = description;
@@ -79,6 +82,7 @@ public class Issue implements PdfWritable {
         this.latitude = latitude;
         this.longitude = longitude;
         this.category = category;
+        this.photo = photo;
     }
 
     @PrePersist
