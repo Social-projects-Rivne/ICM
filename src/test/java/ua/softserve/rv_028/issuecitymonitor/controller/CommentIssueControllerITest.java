@@ -9,6 +9,7 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.dao.CommentIssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.CommentIssueDto;
@@ -17,8 +18,11 @@ import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.CommentIssueMapper;
 
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createCommentIssuesList;
 import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createIssue;
 import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createUser;
 
@@ -27,8 +31,12 @@ import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createUser;
 public class CommentIssueControllerITest {
 
     private CommentIssue commentIssue;
+    private List<CommentIssue> commentIssues;
     private Issue issue;
     private User user;
+
+    @Autowired
+    private CommentIssueDao commentIssueDao;
 
     @Autowired
     private IssueDao issueDao;
@@ -46,6 +54,7 @@ public class CommentIssueControllerITest {
     public void setup(){
         user = userDao.save(createUser(0));
         issue = issueDao.save(createIssue(user, 0));
+        commentIssues = commentIssueDao.save(createCommentIssuesList(issue, user));
         /*issues = issueDao.save(createIssuesList(user, LIST_SIZE));
         issue = issues.get(0);*/
     }

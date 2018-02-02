@@ -1,10 +1,7 @@
 package ua.softserve.rv_028.issuecitymonitor;
 
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
-import ua.softserve.rv_028.issuecitymonitor.entity.Event;
-import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
-import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
-import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.*;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.*;
 
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.stream.IntStream;
 public final class TestUtils {
     public static final String TITLE = "Title";
     public static final String DESCRIPTION = "Description";
+    public static final String BODY = "Body";
     public static final String USER_FNAME = "User";
     public static final String USER_LNAME = "Jerry";
     public static final String USER_EMAIL = "mail@mail.ua";
@@ -28,6 +26,10 @@ public final class TestUtils {
     public static Issue createIssue(User owner, int i) {
         return new Issue(owner, TITLE + i, DESCRIPTION + i, LocalDateTime.now(),
                 0.0, 0.0, IssueCategory.CAT1, "first_img");
+    }
+
+    public static CommentIssue createCommentIssue(Issue issue, User owner, int i) {
+        return new CommentIssue(issue, owner, BODY + i, LocalDateTime.now());
     }
 
     public static Petition createPetition(User owner, int i) {
@@ -59,6 +61,10 @@ public final class TestUtils {
 
     public static List<Issue> createIssuesList(User owner, int size) {
         return IntStream.range(0, size).mapToObj(i -> createIssue(owner, i)).collect(Collectors.toList());
+    }
+
+    public static List<CommentIssue> createCommentIssuesList(Issue issue, User owner, int size) {
+        return IntStream.range(0, size).mapToObj(i -> createCommentIssue(issue, owner, i)).collect(Collectors.toList());
     }
 
     public static List<Petition> createPetitionsList(User owner, int size) {
