@@ -133,6 +133,16 @@ header button{
     width: 800px;
 }
 
+.event_marker{
+    top: 0px;
+    right: 0px;
+    z-index: 999;
+    position: absolute;
+    background-color: black;
+    height: 100%;
+    width: 800px;
+}
+
 .issue_marker_v1{
     display: none;
 }

@@ -11,6 +11,7 @@ class Map extends Component {
         super(props);
         this.state={
         desc : false,
+        descE : false,
         point : null,
         imagePath: [],
         };
@@ -29,11 +30,20 @@ class Map extends Component {
             });
     }
 
-    onClick(e,ID,type){
+    onClick(e,ID){
         this.setState({
             desc: true,
+            descE: false,
             point: ID,
-            type: type,
+        });
+    }
+
+
+    onClick2(e,ID){
+        this.setState({
+            descE: true,
+            desc: false,
+            point: ID,
         });
     }
 
@@ -52,25 +62,21 @@ class Map extends Component {
               >
                   {this.props.issues.map(issues => (
                     <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
-                        onClick={(e)=>this.onClick(e,issues.id,"issue")}
+                        onClick={(e)=>this.onClick(e,issues.id)}
                       >
                     </Marker>
                   ))}
 
                   {this.props.events.map(events => (
                     <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
-                      onClick={(e)=>this.onClick(e,events.id,"event")}
+                      onClick={(e)=>this.onClick2(e,events.id)}
                       >
                     </Marker>
                   ))}
               </MarkerClusterer>
-              {(this.state.type = "issue" && this.state.desc) &&
-                <IssueMarker ID = {this.state.point} imgPath= {this.state.imagePath}/>
-
-               (this.state.type == "event" && this.state.desc) &&
-                <EventsMarker ID = {this.state.point} />
-                }
-                </GoogleMap>
+              {this.state.desc && <IssueMarker ID = {this.state.point} imgPath = {this.state.imagePath} />}
+              {this.state.descE && <EventsMarker ID = {this.state.point} imgPath = {this.state.imagePath} />}
+            </GoogleMap>
         )
     }
 }

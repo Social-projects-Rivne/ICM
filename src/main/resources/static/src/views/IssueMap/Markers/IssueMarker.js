@@ -58,6 +58,7 @@ class IssueMarker extends Component{
     }
 
     render(){
+    console.log("Issue working");
         return(
                <div className = {this.state.display}>
                <div className="card-header">
