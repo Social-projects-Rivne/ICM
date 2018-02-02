@@ -25,7 +25,7 @@ class EventsMarker extends Component{
 
     componentWillMount() {
         var _this = this;
-        axios.get("/api/events" + this.state.ID)
+        axios.get("/api/events/" + this.state.ID)
             .then(function(response) {
                 _this.setState({
                     events: response.data
@@ -53,9 +53,11 @@ class EventsMarker extends Component{
 }
 
     onClick(e){
+
         this.setState({
             display: "issue_marker_v1"
         });
+
     }
 
     render(){

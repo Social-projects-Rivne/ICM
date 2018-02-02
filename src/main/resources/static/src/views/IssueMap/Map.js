@@ -14,6 +14,7 @@ class Map extends Component {
         descE : false,
         point : null,
         imagePath: [],
+        key: false,
         };
     }
 
@@ -36,6 +37,7 @@ class Map extends Component {
             descE: false,
             point: ID,
         });
+        e.preventDefault();
     }
 
 
@@ -60,14 +62,14 @@ class Map extends Component {
                  enableRetinaIcons
                  gridSize={100}
               >
-                  {this.props.issues.map(issues => (
+                  {this.state.key && this.props.issues.map(issues => (
                     <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
                         onClick={(e)=>this.onClick(e,issues.id)}
                       >
                     </Marker>
                   ))}
 
-                  {this.props.events.map(events => (
+                  {this.state.key && this.props.events.map(events => (
                     <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
                       onClick={(e)=>this.onClick2(e,events.id)}
                       >

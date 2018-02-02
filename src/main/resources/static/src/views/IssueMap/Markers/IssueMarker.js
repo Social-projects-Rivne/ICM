@@ -55,6 +55,7 @@ class IssueMarker extends Component{
         this.setState({
             display: "issue_marker_v1"
         });
+        e.preventDefault();
     }
 
     render(){
