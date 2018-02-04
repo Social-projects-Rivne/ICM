@@ -50,19 +50,19 @@ public class CommentIssueControllerITest {
     @Autowired
     private CommentIssueMapper commentIssueMapper;
 
-    @Before
+    /*@Before
     public void setup(){
         user = userDao.save(createUser(0));
         issue = issueDao.save(createIssue(user, 0));
         commentIssues = commentIssueDao.save(createCommentIssuesList(issue, user));
-        /*issues = issueDao.save(createIssuesList(user, LIST_SIZE));
-        issue = issues.get(0);*/
-    }
+        *//*issues = issueDao.save(createIssuesList(user, LIST_SIZE));
+        issue = issues.get(0);*//*
+    }*/
 
     @Test
     public void testListComment(){
         ResponseEntity<String> responseEntity = testRestTemplate.
-                getForEntity("/api/issues/comment", String.class);
+                getForEntity("/api/issues/{id}/comment", String.class);
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
     }
 

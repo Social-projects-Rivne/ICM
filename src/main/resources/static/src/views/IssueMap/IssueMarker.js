@@ -16,11 +16,13 @@ class IssueMarker extends Component{
                 title: "",
                 description: "",
                 initialDate: "",
-                category: ""
+                category: "",
+                comments: ""
             },
             initialDate: true,
         };
 
+        this.getListComments = this.getListComments.bind(this);
     }
 
     componentWillMount() {
@@ -50,6 +52,19 @@ class IssueMarker extends Component{
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
 }
+
+    getListComments(){
+        var _this = this;
+        axios.get("/api/issues/" + this.state.id + "/comment")
+            .then(function(response) {
+                _this.setState({
+                    response: response.data,
+                })
+            })
+            .catch(function (error) {
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+            });
+    }
 
     onClick(e){
         this.setState({
@@ -87,7 +102,9 @@ class IssueMarker extends Component{
                  </div>
 
                  <div className="comments-card">
-                    <p><h3>Comments:</h3></p>
+                    <p><h3>Comments:</h3>
+                        {this.getListComments}
+                    </p>
                     <div className= "comments"></div>
                  </div>
 
