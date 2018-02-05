@@ -1,8 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.config;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.experimental.FieldDefaults;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -11,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
 
 /**
@@ -29,17 +28,15 @@ import ua.softserve.rv_028.issuecitymonitor.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor(onConstructor = @__(@Autowired))
-@FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
-    UserDetailsServiceImpl userDetailsService;
+    private final UserDetailsServiceImpl userDetailsService;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    BCryptPasswordEncoder passwordEncoder;
-
-    /** All possible urls must be here*/
-    String[] urls = new String[]{"/", "/dashboard", "/issues", "/petitions", "/events", "/users",
-            "/settings","/maps"};
+    private static final String ADMIN_URL = "/admin/**";
+    private static final String[] API_URL = new String[]{"/api/events/**", "/api/issues"};
+    private static final String[] AUTHENTICATED_USER_URLS = new String[]{"/settings/**"};
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,7 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers(urls).permitAll()
+                .antMatchers(ADMIN_URL).hasAnyAuthority(UserRole.ADMIN.getAuthority(), UserRole.MODERATOR.getAuthority())
+                .antMatchers(AUTHENTICATED_USER_URLS).hasAnyAuthority(UserRole.ADMIN.getAuthority(),
+                    UserRole.MODERATOR.getAuthority(), UserRole.USER.getAuthority())
                 .anyRequest().permitAll()
 
                 .and().csrf().disable().formLogin()
