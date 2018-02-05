@@ -14,7 +14,9 @@ class Map extends Component {
         descE : false,
         point : null,
         imagePath: [],
-        key: false,
+        eventKey: true,
+        issueKey: true,
+        somekey: false,
         };
     }
 
@@ -37,7 +39,6 @@ class Map extends Component {
             descE: false,
             point: ID,
         });
-        e.preventDefault();
     }
 
 
@@ -50,7 +51,7 @@ class Map extends Component {
     }
 
    render() {
-
+    const somekey = this.state.somekey;
         return (
             <GoogleMap
                 defaultZoom={this.props.zoom}
@@ -62,19 +63,23 @@ class Map extends Component {
                  enableRetinaIcons
                  gridSize={100}
               >
-                  {this.state.key && this.props.issues.map(issues => (
+                  {this.state.issueKey && this.props.issues.map(issues => (
                     <Marker key = {issues.id} position = {{lat: issues.latitude, lng: issues.longitude }}
                         onClick={(e)=>this.onClick(e,issues.id)}
                       >
                     </Marker>
                   ))}
 
-                  {this.state.key && this.props.events.map(events => (
-                    <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
-                      onClick={(e)=>this.onClick2(e,events.id)}
-                      >
-                    </Marker>
-                  ))}
+                  {this.state.eventKey && this.props.events.map((events, somekey)=>{
+                    if(somekey == true){
+                        return(
+                        <Marker key = {events.id} position = {{lat: events.latitude, lng: events.longitude }}
+                          onClick={(e)=> this.onClick2(e,events.id)}
+                          >
+                        </Marker>
+                    )}})
+
+                  }
               </MarkerClusterer>
               {this.state.desc && <IssueMarker ID = {this.state.point} imgPath = {this.state.imagePath} />}
               {this.state.descE && <EventsMarker ID = {this.state.point} imgPath = {this.state.imagePath} />}

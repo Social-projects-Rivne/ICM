@@ -61,10 +61,12 @@ class EventsMarker extends Component{
     }
 
     render(){
-    console.log("Event working", this.state.events.photo);
         return(
                <div className = {this.state.display}>
                <div className="card-header">
+                    <div className="title-category">
+                        {this.state.events.category}
+                    </div>
                     <div className="title-card">
                         <h1>{this.state.events.title}</h1>
                     </div>
@@ -95,6 +97,9 @@ class EventsMarker extends Component{
                     <div className= "comments"></div>
                  </div>
 
+                 <div className = "endDate-card">
+                    End Date: {this.state.events.endDate}
+                 </div>
                </div>
 
              </div>
