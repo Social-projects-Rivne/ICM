@@ -9,12 +9,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.exception.LastAdminException;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
+
+import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @Log4j
@@ -33,6 +38,12 @@ public class UserService {
         Page<User> users = userDao.findAll(isDeleted, pageRequest);
         log.debug("Found all users");
         return userMapper.toDtoPage(users);
+    }
+
+    public List<PdfWritable> findAllForPDF() {
+        List<User> users = userDao.findAll();
+        log.debug("Found all issues");
+        return users.stream().map(is -> (PdfWritable) is).collect(toList());
     }
 
     public UserDto findById(long id){

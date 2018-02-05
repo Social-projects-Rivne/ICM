@@ -77,7 +77,7 @@ class PetitionsContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} onSortChangeDirection={this.handleSortChangeDirection}
+            <PageContainer onPageChange={this.handlePageChange} name="petitions" onSortChangeDirection={this.handleSortChangeDirection}
                            onSortChangeColumn={this.handleSortChangeColumn} title="Petitions list" button={this.addNewPetition()}
                            sortDirection={this.state.data.sort} sortColumn={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>

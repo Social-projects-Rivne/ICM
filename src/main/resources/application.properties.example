@@ -22,3 +22,5 @@ spring.mail.properties.mail.smtp.starttls.enable=true
 
 spring.http.multipart.max-file-size=16MB
 spring.http.multipart.max-request-size=16MB
+
+path.for.download=/Users/tzhenia/Downloads/

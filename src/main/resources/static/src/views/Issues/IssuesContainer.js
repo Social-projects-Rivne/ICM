@@ -67,7 +67,7 @@ class IssuesContainer extends Component {
 
     render() {
         return (
-            <PageContainer onPageChange={this.handlePageChange} onSortChangeDirection={this.handleSortChangeDirection}
+            <PageContainer onPageChange={this.handlePageChange} name="issues" onSortChangeDirection={this.handleSortChangeDirection}
                            onSortChangeColumn={this.handleSortChangeColumn} title="Issues list"
                            sortDirection={this.state.data.sort} sortColumn={this.state.data.sort}
                            page={this.state.data.number + 1} pagesNum={this.state.data.totalPages}>

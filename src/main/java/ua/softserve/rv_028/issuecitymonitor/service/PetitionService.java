@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
@@ -19,7 +20,9 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -50,6 +53,12 @@ public class PetitionService {
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<Petition> petitions = petitionDao.findAll(pageRequest);
         return petitionMapper.toDtoPage(petitions);
+    }
+
+    public List<PdfWritable> findAllForPDF() {
+        List<Petition> petitions = petitionDao.findAll();
+        log.debug("Found all issues");
+        return petitions.stream().map(is -> (PdfWritable) is).collect(toList());
     }
 
     public PetitionDto findById(long id) {
