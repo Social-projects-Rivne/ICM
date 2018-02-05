@@ -36,8 +36,6 @@ public class PDFCreator {
         Paragraph paragraph = new Paragraph();
         paragraph.setFont(NORMAL_FONT);
 
-        System.out.println(pdfName.getName());
-
         if(pdfName.getNameUsers()){
             createReportTableUser(paragraph, dataObjList);
         }
