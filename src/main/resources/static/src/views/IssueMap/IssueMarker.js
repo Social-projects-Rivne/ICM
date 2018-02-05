@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {withGoogleMap, GoogleMap, withScriptjs, Marker} from "react-google-maps"
 import axios from 'axios';
 import swal from 'sweetalert';
+import ListCommentsIssue from "./ListCommentsIssue";
 
 class IssueMarker extends Component{
 
@@ -21,11 +22,10 @@ class IssueMarker extends Component{
             },
             initialDate: true,
         };
-
-        this.getListComments = this.getListComments.bind(this);
     }
 
     componentWillMount() {
+        this.listComments();
         var _this = this;
         axios.get("/api/issues/" + this.state.ID)
             .then(function(response) {
@@ -51,15 +51,15 @@ class IssueMarker extends Component{
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
-}
+    }
 
-    getListComments(){
+    listComments() {
         var _this = this;
-        axios.get("/api/issues/" + this.state.id + "/comment")
+        axios.get("/api/issues/comment")
             .then(function(response) {
                 _this.setState({
-                    response: response.data,
-                })
+                    comments: response.data
+                    });
             })
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
@@ -101,12 +101,7 @@ class IssueMarker extends Component{
                         </p>
                  </div>
 
-                 <div className="comments-card">
-                    <p><h3>Comments:</h3>
-                        {this.getListComments}
-                    </p>
-                    <div className= "comments"></div>
-                 </div>
+                 <ListCommentsIssue data={this.state.comments}/>
 
                </div>
 
