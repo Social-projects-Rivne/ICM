@@ -4,6 +4,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.pdf.PdfWriter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +27,8 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/apis/pdf")
+
+@RequiredArgsConstructor(onConstructor = @__({@Autowired}))
 public class Client {
 
 
@@ -33,14 +36,6 @@ public class Client {
     private final EventService eventService;
     private final PetitionService petitionService;
     private final UserService userService;
-
-    @Autowired
-    Client(IssueService issueService, EventService eventService, PetitionService petitionService, UserService userService) {
-        this.issueService = issueService;
-        this.eventService = eventService;
-        this.petitionService = petitionService;
-        this.userService = userService;
-    }
 
 
     @GetMapping(path = "/issues")
