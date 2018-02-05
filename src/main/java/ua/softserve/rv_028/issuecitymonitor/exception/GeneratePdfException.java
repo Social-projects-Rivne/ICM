@@ -4,7 +4,7 @@ import ua.softserve.rv_028.issuecitymonitor.Constants;
 public class GeneratePdfException extends RuntimeException{
 
     public GeneratePdfException() {
-        super(Constants.Generate_Pdf_FAIL);
+        super(Constants.GENERATE_PDF_FAIL);
     }
 
 }
