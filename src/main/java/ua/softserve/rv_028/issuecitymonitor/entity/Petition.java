@@ -90,25 +90,4 @@ public class Petition implements PdfWritable {
     public User getUserDto() {
         return user;
     }
-
-    @Override
-    public String getMail() {
-        return null;
-    }
-
-    @Override
-    public String getPhone() {
-        return null;
-    }
-
-    @Override
-    public LocalDateTime getRegDate() {
-        return null;
-    }
-
-    @Override
-    public String getRole() {
-        return null;
-    }
-
 }

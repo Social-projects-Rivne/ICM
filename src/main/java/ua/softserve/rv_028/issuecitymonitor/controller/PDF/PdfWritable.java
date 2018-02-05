@@ -5,23 +5,41 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import java.time.LocalDateTime;
 
 public interface PdfWritable {
-    Long getId();
+    default Long getId(){return null;}
 
-    String getTitle();
+    default String getTitle() {
+        return null;
+    }
 
-    String getDescription();
+    default String getDescription() {
+        return null;
+    }
 
-    String getCat();
+    default LocalDateTime getInitialDate() {
+        return null;
+    }
 
-    User getUserDto();
+    default String getRole(){
+        return null;
+    }
 
-    LocalDateTime getInitialDate();
+    default String getCat() {
+        return null;
+    }
 
-    LocalDateTime getRegDate();
+    default User getUserDto() {
+        return null;
+    }
 
-    String getMail();
+    default String getMail() {
+        return null;
+    }
 
-    String getPhone();
+    default String getPhone() {
+        return null;
+    }
 
-    String getRole();
+    default LocalDateTime getRegDate() {
+        return null;
+    }
 }

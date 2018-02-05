@@ -165,11 +165,6 @@ public class User implements UserDetails, PdfWritable {
     }
 
     @Override
-    public User getUserDto() {
-        return null;
-    }
-
-    @Override
     public LocalDateTime getRegDate() {
         return registrationDate;
     }
@@ -182,16 +177,6 @@ public class User implements UserDetails, PdfWritable {
     @Override
     public String getPhone() {
         return phone;
-    }
-
-    @Override
-    public String getCat() {
-        return null;
-    }
-
-    @Override
-    public LocalDateTime getInitialDate() {
-        return null;
     }
 
     @Override
