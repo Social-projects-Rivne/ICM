@@ -88,6 +88,7 @@ public class Event implements PdfWritable {
     }
 
     @PrePersist
+    @SuppressWarnings("unused")
     private void insert() {
         this.creationDate = LocalDateTime.now();
     }

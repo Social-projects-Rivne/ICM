@@ -86,6 +86,7 @@ public class Issue implements PdfWritable {
     }
 
     @PrePersist
+    @SuppressWarnings("unused")
     private void insert() {
         this.creationDate = LocalDateTime.now();
     }

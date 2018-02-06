@@ -134,6 +134,7 @@ public class User implements UserDetails, PdfWritable {
     }
 
     @PrePersist
+    @SuppressWarnings("unused")
     private void insert() {
         this.registrationDate = LocalDateTime.now();
     }
