@@ -9,10 +9,7 @@ import ua.softserve.rv_028.issuecitymonitor.controller.PDF.Client;
 import ua.softserve.rv_028.issuecitymonitor.controller.PDF.DataObject;
 import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.PdfTypes;
-import ua.softserve.rv_028.issuecitymonitor.service.EventService;
 import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
-import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
-import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
 import java.util.ArrayList;
 import java.util.List;

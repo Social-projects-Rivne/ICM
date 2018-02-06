@@ -9,9 +9,12 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
@@ -22,8 +25,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.UserMapper;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createAdmin;
 import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createUsersList;
 
@@ -47,11 +49,26 @@ public class UserControllerITest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private UserController controller;
+
+    private static User USER = TestUtils.createAdmin(0);
+    private static final String USERNAME = "mock-test@mail.com";
+
     @Before
     public void setup() {
         users = userDao.save(createUsersList(LIST_SIZE));
         admin = userDao.save(createAdmin(LIST_SIZE + 1));
         user = users.get(0);
+
+        USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(USERNAME);
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
+        USER.setUserRole(UserRole.ADMIN);
+        userDao.save(USER);
     }
 
     @After
@@ -87,6 +104,7 @@ public class UserControllerITest {
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testEditUser(){
         String updatedName = "testUpdateName";
         UserStatus updatedStatus = UserStatus.ACTIVE;
@@ -94,39 +112,17 @@ public class UserControllerITest {
         userDto.setFirstName(updatedName);
         userDto.setUserStatus(updatedStatus);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        UserDto updatedUser = controller.update(userDto);
 
-        HttpEntity<UserDto> httpEntity = new HttpEntity<>(userDto,httpHeaders);
-        ResponseEntity<UserDto> responseEntity = testRestTemplate.exchange("/api/users/" + userDto.getId(),
-                HttpMethod.PUT, httpEntity, UserDto.class);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        UserDto responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(updatedName, responseObject.getFirstName());
-        assertEquals(updatedStatus, responseObject.getUserStatus());
+        assertEquals(updatedName, updatedUser.getFirstName());
+        assertEquals(updatedStatus, updatedUser.getUserStatus());
     }
 
     @Test
-    public void testEditUser_thenThrowLastAdminException_expectBadRequest(){
-        UserDto userDto = userMapper.toDto(admin);
-        userDto.setUserRole(UserRole.USER);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
-
-        HttpEntity<UserDto> httpEntity = new HttpEntity<>(userDto,httpHeaders);
-        ResponseEntity<UserDto> responseEntity = testRestTemplate.exchange("/api/users/" + userDto.getId(),
-                HttpMethod.PUT, httpEntity, UserDto.class);
-
-        assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
-    }
-
-    @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testDeleteUser(){
         long prevCount = userDao.count();
-        testRestTemplate.delete("/api/users/delete/" + user.getId());
+        controller.delete(user.getId());
         assertEquals(prevCount-1, userDao.count());
     }
 

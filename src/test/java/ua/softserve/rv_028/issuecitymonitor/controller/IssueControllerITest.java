@@ -9,14 +9,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Issue;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 
 import java.io.IOException;
@@ -39,6 +43,9 @@ public class IssueControllerITest {
     private List<Issue> issues;
     private User user;
 
+    private static User USER = TestUtils.createAdmin(0);
+    private static final String USERNAME = "mock-test@mail.com";
+
     @Autowired
     private IssueDao issueDao;
 
@@ -51,11 +58,23 @@ public class IssueControllerITest {
     @Autowired
     private IssueMapper issueMapper;
 
+    @Autowired
+    private IssueController controller;
+
     @Before
     public void setup(){
         user = userDao.save(createUser(0));
         issues = issueDao.save(createIssuesList(user, LIST_SIZE));
         issue = issues.get(0);
+
+        USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(USERNAME);
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
+        USER.setUserRole(UserRole.ADMIN);
+        userDao.save(USER);
     }
 
     @After
@@ -98,31 +117,21 @@ public class IssueControllerITest {
 
     }
 
-    @Test
+    @Test(expected = RuntimeException.class)
+    @WithMockUser(username = "mock-test@mail.com")
     public void testAddIssue(){
         String addTitle = "testAddTitle";
         String addDescription = "testAddDescription";
         IssueDto issueDto = issueMapper.toDto(issue);
-        issueDto.setTitle(addTitle);
-        issueDto.setDescription(addDescription);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        IssueDto newIssue = controller.addIssue(issueDto);
 
-        HttpEntity<IssueDto> httpEntity = new HttpEntity<>(issueDto,httpHeaders);
-        ResponseEntity<IssueDto> responseEntity = testRestTemplate.exchange("/api/issues/" + issueDto.getId(),
-                HttpMethod.PUT, httpEntity, IssueDto.class);
-
-        System.out.println(httpEntity.toString());
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        IssueDto responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(addTitle, responseObject.getTitle());
-        assertEquals(addDescription, responseObject.getDescription());
+        assertEquals(addTitle, newIssue.getTitle());
+        assertEquals(addDescription, newIssue.getDescription());
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testEditIssue(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
@@ -130,26 +139,18 @@ public class IssueControllerITest {
         issueDto.setTitle(updatedTitle);
         issueDto.setDescription(updatedDescription);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        IssueDto updatedIssues = controller.editIssue(issueDto);
 
-        HttpEntity<IssueDto> httpEntity = new HttpEntity<>(issueDto,httpHeaders);
-        ResponseEntity<IssueDto> responseEntity = testRestTemplate.exchange("/api/issues/" + issueDto.getId(),
-                HttpMethod.PUT, httpEntity, IssueDto.class);
 
-        System.out.println(httpEntity.toString());
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        IssueDto responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(updatedTitle, responseObject.getTitle());
-        assertEquals(updatedDescription, responseObject.getDescription());
+        assertEquals(updatedTitle, updatedIssues.getTitle());
+        assertEquals(updatedDescription, updatedIssues.getDescription());
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testDeleteIssue(){
         long prevCount = issueDao.count();
-        testRestTemplate.delete("/api/issues/" + issue.getId());
+        controller.deleteIssue(issue.getId());
         assertEquals(prevCount-1, issueDao.count());
     }
 

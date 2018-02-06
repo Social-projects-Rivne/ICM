@@ -9,14 +9,18 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
+import ua.softserve.rv_028.issuecitymonitor.TestUtils;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
 import java.io.IOException;
@@ -48,15 +52,30 @@ public class EventControllerITest {
     @Autowired
     private EventMapper eventMapper;
 
+    @Autowired
+    private EventController controller;
+
     private User user;
     private Event event;
     private List<Event> events;
+
+    private static User USER = TestUtils.createAdmin(0);
+    private static final String USERNAME = "mock-test@mail.com";
 
     @Before
     public void setUp() {
         user = userDao.save(createUser(0));
         events = eventDao.save(createEventsList(user, LIST_SIZE));
         event = events.get(0);
+
+        USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(USERNAME);
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
+        USER.setUserRole(UserRole.ADMIN);
+        userDao.save(USER);
     }
 
     @After
@@ -91,6 +110,7 @@ public class EventControllerITest {
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testUpdateEventSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
@@ -98,24 +118,17 @@ public class EventControllerITest {
         eventDto.setTitle(updatedTitle);
         eventDto.setDescription(updatedDescription);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        EventDto updatedEvent = controller.update(eventDto);
 
-        HttpEntity<EventDto> httpEntity = new HttpEntity<>(eventDto,httpHeaders);
-        ResponseEntity<EventDto> responseEntity = testRestTemplate.exchange("/api/events/"+eventDto.getId(),
-                HttpMethod.PUT, httpEntity, EventDto.class);
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        EventDto responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(updatedTitle, responseObject.getTitle());
-        assertEquals(updatedDescription, responseObject.getDescription());
+        assertEquals(updatedTitle, updatedEvent.getTitle());
+        assertEquals(updatedDescription, updatedEvent.getDescription());
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testDeleteEventSuccessfully(){
         long prevCount = eventDao.count();
-        testRestTemplate.delete("/api/events/"+event.getId());
+        controller.delete(event.getId());
         assertEquals(prevCount-1, eventDao.count());
     }
 
