@@ -159,7 +159,6 @@ header button{
 
 .description-card{
     font-size: 14px;
-    position:absolute;
 }
 
 .title-card{
@@ -191,14 +190,11 @@ header button{
     min-width: 150px;
     max-height: 200px;
     display: block;
-    border: 1px solid #c2cfd6;
     overflow-y: scroll;
 }
 
 .comments-card{
     font-size: 14px;
-    position:absolute;
-    background-color: green;
 
 }
 

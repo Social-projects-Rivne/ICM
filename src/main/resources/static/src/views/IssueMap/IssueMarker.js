@@ -11,6 +11,7 @@ class IssueMarker extends Component{
         this.state = {
             ID: this.props.ID,
             display: "issue_marker",
+            image: null,
             response: {
                 id: "",
                 title: "",
@@ -34,6 +35,17 @@ class IssueMarker extends Component{
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
+
+
+        axios.get("api/map/" + this.state.ID)
+             .then(function(photo) {
+                _this.setState({
+                    image: photo.data
+                })
+             })
+             .catch(function (error){
+                swal({title: "Something went wrong!", text: error, icon: "error"});
+             });
 }
 
     componentWillReceiveProps(nextProps) {
@@ -72,40 +84,28 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                    <img className=" response-img img" src= {this.props.imgPath + this.state.response.photo}
-                    alt = {this.state.response.title + "photo"}
-                    />
+                    <img src= {this.props.imgPath + this.state.response.photo}/>
                </div>
 
                <div className="card-body">
-                   <div className="row">
-                       <div className="col-lg-1 col-md-1">
-                       </div>
 
-                       <div className="col-lg-4 col-md-4">
-                           <div className="description-card">
-                               <h3>Description:</h3>
-                               <p className= "card-text">
-                                   {this.state.response.description}
-                               </p>
+                        <div className="row justify-content-around">
+                           <div className="col-6">
+                               <div className="description-card">
+                                   <h3>Description:</h3>
+                                   <p className= "card-text">
+                                       {this.state.response.description}
+                                   </p>
+                               </div>
                            </div>
-                       </div>
-
-                       <div className= "col-lg-2 col-md-2">
-                       </div>
-
-                       <div className= "col-lg-4 col-md-4">
-                           <div className="comments-card">
-                               <p><h3>Comments:</h3></p>
-                               <div className= "comments"></div>
+                           <div className="col-6">
+                               <div className="comments-card">
+                                   <p><h3>Comments:</h3></p>
+                                   <div className= "comments"></div>
+                               </div>
                            </div>
+                        </div>
 
-                       </div>
-
-                       <div className= "col-lg-1 col-md-1">
-                       </div>
-
-                   </div>
                </div>
              </div>
         )
