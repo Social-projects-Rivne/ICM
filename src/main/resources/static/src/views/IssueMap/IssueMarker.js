@@ -12,13 +12,13 @@ class IssueMarker extends Component{
         this.state = {
             ID: this.props.ID,
             display: "issue_marker",
+            comments: "",
             response: {
                 id: "",
                 title: "",
                 description: "",
                 initialDate: "",
                 category: "",
-                comments: ""
             },
             initialDate: true,
         };
@@ -55,7 +55,7 @@ class IssueMarker extends Component{
 
     listComments() {
         var _this = this;
-        axios.get("/api/issues/comment")
+        axios.get("/api/map/comment/issue")
             .then(function(response) {
                 _this.setState({
                     comments: response.data

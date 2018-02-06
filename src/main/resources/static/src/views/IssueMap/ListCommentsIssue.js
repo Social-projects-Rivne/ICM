@@ -24,8 +24,6 @@ class ListCommentsIssue extends Component {
                 <Table responsive bordered>
                     <thead>
                        <tr>
-                          <th>#</th>
-                          <th>Issue</th>
                           <th>User</th>
                           <th>Body</th>
                           <th>Initial Date</th>

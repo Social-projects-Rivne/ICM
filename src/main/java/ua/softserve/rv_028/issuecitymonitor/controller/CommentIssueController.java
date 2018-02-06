@@ -11,14 +11,14 @@ import ua.softserve.rv_028.issuecitymonitor.service.CommentIssueService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/issues/comment")
+@RequestMapping("/api/map/comment")
 @Log4j
 @AllArgsConstructor(onConstructor = @__(@Autowired))
 public class CommentIssueController {
 
     CommentIssueService commentIssueService;
 
-    @GetMapping
+    @GetMapping(value = "/issue")
     public List<CommentIssueDto> listComment(){
         log.debug("get list comments for issue");
         return commentIssueService.findAllComment();

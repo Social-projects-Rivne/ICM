@@ -18,9 +18,7 @@ class CommentIssue extends Component {
     render() {
         const row = (
             <tr>
-               <td>{this.state.comment.id}</td>
-               <td>{this.state.comment.issue}</td>
-               <td>{this.state.comment.user}</td>
+               <td>{this.state.comment.userDto.id}</td>
                <td>{this.state.comment.body}</td>
                <td>{this.state.comment.initialDate}</td>
             </tr>
