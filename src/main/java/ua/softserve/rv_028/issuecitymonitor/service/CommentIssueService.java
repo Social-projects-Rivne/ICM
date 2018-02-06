@@ -44,8 +44,8 @@ public class CommentIssueService {
         return commentIssueMapper.toDto(commentIssue);
     }
 
-    public List<CommentIssueDto> findAllComment(){
-        List<CommentIssue> listCommentIssue = commentIssueDao.findAll();
+    public List<CommentIssueDto> findAllCommentById(Long id){
+        List<CommentIssue> listCommentIssue = commentIssueDao.findAllByIssueEquals(id);
         log.debug("All comments for issue");
         return commentIssueMapper.toDtoList(listCommentIssue);
     }

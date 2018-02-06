@@ -55,7 +55,7 @@ class IssueMarker extends Component{
 
     listComments() {
         var _this = this;
-        axios.get("/api/map/comment/issue")
+        axios.get("/api/comments/issue" + this.state.ID)
             .then(function(response) {
                 _this.setState({
                     comments: response.data

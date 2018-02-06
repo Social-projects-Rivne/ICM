@@ -28,11 +28,11 @@ public class CommentIssueControllerTest {
     private CommentIssueService commentIssueService;
 
     @Test
-    public void testListComment(){
+    public void testListComment(Long id){
         List<CommentIssueDto> commentsList = new ArrayList<>();
-        when(commentIssueService.findAllComment()).thenReturn(commentsList);
+        when(commentIssueService.findAllCommentById(id)).thenReturn(commentsList);
 
-        List<CommentIssueDto> commentsResult = commentIssueController.listComment();
+        List<CommentIssueDto> commentsResult = commentIssueController.listComment(id);
 
         assertEquals(commentsList, commentsResult);
     }
