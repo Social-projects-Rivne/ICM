@@ -112,7 +112,7 @@ public class AuthenticatedUsersControllerITest {
     @Test
     @WithMockUser(username = "mock-test@mail.com")
     public void updateContactsInfoOnlyPhone(){
-        String newPhone = "+1987654321";
+        String newPhone = "+19876543211";
         controller.updateContactInfo(null, null, newPhone);
         assertEquals(newPhone, userDao.findUserByUsername(USER.getUsername()).getPhone());
     }
