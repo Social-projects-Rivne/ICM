@@ -37,6 +37,8 @@ public class PetitionService {
 
     PetitionMapper petitionMapper;
 
+    CheckCredentialService credentialService;
+
     public void addPetition(PetitionDto dto) {
         try {
             Authentication userAuth = SecurityContextHolder.getContext().getAuthentication();
@@ -75,6 +77,7 @@ public class PetitionService {
         petition.setInitialDate(LocalDateTime.parse(petitionDto.getInitialDate(), DATE_FORMAT));
         petition.setCategory(petitionDto.getCategory());
 
+        credentialService.checkCredential(petition.getUser().getId());
         petition = petitionDao.save(petition);
         log.debug("Updated " + petition.toString());
         return petitionMapper.toDto(petition);
@@ -82,6 +85,7 @@ public class PetitionService {
 
     public void deleteById(long id) {
         Petition petition = findOne(id);
+        credentialService.checkCredential(petition.getUser().getId());
         petitionDao.delete(petition);
         log.debug("Deleted " + petition.toString());
     }

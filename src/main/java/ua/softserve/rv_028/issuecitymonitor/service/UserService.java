@@ -31,6 +31,8 @@ public class UserService {
 
     UserDao userDao;
 
+    CheckCredentialService credentialService;
+
     public Page<UserDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns,
                                        boolean isDeleted) {
         String[] columnArray = columns.split(",");
@@ -63,12 +65,14 @@ public class UserService {
         } else {
             user.setUserRole(userDto.getUserRole());
         }
+        credentialService.checkCredential(user.getId());
         user = userDao.save(user);
         log.debug("Updated " + user.toString());
         return userMapper.toDto(user);
     }
 
     public void deleteById(long id) {
+        credentialService.checkCredential(id);
         if (userDao.countAdmins() <= 1 && (findOne(id).getUserRole() == UserRole.ADMIN)) {
             throw new LastAdminException();
         } else {
