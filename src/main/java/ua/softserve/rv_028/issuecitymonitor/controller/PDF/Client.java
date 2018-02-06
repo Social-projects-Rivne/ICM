@@ -76,7 +76,7 @@ public class Client {
         try {
             //Document is not auto-closable hence need to close it separately
             document = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(downloadPath + pdfName + PDF_EXTENSION));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(downloadPath + pdfName.getName() + PDF_EXTENSION));
             HeaderFooter event = new HeaderFooter();
             event.setHeader(pdfName.getName());
             writer.setPageEvent(event);
