@@ -25,4 +25,8 @@ public enum UserRole implements GrantedAuthority{
             return Collections.singletonList(USER);
     }
 
+    public boolean is(UserRole role){
+        return this.equals(role);
+    }
+
 }

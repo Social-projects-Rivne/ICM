@@ -20,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Event implements PdfWritable {
 
@@ -106,5 +105,14 @@ public class Event implements PdfWritable {
     @Override
     public User getUserDto() {
         return user;
+    }
+
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }
