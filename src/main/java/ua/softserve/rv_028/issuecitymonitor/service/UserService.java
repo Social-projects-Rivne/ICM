@@ -60,12 +60,12 @@ public class UserService {
         user.setLastName(userDto.getLastName());
         user.setUserStatus(userDto.getUserStatus());
         log.debug("Count of Admins in DB" + userDao.countAdmins());
+        credentialService.checkCredential(user.getId());
         if (userDao.countAdmins() <= 1 && (user.getUserRole() == UserRole.ADMIN) && (userDto.getUserRole() != UserRole.ADMIN)) {
             throw new LastAdminException();
         } else {
             user.setUserRole(userDto.getUserRole());
         }
-        credentialService.checkCredential(user.getId());
         user = userDao.save(user);
         log.debug("Updated " + user.toString());
         return userMapper.toDto(user);
