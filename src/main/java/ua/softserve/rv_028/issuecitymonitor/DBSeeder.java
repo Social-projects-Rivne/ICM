@@ -69,7 +69,7 @@ public class DBSeeder {
                 session.save(petition);
 
                 Issue issue = new Issue(user, "title" + a + "" + i, "desc" + a + "" + i, date(),
-                        r.nextDouble(), r.nextDouble(), randomEnum(IssueCategory.class),
+                        gen(), gen2(), randomEnum(IssueCategory.class),
                         "first_img.jpg");
                 session.save(issue);
 
@@ -114,5 +114,23 @@ public class DBSeeder {
     private static <T extends Enum<?>> T randomEnum(Class<T> classname) {
         int x = r.nextInt(classname.getEnumConstants().length);
         return classname.getEnumConstants()[x];
+    }
+
+    // coordinates of Rivne City (Up - Down)
+    public double gen() {
+        double leftLimit = 50.609D;
+        double rightLimit = 50.633D;
+        double generatedDouble = leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);
+
+        return generatedDouble;
+    }
+
+    // coordinates of Rivne City (Left - Right)
+    public double gen2() {
+        double leftLimit = 26.239D;
+        double rightLimit = 26.272972D;
+        double generatedDouble = leftLimit + new Random().nextDouble() * (rightLimit - leftLimit);
+
+        return generatedDouble;
     }
 }
