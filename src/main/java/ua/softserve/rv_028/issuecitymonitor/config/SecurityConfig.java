@@ -35,7 +35,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
     private final BCryptPasswordEncoder passwordEncoder;
 
     private static final String ADMIN_URL = "/admin/**";
-    private static final String[] API_URL = new String[]{"/api/events/**", "/api/issues"};
     private static final String[] AUTHENTICATED_USER_URLS = new String[]{"/settings/**"};
 
     @Override
