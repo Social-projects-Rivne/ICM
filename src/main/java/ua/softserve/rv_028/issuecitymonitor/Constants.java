@@ -9,4 +9,5 @@ public final class Constants {
     public static final String SHORT_PASSWORD = "Password is too short";
     public static final String CHANGE_ROLE_FAIL = "You can't demote or delete last admin";
     public static final String GENERATE_PDF_FAIL = "Generate PDF Failed!";
+    public static final String FORBIDDEN_REASON = "You don`t have permission for this";
 }

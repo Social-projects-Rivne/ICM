@@ -31,6 +31,8 @@ public class EventService {
 
     EventMapper eventMapper;
 
+    CheckCredentialService credentialService;
+
     public Page<EventDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
         String[] columnArray = columns.split(",");
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
@@ -63,12 +65,15 @@ public class EventService {
         }
         event.setCategory(eventDto.getCategory());
 
+        credentialService.checkCredential(event.getUser().getId());
+
         event = eventDao.save(event);
         log.debug("Updated " + event.toString());
         return eventMapper.toDto(event);
     }
 
     public void deleteById(long id) {
+        credentialService.checkCredential(findOne(id).getUser().getId());
         eventDao.delete(id);
         log.debug("Deleted event " + id);
     }

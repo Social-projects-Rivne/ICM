@@ -29,6 +29,8 @@ public class IssueService {
 
     private final IssueMapper issueMapper;
 
+    private final CheckCredentialService credentialService;
+
     public IssueDto addIssue(IssueDto issueDto) {
         Issue issue = issueMapper.toEntity(issueDto);
         log.debug("Added issue " + issueDto);
@@ -63,12 +65,14 @@ public class IssueService {
         issue.setDescription(issueDto.getDescription());
         issue.setInitialDate(LocalDateTime.parse(issueDto.getInitialDate(), DATE_FORMAT));
         issue.setCategory(issueDto.getCategory());
+        credentialService.checkCredential(issue.getUser().getId());
         issue = issueDao.save(issue);
         log.debug("Updated " + issue.toString());
         return issueMapper.toDto(issue);
     }
 
     public void deleteById(long id) {
+        credentialService.checkCredential(findOne(id).getUser().getId());
         issueDao.delete(id);
         log.debug("Deleted issue " + id);
     }
