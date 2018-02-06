@@ -9,13 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.EventDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.EventDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Event;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.EventMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -28,12 +31,20 @@ public class EventService {
 
     EventMapper eventMapper;
 
+    CheckCredentialService credentialService;
+
     public Page<EventDto> findAllByPage(int pageNumber, int pageSize, Sort.Direction direction, String columns) {
         String[] columnArray = columns.split(",");
         PageRequest pageRequest = new PageRequest(pageNumber - 1, pageSize, direction, columnArray);
         Page<EventDto> eventDtos = eventMapper.toDtoPage(eventDao.findAll(pageRequest));
         log.debug("Found all events");
         return eventDtos;
+    }
+
+    public List<PdfWritable> findAllForPDF() {
+        List<Event> events = eventDao.findAll();
+        log.debug("Found all issues");
+        return events.stream().map(is -> (PdfWritable) is).collect(toList());
     }
 
     public EventDto findById(long id) {
@@ -54,12 +65,15 @@ public class EventService {
         }
         event.setCategory(eventDto.getCategory());
 
+        credentialService.checkCredential(event.getUser().getId());
+
         event = eventDao.save(event);
         log.debug("Updated " + event.toString());
         return eventMapper.toDto(event);
     }
 
     public void deleteById(long id) {
+        credentialService.checkCredential(findOne(id).getUser().getId());
         eventDao.delete(id);
         log.debug("Deleted event " + id);
     }

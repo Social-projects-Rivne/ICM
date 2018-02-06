@@ -4,9 +4,7 @@ import {Container} from 'reactstrap';
 import Header from '../../components/Header/';
 import Sidebar from '../../components/Sidebar/';
 import Footer from '../../components/Footer/';
-
 import Dashboard from '../../views/Dashboard/';
-
 import Petitions from "../../views/Petitions/";
 import PetitionEdit from "../../views/Petitions/PetitionEdit";
 import PetitionAdd from "../../views/Petitions/PetitionAdd";
@@ -26,7 +24,7 @@ class Full extends Component {
         super(props);
 
         this.state = {
-          userAuthorities: null
+            userAuthorities: null
         };
     }
 

@@ -8,6 +8,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.IssueDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueDto;
 import ua.softserve.rv_028.issuecitymonitor.dto.IssueLocationDto;
@@ -17,6 +18,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.mappers.IssueMapper;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -28,7 +30,9 @@ public class IssueService {
 
     private final IssueMapper issueMapper;
 
-    public IssueDto addIssue(IssueDto issueDto){
+    private final CheckCredentialService credentialService;
+
+    public IssueDto addIssue(IssueDto issueDto) {
         Issue issue = issueMapper.toEntity(issueDto);
         log.debug("Added issue " + issueDto);
         return issueMapper.toDto(issue);
@@ -42,6 +46,14 @@ public class IssueService {
         return issueMapper.toDtoPage(issues);
     }
 
+
+    public List<PdfWritable> findAllForPDF() {
+        List<Issue> issues = issueDao.findAll();
+        log.debug("Found all issues");
+        return issues.stream().map(is -> (PdfWritable) is).collect(toList());
+    }
+
+
     public IssueDto findById(long id) {
         Issue issue = findOne(id);
         log.debug("Found " + issue.toString());
@@ -54,12 +66,14 @@ public class IssueService {
         issue.setDescription(issueDto.getDescription());
         issue.setInitialDate(LocalDateTime.parse(issueDto.getInitialDate(), DATE_FORMAT));
         issue.setCategory(issueDto.getCategory());
+        credentialService.checkCredential(issue.getUser().getId());
         issue = issueDao.save(issue);
         log.debug("Updated " + issue.toString());
         return issueMapper.toDto(issue);
     }
 
     public void deleteById(long id) {
+        credentialService.checkCredential(findOne(id).getUser().getId());
         issueDao.delete(id);
         log.debug("Deleted issue " + id);
     }

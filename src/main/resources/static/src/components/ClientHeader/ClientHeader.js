@@ -16,7 +16,7 @@ export default class ClientHeader extends Component {
     render() {
         return(
             <header className="app-header navbar">
-                <NavbarBrand href="#"></NavbarBrand>
+                <NavbarBrand href="/"></NavbarBrand>
 
                 <NavLink href="/">Issues</NavLink>
                 <NavLink href="/">Events</NavLink>
