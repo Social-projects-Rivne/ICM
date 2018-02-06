@@ -130,7 +130,8 @@ header button{
     position: absolute;
     background-color: white;
     height: 100%;
-    width: 800px;
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 .event_marker{
@@ -158,9 +159,6 @@ header button{
 
 .description-card{
     font-size: 14px;
-    width: 300px;
-    height: 300px;
-    left: 50px;
     position:absolute;
 }
 
@@ -180,7 +178,7 @@ header button{
 }
 
 .card-img{
-    height: 300px;
+    max-height: 300px;
     background-color: #f0f3f6;
     text-align: center;
 }
@@ -190,7 +188,8 @@ header button{
 }
 
 .card-text{
-    height: 300px;
+    min-width: 150px;
+    max-height: 200px;
     display: block;
     border: 1px solid #c2cfd6;
     overflow-y: scroll;
@@ -198,18 +197,14 @@ header button{
 
 .comments-card{
     font-size: 14px;
-    right: 50px;
     position:absolute;
-    height: 300px;
-    width: 300px;
     background-color: green;
 
 }
 
 .comments{
         position:absolute;
-        height: 300px;
-        width: 300px;
+        max-height: 300px;
         background-color: gray;
         border: 1px solid #c2cfd6;
 }

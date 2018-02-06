@@ -59,7 +59,7 @@ class IssueMarker extends Component{
 
     render(){
         return(
-               <div className = {this.state.display}>
+               <div className = {this.state.display + " col-md-5 col-lg-5"}>
                <div className="card-header">
                     <div className="title-card">
                         <h1>{this.state.response.title}</h1>
@@ -78,21 +78,35 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-body">
+                   <div className="row">
+                       <div className="col-lg-1 col-md-1">
+                       </div>
 
-                 <div className="description-card">
-                     <label for="comment"><h3>Description:</h3></label>
-                        <p className= "card-text">
-                            {this.state.response.description}
-                        </p>
-                 </div>
+                       <div className="col-lg-4 col-md-4">
+                           <div className="description-card">
+                               <h3>Description:</h3>
+                               <p className= "card-text">
+                                   {this.state.response.description}
+                               </p>
+                           </div>
+                       </div>
 
-                 <div className="comments-card">
-                    <p><h3>Comments:</h3></p>
-                    <div className= "comments"></div>
-                 </div>
+                       <div className= "col-lg-2 col-md-2">
+                       </div>
 
+                       <div className= "col-lg-4 col-md-4">
+                           <div className="comments-card">
+                               <p><h3>Comments:</h3></p>
+                               <div className= "comments"></div>
+                           </div>
+
+                       </div>
+
+                       <div className= "col-lg-1 col-md-1">
+                       </div>
+
+                   </div>
                </div>
-
              </div>
         )
 
