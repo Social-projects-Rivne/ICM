@@ -91,6 +91,7 @@
 				<configuration>
 					<excludes>
 						<exclude>ua/softserve/rv_028/issuecitymonitor/config/**.class</exclude>
+						<exclude>ua/softserve/rv_028/issuecitymonitor/exception/**.class</exclude>
 					</excludes>
 				</configuration>
 				<executions>
