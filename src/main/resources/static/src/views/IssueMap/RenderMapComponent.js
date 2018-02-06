@@ -41,8 +41,30 @@ class RenderMapComponent extends Component {
 
    render() {
    return(
-   <div>
         <div className="map-responsive">
+            <div className= "filter-map">
+            <div className="collapse navbar-collapse" id="navbarsExampleDefault">
+                <ul className= "navbar-nav mr-auto">
+                    <li className="nav-item">
+                        <input id="checkBox" type="checkbox"/>
+                            Issues
+                    </li>
+                    <li className="nav-item">
+                        <input id="checkBox" type="checkbox"/>
+                            Events
+                    </li>
+                    <li className="nav-item dropdown">
+                        <a className="nav-link dropdown-toggle" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">Dropdown</a>
+                        <div className="dropdown-menu" aria-labelledby="dropdown01">
+                            <input id="checkBox" type="checkbox"/>
+                                Cat1!
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            </div>
+
             <Map
                 googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyAMDIyzcpoHdvK8MLCUhvrqZDyllGiyrnM &callback=initMap"
                 loadingElement={<div style={{ height: `100%` }} />}
@@ -56,9 +78,11 @@ class RenderMapComponent extends Component {
                 events = {this.state.events}
             />
         </div>
-   </div>
    )
   }
 }
+
+
+
 
 export default RenderMapComponent;
