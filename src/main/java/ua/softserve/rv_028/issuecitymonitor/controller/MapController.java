@@ -43,9 +43,10 @@ public class MapController {
     }
 
     @GetMapping(value = "/img/{id}", produces = "image/png")
-    public ResponseEntity<byte[]> getImageAsResponseEntity() throws IOException{
+    public ResponseEntity<byte[]> getImageAsResponseEntity(@PathVariable long id) throws IOException{
+        issueDto = issueService.findById(id);
         HttpHeaders headers = new HttpHeaders();
-        byte[] media = Files.readAllBytes(Paths.get("C:/Users/Kolia/Desktop/Image/first_img.jpg"));
+        byte[] media = Files.readAllBytes(Paths.get(pathForImg + "/" + issueDto.getPhoto()));
         headers.setCacheControl(CacheControl.noCache().getHeaderValue());
 
         ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(media, headers, HttpStatus.OK);
