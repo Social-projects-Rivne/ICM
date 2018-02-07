@@ -45,7 +45,7 @@ public class MapController {
         InputStream in = getClass()
                 .getResourceAsStream("/home/user/ImgForICM/first_img.jpg");
         */
-        return Files.readAllBytes(Paths.get("file:///home/user/ImgForICM/first_img.jpg"));
+        return Files.readAllBytes(Paths.get("C:/Users/Kolia/Desktop/Image/first_img.jpg"));
     }
 
 }

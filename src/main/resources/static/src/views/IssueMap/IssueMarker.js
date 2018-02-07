@@ -40,7 +40,7 @@ class IssueMarker extends Component{
         axios.get("api/map/" + this.state.ID)
              .then(function(photo) {
                 _this.setState({
-                    image: photo.data
+                    image: photo
                 })
              })
              .catch(function (error){
