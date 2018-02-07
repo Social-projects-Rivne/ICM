@@ -20,7 +20,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Issue implements PdfWritable {
 
@@ -86,6 +85,7 @@ public class Issue implements PdfWritable {
     }
 
     @PrePersist
+    @SuppressWarnings("unused")
     private void insert() {
         this.creationDate = LocalDateTime.now();
     }
@@ -103,5 +103,14 @@ public class Issue implements PdfWritable {
     @Override
     public User getUserDto() {
         return user;
+    }
+
+    @Override
+    public String toString() {
+        return "Issue{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", creationDate=" + creationDate +
+                '}';
     }
 }

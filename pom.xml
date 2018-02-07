@@ -22,6 +22,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<jacoco.version>0.7.9</jacoco.version>
 	</properties>
 
 	<dependencies>
@@ -82,6 +83,87 @@
 
 	<build>
 		<plugins>
+			<!--Jacoco plugin-->
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<excludes>
+						<exclude>ua/softserve/rv_028/issuecitymonitor/config/**.class</exclude>
+						<exclude>ua/softserve/rv_028/issuecitymonitor/exception/**.class</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>pre-unit-test</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Checkstyle plugin -->
+			<plugin>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.17</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>7.5.1</version>
+					</dependency>
+				</dependencies>
+
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<configuration>
+							<configLocation>checkstyle.xml</configLocation>
+							<encoding>UTF-8</encoding>
+							<consoleOutput>true</consoleOutput>
+							<failsOnError>true</failsOnError>
+							<failOnViolation>true</failOnViolation>
+							<violationSeverity>error</violationSeverity>
+						</configuration>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<artifactId>maven-pmd-plugin</artifactId>
+				<version>3.7</version>
+				<configuration>
+					<linkXRef>false</linkXRef>
+					<printFailingErrors>true</printFailingErrors>
+					<failOnViolation>true</failOnViolation>
+					<rulesets>
+						<ruleset>pmd.xml</ruleset>
+					</rulesets>
+					<includeTests>true</includeTests>
+				</configuration>
+				<executions>
+					<execution>
+						<id>validate</id>
+						<phase>validate</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>

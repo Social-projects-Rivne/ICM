@@ -53,20 +53,6 @@ class PetitionAdd extends Component {
 
 
 
-
-    componentWillMount() {
-        var _this = this;
-        axios.get("/api/petitions/"+this.props.match.params.id)
-            .then(function(response) {
-                _this.setState({
-                    petition: response.data
-                })
-            })
-            .catch(function (error) {
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-            });
-    }
-
     handleInitialDateChange(m){
         this.setState(function(prev) {
             return {

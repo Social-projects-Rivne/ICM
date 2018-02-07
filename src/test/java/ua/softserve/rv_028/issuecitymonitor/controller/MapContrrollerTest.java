@@ -1,7 +1,6 @@
 package ua.softserve.rv_028.issuecitymonitor.controller;
 
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

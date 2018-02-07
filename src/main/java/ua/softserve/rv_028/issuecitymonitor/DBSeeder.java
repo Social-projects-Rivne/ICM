@@ -3,8 +3,6 @@ package ua.softserve.rv_028.issuecitymonitor;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.log4j.Log4j;
-import org.apache.log4j.LogManager;
-import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

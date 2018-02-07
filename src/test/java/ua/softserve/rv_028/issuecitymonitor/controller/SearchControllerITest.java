@@ -39,8 +39,6 @@ public class SearchControllerITest {
 
     private static final String EXPECTED_SEARCH_TITLE = TITLE + 0;
     private static final String EXPECTED_SEARCH_DESCRIPTION = DESCRIPTION + 0;
-    private static final String EXPECTED_SEARCH_NAME = USER_FNAME + 0;
-    private static final String EXPECTED_SEARCH_EMAIL = USER_EMAIL + 0;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
@@ -102,13 +100,6 @@ public class SearchControllerITest {
                 "description", EXPECTED_SEARCH_DESCRIPTION);
     }
 
-    @Test
-    public void testFindUsersByCriteria_expectSizeOneAndEquality() {
-        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&name=" + EXPECTED_SEARCH_NAME + "&deleted=" + false,
-                "firstName", EXPECTED_SEARCH_NAME);
-        testSearchCriteria("/api/search/users?size="+ PAGE_SIZE +"&page=" + PAGE_OFFSET + "&email=" + EXPECTED_SEARCH_EMAIL + "&deleted=" + false,
-                "email", EXPECTED_SEARCH_EMAIL);
-    }
 
     private void testSearchCriteria(String url, String valuePath, String expectedValue) {
         ResponseEntity<String> responseEntity = testRestTemplate.getForEntity(url, String.class);
