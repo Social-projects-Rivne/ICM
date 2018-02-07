@@ -12,7 +12,7 @@ class IssueMarker extends Component{
             ID: this.props.ID,
             display: "issue_marker",
             image: null,
-            response: {
+            issue: {
                 id: "",
                 title: "",
                 description: "",
@@ -29,7 +29,7 @@ class IssueMarker extends Component{
         axios.get("/api/issues/" + this.state.ID)
             .then(function(response) {
                 _this.setState({
-                    response: response.data
+                    issue: response.data
                 })
             })
             .catch(function (error) {
@@ -43,7 +43,7 @@ class IssueMarker extends Component{
         axios.get("/api/issues/" + nextProps.ID)
             .then(function(response) {
                 _this.setState({
-                    response: response.data,
+                    issue: response.data,
                     display: "issue_marker",
                 })
             })
@@ -63,7 +63,7 @@ class IssueMarker extends Component{
                <div className = {this.state.display + " col-md-5 col-lg-5"}>
                <div className="card-header">
                     <div className="title-card">
-                        <h1>{this.state.response.title}</h1>
+                        <h1>{this.state.issue.title}</h1>
                     </div>
 
                     <button className="btn btn-primary close-button" onClick = {(e)=>this.onClick(e)}>
@@ -73,8 +73,8 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                   <img className="img-responsive img" src={"http://localhost:8080/api/map/img/" + this.state.response.id}
-                        width="786" height="442"/>
+                   <img className="img-responsive img" src={"http://localhost:8080/api/map/img/" + this.state.issue.id}
+                        alt={this.state.issue.title + " image"}/>
                </div>
 
                <div className="card-body">
@@ -84,7 +84,7 @@ class IssueMarker extends Component{
                                <div className="description-card">
                                    <h3>Description:</h3>
                                    <p className= "card-text">
-                                       {this.state.response.description}
+                                       {this.state.issue.description}
                                    </p>
                                </div>
                            </div>
