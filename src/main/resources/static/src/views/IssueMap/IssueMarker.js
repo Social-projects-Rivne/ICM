@@ -11,7 +11,8 @@ class IssueMarker extends Component{
         this.state = {
             ID: this.props.ID,
             display: "issue_marker",
-            response: {
+            image: null,
+            issue: {
                 id: "",
                 title: "",
                 description: "",
@@ -28,7 +29,7 @@ class IssueMarker extends Component{
         axios.get("/api/issues/" + this.state.ID)
             .then(function(response) {
                 _this.setState({
-                    response: response.data
+                    issue: response.data
                 })
             })
             .catch(function (error) {
@@ -42,7 +43,7 @@ class IssueMarker extends Component{
         axios.get("/api/issues/" + nextProps.ID)
             .then(function(response) {
                 _this.setState({
-                    response: response.data,
+                    issue: response.data,
                     display: "issue_marker",
                 })
             })
@@ -59,10 +60,10 @@ class IssueMarker extends Component{
 
     render(){
         return(
-               <div className = {this.state.display}>
+               <div className = {this.state.display + " col-md-5 col-lg-5"}>
                <div className="card-header">
                     <div className="title-card">
-                        <h1>{this.state.response.title}</h1>
+                        <h1>{this.state.issue.title}</h1>
                     </div>
 
                     <button className="btn btn-primary close-button" onClick = {(e)=>this.onClick(e)}>
@@ -72,27 +73,30 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                    <img className=" response-img img" src= {this.props.imgPath + this.state.response.photo}
-                    alt = {this.state.response.title + "photo"}
-                    />
+                   <img className="img-responsive img" src={"http://localhost:8080/api/map/img/" + this.state.issue.id}
+                        alt={this.state.issue.title + " image"}/>
                </div>
 
                <div className="card-body">
 
-                 <div className="description-card">
-                     <label for="comment"><h3>Description:</h3></label>
-                        <p className= "card-text">
-                            {this.state.response.description}
-                        </p>
-                 </div>
-
-                 <div className="comments-card">
-                    <p><h3>Comments:</h3></p>
-                    <div className= "comments"></div>
-                 </div>
+                        <div className="row justify-content-around">
+                           <div className="col-6">
+                               <div className="description-card">
+                                   <h3>Description:</h3>
+                                   <p className= "card-text">
+                                       {this.state.issue.description}
+                                   </p>
+                               </div>
+                           </div>
+                           <div className="col-6">
+                               <div className="comments-card">
+                                   <p><h3>Comments:</h3></p>
+                                   <div className= "comments"></div>
+                               </div>
+                           </div>
+                        </div>
 
                </div>
-
              </div>
         )
 
