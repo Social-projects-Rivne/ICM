@@ -35,17 +35,6 @@ class IssueMarker extends Component{
             .catch(function (error) {
                 swal({title: "Something went wrong!", text: error, icon: "error"});
             });
-
-
-        axios.get("api/map/" + this.state.ID)
-             .then(function(photo) {
-                _this.setState({
-                    image: photo
-                })
-             })
-             .catch(function (error){
-                swal({title: "Something went wrong!", text: error, icon: "error"});
-             });
 }
 
     componentWillReceiveProps(nextProps) {
@@ -84,9 +73,8 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                   <div className= "response-img img">
-                       {this.state.image}
-                   </div>
+                   <img className="img-responsive img" src={"http://localhost:8080/api/map/img/" + this.state.response.id}
+                        width="786" height="442"/>
                </div>
 
                <div className="card-body">
