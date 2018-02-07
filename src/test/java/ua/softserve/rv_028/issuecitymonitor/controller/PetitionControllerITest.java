@@ -9,7 +9,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 import ua.softserve.rv_028.issuecitymonitor.TestApplication;
 import ua.softserve.rv_028.issuecitymonitor.TestUtils;
@@ -18,6 +20,7 @@ import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
 import ua.softserve.rv_028.issuecitymonitor.entity.Petition;
 import ua.softserve.rv_028.issuecitymonitor.entity.User;
+import ua.softserve.rv_028.issuecitymonitor.entity.enums.UserRole;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.io.IOException;
@@ -25,7 +28,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static ua.softserve.rv_028.issuecitymonitor.TestUtils.*;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createPetitionsList;
+import static ua.softserve.rv_028.issuecitymonitor.TestUtils.createUser;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = TestApplication.class, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -51,11 +55,26 @@ public class PetitionControllerITest {
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Autowired
+    private PetitionController controller;
+
+    private static User USER = TestUtils.createAdmin(0);
+    private static final String USERNAME = "mock-test@mail.com";
+
     @Before
     public void setup(){
         user = userDao.save(createUser(0));
         petitions = petitionDao.save(createPetitionsList(user, LIST_SIZE));
         petition = petitions.get(0);
+
+        USER.setUsername(USERNAME);
+        User user = userDao.findUserByUsername(USERNAME);
+        if (user == null)
+            userDao.save(USER);
+        else
+            USER = user;
+        USER.setUserRole(UserRole.ADMIN);
+        userDao.save(USER);
     }
 
     @After
@@ -91,6 +110,7 @@ public class PetitionControllerITest {
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testUpdatePetitionSuccessfully(){
         String updatedTitle = "testUpdateTitle";
         String updatedDescription = "testUpdateDescription";
@@ -98,26 +118,17 @@ public class PetitionControllerITest {
         petitionDto.setTitle(updatedTitle);
         petitionDto.setDescription(updatedDescription);
 
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        PetitionDto updatedPetition = controller.update(petitionDto.getId(), petitionDto);
 
-        HttpEntity<PetitionDto> httpEntity = new HttpEntity<>(petitionDto,httpHeaders);
-        ResponseEntity<PetitionDto> responseEntity = testRestTemplate.exchange("/api/petitions/" + petitionDto.getId(),
-                HttpMethod.PUT, httpEntity, PetitionDto.class);
-
-        System.out.println(httpEntity.toString());
-
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        PetitionDto responseObject = responseEntity.getBody();
-        assertNotNull(responseObject);
-        assertEquals(updatedTitle, responseObject.getTitle());
-        assertEquals(updatedDescription, responseObject.getDescription());
+        assertEquals(updatedTitle, updatedPetition.getTitle());
+        assertEquals(updatedDescription, updatedPetition.getDescription());
     }
 
     @Test
+    @WithMockUser(username = "mock-test@mail.com")
     public void testDeletePetitionSuccessfully(){
         long prevCount = petitionDao.count();
-        testRestTemplate.delete("/api/petitions/"+petition.getId());
+        controller.delete(petition.getId());
         assertEquals(prevCount-1, petitionDao.count());
     }
 

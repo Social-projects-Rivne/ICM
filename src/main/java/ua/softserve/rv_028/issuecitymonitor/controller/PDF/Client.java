@@ -17,6 +17,7 @@ import ua.softserve.rv_028.issuecitymonitor.service.IssueService;
 import ua.softserve.rv_028.issuecitymonitor.service.PetitionService;
 import ua.softserve.rv_028.issuecitymonitor.service.UserService;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -39,25 +40,25 @@ public class Client {
 
 
     @GetMapping(path = "/issues")
-    private void createPdfIssues() {
+    public void createPdfIssues() {
         createPdf(ISSUES);
     }
 
 
     @GetMapping(path = "/petitions")
-    private void createPdfPetitions() {
+    public void createPdfPetitions() {
         createPdf(PETITIONS);
     }
 
 
     @GetMapping(path = "/events")
-    private void createPdfEvents() {
+    public void createPdfEvents() {
         createPdf(EVENTS);
     }
 
 
     @GetMapping(path = "/users")
-    private void createPdfUsers() {
+    public void createPdfUsers() {
         createPdf(USERS);
     }
 
@@ -76,7 +77,7 @@ public class Client {
         try {
             //Document is not auto-closable hence need to close it separately
             document = new Document(PageSize.A4);
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(downloadPath + pdfName.getName() + PDF_EXTENSION));
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(new File(downloadPath, pdfName.getName() + PDF_EXTENSION)));
             HeaderFooter event = new HeaderFooter();
             event.setHeader(pdfName.getName());
             writer.setPageEvent(event);

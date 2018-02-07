@@ -10,14 +10,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
-import ua.softserve.rv_028.issuecitymonitor.dto.UserDto;
 import ua.softserve.rv_028.issuecitymonitor.service.UserProfileService;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 
@@ -26,7 +27,6 @@ public class AuthenticatedUsersControllerTest {
 
     private static final String ANONYMOUS_USER_NAME = "anonymous";
     private static final String MOCK_USER_NAME = "user";
-    private static final String MOCK_USER_PASSWORD = "password";
     private static final Collection<? extends GrantedAuthority> MOCK_USER_AUTHORITY =
             Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
     private static final IllegalArgumentException USER_NOT_FOUND = new IllegalArgumentException("User not found");
