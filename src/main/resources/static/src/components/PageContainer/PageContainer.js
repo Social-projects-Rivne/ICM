@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {ButtonGroup, Button, Card, CardBody, CardFooter, CardHeader, Col, Input, Pagination, PaginationItem, PaginationLink, Row} from "reactstrap";
+import DownloadPDF from "../DownloadPDF/DownloadPDF";
 
 class PageContainer extends Component {
     constructor(props) {
@@ -72,7 +73,7 @@ class PageContainer extends Component {
                 <Button color="secondary" size="sm" onClick={this.changeSortDirection} value="DESC">DESC</Button>
                 {this.state.title !== "Users list" ?
                     <Input onChange={this.changeSortColumn}
-                       type="select" name="sortColumn" placeholder="Sorting">
+                           type="select" name="sortColumn" placeholder="Sorting">
                         <option value="id">by ID</option>
                         <option value="title">by Title</option>
                         <option value="initialDate">by Initial date</option>
@@ -81,14 +82,14 @@ class PageContainer extends Component {
                     </Input> :
                     this.state.title === "Users list" ?
                         <Input onChange={this.changeSortColumn}
-                            type="select" name="sortColumnForUser" placeholder="Sorting">
-                                <option value="id">by ID</option>
-                                <option value="userRole">by Role</option>
-                                <option value="firstName">by First name</option>
-                                <option value="lastName">by Last name</option>
-                                <option value="username">by Email</option>
-                                <option value="phone">by Phone</option>
-                                <option value="userStatus">by User status</option>
+                               type="select" name="sortColumnForUser" placeholder="Sorting">
+                            <option value="id">by ID</option>
+                            <option value="userRole">by Role</option>
+                            <option value="firstName">by First name</option>
+                            <option value="lastName">by Last name</option>
+                            <option value="username">by Email</option>
+                            <option value="phone">by Phone</option>
+                            <option value="userStatus">by User status</option>
                         </Input> :
                         null}
             </ButtonGroup>
@@ -137,7 +138,7 @@ class PageContainer extends Component {
                                 <div className="pull-right">
                                     {this.sorting()}
                                 </div>
-                            </CardHeader>
+                                <DownloadPDF page={this.props.name}/></CardHeader>
                             <CardBody>
                                 {this.state.children}
                             </CardBody>

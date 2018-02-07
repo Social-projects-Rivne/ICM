@@ -13,7 +13,7 @@ import '../scss/style.scss'
 import '../scss/core/_dropdown-menu-right.scss'
 
 // Containers
-import Full from './containers/Full/'
+import Full from './containers/Full';
 import Authorization from "./containers/Authorization/Authorization";
 
 import Client from "./containers/Client/Client";

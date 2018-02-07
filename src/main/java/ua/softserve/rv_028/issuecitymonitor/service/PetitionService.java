@@ -11,6 +11,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.dao.PetitionDao;
 import ua.softserve.rv_028.issuecitymonitor.dao.UserDao;
 import ua.softserve.rv_028.issuecitymonitor.dto.PetitionDto;
@@ -19,7 +20,9 @@ import ua.softserve.rv_028.issuecitymonitor.entity.User;
 import ua.softserve.rv_028.issuecitymonitor.service.mappers.PetitionMapper;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
+import static java.util.stream.Collectors.toList;
 import static ua.softserve.rv_028.issuecitymonitor.Constants.DATE_FORMAT;
 
 @Service
@@ -33,6 +36,8 @@ public class PetitionService {
     UserDao userDao;
 
     PetitionMapper petitionMapper;
+
+    CheckCredentialService credentialService;
 
     public void addPetition(PetitionDto dto) {
         try {
@@ -52,6 +57,12 @@ public class PetitionService {
         return petitionMapper.toDtoPage(petitions);
     }
 
+    public List<PdfWritable> findAllForPDF() {
+        List<Petition> petitions = petitionDao.findAll();
+        log.debug("Found all issues");
+        return petitions.stream().map(is -> (PdfWritable) is).collect(toList());
+    }
+
     public PetitionDto findById(long id) {
         Petition petition = findOne(id);
         log.debug("Found " + petition.toString());
@@ -66,6 +77,7 @@ public class PetitionService {
         petition.setInitialDate(LocalDateTime.parse(petitionDto.getInitialDate(), DATE_FORMAT));
         petition.setCategory(petitionDto.getCategory());
 
+        credentialService.checkCredential(petition.getUser().getId());
         petition = petitionDao.save(petition);
         log.debug("Updated " + petition.toString());
         return petitionMapper.toDto(petition);
@@ -73,6 +85,7 @@ public class PetitionService {
 
     public void deleteById(long id) {
         Petition petition = findOne(id);
+        credentialService.checkCredential(petition.getUser().getId());
         petitionDao.delete(petition);
         log.debug("Deleted " + petition.toString());
     }

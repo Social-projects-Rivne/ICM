@@ -4,6 +4,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import ua.softserve.rv_028.issuecitymonitor.controller.PDF.PdfWritable;
 import ua.softserve.rv_028.issuecitymonitor.entity.converter.LocalDateTimeConverter;
 import ua.softserve.rv_028.issuecitymonitor.entity.enums.IssueCategory;
 
@@ -21,7 +22,7 @@ import java.util.Set;
 @Setter
 @ToString
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Issue{
+public class Issue implements PdfWritable {
 
     @Id
     @GeneratedValue
@@ -94,4 +95,13 @@ public class Issue{
         this.isDeleted = true;
     }
 
+    @Override
+    public String getCat() {
+        return category.toString();
+    }
+
+    @Override
+    public User getUserDto() {
+        return user;
+    }
 }

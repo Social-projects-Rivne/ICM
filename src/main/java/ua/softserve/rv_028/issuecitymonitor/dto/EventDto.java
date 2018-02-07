@@ -17,5 +17,4 @@ public class EventDto {
     double longitude;
     String endDate;
     EventCategory category;
-
 }
