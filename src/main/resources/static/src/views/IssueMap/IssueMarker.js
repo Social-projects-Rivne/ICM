@@ -84,7 +84,9 @@ class IssueMarker extends Component{
                </div>
 
                <div className="card-img">
-                    <img src= {this.props.imgPath + this.state.response.photo}/>
+                   <div className= "response-img img">
+                       {this.state.image}
+                   </div>
                </div>
 
                <div className="card-body">
